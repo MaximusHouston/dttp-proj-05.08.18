@@ -1,0 +1,138 @@
+﻿@model ProductModel
+@{
+    var specs = Model.Specifications;
+
+}
+    @if (specs.GetDecimal("SEERNonDucted", "N2") != null)
+    {
+        <p>
+            <span class="as-lnk">
+                SEER (Non-Ducted):
+            </span>
+            <span class="pull-right">
+                @specs.GetDecimal("SEERNonDucted", "N2")
+            </span>
+        </p>
+        <div class="bar-outer">
+            <div class="bar-inner blue" data-max="40" data-actual="@specs.GetDecimal("SEERNonDucted", "N2")"></div>
+        </div>
+    }
+    @if (specs.GetDecimal("IEERNonDucted", "N2") != null)
+    {
+        <p>
+            <span class="as-lnk">
+                IEER (Non-Ducted):
+            </span>
+            <span class="pull-right">
+                @specs.GetDecimal("IEERNonDucted", "N2")
+            </span>
+        </p>
+        <div class="bar-outer">
+            <div class="bar-inner blue" data-max="40" data-actual="@specs.GetDecimal("IEERNonDucted", "N2")"></div>
+        </div>
+    }
+    @if (specs.GetDecimal("EERNonducted", "N2") != null)
+    {
+        <p>
+            <span class="as-lnk">
+                EER (Non-Ducted):
+            </span>
+            <span class="pull-right">
+                @specs.GetDecimal("EERNonDucted", "N2")
+            </span>
+        </p>
+        <div class="bar-outer">
+            <div class="bar-inner blue" data-max="20" data-actual="@specs.GetDecimal("EERNonDucted", "N2")"></div>
+        </div>
+    }
+    @if (specs.GetDecimal("HSPFNonDucted", "N2") != null)
+    {
+        <p>
+            <span class="as-lnk">
+                HSPF (Non-Ducted):
+            </span>
+            <span class="pull-right">
+                @specs.GetDecimal("HSPFNonDucted", "N2")
+            </span>
+        </p>
+        <div class="bar-outer">
+            <div class="bar-inner pink" data-max="20" data-actual="@specs.GetDecimal("HSPFNonDucted", "N2")"></div>
+        </div>
+    }
+    @if (specs.GetDecimal("COP47NonDucted", "N2") != null)
+    {
+        <p>
+            <span class="as-lnk">
+                COP47 (Non-Ducted):
+            </span>
+            <span class="pull-right">
+                @specs.GetDecimal("COP47NonDucted", "N2")
+            </span>
+        </p>
+        <div class="bar-outer">
+            <div class="bar-inner pink" data-max="10" data-actual="@specs.GetDecimal("COP47NonDucted", "N2")"></div>
+        </div>
+    }
+    @if (Model.ProductFamilyId == (int)ProductFamilyEnum.UnitarySplitSystem
+                || Model.ProductFamilyId == (int)ProductFamilyEnum.UnitaryPackagedSystem
+                || Model.ProductFamilyId == (int)ProductFamilyEnum.LightCommercialSplitSystem)
+    {
+        if (specs.GetDecimal("SEERDucted", "N2") != null)
+        {
+            <p>
+                <span class="as-lnk">
+                    SEER (Ducted):
+                </span>
+                <span class="pull-right">
+                    @specs.GetDecimal("SEERDucted", "N2")
+                </span>
+            </p>
+            <div class="bar-outer">
+                <div class="bar-inner blue" data-max="40" data-actual="@specs.GetDecimal("SEERDucted", "N2")"></div>
+            </div>
+        }
+
+        if (specs.GetDecimal("EERDucted", "N2") != null)
+        {
+            <p>
+                <span class="as-lnk">
+                    EER (Ducted):
+                </span>
+                <span class="pull-right">
+                    @specs.GetDecimal("EERDucted", "N2")
+                </span>
+            </p>
+            <div class="bar-outer">
+                <div class="bar-inner blue" data-max="40" data-actual="@specs.GetDecimal("EERDucted", "N2")"></div>
+            </div>
+        }
+
+        if (specs.GetDecimal("HSPFDucted", "N2") != null)
+        {
+            <p>
+                <span class="as-lnk">
+                    HSPF (Ducted):
+                </span>
+                <span class="pull-right">
+                    @specs.GetDecimal("HSPFDucted", "N2")
+                </span>
+            </p>
+            <div class="bar-outer">
+                <div class="bar-inner pink" data-max="20" data-actual="@specs.GetDecimal("HSPFDucted", "N2")"></div>
+            </div>
+        }
+        if (specs.GetDecimal("COP47Ducted", "N2") != null)
+        {
+            <p>
+                <span class="as-lnk">
+                    COP47 (Ducted):
+                </span>
+                <span class="pull-right">
+                    @specs.GetDecimal("COP47Ducted", "N2")
+                </span>
+            </p>
+            <div class="bar-outer">
+                <div class="bar-inner pink" data-max="10" data-actual="@specs.GetDecimal("COP47Ducted", "N2")"></div>
+            </div>
+        }
+    }

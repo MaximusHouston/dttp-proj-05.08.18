@@ -1,0 +1,42 @@
+﻿@model ProductModel
+@{
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+    Layout = null;
+    @Styles.Render("~/Content/css/pdf-base");
+}
+<div class="pdf">
+
+    <div class="row">
+        @Html.Partial("ProductFeaturesAndBenefits")
+        @Html.Partial("SubmittalTemplate_ProductImageAndLogos")
+        <div class="row-end">&nbsp;</div>
+    </div>
+
+    @Html.Partial("ProductNotes")
+
+    <div class="new-page">
+        @if (Model.ProductModelTypeId == DPO.Common.ProductModelTypeEnum.Outdoor)
+        {
+            @Html.Partial("SubmittalTemplate_Outdoor_Performance")
+        }
+        else if (Model.ProductModelTypeId == DPO.Common.ProductModelTypeEnum.Indoor)
+        {
+            @Html.Partial("SubmittalTemplate_Indoor_Performance")
+        }
+            
+
+        @if (Model.ProductModelTypeId == DPO.Common.ProductModelTypeEnum.Outdoor)
+        {
+            @Html.Partial("SubmittalTemplate_Outdoor_UnitDetails")
+        }
+        else if (Model.ProductModelTypeId == DPO.Common.ProductModelTypeEnum.Indoor)
+        {
+            @Html.Partial("SubmittalTemplate_Indoor_UnitDetails")
+        }
+    </div>
+
+    <div class="new-page">
+        @Html.Partial("ProductDimensionalDrawing")
+    </div>
+
+</div>

@@ -1,0 +1,326 @@
+﻿@using MvcCheckBoxList.Model;
+
+@model DPO.Common.UserModel
+
+@{
+    ViewBag.Title = @ResourceUI.UserEdit;
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/checkboxhelpers", "~/bundles/scripts/confirmmodal")
+}
+
+@Html.Partial("ConfirmModal")
+@Html.Partial("_UserdashboardTabsPartial")
+
+<ul class="breadcrumbs">
+    @if (Html.IsPage("UserEdit"))
+    {
+        <li><a href="@Url.Action("Users")">@ResourceUI.AllUsers</a></li>
+    }
+    else
+    {
+        <li><a href="@Url.Action("ApprovalRequests")">@ResourceUI.ApprovalRequests</a></li>
+    }
+    @if (Model.UserId == null)
+    {
+        <li>@ResourceUI.UserAdd</li>
+    }
+    else
+    {
+        <li>@ResourceUI.UserEdit</li>
+    }
+
+</ul>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "UserEditForm" }))
+{
+    @Html.AntiForgeryToken();
+    @Html.Concurrency();
+    @Html.HiddenFor(m => m.UserId);
+    @Html.HiddenFor(m => m.Approved);
+    @Html.HiddenFor(m => m.Enabled);
+    @Html.HiddenFor(m => m.Address.AddressId);
+    @Html.HiddenFor(m => m.Contact.ContactId);
+    @Html.PageMessages()
+    
+    @Html.HiddenFor(m => m.Business.ERPAccountId);
+    
+    <div class="section t-flush">
+        <div class="item-strap">
+            <div class="itemname">
+                @if (Model.UserId == null)
+                {
+                    <h1>@ResourceUI.UserAdd</h1>
+                }
+                else
+                {
+                    <h1>
+                        @(ResourceUI.UserEdit + "-" + Model.DisplayName)
+                    </h1>
+                }
+            </div>
+            <div class="btn-bar">
+                @if (Model.UserId != null)
+                {
+                    if (Model.UserId != Model.CurrentUser.UserId)
+                    {
+                        if (Model.Approved != true && Model.CurrentUser.HasAccess(SystemAccessEnum.ApproveUsers))
+                        {
+                            <a href="#" class="submit-btn" onclick="return ApproveUser('@Model.UserId', '@Model.AccountId', '@Model.DisplayName')">@ResourceUI.UserApprove</a>
+
+                        }
+
+                        if (Html.IsPage("useredit"))
+                        {
+                            if (Model.Enabled == true)
+                            {
+                                <a href="#" class="btn" data-confirm="DisableUser" data-sc-ajaxpost="@Url.Action("Disable", "Userdashboard", new { UserId = Model.UserId })">@ResourceUI.UserDisable</a>
+                            }
+                            else if (Model.Enabled == false)
+                            {
+                                <a href="#" class="btn" data-confirm="EnableUser" data-sc-ajaxpost="@Url.Action("Enable", "Userdashboard", new { UserId = Model.UserId })">@ResourceUI.UserEnable</a>
+                            }
+                        }
+
+                    }
+
+                    <a class="btn" href="@Url.Action("RequestNewPassword", "Account", new { UserEmail = Model.Email })">@ResourceUI.ResetPassword</a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <ul class="sub-tab-bar">
+        <li class="active-tab" data-view="personalDetails">
+            <span>@((Model.UserId != Model.CurrentUser.UserId) ? ResourceUI.UserDetails : ResourceUI.YourDetails)</span>
+        </li>
+        <li data-view="userAccess">
+            <span>@((Model.UserId != Model.CurrentUser.UserId) ? ResourceUI.UserAccess : ResourceUI.YourAccessLevels)</span>
+        </li>
+        <li data-view="userPermissions">
+            <span>@((Model.UserId != Model.CurrentUser.UserId) ? ResourceUI.UserPermissions : ResourceUI.YourPermissions)</span>
+        </li>
+    </ul>
+
+    <div id="personalDetails" class="sub-tab-view">
+        @Html.Partial("_UserPersonalDetailsPartial", Model)
+        <br />
+        @Html.Partial("_UserBusinessDetailsPartial", Model)
+    </div>
+
+    @Html.Partial("UserPermissions", Model);
+
+    <div class="section action c-align">
+        <button type="button" class="btn" onclick="window.location = document.referrer">@ResourceUI.Cancel</button>
+        @if (Model.UserId != null)
+        {
+            <a href="#" sc-ajaxpost="@Url.Action()" class="submit-btn" id="btn_saveUserEdit">@ResourceUI.SaveChanges</a>
+        }
+        else
+        {
+            <a href="#" sc-ajaxpost="@Url.Action()" class="submit-btn">@ResourceUI.UserAdd</a>
+        }
+        @Html.Partial("_LastEditedPartial")
+    </div>
+
+  
+}
+
+<script src="~/Scripts/jquery.pwstrength.min.js"></script>
+<script>
+    function ApproveUser(userid, accountId, fullName) {
+        var userTypeId = $('#@(Html.IdFor(m => m.UserTypeId))').val();
+        var notSetVal = @((int)UserTypeEnum.NotSet);
+        var token = $('[name=__RequestVerificationToken]').val();
+
+        if (userTypeId == notSetVal)
+        {
+            alert("You must selected a User Type");
+            return false;
+        }
+
+        var position = $('#header');
+
+        if (fullName)
+        {
+            fullName = fullName.replace(/'/g, '&#39;');
+        }
+        var html = "<div id='dlgApproveUserEdit' title='Approve - " + fullName + "'>";
+        html += "<div class='loading' />";
+        html += "</div>";
+
+        var dialog = $(html).appendTo('body').dialog({
+            close: function (event, ui) {
+                dialog.remove();
+            },
+            modal: true,
+            width: 'auto',
+            minWidth: 800,
+            width: 1000,
+            minHeight: 600,
+            height: 600,
+            position: { my: "center middle", at: "center" }
+        });
+
+        var req = { __RequestVerificationToken: token, UserId: userid, UserTypeId: userTypeId };
+
+        dialog.load('@Url.Action("ApprovalUserEdit")', req, function()
+        {
+            $('#dlgApproveUserEdit').find('.loading').remove();
+            $('#btnWizardClose').click(function()
+            {
+                $('#dlgApproveUserEdit').dialog("close");
+            });
+        });
+
+        //$.post("/UserDashboard/Approve", { userid: userid, usertypeid: usertypid, accountid: accountId }, function (data) {
+        //    PostAction("content", data);
+        //});
+
+        return false;
+    }
+
+    $(function () {
+        var subTabs = $('.sub-tab-bar li');
+        var subViews = $('.sub-tab-view');
+
+        subTabs.click(function () {
+            subViews.hide();
+            subTabs.removeClass('active-tab');
+
+            var viewToShow = $(this).attr('data-view');
+            $('#' + viewToShow).show();
+
+            $(this).addClass('active-tab');
+        });
+
+
+        var companyAddressFields = $('#businessAddressHolder');
+
+        function toggleCompanyAddressFields() {
+            if ($(this).is(':checked')) {
+                companyAddressFields.find('input,select').attr('disabled', true);
+                companyAddressFields.find('label').addClass('disabled');
+            }
+            else {
+                companyAddressFields.find('input,select').removeAttr('disabled');
+                companyAddressFields.find('label').removeClass('disabled');
+            }
+        }
+
+        toggleCompanyAddressFields.apply(document.getElementById('UseBusinessAddress'));
+        $('#UseBusinessAddress').on('change', toggleCompanyAddressFields);
+
+        if ($('#Password').length) $('#Password').pwstrength();
+
+
+        checkBoxHelper.createListsOfCheckboxes();//.enableSelectAllOnCheckboxLists();
+        //delay user disable until after confirmation
+        $('[data-confirm="DisableUser"]').on('click', function () {
+            confirmModal.showConfirmMsg(
+                 '@ResourceUI.UserDisable', 
+                 '@ResourceUI.UserDisableConfirm', 
+                  PostAfterConfirm(this, '#BusinessEditForm'));
+        });
+
+        //delay user disable until after confirmation
+        $('[data-confirm="EnableUser"]').on('click', function () {
+            confirmModal.showConfirmMsg(
+                '@ResourceUI.UserEnable', 
+                '@ResourceUI.UserEnableConfirm', 
+                PostAfterConfirm(this, '#BusinessEditForm'));
+        });
+
+        //function showConfirmationWindow(message) {
+        //    return showWindow('#confirmationTemplate', message)
+        //};
+
+        //function showWindow(template, message) {
+
+        //    var dfd = new jQuery.Deferred();
+        //    var result = false;
+
+        //    $("<div id='popupWindow'></div>")
+        //    .appendTo("body")
+        //    .kendoWindow({
+        //        width: "200px",
+        //        modal: true,
+        //        title: "",
+        //        modal: true,
+        //        visible: false,
+        //        close: function (e) {
+        //            this.destroy();
+        //            dfd.resolve(result);
+        //        }
+        //    }).data('kendoWindow').content($(template).html()).center().open();
+
+        //    $('.popupMessage').html(message);
+
+        //    $('#popupWindow .confirm_yes').val('OK');
+        //    $('#popupWindow .confirm_no').val('Cancel');
+
+        //    $('#popupWindow .confirm_no').click(function () {
+        //        $('#popupWindow').data('kendoWindow').close();
+        //    });
+
+        //    $('#popupWindow .confirm_yes').click(function () {
+        //        result = true;
+        //        $('#popupWindow').data('kendoWindow').close();
+        //    });
+
+        //    return dfd.promise();
+        //};
+
+        //$('#btn_saveUserEdit').on('click', function(event){
+
+        //    var chkPermissions = document.getElementsByName("SystemAccesses.PostedIds");
+            
+        //    var chkSubmitOrder = false;
+
+        //    for (i=0; i < chkPermissions.length; i++ )
+        //    {
+        //        if ($(chkPermissions[i]).val() == 68)
+        //        {
+        //            chkSubmitOrder =  $(chkPermissions[i]).is(':checked');
+        //        }
+        //    }
+
+        //    if(chkSubmitOrder == true)
+        //    {
+        //        if($('#Business_ERPAccountId').val() ==='')
+        //        {
+        //            //Kendo popup
+        //            event.preventDefault();
+        //            $.when(showConfirmationWindow('Are you sure?')).then(function(confirmed){
+
+        //                if(confirmed){
+        //                    alert('OK');
+        //                }
+        //                else{
+        //                    alert('Cancel');
+        //                }
+        //            });
+        //        }
+        //    }
+        //});
+
+        //function handler()
+        //{
+        //    this.window.location = "~/ProjectDashboard/UserEdit";
+        //}
+    });
+
+</script>
+
+@*<script id="confirmationTemplate" type="text/x-kendo-template">
+    <div class="popupMessage"></div>
+    </br>
+    <hr />
+    <div class="dialog_buttons">
+        <input type="button" class="confirm_yes k-button" value="OK" style="width: 70px" />
+    </div>
+</script>*@

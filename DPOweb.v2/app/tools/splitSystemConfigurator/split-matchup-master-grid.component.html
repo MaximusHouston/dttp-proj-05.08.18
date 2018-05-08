@@ -1,0 +1,28 @@
+﻿<div class="row">
+    <button class="btn btn-default pull-right" (click)="backToSearchPage()" style="margin: 10px">Back To Search Page</button>
+</div>
+
+
+<kendo-grid id="split-matchup-master-grid" *ngIf="matchupResult"
+            [data]="gridViewData"
+            [pageable]="false"
+            [scrollable]="'none'">
+
+    <kendo-grid-column field="seer" title="SEER" width="150">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <p>{{dataItem.seer}} +</p>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="numberOfItem" title="Available items"></kendo-grid-column>
+
+    <ng-template kendoGridDetailTemplate let-dataItem>
+        <split-matchup-detail-grid [matchupResultDetail]="matchupResult[dataItem.seer]" [seer]="dataItem.seer" [indoorUnitType]="indoorUnitType" [outDoorUnitType]="outDoorUnitType" [userBasket]="userBasket"></split-matchup-detail-grid>
+    </ng-template>
+
+</kendo-grid>
+
+
+<div class="row">
+    <button class="btn btn-default pull-right" (click)="backToSearchPage()" style="margin: 10px">Back To Search Page</button>
+</div>
+

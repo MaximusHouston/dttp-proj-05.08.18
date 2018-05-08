@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DPO.Common
+{
+    public class QuoteItemsLoadOptions
+    {
+        public QuoteItemsLoadOptions() {
+        }
+
+        public bool LoadQuoteItems { get; set; }
+        public bool LoadDiscountRequests { get; set; }
+        public bool LoadCommissionRequests { get; set; }
+        public bool LoadQuoteOrders { get; set; }
+    }
+}

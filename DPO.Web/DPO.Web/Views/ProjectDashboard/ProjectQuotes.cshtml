@@ -1,0 +1,240 @@
+﻿@model ProjectQuotesModel
+
+@{
+    ViewBag.Title = ResourceUI.ProjectDetails;
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/confirmmodal")
+}
+
+@Html.Partial("ConfirmModal")
+@Html.Partial("DARAddressValidationModal")
+@Html.Partial("_ProjectTabsPartial")
+
+
+    <ul class="breadcrumbs">
+        <li><a href="/v2/#/projects">@ResourceUI.Projects</a></li>
+        <li>@Model.ProjectName</li>
+    </ul>
+
+    <div class="section t-flush">
+        <div class="item-strap">
+            <div class="itemname full">
+                <h1>@Model.ProjectName</h1>
+            </div>
+           @Html.Partial("ProjectButtonBar")
+        </div>
+    </div>
+
+    <ul class="sub-tab-bar">
+        <li>
+            @Html.ActionLink(ResourceUI.Overview, "Project", new { projectId = Model.ProjectId })
+        </li><li class="active-tab">
+            @Html.ActionLink(ResourceUI.Quotes, "ProjectQuotes", new { projectId = Model.ProjectId })
+        </li>
+    </ul>
+
+    @using (Html.BeginForm("ProjectQuotes", "Projectdashboard", FormMethod.Get, new { id = "ProjectQuotesForm" }))
+    {
+ 
+        @Html.AntiForgeryToken()
+        @Html.Concurrency()
+
+        @Html.HiddenFor(m => m.SortColumn)
+        @Html.HiddenFor(m => m.IsDesc)
+        @Html.HiddenFor(m => m.Page)
+
+        @Html.HiddenFor(m => m.ProjectId)
+
+        @Html.PageMessages()
+              
+        @Html.Partial("ActiveQuoteInfoBar", Model)
+  
+        <div class="section">
+            <div class="row sub-heading">
+                <h4>
+                    @ResourceUI.ProjectQuotes
+                </h4>
+                <div class="row-end">&nbsp;</div>
+            </div>
+            <div class="tbl-opts">
+                @Html.Partial("_TableDisplayOptionsPartial")
+                @Html.Partial("_SearchBarPartial")
+            </div>
+
+            <div class=" tbl-holder scroll-x">
+                <table class="tbl" id="ProjectQuotes_table">
+                    <thead>
+                        <tr>
+                            @if(Model.ActiveQuoteSummary.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Submitted &&
+                                Model.ActiveQuoteSummary.OrderStatusTypeId != (byte)OrderStatusTypeEnum.AwaitingCSR &&
+                                Model.ActiveQuoteSummary.OrderStatusTypeId != (byte)OrderStatusTypeEnum.InProcess &&
+                                Model.ActiveQuoteSummary.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Shipped)
+                            { 
+                                <th class="actions"></th>
+                            }
+                                <th id="title" aria-sort="none">Quote</th>
+                                <th id="alerts" aria-sort="none">Alert</th>
+                                <th id="quoteversion" aria-sort="none">Revision</th>
+                                <th id="quoteitems" aria-sort="none">Items</th>
+                                <th id="quotedate" aria-sort="none">Date</th>
+                                @if(user.ShowPrices)
+                            {
+                                    <th id="quotetotallist" aria-sort="none">Total List</th>
+                                    <th id="quotetotalnet" aria-sort="none">Total Net</th>
+                                    <th id="quotetotalsell" aria-sort="none">Total Sell</th>
+                            }
+                                <th class="c-align">Active</th>
+                            </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Items.Count; i++)
+                        {
+                            var item = Model.Items[i];
+                            <tr class="@((item.Deleted) ? "disabled-row" : "")" id="@item.QuoteId">
+
+                                @if (Model.ActiveQuoteSummary.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Submitted &&
+                                Model.ActiveQuoteSummary.OrderStatusTypeId != (byte)OrderStatusTypeEnum.AwaitingCSR &&
+                                Model.ActiveQuoteSummary.OrderStatusTypeId != (byte)OrderStatusTypeEnum.InProcess &&
+                                Model.ActiveQuoteSummary.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Shipped)
+                                {
+
+                                    <td class="actions">
+                                        <div>
+                                            <ul>
+                                                @if (user.HasAccess(SystemAccessEnum.UndeleteProject) && item.Deleted)
+                                            {
+                                            <li>
+                                                <a href="#" sc-quoteid="@item.QuoteId" sc-ajaxpost="@Url.Action("QuoteUnDelete")">
+                                                    @ResourceUI.QuoteUndelete
+                                                </a>
+                                            </li>
+                                            }
+                                            else
+                                            {
+                                            <li>
+                                                @Html.ActionLink(ResourceUI.QuoteExport, "QuoteExport", new { QuoteId = item.QuoteId, projectId = Model.ProjectId })
+                                            </li>
+                                                if (user.HasAccess(SystemAccessEnum.EditProject)
+                                                    && Model.IsTransferred == false
+                                                    && !Model.HasDAR)
+                                                {
+                                            <li>
+                                                @Html.ActionLink(ResourceUI.QuoteEdit, "QuoteEdit", new { QuoteId = item.QuoteId, projectId = Model.ProjectId })
+                                            </li>
+                                            <li>
+                                                @Html.ActionLink(ResourceUI.QuoteDuplicate, "QuoteDuplicate", new { QuoteId = item.QuoteId, projectId = Model.ProjectId })
+                                                @*@Ajax.ActionLink(ResourceUI.QuoteDuplicate, "QuoteDuplicate", new { QuoteId = item.QuoteId, projectId = item.ProjectId }, new AjaxOptions { HttpMethod = "Post"})*@
+                                            </li>
+
+                                                    if (item.Active != true)
+                                                    {
+                                            <li>
+                                                <a href="#" data-confirm="deleteQuote" data-sc-ajaxpost="@Url.Action("ProjectQuotesModelDeleteQuote")" data-sc-quoteid="@item.QuoteId">@ResourceUI.QuoteDelete</a>
+                                            </li>
+                                                    }
+                                                }
+
+                                            }
+                                            </ul>
+
+                                        </div>
+                                    </td>
+
+                               }
+
+                                @*<td class="selections">
+                                        <input type="checkbox" />
+                                    </td>*@
+                                <td>
+                                    @*@Html.ActionLink(item.Title, "Quote", new { projectId = Model.ProjectId, QuoteId = item.QuoteId })*@
+                                    <a href="/v2/#/quote/@item.QuoteId/existingRecord">@item.Title</a>
+                                </td>
+                                <td class="alerts">
+                                    @if (item.Alert)
+                                    {
+                                        <div>
+                                            <img src="~/Images/alert-icon.png">
+                                            <div class="tooltip">
+                                                Pricing update, recalculation required.
+                                                <img src="~/Images/tooltip-tail.png" />
+                                            </div>
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    @item.Revision
+                                </td>
+                                <td>
+                                    @item.ItemCount
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m => m.Items[i].Timestamp)
+                                </td>
+                                @if (user.ShowPrices)
+                                {
+                                    <td>
+                                        @Html.DisplayFor(m => m.Items[i].TotalList)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => m.Items[i].TotalNet)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => m.Items[i].TotalSell)
+                                    </td>
+                                }
+                                <td class="c-align">
+                                    @if (item.Deleted == false)
+                                    {
+                                        if (item.Active || (user.HasAccess(SystemAccessEnum.EditProject) == false || Model.IsTransferred))
+                                        {
+                                            <img src="~/Images/switch-@((item.Active)?"on":"off").png" />
+                                        }
+                                        else
+                                        {
+                                            <a href="#" sc-quoteid="@item.QuoteId" sc-ajaxpost="@Url.Action("QuoteSetActive")">
+                                                <img src="~/Images/switch-@((item.Active)?"on":"off").png" />
+                                            </a>
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+
+            <div class="pager">@Html.Pager(Model)</div>
+            @*@if (user.HasAccess(SystemAccessEnum.EditProject) && Model.IsTransferred == false)
+            { 
+                <a class="submit-btn pull-right" href="@Url.Action("QuoteEdit", "Projectdashboard", new { projectId = Model.ProjectId })">
+                    <img src="~/Images/new-project-icon.png" />
+                   @if (Model.ActiveQuoteSummary == null || Model.ActiveQuoteSummary.QuoteId == 0)
+                   {
+                        @ResourceUI.QuoteAddNew
+                    }
+                    else
+                    {
+                        @ResourceUI.CreateRevision
+                    }
+                </a>
+            }*@
+        </div>
+    }
+    <script>
+        $(function () {
+            tablehelper.setColumnIds('ProjectQuotes_table').enableAlertCellPopups();
+        });
+
+        //delay user disable until after confirmation
+        $('[data-confirm="deleteQuote"]').on('click', function () {
+            confirmModal.showConfirmMsg('@ResourceUI.QuoteDelete', '@ResourceUI.QuoteDeleteConfirm', PostAfterConfirm(this, '#ProjectQuotesForm', ['sc-quoteid']));
+        });
+    </script>

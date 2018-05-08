@@ -1,0 +1,22 @@
+﻿<div class="modal" id="move_group_modal" style="display: none;">
+    <div style="width: 66%; height: 590px; margin-top: 50px;">
+
+        <input type="hidden" id="moveGroupId"/>
+
+        <div style="padding-bottom: 10px">
+            <img src="~/Images/modal-close-btn.png" class="close-btn" />
+            <h1>Move group</h1>
+            <p>Please select a new parent group</p>
+        </div>
+
+        <div id="MoveGroupList" style="overflow: auto; height: 350px;">
+            @* populated by POST *@
+        </div>
+
+        <div class="section action c-align">
+            <button type="button" class="btn cancel-btn">Cancel</button>
+            <button type="button" class="submit-btn" id="moveGroupSubmitBtn">Move</button>
+        </div>
+    </div>
+</div>
+

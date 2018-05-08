@@ -1,0 +1,93 @@
+﻿
+<!--    Deprecated!
+    Not working after upgrade kendo grid-->
+
+<div *ngIf="quote.quoteOptions.canEditTags">
+    <img *ngIf="quoteItem.tags ; else emptyTagBlock" src="/Images/tags-icon-tick.png" data-toggle="modal" [attr.data-target]="modalTarget" title="{{quoteItem.tags}}" />
+    <ng-template #emptyTagBlock>
+        <img src="/Images/tags-icon.png" data-toggle="modal" [attr.data-target]="modalTarget" />
+    </ng-template>
+
+    <!--Not working after upgrade kendo grid-->
+    <div [attr.id]="modalId" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">UPDATE QUOTE ITEM TAGS</h4>
+                </div>
+                <div class="modal-body">
+                    <textarea rows="4" maxlength="500" style="width:100%;" [(ngModel)]="quoteItem.tags"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeTagEditor()">Cancel</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="saveTagUpdate()">Update</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<div *ngIf="!quote.quoteOptions.canEditTags">
+    <img *ngIf="quoteItem.tags ; else emptyTagBlock" src="/Images/tags-icon-tick-gray.png" title="{{quoteItem.tags}}" />
+    <ng-template #emptyTagBlock>
+        <img src="/Images/tags-icon-gray.png" />
+    </ng-template>
+</div>
+
+
+<!--Delete after Dec 31, 2017-->
+<!--temp working-->
+<!--<p style="text-align: center;">Please enter your tags for this item (max 500 characters)?</p>
+<textarea id="quoteItemTagText" rows="4" maxlength="500" style="width:100%;">{{quoteItem.tags}}</textarea>-->
+
+
+<!--<img *ngIf="quoteItem.tags ; else emptyTagBlock" src="/Images/tags-icon-tick.png" (click)="openTagEditor('some data')" title="{{quoteItem.tags}}" />
+<ng-template #emptyTagBlock>
+    <img src="/Images/tags-icon.png" (click)="openTagEditor()" />
+</ng-template>
+
+<kendo-dialog title="UPDATE QUOTE ITEM TAGS" *ngIf="tagEditorOpened" (close)="closeTagEditor()" style="margin:auto;">
+    <p style="text-align: center;">Please enter your tags for this item (max 500 characters)?</p>
+    <textarea id="quoteItemTagText" rows="4" maxlength="500" style="width:100%;">{{quoteItem.tags}}</textarea>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="closeTagEditor()">Cancel</button>
+        <button kendoButton (click)="saveTagUpdate()" primary="true">Update</button>
+    </kendo-dialog-actions>
+</kendo-dialog>-->
+
+
+
+<!--Bootstrap Modal-->
+
+
+
+<!--<button type="button" class="btn btn-info btn-lg" data-toggle="modal" [attr.data-target] ="modalTarget">Open Modal</button>-->
+
+<!-- Modal -->
+<!--<div [attr.id]="modalId" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+                
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+                <p>{{quoteItem.tags}}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>-->
+
+
+
+
+
+

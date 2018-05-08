@@ -1,0 +1,862 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="7/22/2015 1:49:56 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="VDESK4"
+  DTS:CreatorName="GMC\teelcx"
+  DTS:Description="SSIS Package Description"
+  DTS:DTSID="{B59A4A8B-331F-429D-A24C-B5D9AC867CA3}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="12.0.2430.0"
+  DTS:LocaleID="1033"
+  DTS:MaxErrorCount="0"
+  DTS:ObjectName="IntegrateProjectsToAS400"
+  DTS:VersionBuild="25"
+  DTS:VersionGUID="{AFF99F5D-6B47-4D5A-B22F-CC7AEC1941B3}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Transfer Projects to COM164P"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:DelayValidation="True"
+      DTS:DTSID="{EFD42EA6-5FC9-4869-B3F2-BD67603549D7}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Transfer Projects to COM164P"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          defaultBufferSize="3145728"
+          version="1">
+          <components>
+            <component
+              refId="Package\Transfer Projects to COM164P\Audit"
+              componentClassID="Microsoft.Lineage"
+              contactInfo="Audit;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Includes data about the environment in which the package runs. Map system variables to new output columns. For example, add the name of the computer and operator to the data flow."
+              name="Audit">
+              <inputs>
+                <input
+                  refId="Package\Transfer Projects to COM164P\Audit.Inputs[Audit Input 1]"
+                  name="Audit Input 1">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Transfer Projects to COM164P\Audit.Outputs[Audit Output 1]"
+                  exclusionGroup="1"
+                  name="Audit Output 1"
+                  synchronousInputId="Package\Transfer Projects to COM164P\Audit.Inputs[Audit Input 1]">
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P"
+              componentClassID="Microsoft.OLEDBCommand"
+              contactInfo="OLE DB Command;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;2"
+              description="Runs an SQL statement for each row in a data flow. For example, call a 'new employee setup' stored procedure for each row in the 'new employees' table. Note: running an SQL statement for each row of a large data flow may take a long time."
+              name="INSERT INTO COM164P"
+              usesDispositions="true"
+              version="2">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">INSERT INTO COM164P
+(
+	A_BUSSID,
+	A_BUSNM,
+	A_CRMACT,
+	A_PRJID,
+	A_PRJNM,
+	A_PRJREFID,
+	A_CANB,
+	A_TRDN,    
+	A_QUOTEID, 
+	A_QUOTERF 
+)
+VALUES
+(
+	?,
+	?,
+	?,
+	?,
+	?,
+	?,
+	?,
+	?,
+	?,
+	?
+)</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Connections[OleDbConnection]"
+                  connectionManagerID="{B0308374-44DB-43EC-9929-68A7A1BA0A9A}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[iSeries]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input]"
+                  errorOrTruncationOperation="Command Execution"
+                  errorRowDisposition="RedirectRow"
+                  hasSideEffects="true"
+                  name="OLE DB Command Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].Columns[BusinessId]"
+                      cachedDataType="numeric"
+                      cachedName="BusinessId"
+                      cachedPrecision="18"
+                      externalMetadataColumnId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].ExternalColumns[&quot;00001&quot;]"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[BusinessId]" />
+                    <inputColumn
+                      refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].Columns[BusinessName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="BusinessName"
+                      externalMetadataColumnId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].ExternalColumns[&quot;00002&quot;]"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[BusinessName]" />
+                    <inputColumn
+                      refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].Columns[AccountId]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="AccountId"
+                      externalMetadataColumnId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].ExternalColumns[&quot;00003&quot;]"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[AccountId]" />
+                    <inputColumn
+                      refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].Columns[ProjectId]"
+                      cachedDataType="numeric"
+                      cachedName="ProjectId"
+                      cachedPrecision="18"
+                      externalMetadataColumnId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].ExternalColumns[&quot;00004&quot;]"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[ProjectId]" />
+                    <inputColumn
+                      refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].Columns[ProjectName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="25"
+                      cachedName="ProjectName"
+                      externalMetadataColumnId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].ExternalColumns[&quot;00005&quot;]"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[ProjectName]" />
+                    <inputColumn
+                      refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].Columns[ProjectReferenceId]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="10"
+                      cachedName="ProjectReferenceId"
+                      externalMetadataColumnId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].ExternalColumns[&quot;00006&quot;]"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[ProjectReferenceId]" />
+                    <inputColumn
+                      refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].Columns[ERPAccountNumber]"
+                      cachedDataType="numeric"
+                      cachedName="ERPAccountNumber"
+                      cachedPrecision="8"
+                      externalMetadataColumnId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].ExternalColumns[&quot;00007&quot;]"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[ERPAccountNumber]" />
+                    <inputColumn
+                      refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].Columns[TradePartnerNumber]"
+                      cachedDataType="numeric"
+                      cachedName="TradePartnerNumber"
+                      cachedPrecision="8"
+                      externalMetadataColumnId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].ExternalColumns[&quot;00008&quot;]"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[TradePartnerNumber]" />
+                    <inputColumn
+                      refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].Columns[QuoteId]"
+                      cachedDataType="numeric"
+                      cachedName="QuoteId"
+                      cachedPrecision="18"
+                      externalMetadataColumnId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].ExternalColumns[&quot;00009&quot;]"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[QuoteId]" />
+                    <inputColumn
+                      refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].Columns[QuoteReferenceId]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="10"
+                      cachedName="QuoteReferenceId"
+                      externalMetadataColumnId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].ExternalColumns[&quot;00010&quot;]"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[QuoteReferenceId]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].ExternalColumns[&quot;00001&quot;]"
+                      dataType="numeric"
+                      name="&quot;00001&quot;"
+                      precision="19">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">1</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].ExternalColumns[&quot;00002&quot;]"
+                      codePage="1252"
+                      dataType="str"
+                      length="25"
+                      name="&quot;00002&quot;">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">1</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].ExternalColumns[&quot;00003&quot;]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="&quot;00003&quot;">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">1</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].ExternalColumns[&quot;00004&quot;]"
+                      dataType="numeric"
+                      name="&quot;00004&quot;"
+                      precision="19">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">1</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].ExternalColumns[&quot;00005&quot;]"
+                      codePage="1252"
+                      dataType="str"
+                      length="25"
+                      name="&quot;00005&quot;">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">1</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].ExternalColumns[&quot;00006&quot;]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="&quot;00006&quot;">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">1</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].ExternalColumns[&quot;00007&quot;]"
+                      dataType="numeric"
+                      name="&quot;00007&quot;"
+                      precision="8">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">1</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].ExternalColumns[&quot;00008&quot;]"
+                      dataType="numeric"
+                      name="&quot;00008&quot;"
+                      precision="8">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">1</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].ExternalColumns[&quot;00009&quot;]"
+                      dataType="numeric"
+                      name="&quot;00009&quot;"
+                      precision="19">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">1</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input].ExternalColumns[&quot;00010&quot;]"
+                      codePage="1252"
+                      dataType="str"
+                      length="12"
+                      name="&quot;00010&quot;">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">1</property>
+                      </properties>
+                    </externalMetadataColumn>
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Outputs[OLE DB Command Output]"
+                  exclusionGroup="1"
+                  name="OLE DB Command Output"
+                  synchronousInputId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Outputs[OLE DB Command Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Command Error Output"
+                  synchronousInputId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Transfer Projects to COM164P\Query Projects"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Query Projects"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 
+	CAST(ISNULL(b.BusinessId, 0) as decimal(18, 0)) as BusinessId,
+	CAST(LEFT(ISNULL(b.BusinessName, ''), 25) as varchar(25)) as BusinessName,
+	CAST(ISNULL(b.AccountId, '') as varchar(20)) as AccountId,
+	CAST(ISNULL(p.ProjectId, 0) as decimal(18, 0)) as ProjectId,
+	CAST(LEFT(ISNULL(REPLACE(REPLACE(p.Name, NCHAR(8211), '-'), NCHAR(8212), '-'), ''), 25) as varchar(25)) as ProjectName,
+	CAST('' as varchar(10)) as ProjectReferenceId,
+	CAST(ISNULL(b.ERPAccountId, 0) as decimal(8, 0)) as ERPAccountNumber,
+	CAST(0 as decimal(8, 0)) as TradePartnerNumber,
+	CAST(ISNULL(q.QuoteId, 0) as decimal(18, 0)) as QuoteId,
+	CAST('' as varchar(10)) as QuoteReferenceId
+FROM 
+	Projects p 
+	LEFT JOIN Users u
+		ON p.OwnerId = u.UserId
+	LEFT JOIN Businesses b
+		ON u.BusinessId = b.BusinessId
+	LEFT JOIN Quotes q
+		ON p.ProjectId = q.ProjectId
+			AND q.Active = 1
+WHERE
+	1 = 1
+	AND ISNULL(p.Deleted, 0) = 0</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Transfer Projects to COM164P\Query Projects.Connections[OleDbConnection]"
+                  connectionManagerID="{654FFE6E-D717-4B9B-B9F2-A6D5821E90DD}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[dbDaikinProjectOffice]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[BusinessId]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].ExternalColumns[BusinessId]"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[BusinessId]"
+                      name="BusinessId"
+                      precision="18"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[BusinessName]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].ExternalColumns[BusinessName]"
+                      length="50"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[BusinessName]"
+                      name="BusinessName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[AccountId]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].ExternalColumns[AccountId]"
+                      length="20"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[AccountId]"
+                      name="AccountId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[ProjectId]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].ExternalColumns[ProjectId]"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[ProjectId]"
+                      name="ProjectId"
+                      precision="18"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[ProjectName]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].ExternalColumns[ProjectName]"
+                      length="25"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[ProjectName]"
+                      name="ProjectName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[ProjectReferenceId]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].ExternalColumns[ProjectReferenceId]"
+                      length="10"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[ProjectReferenceId]"
+                      name="ProjectReferenceId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[ERPAccountNumber]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].ExternalColumns[ERPAccountNumber]"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[ERPAccountNumber]"
+                      name="ERPAccountNumber"
+                      precision="8"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[TradePartnerNumber]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].ExternalColumns[TradePartnerNumber]"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[TradePartnerNumber]"
+                      name="TradePartnerNumber"
+                      precision="8"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[QuoteId]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].ExternalColumns[QuoteId]"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[QuoteId]"
+                      name="QuoteId"
+                      precision="18"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[QuoteReferenceId]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].ExternalColumns[QuoteReferenceId]"
+                      length="10"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].Columns[QuoteReferenceId]"
+                      name="QuoteReferenceId"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].ExternalColumns[BusinessId]"
+                      dataType="numeric"
+                      name="BusinessId"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].ExternalColumns[BusinessName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="25"
+                      name="BusinessName" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].ExternalColumns[AccountId]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="AccountId" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].ExternalColumns[ProjectId]"
+                      dataType="numeric"
+                      name="ProjectId"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].ExternalColumns[ProjectName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="25"
+                      name="ProjectName" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].ExternalColumns[ProjectReferenceId]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="ProjectReferenceId" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].ExternalColumns[ERPAccountNumber]"
+                      dataType="numeric"
+                      name="ERPAccountNumber"
+                      precision="8" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].ExternalColumns[TradePartnerNumber]"
+                      dataType="numeric"
+                      name="TradePartnerNumber"
+                      precision="8" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].ExternalColumns[QuoteId]"
+                      dataType="numeric"
+                      name="QuoteId"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output].ExternalColumns[QuoteReferenceId]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="QuoteReferenceId" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[BusinessId]"
+                      dataType="numeric"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[BusinessId]"
+                      name="BusinessId"
+                      precision="18" />
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[BusinessName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="25"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[BusinessName]"
+                      name="BusinessName" />
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[AccountId]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[AccountId]"
+                      name="AccountId" />
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[ProjectId]"
+                      dataType="numeric"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[ProjectId]"
+                      name="ProjectId"
+                      precision="18" />
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[ProjectName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="25"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[ProjectName]"
+                      name="ProjectName" />
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[ProjectReferenceId]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[ProjectReferenceId]"
+                      name="ProjectReferenceId" />
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[ERPAccountNumber]"
+                      dataType="numeric"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[ERPAccountNumber]"
+                      name="ERPAccountNumber"
+                      precision="8" />
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[TradePartnerNumber]"
+                      dataType="numeric"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[TradePartnerNumber]"
+                      name="TradePartnerNumber"
+                      precision="8" />
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[QuoteId]"
+                      dataType="numeric"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[QuoteId]"
+                      name="QuoteId"
+                      precision="18" />
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[QuoteReferenceId]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[QuoteReferenceId]"
+                      name="QuoteReferenceId" />
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Transfer Projects to COM164P.Paths[OLE DB Command Error Output]"
+              endId="Package\Transfer Projects to COM164P\Audit.Inputs[Audit Input 1]"
+              name="OLE DB Command Error Output"
+              startId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Outputs[OLE DB Command Error Output]" />
+            <path
+              refId="Package\Transfer Projects to COM164P.Paths[OLE DB Source Output]"
+              endId="Package\Transfer Projects to COM164P\INSERT INTO COM164P.Inputs[OLE DB Command Input]"
+              name="OLE DB Source Output"
+              startId="Package\Transfer Projects to COM164P\Query Projects.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Truncate Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{02AB5A33-392D-470C-9207-E761260F5228}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Truncate Table"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{B0308374-44DB-43EC-9929-68A7A1BA0A9A}"
+          SQLTask:SqlStatementSource="DELETE FROM COM164P" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{4F2F69AF-6CEC-4A3F-A2DB-66E06AF6D0E1\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{4F2F69AF-6CEC-4A3F-A2DB-66E06AF6D0E1}"
+      DTS:From="Package\Truncate Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{4F2F69AF-6CEC-4A3F-A2DB-66E06AF6D0E1}"
+      DTS:To="Package\Transfer Projects to COM164P" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="sql12">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="220.666666666667,42"
+          Id="Package\Transfer Projects to COM164P"
+          TopLeft="5.08333333954216,107.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\Truncate Table"
+          TopLeft="40.4166666728755,5.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[{4F2F69AF-6CEC-4A3F-A2DB-66E06AF6D0E1\}]"
+          TopLeft="115.416666672875,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Transfer Projects to COM164P">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="191.333333333334,42"
+          Id="Package\Transfer Projects to COM164P\INSERT INTO COM164P"
+          TopLeft="5.50000000000003,107.5" />
+        <NodeLayout
+          Size="147.333333333334,42"
+          Id="Package\Transfer Projects to COM164P\Query Projects"
+          TopLeft="27.5,4.63333334883053" />
+        <NodeLayout
+          Size="103.333333333334,42"
+          Id="Package\Transfer Projects to COM164P\Audit"
+          TopLeft="49.5,209.5" />
+        <EdgeLayout
+          Id="Package\Transfer Projects to COM164P.Paths[OLE DB Command Error Output]"
+          TopLeft="101.166666666667,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-70.70890625,20.4453125,141.4178125,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Transfer Projects to COM164P.Paths[OLE DB Source Output]"
+          TopLeft="101.166666666667,46.6333333488305">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60.8666666511695"
+              Start="0,0"
+              End="0,53.3666666511695">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,53.3666666511695" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Transfer Projects to COM164P\Query Projects">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

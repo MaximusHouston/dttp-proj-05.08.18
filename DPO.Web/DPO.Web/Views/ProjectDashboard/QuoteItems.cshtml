@@ -1,0 +1,443 @@
+﻿@model QuoteItemsModel
+@{
+    ViewBag.Title = ResourceUI.QuoteDetails;
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+    Model.WithCostPrice = true;
+    var DisplayButton = 0;
+}
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/numericstepperhelpers", "~/bundles/scripts/importitemsmodal", "~/bundles/scripts/confirmmodal")
+}
+
+@using System.Web.Configuration
+
+
+<div ng-controller="quoteItemsController">
+    <div id="import_items_modal_container">
+        @Html.Partial("ImportItemsModal", Model)
+    </div>
+    @Html.Partial("ConfirmModal")
+    @Html.Partial("DARAddressValidationModal")
+    @Html.Partial("QuoteItemsTagEditModal")
+    @Html.Partial("QuoteConfirmExportTypeModal")
+    @Html.Partial("_ProjectTabsPartial")
+    <ul class="breadcrumbs">
+        <li><a href="/v2/#/projects">@ResourceUI.Projects</a></li>
+        <li><a href="@Url.Action("project", new { projectid=Model.ProjectId })">@Model.ProjectName</a></li>
+        <li>@Model.Title</li>
+    </ul>
+
+    @using (Html.BeginForm("QuoteItems", "Projectdashboard", FormMethod.Get, new { id = "QuoteItems", data_scrollbackonpost = "true" }))
+    {
+        // Key post data
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.SortColumn)
+        @Html.HiddenFor(m => m.IsDesc)
+        @Html.HiddenFor(m => m.Page)
+
+        @Html.HiddenFor(m => m.ProjectId)
+        @Html.HiddenFor(m => m.QuoteId)
+
+        @Html.HiddenFor(m => m.CommissionRequestId)
+
+        @Html.HiddenFor(m => m.CommissionRequestStatusTypeId)
+
+        @Html.PageMessages()
+
+        <div class="section t-flush">
+            <div class="item-strap">
+                <div class="itemname full">
+                    <h1>@Model.Title</h1>
+                </div>
+                @Html.Partial("QuoteButtonBar")
+            </div>
+        </div>
+        <ul class="sub-tab-bar">
+            <li>
+                @Html.ActionLink(ResourceUI.Overview, "Quote", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })
+            </li>
+            <li class="active-tab">
+                @Html.ActionLink(ResourceUI.Products, "QuoteItems", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })
+            </li>
+
+            @if (user.HasAccess(SystemAccessEnum.RequestDiscounts) || user.HasAccess(SystemAccessEnum.ViewDiscountRequest))
+            {
+               if (Model.HasDAR)
+               {
+                <li>
+                    @Html.ActionLink(ResourceUI.RequestedDiscounts, "QuoteDiscountRequests", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })
+                </li>
+               }
+            }
+            
+            @if (user.HasAccess(SystemAccessEnum.RequestCommission) || user.HasAccess(SystemAccessEnum.ViewRequestedCommission))
+            {
+            if(Model.HasCOM)
+            {
+                <li>
+                    @Html.ActionLink(ResourceUI.RequestedCommission, "QuoteCommissionRequests", new { projectId = Model.ProjectId, QuoteId = Model.QuoteId })
+                </li>
+            }
+        }
+            @if (user.HasAccess(SystemAccessEnum.ViewOrder) || user.HasAccess(SystemAccessEnum.SubmitOrder))
+            {
+                <li id="quoteitem_order_tab" style="visibility:hidden;">
+                    @Html.ActionLink(ResourceUI.Order, "OrderInQuote", new { DiscountRequestId = Model.DiscountRequestId, ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })
+                </li>
+            }
+        </ul>
+
+        @Html.Partial("ActiveQuoteInfoBar", Model)
+
+        @*if (user.ShowPrices)
+            {
+            if (user.HasAccess(SystemAccessEnum.RequestCommission) ||
+            user.HasAccess(SystemAccessEnum.ApprovedRequestCommission))
+            {
+            if (Model.ActiveQuoteSummary.TotalList > Convert.ToDecimal(WebConfigurationManager.AppSettings["dpo.sales.commission.default.totalList"]))
+            {
+
+            if (Model.IsCommission == false && Model.CommissionConvertNo == false && Model.CommissionConvertYes == false)
+            {
+            @Html.Partial("ConfirmModalCommissionConvert", Model.ActiveQuoteSummary);
+            }
+            }
+            }
+            }*@
+
+        @*if (user.ShowPrices)
+        {
+            if (Model.ShowCommissionConvertPopup)
+            {
+                if (
+                user.HasAccess(SystemAccessEnum.RequestCommission) ||
+                user.HasAccess(SystemAccessEnum.ApprovedRequestCommission) ||
+                user.HasAccess(SystemAccessEnum.ViewRequestedCommission)
+                )
+                {
+                    //@Html.Partial("ConfirmModalCommissionConvert", Model.ActiveQuoteSummary);
+
+                    if (Model.ActiveQuoteSummary.TotalList > Convert.ToDecimal(WebConfigurationManager.AppSettings["dpo.sales.commission.default.totalList"]))
+                    {
+                        if (Model.IsCommission == false && Model.CommissionConvertNo == false && Model.CommissionConvertYes == false)
+                        {
+                            @Html.Partial("ConfirmModalCommissionConvert", Model.ActiveQuoteSummary);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (Model.ActiveQuoteSummary.TotalList > Convert.ToDecimal(WebConfigurationManager.AppSettings["dpo.sales.commission.default.totalList"]))
+                {
+
+                    if ( user.HasAccess(SystemAccessEnum.RequestCommission) ||
+                         user.HasAccess(SystemAccessEnum.ApprovedRequestCommission) ||
+                         user.HasAccess(SystemAccessEnum.ViewRequestedCommission)
+                       )
+                    { 
+                    
+                      if (Model.IsCommission == false && Model.CommissionConvertNo == false && Model.CommissionConvertYes == false)
+                      {
+                        @Html.Partial("ConfirmModalCommissionConvert", Model.ActiveQuoteSummary);
+                      }
+                    }
+                }
+            }
+        }*@
+
+        <div class="section">
+            <div class="row sub-heading">
+                <h4>@ResourceUI.ProductsInThisQuote</h4>
+                <div class="row-end">&nbsp;</div>
+            </div>
+            <div class="tbl-opts">
+                @Html.Partial("_TableDisplayOptionsPartial")
+                <div class="tbl-filters">
+
+                    @if (Model.IsCommission
+                && Model.CommissionRequestAvailable)
+                    {
+                        if (Model.CommissionRequestId != null
+                        && Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.NewRecord)
+                        {
+                            if (user.ShowPrices)
+                            {
+                                if (Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Submitted
+                                   && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.AwaitingCSR
+                                   && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Accepted)
+                                {
+                                    <a href="@Url.Action("commissioncalculation", new { projectid=Model.ProjectId, quoteid=Model.QuoteId, commissionrequestid=Model.CommissionRequestId, commissionrequeststatustypeid=Model.CommissionRequestStatusTypeId})"
+                                       class="custom-btn h-slim">
+                                        <img src="~/Images/calculation.png" width="17" height="17" />
+                                        @ResourceUI.CommissionCalculation
+                                    </a>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (user.ShowPrices)
+                            {
+                                if (Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Submitted
+                                   && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.AwaitingCSR
+                                   && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Accepted)
+                                {
+                                    <a href="@Url.Action("commissioncalculation", new { projectid=Model.ProjectId, quoteid=Model.QuoteId})"
+                                       class="custom-btn h-slim">
+                                        <img src="~/Images/calculation.png" width="17" height="17" />
+                                        @ResourceUI.CommissionCalculation
+                                    </a>
+                                }
+                            }
+                        }
+                    }
+
+                    @if ((user.HasAccess(SystemAccessEnum.EditProject) && !Model.IsTransferred
+                && (Model.DiscountRequestAvailable || Model.CommissionRequestAvailable)
+                && Model.OrderStatusTypeId != (int)OrderStatusTypeEnum.Submitted &&
+                Model.OrderStatusTypeId != (int)OrderStatusTypeEnum.AwaitingCSR &&
+                Model.OrderStatusTypeId != (int)OrderStatusTypeEnum.InProcess))
+                    {
+                        
+
+                        <a class="context-btn submit" href="/api/Product/Products?quoteId=@Model.QuoteId">
+                            <img src="~/Images/new-project-icon.png" />
+                           @ResourceUI.ProductsAdd
+                        </a>
+                                             
+
+                       
+                        if (user.HasAccessTool(ToolAccessEnum.UnitaryMatchupTool))
+                        {
+                            @Html.Partial("AddProductsFromTools");
+                        }
+
+                        
+                        <a class="context-btn submit" href="#" id="import_items_btn">
+                            <img src="~/Images/new-project-icon.png" />
+                            @ResourceUI.ProductsImport
+                        </a>
+                    }
+                </div>
+                @Html.Partial("_SearchBarPartial")
+            </div>
+            <div class="tbl-holder scroll-x">
+                @if (user.HasAccess(SystemAccessEnum.EditProject))
+                {
+                    <div id="quanity_change_indicator">
+                        <div>
+                            Please confirm your product quantity changes &nbsp; &nbsp;
+                            <button type="button" class="context-btn submit" id="saveQuantityChanges">Save quantity changes</button>&nbsp;&nbsp;
+                            <button type="button" class="context-btn" onclick="location.reload();">Discard quantity changes</button>
+                        </div>
+                    </div>
+                }
+
+                <table class="tbl paging" id="products_table">
+                    @Html.Partial("QuoteProductsTable", Model)
+                </table>
+            </div>
+
+            <div class="pager">
+            @Html.Pager(Model)
+            </div>
+
+            @if (user.HasAccess(SystemAccessEnum.EditProject) && Model.IsTransferred == false && !Model.HasDAR)
+            {
+                <div style="padding-top: 10px; display:none;">
+                    @*<button type="button" class="submit-btn pull-right" onclick="window.location.href='@Url.Action("productfamilies", "ProductDashboard" , new { quoteid=Model.QuoteId })'">
+                        <img src="~/Images/new-project-icon.png" />
+                        @ResourceUI.ProductsAdd
+                    </button>*@
+
+                    <button type="button" class="submit-btn pull-right" onclick="window.location.href='/api/Product/Products?quoteId=@Model.QuoteId'">
+                        <img src="~/Images/new-project-icon.png" />
+                        @ResourceUI.ProductsAdd
+                    </button>
+                    
+                </div>
+            }
+        </div>
+    }
+
+    @using (Html.BeginForm("QuoteItemAdjustments", "Projectdashboard", FormMethod.Post, new { id = "QuoteItemAdjustmentsForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.ProjectId)
+        @Html.HiddenFor(m => m.QuoteId)
+        @Html.HiddenFor(m => m.CommissionRequestId)
+
+        <input type="hidden" name="QuoteItemAdjustments" id="QuoteItemAdjustments" />
+
+        Model.CurrentUser = user;
+
+        @Html.HiddenFor(m => Model.CurrentUser)
+    }
+
+ 
+
+</div>
+<script>
+    function QuoteItemsViewModel() {
+        var self = this;
+        self.projectId = @Html.Raw(Json.Encode(Model.ProjectIdStr));
+        self.projectIdStr =  @Html.Raw(Json.Encode(Model.ProjectIdStr));
+        self.quoteId = @Html.Raw(Json.Encode(Model.QuoteIdStr));
+        self.quoteIdStr = @Html.Raw(Json.Encode(Model.QuoteIdStr));
+    }
+
+
+    $(function () {
+        //scroll page if user had just submitted something down the page
+        scrollToLastPagePosition('dpo_quote_items_last_scrollpos');
+
+        tablehelper.setColumnIds('products_table');
+
+        numericStepperHelpers.enableNumericSteppers();
+        var quantityChangesExist = false;
+
+        $('.numeric-stepper input').each(function () {
+            $(this).attr('data-init-qty', $(this).val());
+        });
+
+        function checkQuantityValues() {
+            quantityChangesExist = false;
+
+            $('.numeric-stepper input').each(function () {
+                //if ($(this).val() !== $(this).attr('data-init-qty')) {
+                //    quantityChangesExist = true;
+                //}
+                quantityChangesExist = true;
+            });
+
+            (quantityChangesExist) ? $('#quanity_change_indicator').addClass('open') : $('#quanity_change_indicator').removeClass('open');
+            $(window).trigger('scroll');
+        }
+
+        $('.numeric-stepper .minus, .numeric-stepper .plus').on('click', checkQuantityValues);
+        $('.numeric-stepper input').on('blur', checkQuantityValues);
+
+        $('#saveQuantityChanges').on('click', function () {
+            var val, qty, diff, changedQtys = [];
+            $('.numeric-stepper input').each(function () {
+                val = $(this).val(); qty = $(this).attr('data-init-qty');
+                if (val !== qty) {
+                    var obj = {};
+                    obj.QuoteItemId = $(this).parents('tr').attr('data-quoteitemid');
+                    obj.Quantity = val;
+                    changedQtys.push(obj);
+                }
+            });
+
+            $('#QuoteItemAdjustments').val(JSON.stringify(changedQtys));
+
+            if (Modernizr.localstorage) {
+                localStorage.setItem('dpo_quote_items_last_scrollpos', $(window).scrollTop().toString());
+            }
+
+            $('#QuoteItemAdjustmentsForm').submit();
+
+        });
+
+        $('.pager a').on('click', function (e) {
+            if (quantityChangesExist) {
+                e.preventDefault();
+                var redirect = $(e.target).attr('href');
+                confirmModal.showConfirmMsg('Unsaved Quantity Changes', 'Leaving this page will lose any unsaved product quantity changes, are you sure you want to continue?', function () { window.location.href = redirect; });
+            }
+        });
+
+        $('.search-btn').on('click', function (e) {
+            if (quantityChangesExist) {
+                e.preventDefault();
+                confirmModal.showConfirmMsg('Unsaved Quantity Changes', 'Searching will clear any unsaved product quantity changes, are you sure you want to continue?', function () { quantityChangesExist = false; $('.search-btn').trigger('click'); });
+            }
+        });
+
+        $('#QuoteItems').on('submit', function (e) {
+            if (quantityChangesExist) {
+                e.preventDefault();
+                confirmModal.showConfirmMsg('Unsaved Quantity Changes', 'Changing row amount will clear any unsaved product quantity changes, are you sure you want to continue?', function () {
+                    if (Modernizr.localstorage) {
+                        localStorage.setItem('dpo_quote_items_last_scrollpos', $(window).scrollTop().toString());
+                    }
+                    quantityChangesExist = false;
+                    $('#QuoteItems').submit();
+                });
+            }
+        });
+
+        $(window).on('scroll', function () {
+            if (quantityChangesExist && $(window).scrollTop() > $('#products_table').offset().top) {
+                $('#quanity_change_indicator').addClass('scrolling');
+            }
+            else if (quantityChangesExist && $(window).scrollTop() <= $('#products_table').offset().top) {
+                $('#quanity_change_indicator').removeClass('scrolling');
+            }
+        });
+
+        if ($('.edit_tag_link').length) {
+            $('.edit_tag_link').on('click', function (e) {
+                e.preventDefault();
+                var qiid = $(this).parents('tr').attr('data-quoteitemid');
+                var quoteId = $('#QuoteId').val();
+
+                $.get("@Url.Action("QuoteItemTags", "ProjectDashboard")", { QuoteId: quoteId, QuoteItemId: qiid }, function (result) {
+                    $('#quote_item_tags_text').val("");
+
+                    try {
+                        var resultJSON = JSON.parse(result);
+
+                        $('#quote_item_edit_id').val(qiid);
+
+                        if (resultJSON.tags) {
+                            $('#quote_item_tags_text').val(resultJSON.tags);
+                        }
+
+                        $('#quote_item_tags_modal').fadeIn(200);
+                    }
+                    catch (error) {
+
+                    }
+                });
+            });
+
+            $('#quote_item_tags_modal .submit-btn').on('click', function () {
+                var tags = $('#quote_item_tags_text').val() || "";
+                var changedTags = [];
+                var obj = {};
+
+                obj.QuoteItemId = $('#quote_item_edit_id').val();
+                obj.Tags = tags;
+                obj.Quantity = $('tr[data-quoteitemid="' + obj.QuoteItemId + '"]').find('.numbers').val() || 0;
+                changedTags.push(obj);
+
+                if (Modernizr.localstorage) {
+                    localStorage.setItem('dpo_quote_items_last_scrollpos', $(window).scrollTop().toString());
+                }
+
+                $('#QuoteItemAdjustments').val(JSON.stringify(changedTags));
+                $('#QuoteItemAdjustmentsForm').submit();
+            });
+        }
+
+    });
+  
+
+    $(document).ready(function () {
+
+        var active = @Html.Raw(Json.Encode(Model.Active));
+
+        if(active == "true")
+        {
+            $('#btnQuoteSetActive').visible(false);
+        }
+                        
+
+    });
+
+</script>

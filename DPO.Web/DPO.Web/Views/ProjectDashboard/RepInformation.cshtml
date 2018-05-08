@@ -1,0 +1,227 @@
+﻿@model CommissionRequestModel
+@{
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+    ViewBag.Title = ResourceUI.CommissionAuthorizationRequest;
+
+}
+
+@{
+    var viewOnly = (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.NewRecord);
+}
+
+<div class="section form">
+    <p class="mandatory" style="top: 0; right: 20px;">@ResourceUI.FieldsMarkedWithAStar <span>*</span> @ResourceUI.AreMandatory</p>
+    @*<a href="@Url.Action("ProjectEdit", new { ProjectId = Model.ProjectId })">Edit</a>*@
+
+    @Html.Partial("ProjectDetails", Model.Project)
+
+    @*<div class="row">
+        <div class="r-col1">&nbsp;</div>
+        <div class="r-col4 details-list">
+            <h5>JOB OVERVIEW INFORMATION</h5>
+            @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+            {
+                if (viewOnly && !Model.IsCommissionCalculation)
+                {
+                    @Html.LabelFor(m => m.Project.Name, ResourceUI.ProjectName)
+                    @Html.DisplayFor(m => m.Project.Name)
+                    <br />
+                    <br />
+                    @Html.LabelFor(m => m.Project.ShipToAddress.AddressLine1, ResourceUI.Address)
+                    @Html.DisplayFor(m => m.Project.ShipToAddress.AddressLine1)
+                    <br />
+                    <br />
+                    @Html.LabelFor(m => m.Project.ShipToAddress.Location, ResourceUI.Location)
+                    @Html.DisplayFor(m => m.Project.ShipToAddress.Location)
+                    <br />
+                    <br />
+                    @Html.LabelFor(m => m.Project.ShipToAddress.StateId, ResourceUI.Region)
+                    var shipToAddressState = Model.Project.ShipToAddress.States.Items
+                                             .Where(s => s.Value == Model.Project.ShipToAddress.StateId.ToString())
+                                             .Select(s => s.Text).FirstOrDefault();
+                                            <p>@shipToAddressState</p>
+                                            <br />
+                                            <br />
+                                            @Html.LabelFor(m => m.Project.ShipToAddress.PostalCode, ResourceUI.ZipCode)
+                                            @Html.DisplayFor(m => m.Project.ShipToAddress.PostalCode)
+                                            <br />
+                                            <br />
+                                            @Html.LabelFor(m => m.Project.EngineerName, ResourceUI.EngineerName)
+                                            @Html.DisplayFor(m => m.Project.EngineerName, new { @class = "full" })
+                                            <br />
+                                            <br />
+                                            @Html.LabelFor(m => m.BrandSpecifiedTypeId, ResourceUI.Brands)
+
+                    var brandSpecifiedType = Model.BrandSpecifiedTypes.Items
+                                             .Where(b => b.Value == Model.BrandSpecifiedTypeId.ToString())
+                                             .Select(b => b.Text).FirstOrDefault();
+                                            <p>@brandSpecifiedType</p>
+                                            <br />
+
+                                            @Html.LabelFor(m => m.DaikinEquipmentAtAdvantageTypeId, ResourceUI.DaikinEquipmentFeaturePerformance)
+
+                    var EquipmentAdvantageType = Model.DaikinEquipmentAtAdvantageTypes.Items
+                                                 .Where(e => e.Value == Model.DaikinEquipmentAtAdvantageTypeId.ToString())
+                                                 .Select(e => e.Text).FirstOrDefault();
+                                                <p>@EquipmentAdvantageType</p>
+
+                }
+                else
+                {
+                    @Html.LabelFor(m => m.Project.Name, ResourceUI.ProjectName)
+                    @Html.TextBoxFor(m => m.Project.Name, new { @class="disabled", @disabled = "disabled", @readonly = "readonly" })
+                    @Html.KeyMessages(m => m.Project.Name)
+
+                    @Html.LabelFor(m => m.Project.ShipToAddress.AddressLine1, "Address Line 1")
+                    @Html.TextBoxFor(m => m.Project.ShipToAddress.AddressLine1, new { @class = "disabled", @disabled = "disabled", @readonly = "readonly" })
+                    @Html.KeyMessages(m => m.Project.ShipToAddress.AddressLine1)
+
+                    @Html.LabelFor(m => m.Project.ShipToAddress.AddressLine2, "Address Line 2")
+                    @Html.TextBoxFor(m => m.Project.ShipToAddress.AddressLine2, new { @class = "disabled", @disabled = "disabled", @readonly = "readonly" })
+                    @Html.KeyMessages(m => m.Project.ShipToAddress.AddressLine2)
+
+                    @Html.LabelFor(m => m.Project.ShipToAddress.Location, ResourceUI.Location)
+                    @Html.TextBoxFor(m => m.Project.ShipToAddress.Location, new { @class = "disabled", @disabled = "disabled", @readonly = "readonly" })
+                    @Html.KeyMessages(m => m.Project.ShipToAddress.Location)
+
+                    @Html.LabelFor(m => m.Project.ShipToAddress.StateId, ResourceUI.Region)
+                    @Html.DropDownRegionListFor(m => m.Project.ShipToAddress.StateId, Model.Project.ShipToAddress.States, new { @class = "disabled", @disabled = "disabled" })
+                    @Html.KeyMessages(m => m.Project.ShipToAddress.States)
+
+                    @Html.LabelFor(m => m.Project.ShipToAddress.PostalCode, ResourceUI.ZipCode)
+                    @Html.TextBoxFor(m => m.Project.ShipToAddress.PostalCode, new { @class = "disabled", @disabled = "disabled", @readonly = "readonly" })
+                    @Html.KeyMessages(m => m.Project.ShipToAddress.PostalCode)
+
+                    @Html.LabelFor(m => m.Project.EngineerName, ResourceUI.EngineerName)
+                    @Html.TextBoxFor(m => m.Project.EngineerName, new { @class = "disabled", @disabled = "disabled", @readonly = "readonly" })
+                    @Html.KeyMessages(m => m.Project.EngineerName)
+
+
+                    @Html.LabelFor(m => m.DaikinEquipmentAtAdvantageTypeId, ResourceUI.DaikinEquipmentFeaturePerformance)
+                    @Html.DropDownBusinessListFor(m => m.DaikinEquipmentAtAdvantageTypeId, Model.DaikinEquipmentAtAdvantageTypes)
+                    @Html.KeyMessages(m => m.DaikinEquipmentAtAdvantageTypeId)
+                }
+            }
+        </div>
+        <div class="r-col1">&nbsp;</div>
+        <div class="r-col4 details-list">
+            <h5>&nbsp;</h5>
+            @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+            {
+                if (viewOnly && !Model.IsCommissionCalculation)
+                {
+
+                    @Html.LabelFor(m => m.Project.ProjectTypeId, ResourceUI.ProjectType)
+                    var projectType = Model.Project.ProjectTypes.Items
+                                      .Where(p => p.Value == Model.Project.ProjectTypeId.ToString())
+                                      .Select(p => p.Text).FirstOrDefault();
+                                    <p>@projectType</p>
+                                    <br />
+
+                                    @Html.LabelFor(m => m.Project.VerticalMarketTypeId, ResourceUI.VerticalMarket)
+                    var verticalMarketType = Model.Project.VerticalMarketTypes.Items
+                                             .Where(vm => vm.Value == Model.Project.VerticalMarketTypeId.ToString())
+                                             .Select(vm => vm.Text).FirstOrDefault();
+                                            <p>@verticalMarketType</p>
+                                            <br />
+
+                                            @Html.LabelFor(m => m.CustomerTypeId, ResourceUI.CustomerType)
+                    var customerType = Model.CustomerTypes.Items
+                                       .Where(c => c.Value == Model.CustomerTypeId.ToString())
+                                       .Select(c => c.Text).FirstOrDefault();
+                                    <p>@customerType</p>
+                                    <br />
+
+                                    @Html.LabelFor(m => m.Project.ConstructionTypeId, ResourceUI.ProjectConstructionType)
+                    var constructionType = Model.Project.ConstructionTypes.Items
+                                           .Where(ct => ct.Value == Model.Project.ConstructionTypeId.ToString())
+                                           .Select(ct => ct.Text).FirstOrDefault();
+                                        <p>@constructionType</p>
+                                        <br />
+
+                                        @Html.LabelFor(m => m.FundingTypeId, ResourceUI.FundingType)
+                    var fundingType = Model.FundingTypes.Items
+                                      .Where(ft => ft.Value == Model.FundingTypeId.ToString())
+                                      .Select(ft => ft.Text).FirstOrDefault();
+                                    <p>@fundingType</p>
+                                    <br />
+
+                                    @Html.LabelFor(m => m.Project.EstimatedDelivery, ResourceUI.EstimatedDelivery)
+                                    @Html.DisplayFor(m => m.Project.EstimatedDelivery, new { @class = "half" })
+                                    <br />
+                                    <br />
+                                    @Html.LabelFor(m => m.ProbabilityOfCloseTypeId, ResourceUI.ProbabilityOfClose)
+                    var closedType = Model.ProbabilityOfCloseTypes.Items
+                                     .Where(pct => pct.Value == Model.ProbabilityOfCloseTypeId.ToString())
+                                     .Select(pct => pct.Text).FirstOrDefault();
+                                    <p>@closedType</p>
+                                    <br />
+
+                                    @Html.LabelFor(m => m.Project.ProjectStatusTypeId, ResourceUI.ProjectStatus)
+                    var projectStatusType = Model.Project.ProjectStatusTypes.Items
+                                            .Where(pst => pst.Value == Model.Project.ProjectStatusTypeId.ToString())
+                                            .Select(pst => pst.Text).FirstOrDefault();
+                                            <p>@projectStatusType</p>
+                                            <br />
+
+                                            @Html.LabelFor(m => m.WinLossConditionTypeId, ResourceUI.WinLossCondition)
+                    var winLossType = Model.WinLossConditionTypes.Items
+                                        .Where(wlt => wlt.Value == Model.WinLossConditionTypeId.ToString())
+                                        .Select(wlt => wlt.Text).FirstOrDefault();
+                                        <p>@winLossType</p>
+                }
+                else
+                {
+                    @Html.LabelFor(m => m.Project.ProjectTypeId, ResourceUI.ProjectType, new { @class = "required" })
+                    @Html.DropDownProjectTypeListFor(m => m.Project.ProjectTypeId, Model.Project.ProjectTypes, new { @class = "disabled", @disabled = "disabled" })
+                    @Html.KeyMessages(m => m.Project.ProjectTypeId)
+
+                    @Html.LabelFor(m => m.Project.VerticalMarketTypeId, ResourceUI.VerticalMarket, new { @class = "required" })
+                    @Html.DropDownVerticalMarketTypeListFor(m => m.Project.VerticalMarketTypeId, Model.Project.VerticalMarketTypes, new { @class = "disabled", @disabled = "disabled" })
+                    @Html.KeyMessages(m => m.Project.VerticalMarketTypes)
+
+                    @Html.LabelFor(m => m.CustomerTypeId, ResourceUI.CustomerType, new { @class = "required" })
+                    @Html.DropDownCustomerTypes(m => m.CustomerTypeId, Model.CustomerTypes)
+                    @Html.KeyMessages(m => m.CustomerTypeId)
+
+                    @Html.LabelFor(m => m.Project.ConstructionTypeId, ResourceUI.ProjectConstructionType, new { @class = "required" })
+                    @Html.DropDownConstructionTypeListFor(m => m.Project.ConstructionTypeId, Model.Project.ConstructionTypes, new { @class = "disabled", @disabled = "disabled" })
+                    @Html.KeyMessages(m => m.Project.ConstructionTypes)
+
+                    @Html.LabelFor(m => m.FundingTypeId, ResourceUI.FundingType, new { @class = "required" })
+                    @Html.DropDownFundingTypes(m => m.FundingTypeId, Model.FundingTypes)
+                    @Html.KeyMessages(m => m.FundingTypeId)
+
+                    @Html.LabelFor(m => m.Project.EstimatedDelivery, ResourceUI.EstimatedDelivery, new { @class = "required" })
+                    @Html.TextBoxFor(m => m.Project.EstimatedDelivery, new { @class = "half disabled", @disabled="disabled", @readonly="readonly" })
+                    @Html.KeyMessages(m => m.Project.EstimatedDelivery)
+
+                    @Html.LabelFor(m => m.ProbabilityOfCloseTypeId, ResourceUI.ProbabilityOfClose, new { @class = "required" })
+                    @Html.DropDownBusinessFor(m => m.ProbabilityOfCloseTypeId, Model.ProbabilityOfCloseTypes, new { @class = "disabled", @disabled = "disabled" })
+                    @Html.KeyMessages(m => m.ProbabilityOfCloseTypeId)
+
+                    @Html.LabelFor(m => m.Project.ProjectStatusTypeId, ResourceUI.ProjectStatus, new { @class = "required" })
+                    @Html.DropDownProjectStatusTypeListFor(m => m.Project.ProjectStatusTypeId, Model.Project.ProjectStatusTypes, new { @class = "disabled", @disabled = "disabled" })
+                    @Html.KeyMessages(m => m.Project.ProjectStatusTypeId)
+
+               
+                }
+            }
+
+        </div>
+        <div class="r-col2">&nbsp;</div>
+        <div class="row-end">&nbsp;</div>
+    </div>*@
+
+    @Html.Partial("ProjectLocation", Model)
+    <br />
+    <br />
+    @Html.Partial("CustomerInfo", Model)
+    <br />
+    <br />
+    @Html.Partial("SellerInfo", Model)
+
+</div>
+   
+
+

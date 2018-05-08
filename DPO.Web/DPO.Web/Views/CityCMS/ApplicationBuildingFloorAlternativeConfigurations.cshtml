@@ -1,0 +1,71 @@
+﻿@model BuildingFloorEditModel
+
+<div class="r-col3" style="max-width: 230px;">
+    <h4>Configurations</h4>
+    @for (var i = 0; i < Model.alternativeConfigurations.configuration.Count; i++)
+    {
+        if (i == 0)
+        {
+            <label class="radio-label"><input type="radio" name="alt_configurations_list" value="@Model.alternativeConfigurations.configuration[i].id" checked /> @Model.alternativeConfigurations.configuration[i].name</label>
+        }
+        else
+        {
+            <label class="radio-label"><input type="radio" name="alt_configurations_list" value="@Model.alternativeConfigurations.configuration[i].id" /> @Model.alternativeConfigurations.configuration[i].name</label>
+        }
+        <br />
+        <br />
+    }
+    @if (Model.alternativeConfigurations.configuration.Count < 3)
+    {
+        <a class="context-btn submit" href="@Url.Action("ApplicationBuildingFloorConfiguration","CityCMS",new{ floorid = Model.id, buildingid = Model.buildingId, isAlternate = true})">Add Configuration</a>
+    }
+</div>
+<div class="r-col9" style="padding-left: 30px;">
+    @using (Html.BeginForm("ApplicationBuildingFloor", "CityCMS", FormMethod.Post, new { @id = "AlternativeConfigurationsForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.id)
+        @Html.HiddenFor(m => m.buildingId)
+
+        for (var k = 0; k < Model.alternativeConfigurations.configuration.Count; k++)
+        {
+            <div data-configid="@Model.alternativeConfigurations.configuration[k].id" style=@((k == 0) ? "display:block;" : "display:none;")>
+
+                <h4>Configuration Details</h4>
+                @Html.HiddenFor(m => m.alternativeConfigurations.configuration[k].id)
+                @Html.HiddenFor(m => m.alternativeConfigurations.configuration[k].floorId)
+                @Html.HiddenFor(m => m.alternativeConfigurations.configuration[k].systemSize)
+
+                <div class="float-left details-list" style="width: 45%; margin-right: 40px;">
+                    <label>Configuration Title</label>
+                    @Html.TextBoxFor(m => m.alternativeConfigurations.configuration[k].name, new { @class = "full" })
+                    <br />
+                    <label>System Name</label>
+                    @Html.TextBoxFor(m => m.alternativeConfigurations.configuration[k].systemName, new { @class = "full" })
+                    <br />
+                    <label>System Type</label>
+                    @Html.TextBoxFor(m => m.alternativeConfigurations.configuration[k].systemType, new { @class = "full" })
+                    <br />
+                </div>
+                <div class="float-left details-list" style="width: 45%;">
+                    <label>System Energy Rating</label>
+                    @Html.TextBoxFor(m => m.alternativeConfigurations.configuration[k].energy, new { @class = "full" })
+                    <br />
+                    <a class="context-btn" href="@Url.Action("ApplicationBuildingFloorConfigurationDelete", "CityCMS", new { id = Model.alternativeConfigurations.configuration[k].id, floorid = Model.id, buildingid = Model.buildingId, isAlternate = true })">Delete Configuration</a>
+                </div>
+                <br class="clearfix" />
+            </div>
+        }
+    }
+</div>
+
+<div class="row-end">&nbsp;</div>
+
+<script>
+    $(function () {
+        $('input[name="alt_configurations_list"]').on('change', function () {
+            $('#alternative_configurations_view [data-configid]').hide();
+            $('#alternative_configurations_view [data-configid="' + $(this).val() + '"]').show();
+        });
+    });
+</script>

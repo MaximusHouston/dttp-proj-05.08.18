@@ -1,0 +1,153 @@
+﻿<div class="dk-list-header">TECHNICAL SPECIFICATIONS</div>
+
+<div class="row row-nomargin dk-list-row">
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Capacity Index Limit - Max</span> <span class="pull-right">{{specs['capacityIndexLimitMax']?.value}}</span>
+    </div>
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Capacity Index Limit - Min</span> <span class="pull-right">{{specs['capacityIndexLimitMin']?.value}}</span>
+    </div>
+</div>
+
+<div class="row row-nomargin dk-list-row">
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Cooling Capacity Rated</span> <span class="pull-right">{{specs['coolingCapacityRated']?.value}}</span>
+    </div>
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left"> Cooling Input Power</span> <span class="pull-right">{{specs['coolingInputPower']?.value}}</span>
+    </div>
+</div>
+
+<div class="row row-nomargin dk-list-row">
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Cooling Operation Range SspanMax</span> <span class="pull-right">{{specs['coolingOperationRangeSspanMax']?.value}}</span>
+    </div>
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Cooling Operation Range SspanMin</span> <span class="pull-right">{{specs['coolingOperationRangeSspanMin']?.value}}</span>
+    </div>
+  
+</div> 
+
+
+<div class="row row-nomargin dk-list-row">
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Dimensions - Depth</span>  <span class="pull-right">{{specs["dimensionsDepth"]?.value}}</span>
+    </div>
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Dimensions - Height</span> <span class="pull-right">{{specs["dimensionsHeight"]?.value}}</span>
+    </div>
+</div>
+
+<div class="row row-nomargin dk-list-row">
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Dimensions - Width</span>  <span class="pull-right">{{specs["dimensionsWidth"]?.value}}</span>
+    </div>
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Fuse Size</span> <span class="pull-right">{{specs["fuseSize"]?.value}}</span>
+    </div>
+</div>
+
+
+
+<div class="row row-nomargin dk-list-row">
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">HL Pressure Line</span>  <span class="pull-right">{{specs["pipeSizeHPLP"]?.value}}</span>
+    </div>
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Heating Input Power</span> <span class="pull-right">{{specs["heatingInputPower"]?.value}}</span>
+    </div>
+</div>
+
+
+
+<div class="row row-nomargin dk-list-row">
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Heating Operation Range Sspan Max</span>  <span class="pull-right">{{specs["heatingOperationRangeSspanMax"]?.value}}</span>
+    </div>
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Heating Operation Range Sspan Min</span> <span class="pull-right">{{specs["heatingOperationRangeSspanMin"]?.value}}</span>
+    </div>
+</div>
+
+
+<div class="row row-nomargin dk-list-row">
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">InERP</span>  <span class="pull-right">{{specs["inerp"]?.value}}</span>
+    </div>
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Inter Connecting Wires</span> <span class="pull-right">{{specs["interConnectingWires"]?.value}}</span>
+    </div>
+</div>
+
+<div class="row row-nomargin dk-list-row">
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Max Connection Ports</span>  <span class="pull-right">{{specs["maxConnectionPorts"]?.value}}</span>
+    </div>
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Max External Static Pressure</span> <span class="pull-right">{{specs["maxExternalStaticPressure"]?.value}}</span>
+    </div>
+</div>
+
+
+
+
+<div class="row row-nomargin dk-list-row">
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Max Indoor Units</span>  <span class="pull-right">{{specs["maxIndoorUnits"]?.value}}</span>
+    </div>
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Min Circuit Amps</span> <span *ngIf="specs['minCircuitAmpsText']" class="pull-right">
+            {{specs["minCircuitAmpsText"]? specs["minCircuitAmpsText"]?.value : specs["MinCircuitAmps"]?.value}}
+        </span> 
+                                                       
+    </div>
+</div>
+
+<div class="row row-nomargin dk-list-row">
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Pipe Size - Gas</span>  <span class="pull-right">{{specs["pipeSizeGas"]?.value}}</span>
+    </div>
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">PipeSize - Liquid</span> <span class="pull-right">{{specs["pipeSizeLiquid"]?.value}}</span>
+    </div>
+</div>
+
+<div class="row row-nomargin dk-list-row">
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Power Frequency</span>  <span class="pull-right">{{specs["powerFrequency"]?.value}}</span>
+    </div>
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Power Phase</span> <span class="pull-right">{{specs["powerPhase"]?.value}}</span>
+    </div>
+</div>
+
+
+<div class="row row-nomargin dk-list-row">
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Power Voltage</span>  <span class="pull-right">{{specs["powerVoltage"]?.value}}</span>
+    </div>
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left"> Product Class Name</span> <span class="pull-right">{{specs["productClassName"]?.value}}</span>
+    </div>
+</div>
+
+
+<div class="row row-nomargin dk-list-row">
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Rated External Static Pressure</span>  <span class="pull-right">{{specs["ratedExternalStaticPressure"]?.value}}</span>
+    </div>
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Refrigerant Type</span> <span class="pull-right">{{specs["refrigerantType"]?.value}}</span>
+    </div>
+</div>
+
+
+<div class="row row-nomargin dk-list-row">
+    <div class="col col-md-6 col-xs-12">
+        <span class="pull-left">Weight - Net</span>  <span class="pull-right">{{specs["WeightNetText"]? specs["WeightNetText"]?.value : specs["WeightNet"]?.value}}</span>
+    </div>
+    
+</div>
+
+
+

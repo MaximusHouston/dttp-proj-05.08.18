@@ -1,0 +1,23 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = ResourceUI.Error;
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978")
+}
+
+<h1>@ViewBag.Title</h1>
+
+<div class="section">
+    <div class="row">
+        <div class="col1">&nbsp;</div>
+        <div class="col11">
+            <p>@ResourceUI.ErrorHasOccurred</p>
+            <br />
+            <input type="button" value="@ResourceUI.Back" class="btn" onclick="window.location = document.referrer" />
+        </div>
+        <div class="row-end">&nbsp;</div>
+    </div>
+</div>

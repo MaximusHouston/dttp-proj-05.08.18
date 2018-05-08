@@ -1,0 +1,16 @@
+﻿@model List<UserListModel>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles", "~/Content/css/usergroups")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/usergroups", "~/bundles/scripts/confirmmodal")
+}
+
+@Html.RenderPartial("UserGroupUsers", Model)

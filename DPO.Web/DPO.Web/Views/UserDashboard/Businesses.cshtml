@@ -1,0 +1,154 @@
+﻿@model BusinessesModel
+
+@{
+    ViewBag.Title = ResourceUI.AllBusinesses;
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/confirmmodal")
+}
+
+@Html.Partial("ConfirmModal")
+@Html.Partial("_UserdashboardTabsPartial")
+
+<div class="section b-flush">
+    <div class="admin-strap">
+        <div class="username">
+            <h1>@Model.CurrentUser.DisplayName</h1>
+            <h6>@Model.CurrentUser.BusinessName</h6>
+        </div>
+        @if (user.HasAccess(SystemAccessEnum.EditBusiness))
+        {
+            <div class="btn-bar">
+                <a href="@Url.Action("BusinessEdit", "Userdashboard")" class="submit-btn">
+                    @ResourceUI.BusinessAddNew
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+@using (Html.BeginForm("Businesses", "Userdashboard", FormMethod.Get,  new { @id = "AllBusinessForm" }))
+{
+    @Html.HiddenFor(m => m.SortColumn)
+    @Html.HiddenFor(m => m.IsDesc)
+    @Html.HiddenFor(m => m.Page)
+    
+    @Html.PageMessages()
+
+    <div class="section">
+
+        <div class="tbl-opts">
+            @Html.Partial("_TableDisplayOptionsPartial")
+            @Html.Partial("_SearchBarPartial")
+        </div>
+
+        <div class="tbl-holder scroll-x">
+            <table class="tbl" id="allbusinesses_table">
+                <thead>
+                    <tr>
+                        @if (user.HasAccess(SystemAccessEnum.EditBusiness))
+    {
+                    <th class="actions"></th>
+}
+                    @*<th>Business ID</th>*@
+                        <th aria-sort="none" id="businessname">@ResourceUI.BusinessName</th>
+                        <th aria-sort="none" id="businesstype">@ResourceUI.BusinessType</th>
+                        <th aria-sort="none" id="accountid" data-hidecol="true">@ResourceUI.AccountID</th>
+                        <th aria-sort="none" id="daikincityid" data-hidecol="true">@ResourceUI.DaikinCityId</th>
+                        <th aria-sort="none" id="commissionable">@ResourceUI.CommissionaSchemeAllowed</th>
+                        <th aria-sort="none" id="daikinbranch">@ResourceUI.DaikinBranch</th>
+                        <th aria-sort="none" id="vrvpro">@ResourceUI.VRVPro</th>
+                        <th aria-sort="none" id="daikincomfortpro">@ResourceUI.DaikinComfortPro</th>
+                        <th aria-sort="none" id="city">@ResourceUI.Location</th>
+                        <th aria-sort="none" id="state">@ResourceUI.State</th>
+                        <th aria-sort="none" id="country">@ResourceUI.Country</th>
+                        @if (user.HasAccess(SystemAccessEnum.UndeleteBusiness))
+    {
+                    <th aria-sort="none" id="enabled">@ResourceUI.Enabled</th>
+}
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                    <tr>
+                        @if (user.HasAccess(SystemAccessEnum.EditBusiness))
+    {
+                    <td class="actions">
+                        <div>
+                            <ul>
+                                <li>
+                                    <a href="@Url.Action("BusinessEdit", "UserDashboard", new { BusinessId = item.BusinessId })">@ResourceUI.BusinessEdit</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="@Url.Action("BusinessEdit", "UserDashboard", new { BusinessId = item.BusinessId })">@item.BusinessName</a>
+                    </td>
+}
+else
+{
+                    <td>@item.BusinessName</td>
+}
+                        <td>@Html.DisplayFor(modelItem => item.BusinessType)</td>
+                        <td>@Html.DisplayFor(modelItem => item.AccountId)</td>
+                        <td>@Html.DisplayFor(modelItem => item.DaikinCityId)</td>
+                        <td class="c-align">@((item.CommissionSchemeAllowed) ? "Yes" : "No")</td>
+
+                        <td class="c-align">@((item.IsDaikinBranch.GetValueOrDefault()) ? "Yes" : "No")</td>
+                        <td class="c-align">@((item.IsVRVPro.GetValueOrDefault()) ? "Yes" : "No")</td>
+                        <td class="c-align">@((item.IsDaikinComfortPro.GetValueOrDefault()) ? "Yes" : "No")</td>
+                 
+                        <td>@Html.DisplayFor(modelItem => item.Location)</td>
+                        <td>@Html.DisplayFor(modelItem => item.State)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Country)</td>
+                        @if (user.HasAccess(SystemAccessEnum.UndeleteBusiness))
+    {
+                    <td class="c-align">
+                        @if (item.Enabled)
+    {
+                    <a href="#" data-confirm="disableBusiness" data-sc-ajaxpost="@Url.Action("BusinessDisable", "Userdashboard", new { BusinessId = @item.BusinessId })">
+                        <img src="/Images/switch-on.png" />
+                    </a>
+}
+else
+{
+                    <a href="#" data-confirm="enableBusiness" data-sc-ajaxpost="@Url.Action("BusinessEnable", "Userdashboard", new { BusinessId = @item.BusinessId })">
+                        <img src="/Images/switch-off.png" />
+                    </a>
+}
+                    </td>
+}
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="pager">@Html.Pager(Model)</div>
+    </div>
+}
+
+<script>
+    $(function () {
+        tablehelper.setColumnIds('allbusinesses_table');
+
+        //delay user disable until after confirmation
+        $('[data-confirm="disableBusiness"]').on('click', function () {
+            confirmModal.showConfirmMsg('@ResourceUI.BusinessDisable', '@ResourceUI.BusinessDisableConfirm', PostAfterConfirm(this, '#AllBusinessForm'));
+        });
+
+        //delay user disable until after confirmation
+        $('[data-confirm="enableBusiness"]').on('click', function () {
+            confirmModal.showConfirmMsg('@ResourceUI.BusinessEnable', '@ResourceUI.BusinessEnableConfirm', PostAfterConfirm(this, '#AllBusinessForm'));
+        });
+    });
+
+    </script>
+</script>

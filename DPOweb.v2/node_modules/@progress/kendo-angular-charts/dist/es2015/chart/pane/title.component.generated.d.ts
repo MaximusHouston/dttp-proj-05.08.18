@@ -1,0 +1,21 @@
+import { drawing } from '@progress/kendo-drawing';
+import { ConfigurationService } from '../../common/configuration.service';
+import { SettingsComponent } from '../../common/settings.component';
+import { Border, Margin } from '../../common/property-types';
+import { PanesTitle } from '../../common/property-types';
+/**
+ * @hidden
+ */
+export declare abstract class PanesTitleComponentGenerated extends SettingsComponent implements PanesTitle {
+    configurationService: ConfigurationService;
+    background: string;
+    border: Border;
+    color: string;
+    font: string;
+    margin: Margin | number;
+    position: 'left' | 'right' | 'center';
+    text: string;
+    visible: boolean;
+    visual: (e: any) => drawing.Element;
+    constructor(configurationService: ConfigurationService);
+}

@@ -1,0 +1,32 @@
+﻿@model SearchQuote
+@{
+    string showOnPageLoad = (Model.ShowImportProductPopup == true) ? "display: block" : "display:none";
+}
+<div class="modal" id="import_items_modal" style=@showOnPageLoad>
+    <div>
+        @using (Html.BeginForm("QuoteImport", "Projectdashboard", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        { 
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(i=>i.QuoteId)
+                
+                @Html.HiddenFor(m => m.ProjectId)
+                @Html.HiddenFor(m => m.QuoteId)
+
+                    <img src="~/Images/modal-close-btn.png" class="close-btn" />
+                    <div style="margin-left: -30px; margin-top: -10px;">
+                        @Html.PageMessages()
+                    </div>
+                    <h1>@ResourceUI.ItemsImport</h1>
+                    <p>Import product lists generated in any of our suites of software.</p>
+                    <label for="importFile">Select Product List:</label>
+                    <label style="color:gray; font-size:smaller; font-style:italic">(only csv or xml file allowed)</label> 
+                    <br/>
+                    <input id="importfile" type="file" name="importfile" accept=".xls,.csv,.xlsx,.xml">
+                    <br />
+                    <br />
+                    
+                    <button type="button" class="btn cancel-btn" >@ResourceUI.Cancel</button>
+                    <button type="submit" class="submit-btn">@ResourceUI.Import</button>
+        }
+    </div>
+</div>

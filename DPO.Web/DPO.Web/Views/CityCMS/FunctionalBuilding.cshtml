@@ -1,0 +1,89 @@
+﻿@model BuildingLinksModel
+@{
+    ViewBag.Title = "Daikin City Content Management";
+}
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/confirmmodal")
+}
+@Html.Partial("_CityCMSTabsPartial")
+
+<ul class="breadcrumbs">
+    <li><a href="@Url.Action("FunctionalBuildings", "CityCMS")">Functional Buildings</a></li>
+    <li><a href="@Url.Action("FunctionalBuildings", "CityCMS")#@Model.buildingName">@Model.buildingName</a></li>
+    <li>Edit Floor</li>
+</ul>
+
+<div class="section t-flush b-flush">
+    <div class="item-strap btm-bdr">
+        <div class="itemname">
+            <h1>Functional Buildings</h1>
+        </div>
+        <div class="btn-bar">
+            <input type="button" value="Reset Changes" class="btn" style="visibility:hidden;">
+        </div>
+    </div>
+</div>
+<br />
+@using (Html.BeginForm())
+{
+    <div class="section form">
+        <h4>Building Links</h4>
+     
+        <div id="links">
+            <div class="row">
+                @for (var i = 0; i < Model.link.Count; i++)
+                {
+                    @Html.HiddenFor(m => m.link[i].floorId)
+                    @Html.HiddenFor(m => m.link[i].id)
+                    <div class="r-col5 details-list">
+                        <label>Title</label>
+                        @Html.TextBoxFor(m => m.link[i].title, new { @class = "full" })
+                        @Html.ValidationMessageFor(m => m.link[i].title)
+                        <br />
+                        <label>Description</label>
+                        @Html.TextAreaFor(m => m.link[i].description, new { rows = "10", @class = "full" })
+                        @Html.ValidationMessageFor(m => m.link[i].description)
+                        <br />
+                        <label>URL</label>
+                        @Html.TextBoxFor(m => m.link[i].url, new { @class = "full" })
+                        @Html.ValidationMessageFor(m => m.link[i].url)
+                        <br />
+                        <label style="display:inline-block; position: relative; bottom: 14px; margin-right: 10px;">Enabled: </label>
+                        @Html.CheckBoxFor(m => m.link[i].enabled, new { @class = "cb-switch" })
+                        <label for="link_@{@i}__enabled" class="cb-switch-label"></label>
+                    </div>
+                    <div class="r-col1">&nbsp;</div>
+                }
+                <div class="row-end">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+    <div class="section action c-align" id="save_buttons">
+        <button class="btn" type="button" onclick="location.replace('@Url.Action("FunctionalBuildings","CityCms")')">Cancel</button>
+        <input type="submit" value="Save" class="submit-btn">
+    </div>
+}
+
+<script>
+    $(function ()
+    {
+        function checkLinkEnabledState()
+        {
+            if ($(this).is(':checked')) {
+                $(this).parents('.details-list').find('input, textarea').not('input[type="checkbox"]').removeClass('disabled');
+            }
+            else{
+                $(this).parents('.details-list').find('input, textarea').not('input[type="checkbox"]').addClass('disabled');
+            }
+        }
+
+        $('.cb-switch').each(function () {
+            checkLinkEnabledState.call(this);
+        });
+
+        $('.cb-switch').on('change', checkLinkEnabledState);
+    });
+</script>

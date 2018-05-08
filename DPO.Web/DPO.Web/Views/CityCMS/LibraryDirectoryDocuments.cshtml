@@ -1,0 +1,52 @@
+﻿@model List<LibraryDocumentModel>
+<table class="tbl" style="table-layout:fixed;">
+    <thead>
+        <tr>
+            @if (Model != null && Model.Count > 0)
+            {
+                <th class="actions">
+                </th>
+            }
+            
+            <th>Document Name</th>
+
+            @if (Model != null && Model.Count > 0)
+            {
+                <th class="c-align" style="width: 100px;">Delete</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model == null || Model.Count == 0)
+        {
+            <tr class="nodocs">
+                <td>No Documents</td>
+            </tr>
+        }
+        else
+        {
+            foreach (var doc in Model)
+            {
+                <tr data-doc-id="@doc.id">
+                    <td class="actions">
+                        <div>
+                            <ul>
+                                <li><a href="#" class="editDocLink">Edit Document</a></li>
+                                <li><a href="#" class="moveDocLink">Move Document</a></li>
+                                <li><a href="#" class="copyDocLink">Copy Document</a></li>
+                                <li><a href="#" class="deleteDocLink">Delete Document</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    @{
+                        bool documentIsURL = (doc.path != null && (doc.path.ToLower().StartsWith("ftp") || doc.path.ToLower().StartsWith("http") || doc.path.ToLower().StartsWith("https")));
+
+                        string documentLink = (documentIsURL == true) ? doc.path : "/" + doc.path;
+                    }
+                    <td><a href="@documentLink" target="_blank" class="single-line" title="@doc.name" style="display:block;">@doc.name</a></td>
+                    <td class="c-align"><input type="checkbox" name="docToDelete" value="@doc.id"/></td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

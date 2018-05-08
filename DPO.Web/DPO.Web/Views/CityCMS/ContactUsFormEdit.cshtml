@@ -1,0 +1,110 @@
+﻿@model SendEmailContactUsModel
+@{
+    ViewBag.Title = "Daikin City Content Management";
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@*@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/confirmmodal")
+}*@
+
+@Html.Partial("_CityCMSTabsPartial")
+
+<ul class="breadcrumbs">
+    <li><a href="@Url.Action("CommunicationsCenter")">Communications Center</a></li>
+    <li>Edit Contact Us Form</li>
+</ul>
+
+<div class="section t-flush b-flush">
+    <div class="item-strap btm-bdr">
+        <div class="itemname">
+            <h1>Edit Contact Us Form</h1>
+        </div>
+        <div class="btn-bar">
+            <a class="btn submit" href="/CityCMS/ContactUsFormEdit" style="visibility : hidden;"><img src="/Images/context-btn-edit-icon.png">Edit Contact Us Form</a>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "ContactUsFormEditForm" }))
+{
+    <div class="section form">
+        <p class="mandatory" style="top: 0; right: 20px;">Fields marked with a <span>*</span> are mandatory</p>
+        <div class="row">
+            <div class="r-col6 details-list">
+                <label class="required">Address</label>
+                @Html.TextBoxFor(m => m.ContactUsAddress, new { @class = "full" })
+                <br />
+                <label class="required">Telephone #</label>
+                @Html.TextBoxFor(m => m.ContactUsTel, new { @class = "full" })
+                <br />
+                <br />
+                <br />
+                <label>Subjects</label>
+                <ul class="js-subjects">
+                    @for (var i = 0; i < Model.ContactUsSubjects.Count; i++)
+                    {
+                        <li>
+                            @Html.TextBoxFor(m => m.ContactUsSubjects[i])
+                            <button type="button" class="context-btn btn">Remove</button>
+                            <br />
+                        </li>
+                    }
+                </ul>
+                    <br/>
+                    <label>Add new subject</label>
+                    <input type="text" id="new-subject" placeholder="New subject"/>
+                    <button type="button" class="context-btn submit" id="add-new-subject">Add</button>
+            </div>
+        </div>
+        <div class="row-end">&nbsp;</div>    
+    </div>
+    
+    <div class="section action c-align">
+        <button type="button" class="btn" onclick="window.location = document.referrer">@ResourceUI.Cancel</button>
+        <input class="submit-btn" type="submit" value="Save Changes" />
+    </div>
+}
+
+<script>
+    $(function () {
+        $('.js-subjects').on('click', '.btn', function ()
+        {
+            var btn = $(this);
+            btn.prev().val('').hide();
+            btn.hide();
+        });
+
+        $('#add-new-subject').on('click', function ()
+        {
+            var $newSubjectInput = $('#new-subject');
+            var newSubjectName = $newSubjectInput.val();
+
+            if (!newSubjectName || !newSubjectName.length) return;
+
+            var listName            = "ContactUsSubjects";
+            var $list               = $('.js-subjects');
+            var $lastEntryInList    = $list.find('li:last');
+            var $lastInputInList    = $lastEntryInList.find('input');
+            var lastInputPosition   = $lastInputInList.attr('id').split(listName)[1];
+            var lastInputNum        = parseInt(lastInputPosition.substr(1, lastInputPosition.length - 2));
+            var newInputNum         = lastInputNum + 1;
+
+            var $newListEntry       = $lastEntryInList.clone();
+            var $newListEntryInput  = $newListEntry.find('input');
+
+            $newListEntryInput.attr('id', listName + "_" + newInputNum + "_");
+            $newListEntryInput.attr('name', listName + "[" + newInputNum + "]");
+            $newListEntryInput.val(newSubjectName);
+
+            $list.append($newListEntry);
+
+            $newSubjectInput.val("");
+            
+        });
+    });
+</script>

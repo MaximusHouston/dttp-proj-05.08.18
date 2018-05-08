@@ -1,0 +1,256 @@
+﻿<div id="signup-form" class='container-fluid'>
+    <div class="main-content ">
+        <div style="margin:20px;">
+            <h1 style="padding:5px;">
+                Register
+            </h1>
+            <form  #signUpForm="ngForm" novalidate class="form-horizontal">
+
+                <!--<user-personal-details [(user)]="user"></user-personal-details>-->
+
+                <!--<user-business-details [(user)]="user"></user-business-details>-->
+
+
+                <div class="section form">
+
+                    <fieldset id="personal-details">
+
+                        <h4>Personal Details</h4>
+                        <div class="col col-md-6 col-sm-12">
+                            <div class="col col-md-12 col-sm-12 form-group required">
+                                <label class="control-label">First Name</label>
+                                <input type="text" class="form-control input-sm" #firstName="ngModel" required name="firstName" [(ngModel)]="user.firstName">
+                                <div *ngIf="firstName.invalid && firstName.touched" class="alert alert-danger">
+                                    First Name is required.
+                                </div>
+
+                            </div>
+                            <div class="col col-md-12 col-sm-12 form-group">
+                                <label class="control-label">Middle Name</label>
+                                <input type="text" class="form-control input-sm" #middleName name="middleName" [(ngModel)]="user.middleName">
+                            </div>
+                            <div class="col col-md-12 col-sm-12 form-group required">
+                                <label class="control-label">Last Name</label>
+                                <input type="text" class="form-control input-sm" #lastName="ngModel" required name="lastName" [(ngModel)]="user.lastName">
+                                <div *ngIf="lastName.invalid && lastName.touched" class="alert alert-danger">
+                                    Last Name is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-md-6 col-sm-12">
+                            <div class="col col-md-12 col-sm-12 form-group required" [class.has-error]="email.invalid && email.touched">
+                                <label class="control-label">Email</label>
+                                <input type="text" class="form-control input-sm" #email="ngModel" required name="email" [(ngModel)]="user.email" placeholder="Enter your business email account" 
+                                       title="Users registering without business email (Gmail, hotmail, ect.) will not be approved or may take additional time to verify and approve access to Daikin City.">
+                                <div *ngIf="email.invalid && email.touched" class="alert alert-danger">
+                                    Email is required.
+                                </div>
+                            </div>
+                            <div class="col col-md-12 col-sm-12 form-group">
+                                <label class="control-label">Mobile Phone Number</label>
+                                <input type="text" class="form-control" #mobileNumber name="mobileNumber" [(ngModel)]="user.contact.mobileNumber">
+                            </div>
+                            <div class="col col-md-12 col-sm-12 form-group required">
+                                <label class="control-label">Password</label>
+                                <input type="password" id="userPassword" class="form-control input-sm" #password="ngModel" required name="password" [(ngModel)]="user.password">
+
+                                <div style="width:70%">
+                                    <div id="passwordStrengthBkg">
+                                        <div id="passwordStrengthBar"></div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="password.invalid && password.touched" class="alert alert-danger">
+                                    Password is required.
+                                </div>
+
+                            </div>
+                            <div class="col col-md-12 col-sm-12 form-group required">
+                                <label class="control-label">Confirm Password</label>
+                                <input type="password" class="form-control input-sm" #confirmPassword="ngModel" required name="confirmPassword" [(ngModel)]="user.confirmPassword">
+                                <div *ngIf="confirmPassword.invalid && confirmPassword.touched" class="alert alert-danger">
+                                    Confirm Password is required.
+                                </div>
+                            </div>
+                        </div>
+
+                       
+                    </fieldset>
+                </div>
+
+
+                <div class="section form">
+                    <fieldset id="business-details">
+
+                        <div class="col col-md-6 col-sm-12">
+                            <h4>Business Details</h4>
+                            <div class="col col-md-12 col-sm-12 form-group required">
+                                <p>Business Type</p>
+                                <!--<input type="text" class="form-control" #businessTypeId required name="businessTypeId" [(ngModel)]="user.business.businessTypeId">-->
+                                <kendo-dropdownlist [data]="user.business.businessTypes.items" [textField]="'text'" [valueField]="'value'"
+                                                    name="businessType" #businessTypeId="ngModel" required [(ngModel)]="user.business.businessTypeId" (ngModelChange)="user.business.businessTypeId=$event.value" (valueChange)="BusinessTypeChange($event)"
+                                                    [disabled]="businessTypeDLLDisabled">
+                                </kendo-dropdownlist>
+                                <div *ngIf="businessTypeId.invalid && businessTypeId.touched" class="alert alert-danger" style="width:170px">
+                                    Business Type is required.
+                                </div>
+                            </div>
+
+                            <div [hidden]="!showDakinAccRadioBtn" class="col col-md-12 col-sm-12 form-group">
+                                <label class="control-label">Do you have a Daikin account?</label>
+                                <div class="radio">
+                                    <label><input type="radio" name="daikinAccRadioBtn" value="true" [(ngModel)]="hasDaikinAccount" (ngModelChange)="HasDaikinAccountChange($event)">Yes</label>
+                                    <label><input type="radio" name="daikinAccRadioBtn" value="false" [(ngModel)]="hasDaikinAccount" (ngModelChange)="HasDaikinAccountChange($event)">No</label>
+                                </div>
+                            </div>
+
+                            <div [hidden]="!showAccountIdSearch" class="col col-md-12 col-sm-12 form-group required">
+                                <label class="control-label">Account ID</label>
+                                <div>
+                                    <input type="text" id="businessSearchBox" class="form-control k-input k-textbox" #accountId name="accountId" [(ngModel)]="user.accountId" (ngModelChange)="lookupBusiness($event)">
+                                    <button id="businessSearchBtn" class="searchBtn"><span class="k-icon k-i-search"></span></button>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8" style="font-size:smaller;font-weight:100;color: grey;">
+                                        <i>Account-ID is a unique Daikin City ID for your company. In general Account-ID is 7 - 8 digit long and starts with ‘DC’ (DC123456) or ‘A’ (A123456). Please contact your company admin or business sales manager for Account-ID</i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="hasDaikinAccount === 'false'" class="col col-md-12 col-sm-12 form-group required">
+                                <label class="control-label">Business Name</label>
+                                <input type="text" class="form-control input-sm" #businessName="ngModel" required name="businessName" [(ngModel)]="user.business.businessName">
+                                <div *ngIf="businessName.invalid && businessName.touched" class="alert alert-danger">
+                                    Business Name is required.
+                                </div>
+                            </div>
+
+                            <div *ngIf="(user.business.businessTypeId == enums.BusinessTypeEnum.Dealer || user.business.businessTypeId == enums.BusinessTypeEnum.EngineerArchitect) && hasDaikinAccount === 'false'" class="col col-md-12 col-sm-12 form-group required">
+                                <p>Distributor/Manufacturer Rep Name</p>
+
+                                <kendo-combobox #DistRepsCombo
+                                                required
+                                                #parentBusiness="ngModel"
+                                                name="parentBusinessId"
+                                                [data]="distributorsAndRepsList"
+                                                [textField]="'businessName'" [valueField]="'businessId'"
+                                                [(ngModel)]="user.business.parentBusinessId"
+                                                (ngModelChange)="user.business.parentBusinessId=$event.businessId"
+                                                [filterable]="true"
+                                                (filterChange)="distributorsAndRepsFilter($event)"
+                                                (valueChange)="distRepsComboChange($event)"
+                                                [placeholder]="'Enter at least 2 characters'"
+                                                style="width:100%"
+                                                title="Enter at least 2 characters">
+                                </kendo-combobox>
+                                <div *ngIf="parentBusiness.invalid && parentBusiness.touched" class="alert alert-danger" style="width:170px">
+                                    Distributor/Manufacturer Rep name is required.
+                                </div>
+                                <!--<p>ParentBusiness valid:{{parentBusiness.valid}}</p>
+                <p>ParentBusiness :{{parentBusiness.value}}</p>-->
+
+                            </div>
+
+
+                            <div *ngIf="foundBusiness && searchBtnClicked" class="col col-md-12 col-sm-12 form-group">
+                                <label class="control-label">Business Address</label>
+                                <div>
+                                    {{business.address.addressLine1}}
+                                </div>
+                                <div>
+                                    {{business.address.addressLine2}}
+                                </div>
+                                <div>
+                                    {{business.address.location}}, {{business.address.stateName}}, {{business.address.postalCode}}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col col-md-6 col-sm-12">
+                            <h4 id="businessAddressLabel">Business Address</h4>
+                            <div class="checkbox" *ngIf="showAccountIdSearch && foundBusiness && searchBtnClicked">
+                                <!--<label><input type="checkbox" [(ngModel)]="useBusinessAddress" (change)="UseBusinessAddress()">Use Business Address</label>-->
+                                <label><input type="checkbox" (change)="UseBusinessAddressToggle($event)">Use Business Address</label>
+                            </div>
+
+                            <div class="col col-md-12 col-sm-12 form-group required">
+                                <p>Country</p>
+                                <!--<input type="text" class="form-control" #country required name="Country" [(ngModel)]="user.address.countryCode">-->
+                                <kendo-dropdownlist [data]="user.address.countries.items" [textField]="'text'" [valueField]="'value'"
+                                                    name="country" #countryCode="ngModel" required [(ngModel)]="user.address.countryCode" (ngModelChange)="user.address.countryCode=$event.value" [disabled]="useBusinessAddress">
+                                </kendo-dropdownlist>
+                                <div *ngIf="countryCode.invalid && countryCode.touched" class="alert alert-danger" style="width:170px">
+                                    Country is required.
+                                </div>
+                            </div>
+                            <div class="col col-md-12 col-sm-12 form-group required">
+                                <label class="control-label">Address Line 1</label>
+                                <input type="text" class="form-control input-sm" #addressLine1="ngModel" required name="addressLine1" [(ngModel)]="user.address.addressLine1" [disabled]="useBusinessAddress">
+                                <div *ngIf="addressLine1.invalid && addressLine1.touched" class="alert alert-danger">
+                                    Address Line1 is required.
+                                </div>
+                            </div>
+                            <div class="col col-md-12 col-sm-12 form-group">
+                                <label class="control-label">Address Line 2</label>
+                                <input type="text" class="form-control input-sm" #addressLine2 name="addressLine2" [(ngModel)]="user.address.addressLine2" [disabled]="useBusinessAddress">
+                            </div>
+                            <div class="col col-md-12 col-sm-12 form-group required">
+                                <label class="control-label">City</label>
+                                <input type="text" class="form-control input-sm" #location="ngModel" required name="location" [(ngModel)]="user.address.location" [disabled]="useBusinessAddress">
+                                <div *ngIf="location.invalid && location.touched" class="alert alert-danger">
+                                    City is required.
+                                </div>
+                            </div>
+                            <div class="col col-md-6 col-sm-12 form-group required">
+                                <p>State/Province</p>
+                                <!--<input type="number" class="form-control" #stateId required name="stateId" [(ngModel)]="user.address.stateId">-->
+                                <kendo-dropdownlist [data]="user.address.states.items" [textField]="'text'" [valueField]="'value'"
+                                                    name="state" #stateId="ngModel" required [(ngModel)]="user.address.stateId" (ngModelChange)="user.address.stateId=$event.value" [disabled]="useBusinessAddress">
+                                </kendo-dropdownlist>
+                                <div *ngIf="stateId.invalid && stateId.touched" class="alert alert-danger" style="width:170px">
+                                    State is required.
+                                </div>
+                            </div>
+                            <div class="col col-md-6 col-sm-12 form-group required">
+                                <label class="control-label">Zip Code</label>
+                                <input type="text" class="form-control input-sm" #postalCode="ngModel" required name="postalCode" [(ngModel)]="user.address.postalCode" [disabled]="useBusinessAddress">
+                                <div *ngIf="postalCode.invalid && postalCode.touched" class="alert alert-danger">
+                                    Zip Code is required.
+                                </div>
+                            </div>
+                            <div class="col col-md-12 col-sm-12 form-group">
+                                <label class="control-label">Office Phone Number</label>
+                                <input type="text" class="form-control" #officeNumber name="officeNumber" [(ngModel)]="user.contact.officeNumber" [disabled]="useBusinessAddress">
+                                <!--<kendo-maskedtextbox [mask]="phoneNumberMask" name="officeNumber" [(ngModel)]="user.contact.officeNumber"></kendo-maskedtextbox>-->
+                            </div>
+                            <div class="col col-md-12 col-sm-12 form-group">
+                                <label class="control-label">Web Address</label>
+                                <input type="text" class="form-control input-sm" #webAddress name="webAddress" [(ngModel)]="user.contact.webAddress" [disabled]="useBusinessAddress">
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </div>
+
+
+
+
+                <div class="section action text-center">
+                    <div style="padding:10px;">
+                        <button class="btn btn-default" style="width:70px;" (click)="backToLogin()">Cancel</button>
+                        <button class="btn btn-primary" style="width:70px;" (click)="register()" type="submit" [disabled]="signUpForm.invalid">Register</button>
+                    </div>
+                </div>
+
+                <!--<h3>Form valid: {{signUpForm.valid}}</h3>-->
+                 
+                <!--<h3>Form invalid: {{signUpForm.form.invalid}}</h3>
+                <h3>Form status: {{signUpForm.form.status}}</h3>-->
+
+            </form>
+        </div>
+    </div>
+</div>

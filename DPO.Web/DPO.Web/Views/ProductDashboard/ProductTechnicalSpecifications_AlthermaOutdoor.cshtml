@@ -1,0 +1,322 @@
+﻿@model ProductModel
+@{
+    var specs = Model.Specifications;
+}
+    <tr>
+        <td>
+            Air Flow Rate - High:
+        </td>
+        @if (specs.GetString("AirFlowRateHighText") != null)
+        {
+            @specs.GetString("AirFlowRateHighText")
+        }
+        @if (@specs.GetString("AirFlowRateHighCooling") != null)
+        {
+            @specs.GetString("AirFlowRateHighCooling")
+        }
+        else
+        {
+            @specs.GetDecimal("AirFlowRateHighHeating", "N2")
+        }
+        <td>
+            Backup Heater:
+        </td>
+        <td>@specs.GetDecimal("BackupHeater", "N2")</td>
+    </tr>
+
+    <tr>
+        <td>
+            COP47 Nonducted:
+        </td>
+        <td>@specs.GetDecimal("COP47NonDucted", "N2")</td>
+        <td>
+            Compressor Stage:
+        </td>
+        <td>@specs.GetString("CompressorStages")</td>
+    </tr>
+    <tr>
+        <td>Condensate Drain Outlet (in):</td>
+        <td>@specs.GetString("CondensateDrainOutlet")</td>
+        <td>
+            Cooling Capacity Rated:
+        </td>
+        <td>@specs.GetDecimal("CoolingCapacityRated", "N2")</td>
+    </tr>
+
+    <tr>
+        <td>
+            Cooling Input Power:
+        </td>
+        <td>@specs.GetDecimal("CoolingInputPower", "N2")</td>
+        <td>
+            Cooling Operation Range StdMax
+        </td>
+        <td>@specs.GetDecimal("CoolingOperationRangeStdMax", "N2")</td>
+    </tr>
+  
+    <tr>
+        <td>
+            Cooling Operation Range StdMin:
+        </td>
+        <td>@specs.GetDecimal("CoolingOperationRangeStdMin", "N2")</td>
+        <td>
+            Cooling Operation Range wBaffleMax:
+        </td>
+        <td>@specs.GetDecimal("CoolingOperationRangewBaffleMax", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            Cooling Operation Range wBaffleMin:
+        </td>
+        <td>@specs.GetDecimal("CoolingOperationRangewBaffleMin", "N2")</td>
+        <td>
+            Dimensions - Depth:
+        </td>
+        <td>@specs.GetString("DimensionsUnitDepth")</td>
+    </tr>
+  
+     <tr>
+        <td>
+            Dimensions - Height:
+        </td>
+        <td>@specs.GetString("DimensionsUnitHeight")</td>
+        <td>
+            Dimensions - Width:
+        </td>
+        <td>@specs.GetString("DimensionsUnitWidth")</td>
+    </tr>
+    <tr>
+        <td>
+            EER NonDucted:
+        </td>
+        <td>@specs.GetDecimal("EERNonDucted", "N2")</td>
+        <td>
+            Factory Std Refrigerant Charge:
+        </td>
+        <td>
+            @if (specs.GetString("FactoryStdRefrigerantCharge") != null)
+            {
+                @specs.GetString("FactoryStdRefrigerantCharge")
+            }
+        </td>
+    </tr>
+   
+    <tr>
+        <td>
+            Fuse Size:
+        </td>
+        <td>@specs.GetDecimal("FuseSize", "N2")</td>
+        <td>
+            Heat Exchanger Type:
+        </td>
+        <td>@specs.GetString("HeatExchangerType")</td>
+    </tr>
+  
+    <tr>
+        <td>
+            Heating Capacity Rated:
+        </td>
+        <td>@specs.GetDecimal("HeatingCapacityRated", "N2")</td>
+        <td>
+            Heating Input Power
+        </td>
+        <td>@specs.GetDecimal("HeatingInputPower", "N2")</td>
+    </tr>
+   
+    <tr>
+        <td>
+            Heating Operation Range StdMax:
+        </td>
+        <td>@specs.GetDecimal("HeatingOperationRangeStdMax", "N2")</td>
+        <td>
+            Heating Operation Range StdMin:
+        </td>
+        <td>@specs.GetDecimal("HeatingOperationRangeStdMin", "N2")</td>
+    </tr>
+   
+    <tr>
+        <td>
+            Heating Operation Range wBaffleMax:
+        </td>
+        <td>@specs.GetDecimal("HeatingOperationRangewBaffleMax", "N2")</td>
+        <td>
+            Heating Operation Range wBaffleMin:
+        </td>
+        <td>@specs.GetDecimal("HeatingOperationRangewBaffleMin", "N2")</td>
+    </tr>
+  
+    <tr>
+        <td>
+            InERP
+        </td>
+        <td>@specs.GetString("InERP")</td>
+        <td>
+            Inter Connecting Wires:
+        </td>
+        <td>@specs.GetString("InterConnectingWires")</td>
+    </tr>
+  
+    <tr>
+        <td>
+            Max Water Pressure:
+        </td>
+        <td>@specs.GetDecimal("WaterPressureMax", "N2")</td>
+        <td>
+            Max Water Pressure Drop:
+        </td>
+        <td>@specs.GetDecimal("WaterPressureDropMax", "N2")</td>
+
+    </tr>
+   
+    <tr>
+        <td>
+            Min Circuit Amps:
+        </td>
+        <td>
+            @if (specs.GetString("MinCircuitAmps") != null)
+            {
+                @specs.GetString("MinCircuitAmps")
+            }
+        </td>
+        <td>
+            Min Sys Water Vol:
+        </td>
+        <td>@specs.GetDecimal("SysWaterVolMin", "N2")</td>
+    </tr>
+   
+    <tr>
+        <td>
+            Nom Volume:
+        </td>
+        <td>@specs.GetDecimal("NomVolume", "N2")</td>
+        <td>
+            Nom Water Flow Rate - Cooling:
+        </td>
+        <td>@specs.GetDecimal("NomWaterFlowRateCooling", "N2")</td>
+    </tr>
+
+    <tr>
+        <td>
+            Nom Water Flow Rate - Heating:
+        </td>
+        <td>@specs.GetDecimal("NomWaterFlowRateHeating", "N2")</td>
+        <td>
+            Power Frequency
+        </td>
+        <td>@specs.GetDecimal("PowerFrequency", "N2")</td>
+    </tr>
+
+    <tr>
+        <td>
+            Power Phase:
+        </td>
+        <td>@specs.GetDecimal("PowerPhase", "N2")</td>
+        <td>
+            Power Voltage
+        </td>
+        <td>@specs.GetString("PowerVoltage")</td>
+    </tr>
+  
+    <tr>
+        @*<td>
+            Product Class Name
+        </td>
+        <td>@specs.GetString("ProductClassName")</td>*@
+        <td>
+            Rated Cooling Condition AmbientDB:
+        </td>
+        <td>@specs.GetDecimal("RatedCoolingConditionAmbientDB", "N2")</td>
+    </tr>
+
+    <tr>
+       <td>
+            Rated Cooling Condition AmbientWB:
+        </td>
+        <td>@specs.GetDecimal("RatedCoolingConditionAmbientWB", "N2")</td>
+        <td>
+            Rated Heating Condition AmbientDB
+        </td>
+        <td>@specs.GetDecimal("RatedHeatingConditionAmbientDB", "N2")</td>
+    </tr>
+   
+    <tr>
+        <td>
+            Rated Heating Condition AmbientWB:
+        </td>
+        <td>@specs.GetDecimal("RatedHeatingConditionAmbientWB", "N2")</td>
+        <td>
+            Rated Load Amps
+        </td>
+        <td>
+            @specs.GetString("RatedLoadAmps")
+        </td>
+    </tr>
+  
+    <tr>
+        <td>
+            Refrigerant Type:
+        </td>
+        <td>@specs.GetString("RefrigerantType")</td>
+        @*<td>
+            Short Name
+        </td>
+        <td>@specs.GetString("ShortName")</td>*@
+    </tr>
+   
+    <tr>
+        <td>
+            Sound Pressure - High:
+        </td>
+        
+        <td>
+            @if (@specs.GetDecimal("SoundPressureHighCooling", "N2") != null)
+            {
+                @specs.GetDecimal("SoundPressureHighCooling", "N2")
+
+            }
+            else
+            {
+                @specs.GetDecimal("SoundPressureHighHeating", "N2")
+            }
+
+        </td>
+        <td>
+            Unit Installation Type:
+        </td>
+        <td>@Model.ProductCategoryName</td>
+    </tr>
+   
+    <tr>
+        <td>
+            Water Flow Range - Max:
+        </td>
+        <td>@specs.GetDecimal("WaterFlowRangeMax", "N2")</td>
+        <td>
+            Water Flow Range - Min:
+        </td>
+        <td>@specs.GetDecimal("WaterFlowRangeMin", "N2")</td>
+    </tr>
+
+    <tr>
+        <td>
+            Water Inlet Connection:
+        </td>
+        <td>@specs.GetString("WaterInletConnection")</td>
+        <td>
+            Water Outlet Connection:
+        </td>
+        <td>@specs.GetString("WaterOutletConnection")</td>
+    </tr>
+    
+    <tr>
+        <td>
+            Weight - Net:
+        </td>
+        <td>
+            @if (specs.GetString("WeightUnit") != null)
+            {
+                @specs.GetString("WeightUnit")
+            }
+        </td>
+
+    </tr>

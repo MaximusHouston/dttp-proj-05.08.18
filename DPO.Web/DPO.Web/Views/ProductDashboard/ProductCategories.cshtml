@@ -1,0 +1,69 @@
+﻿
+@using DPO.Common;
+@model ProductCategoriesModel
+
+@{
+    ViewBag.Title = "Product Categories";
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles", "~/Content/css/productlisting")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers")
+}
+
+@Html.Partial("ProductItemCount")
+@Html.Partial("ProductFamilyTabs",Model.ProductFamilyTabs )
+
+<ul class="breadcrumbs">
+    <li><a href="@Url.Action("ProductFamilies")">@ResourceUI.Products</a></li>
+    <li>@Model.ProductFamilyName</li>
+</ul>
+
+
+<div class="section b-flush t-flush">
+    <div class="item-strap">
+        <div class="itemname">
+            <h1>@Model.ProductFamilyName</h1>
+        </div>
+        <div class="btn-bar">
+            <table class="search-bar">
+                <tr>
+                    <td>
+                        <div>
+                            <input type="text" value="TBD" name="Filter" placeholder="@ResourceUI.Search" />
+                            <button type="button" class="clear-search-btn" style="display:none;">X</button>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="search-btn"><img src="~/Images/search-btn-icon.png" /></button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="product-filters">
+    <div class="sort-opts">
+        <label>Sort By</label>
+        <select>
+            <option>Nominal Rated</option>
+        </select>
+    </div>
+</div>
+<div class="product-listing-outer">
+    <ul class="product-listing-inner">
+        @foreach (var item in Model.Items)
+        {
+            <li>
+                <a href="@Url.Action("Products", new { ProductFamilyId = Model.ProductFamilyId, ProductCategoryId = item.Id })">
+                    <img src="@Url.RouteUrl("image",new { Type = (int)ImageTypeEnum.ProductCategory , Id = item.Id })" onerror="this.onerror = null; this.src = '/Images/NoImage.png'" />
+                    <span>@item.Name</span>
+                     <p>@item.Description</p>
+                </a>
+            </li>
+        }
+    </ul>
+</div>

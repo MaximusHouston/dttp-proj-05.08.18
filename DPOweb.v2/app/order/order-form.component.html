@@ -1,0 +1,345 @@
+﻿<project-tabs [user]="user"></project-tabs>
+<div id="main-container" class='container-fluid'>
+    <div class="row">
+        <div class="col-md-6">
+            <ul class="breadcrumbs">
+                <li><a href="/v2/#/projects">Projects</a></li>
+                <li><a href="/v2/#/project/{{order.projectId}}">{{order.projectName}}</a></li>
+                <li><a href="/v2/#/quote/{{order.quoteId}}/existingRecord">{{order.quoteTitle}}</a></li>
+                <li>Order</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <a href="/ProjectDashboard/OrderFAQ" id="orderFAQ" class="btn btn-default pull-right" target="_blank" style="margin:10px;">FAQ</a>
+            <a *ngIf="order.orderId != 0" href="/Document/OrderPrint/{{order.orderId}}?projectId={{order.projectId}}&quoteId={{order.quoteId}}" id="order_request_print_modal_trigger" class="btn btn-default pull-right" target="_blank" style="margin:10px;">Print Order</a>
+        </div>
+    </div>
+
+    <h4>Order Form</h4>
+    <!--<button class="btn btn-default"><a href="#orderReleaseDate">Jump</a></button>-->
+    <div *ngIf="order" class="orderForm">
+        <form id="orderForm" #orderForm="ngForm" novalidate style="padding: 20px;">
+            <fieldset>
+                <legend>Project Details</legend>
+                <div class="row no-gutters">
+                    <div class="hidden-xs col-md-1"></div>
+                    <div class="col-md-5 col-xs-12">
+                        <div class="col-md-6 col-xs-12 as-lnk">Project Name: </div> <div class="col-md-6 col-xs-12">{{order.project.name}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Project Reference: </div> <div class="col-md-6 col-xs-12">{{order.project.projectId}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Registration Date: </div> <div class="col-md-6 col-xs-12">{{order.project.projectDate  | date: 'shortDate'}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Bid Date: </div> <div class="col-md-6 col-xs-12">{{order.project.bidDate | date: 'shortDate'}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Estimated Close: </div> <div class="col-md-6 col-xs-12">{{order.project.estimatedClose | date: 'shortDate'}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Estimated Delivery: </div> <div class="col-md-6 col-xs-12">{{order.project.estimatedDelivery | date: 'shortDate'}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Pricing Strategy: </div> <div class="col-md-6 col-xs-12">{{order.project.pricingStrategy }}</div>
+                    </div>
+                    <div class="col-md-5 col-xs-12">
+                        <div class="col-md-6 col-xs-12 as-lnk">Construction Type: </div> <div class="col-md-6 col-xs-12">{{order.project.constructionTypeDescription}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Project Status: </div> <div class="col-md-6 col-xs-12">{{order.project.projectStatusDescription}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Project Type: </div> <div class="col-md-6 col-xs-12">{{order.project.projectTypeDescription}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Project Open Status: </div> <div class="col-md-6 col-xs-12">{{order.project.projectOpenStatusDescription}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Vertical Market: </div> <div class="col-md-6 col-xs-12">{{order.project.verticalMarketDescription}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Project Status Notes: </div> <div class="col-md-6 col-xs-12">{{order.project.description}}</div>
+                    </div>
+                    <div class="hidden-xs col-md-1"></div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Shipping Address/Project location</legend>
+                <div class="row no-gutters">
+                    <div class="hidden-xs col-md-1"></div>
+                    <div class="col-md-5 col-xs-12">
+                        <div class="col-md-6 col-xs-12 as-lnk">Business Name: </div>
+                        <div class="col-md-6 col-xs-12" *ngIf="order.project.shipToName; else elseBlock">{{order.project.shipToName}}</div>
+                        <input type="text" style="display:none;" class="form-control" required [(ngModel)]="order.project.shipToName" name="shipToName" />
+                        <ng-template #elseBlock>
+                            <div style="color:red; font-style:italic">This field is required</div>
+                        </ng-template>
+
+                        <div class="col-md-6 col-xs-12 as-lnk">Country: </div>
+                        <div class="col-md-6 col-xs-12" *ngIf="order.project.shipToAddress.countryCode; else elseBlock">{{order.project.shipToAddress.countryCode}}</div>
+                        <input type="text" style="display:none;" class="form-control" required [(ngModel)]="order.project.shipToAddress.countryCode" name="shipToAddressCountryCode" />
+                        <ng-template #elseBlock>
+                            <div style="color:red; font-style:italic">This field is required</div>
+                        </ng-template>
+
+                        <div class="col-md-6 col-xs-12 as-lnk">Address Line 1: </div>
+                        <div class="col-md-6 col-xs-12" *ngIf="order.project.shipToAddress.addressLine1; else elseBlock">{{order.project.shipToAddress.addressLine1}}</div>
+                        <input type="text" style="display:none;" class="form-control" required [(ngModel)]="order.project.shipToAddress.addressLine1" name="shipToAddressAddressLine1" />
+                        <ng-template #elseBlock>
+                            <div style="color:red; font-style:italic">This field is required</div>
+                        </ng-template>
+
+                        <div class="col-md-6 col-xs-12 as-lnk">Address Line 2: </div>
+                        <div class="col-md-6 col-xs-12">{{order.project.shipToAddress.addressLine2}}</div>
+                    </div>
+
+
+                    <div class="col-md-5 col-xs-12">
+                        <div class="col-md-6 col-xs-12 as-lnk">Location: </div>
+                        <div class="col-md-6 col-xs-12" *ngIf="order.project.shipToAddress.location; else elseBlock">{{order.project.shipToAddress.location}}</div>
+                        <input type="text" style="display:none;" class="form-control" required [(ngModel)]="order.project.shipToAddress.location" name="shipToAddressLocation" />
+                        <ng-template #elseBlock>
+                            <div style="color:red; font-style:italic">This field is required</div>
+                        </ng-template>
+
+                        <div class="col-md-6 col-xs-12 as-lnk">State: </div>
+                        <div class="col-md-6 col-xs-12" *ngIf="order.project.shipToAddress.stateName; else elseBlock">{{order.project.shipToAddress.stateName}}</div>
+                        <input type="text" style="display:none;" class="form-control" required [(ngModel)]="order.project.shipToAddress.stateName" name="shipToAddressStateName" />
+                        <ng-template #elseBlock>
+                            <div style="color:red; font-style:italic">This field is required</div>
+                        </ng-template>
+
+                        <div class="col-md-6 col-xs-12 as-lnk">Zip Code: </div>
+                        <div class="col-md-6 col-xs-12" *ngIf="order.project.shipToAddress.postalCode; else elseBlock">{{order.project.shipToAddress.postalCode}}</div>
+                        <input type="text" style="display:none;" class="form-control" required [(ngModel)]="order.project.shipToAddress.postalCode" name="shipToAddressPostalCode" />
+                        <ng-template #elseBlock>
+                            <div style="color:red; font-style:italic">This field is required</div>
+                        </ng-template>
+
+                        <div class="col-md-6 col-xs-12 as-lnk">Square Footage: </div> <div class="col-md-6 col-xs-12">{{order.project.squareFootage}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Number Of Floors: </div> <div class="col-md-6 col-xs-12">{{order.project.numberOfFloors}}</div>
+                    </div>
+                    <div class="col-md-1">
+                        <div *ngIf="recordState == 'new'"><span class="glyphicon glyphicon-pencil"></span><a data-toggle="modal" data-target="#editShipToAddressModal" data-backdrop="static"> Edit</a></div>
+                    </div>
+                </div>
+
+            </fieldset>
+            <fieldset>
+                <legend>Dealer/Contractor</legend>
+                <div class="row no-gutters">
+                    <div class="hidden-xs col-md-1"></div>
+                    <div class="col-md-5 col-xs-12">
+                        <div class="col-md-6 col-xs-12 as-lnk">Dealer/Contractor Name: </div>
+                        <div class="col-md-6 col-xs-12" required *ngIf="order.project.dealerContractorName; else elseBlock">{{order.project.dealerContractorName}}</div>
+                        <!--<div class="col-md-6 col-xs-12" *ngIf="order.project.dealerContractorName; else elseBlock">
+                            <input type="text" class="form-control" required [(ngModel)]="order.project.dealerContractorName" name="dealerContractorName"/>
+                        </div>-->
+                        <input type="text" style="display:none;" class="form-control" required [(ngModel)]="order.project.dealerContractorName" name="dealerContractorName" />
+                        <ng-template #elseBlock>
+                            <div style="color:red; font-style:italic">This field is required</div>
+                        </ng-template>
+
+                        <div class="col-md-6 col-xs-12 as-lnk">Business Name: </div>
+                        <div class="col-md-6 col-xs-12" *ngIf="order.project.customerName; else elseBlock">{{order.project.customerName}}</div>
+                        <input type="text" style="display:none;" class="form-control" required [(ngModel)]="order.project.customerName" name="customerName" />
+                        <ng-template #elseBlock>
+                            <div style="color:red; font-style:italic">This field is required</div>
+                        </ng-template>
+
+                        <div class="col-md-6 col-xs-12 as-lnk">Country: </div>
+                        <div class="col-md-6 col-xs-12" *ngIf="order.project.customerAddress.countryCode; else elseBlock">{{order.project.customerAddress.countryCode}}</div>
+                        <input type="text" style="display:none;" class="form-control" required [(ngModel)]="order.project.customerAddress.countryCode" name="customerAddressCountryCode" />
+                        <ng-template #elseBlock>
+                            <div style="color:red; font-style:italic">This field is required</div>
+                        </ng-template>
+
+                        <div class="col-md-6 col-xs-12 as-lnk">Address Line 1: </div>
+                        <div class="col-md-6 col-xs-12" *ngIf="order.project.customerAddress.addressLine1; else elseBlock">{{order.project.customerAddress.addressLine1}}</div>
+                        <input type="text" style="display:none;" class="form-control" required [(ngModel)]="order.project.customerAddress.addressLine1" name="customerAddressAddressLine1" />
+                        <ng-template #elseBlock>
+                            <div style="color:red; font-style:italic">This field is required</div>
+                        </ng-template>
+
+                        <div class="col-md-6 col-xs-12 as-lnk">Address Line 2: </div>
+                        <div class="col-md-6 col-xs-12">{{order.project.customerAddress.addressLine2}}</div>
+                    </div>
+
+
+                    <div class="col-md-5 col-xs-12">
+                        <div class="col-md-6 col-xs-12 as-lnk">Location: </div>
+                        <div class="col-md-6 col-xs-12" *ngIf="order.project.customerAddress.location; else elseBlock">{{order.project.customerAddress.location}}</div>
+                        <input type="text" style="display:none;" class="form-control" required [(ngModel)]="order.project.customerAddress.location" name="customerAddressLocation" />
+                        <ng-template #elseBlock>
+                            <div style="color:red; font-style:italic">This field is required</div>
+                        </ng-template>
+
+                        <div class="col-md-6 col-xs-12 as-lnk">State: </div>
+                        <div class="col-md-6 col-xs-12" *ngIf="order.project.customerAddress.stateName; else elseBlock">{{order.project.customerAddress.stateName}}</div>
+                        <input type="text" style="display:none;" class="form-control" required [(ngModel)]="order.project.customerAddress.stateName" name="customerAddressStateName" />
+                        <ng-template #elseBlock>
+                            <div style="color:red; font-style:italic">This field is required</div>
+                        </ng-template>
+
+                        <div class="col-md-6 col-xs-12 as-lnk">Zip Code: </div>
+                        <div class="col-md-6 col-xs-12" *ngIf="order.project.customerAddress.postalCode; else elseBlock">{{order.project.customerAddress.postalCode}}</div>
+                        <input type="text" style="display:none;" class="form-control" required [(ngModel)]="order.project.customerAddress.postalCode" name="customerAddressPostalCode" />
+                        <ng-template #elseBlock>
+                            <div style="color:red; font-style:italic">This field is required</div>
+                        </ng-template>
+                    </div>
+                    <div class="col-md-1">
+                        <div *ngIf="recordState == 'new'"><span class="glyphicon glyphicon-pencil"></span><a data-toggle="modal" data-target="#editCustomerAddressModal" data-backdrop="static"> Edit</a></div>
+                    </div>
+                </div>
+
+            </fieldset>
+            <fieldset>
+                <legend>Seller</legend>
+                <div class="row no-gutters">
+                    <div class="hidden-xs col-md-1"></div>
+                    <div class="col-md-5 col-xs-12">
+                        <div class="col-md-6 col-xs-12 as-lnk">Business Name: </div>
+                        <div class="col-md-6 col-xs-12" *ngIf="order.project.sellerName; else elseBlock">{{order.project.sellerName}}</div>
+                        <input type="text" style="display:none;" class="form-control" required [(ngModel)]="order.project.sellerName" name="sellerName" />
+                        <ng-template #elseBlock>
+                            <div style="color:red; font-style:italic">This field is required</div>
+                        </ng-template>
+
+                        <div class="col-md-6 col-xs-12 as-lnk">Country: </div>
+                        <div class="col-md-6 col-xs-12" *ngIf="order.project.sellerAddress.countryCode; else elseBlock">{{order.project.sellerAddress.countryCode}}</div>
+                        <input type="text" style="display:none;" class="form-control" required [(ngModel)]="order.project.sellerAddress.countryCode" name="sellerAddress.countryCode" />
+                        <ng-template #elseBlock>
+                            <div style="color:red; font-style:italic">This field is required</div>
+                        </ng-template>
+
+                        <div class="col-md-6 col-xs-12 as-lnk">Address Line 1: </div>
+                        <div class="col-md-6 col-xs-12" *ngIf="order.project.sellerAddress.addressLine1; else elseBlock">{{order.project.sellerAddress.addressLine1}}</div>
+
+                        <input type="text" style="display:none;" class="form-control" required [(ngModel)]="order.project.sellerAddress.addressLine1" name="sellerAddress.addressLine1" />
+                        <ng-template #elseBlock>
+                            <div style="color:red; font-style:italic">This field is required</div>
+                        </ng-template>
+
+                        <div class="col-md-6 col-xs-12 as-lnk">Address Line 2: </div>
+                        <div class="col-md-6 col-xs-12">{{order.project.sellerAddress.addressLine2}}</div>
+                    </div>
+
+
+                    <div class="col-md-5 col-xs-12">
+                        <div class="col-md-6 col-xs-12 as-lnk">Location: </div>
+                        <div class="col-md-6 col-xs-12" *ngIf="order.project.sellerAddress.location; else elseBlock">{{order.project.sellerAddress.location}}</div>
+                        <input type="text" style="display:none;" class="form-control" required [(ngModel)]="order.project.sellerAddress.location" name="sellerAddress.location" />
+                        <ng-template #elseBlock>
+                            <div style="color:red; font-style:italic">This field is required</div>
+                        </ng-template>
+
+                        <div class="col-md-6 col-xs-12 as-lnk">State: </div>
+                        <div class="col-md-6 col-xs-12" *ngIf="order.project.sellerAddress.stateName; else elseBlock">{{order.project.sellerAddress.stateName}}</div>
+                        <input type="text" style="display:none;" class="form-control" required [(ngModel)]="order.project.sellerAddress.stateName" name="sellerAddress.stateName" />
+                        <ng-template #elseBlock>
+                            <div style="color:red; font-style:italic">This field is required</div>
+                        </ng-template>
+
+                        <div class="col-md-6 col-xs-12 as-lnk">Zip Code: </div>
+                        <div class="col-md-6 col-xs-12" *ngIf="order.project.sellerAddress.postalCode; else elseBlock">{{order.project.sellerAddress.postalCode}}</div>
+                        <input type="text" style="display:none;" class="form-control" required [(ngModel)]="order.project.sellerAddress.postalCode" name="sellerAddress.postalCode" />
+                        <ng-template #elseBlock>
+                            <div style="color:red; font-style:italic">This field is required</div>
+                        </ng-template>
+
+                    </div>
+                    <div class="col-md-1">
+                        <div *ngIf="recordState == 'new'"><span class="glyphicon glyphicon-pencil"></span><a data-toggle="modal" data-target="#editSellerAddressModal" data-backdrop="static"> Edit</a></div>
+                    </div>
+                </div>
+
+            </fieldset>
+            <fieldset>
+                <legend>Order Details</legend>
+                <div class="row no-gutters">
+                    <div class="hidden-xs col-md-1"></div>
+                    <div class="col-md-5 col-xs-12">
+                        <div class="col-md-6 col-xs-12 as-lnk">Order Submitted By: </div> <div class="col-md-6 col-xs-12">{{order.submittedByUserName}}</div>
+
+                        <div class="col-md-12" style="padding: 5px 0px;">
+                            <div class="col-md-6 col-xs-12 as-lnk">
+                                <label class="required">Order Release Date:</label>
+                            </div>
+                            <div class="col-md-6 col-xs-12">
+                                <kendo-datepicker [disabled]="recordState == 'submitted'" #datepicker id="orderReleaseDate"
+                                                  (open)="datePickerOpen()" class="form-control" required name="orderReleaseDate"
+                                                  [min]="releaseDateMin"
+                                                  [(ngModel)]="order.orderReleaseDate" placeholder="select...">
+                                </kendo-datepicker>
+                                <!--<div> orderReleaseDate: {{order.orderReleaseDate}}</div>-->
+                                <!--<input type="date" class="form-control" required [(ngModel)]="order.orderReleaseDate" name="orderReleaseDate" />-->
+                            </div>
+                        </div>
+
+                        <!--<div class="form-group col-md-12">
+                            <label class="control-label as-lnk">Order Release Date: </label>
+
+                            <kendo-datepicker class="form-control" [value]="order.orderReleaseDate" placeholder="select...">
+                            </kendo-datepicker>
+                        </div>-->
+
+
+                        <div class="col-md-6 col-xs-12 as-lnk">
+                            <label class="required">Purchase Order Number:</label>
+                        </div>
+                        <div class="col-md-6 col-xs-12">
+                            <input class="form-control"
+                                   required [(ngModel)]="order.poNumber" name="poNumber"
+                                   [disabled]="recordState == 'submitted'" />
+                        </div>
+                        <!--<div class="col-md-12">
+                            <label class="control-label as-lnk">Purchase Order Number: </label>
+                            <input type="text" style="max-width:400px;" class="form-control" [(ngModel)]="order.poNumber" name="poNumber" />
+                        </div>-->
+
+                        <div *ngIf="recordState == 'new'" class="col-md-12">
+                            <label class="control-label as-lnk required">Purchase Order Attachment: </label>
+                            <kendo-upload required [autoUpload]="true"
+                                          [saveUrl]="poUploadUrl"
+                                          [multiple]="false"
+                                          [(ngModel)]="poAttachment"
+                                          name="PurchaseOrderAttachment"
+                                          (select)="selectEventHandler($event)"
+                                          (upload)="uploadEventHandler($event)"
+                                          [withCredentials]="true"
+                                          (success)="successEventHandler($event)"
+                                          (error)="errorEventHandler($event)">
+                            </kendo-upload>
+                        </div>
+
+                        <div *ngIf="recordState == 'submitted'">
+                            <label class="col-md-6 col-xs-12 as-lnk required">Purchase Order Attachment: </label>
+                            <div class="col-md-6 col-xs-12"><a href="/document/QuoteOrder/{{order.quoteId}}/?filename={{order.poAttachmentFileName}}" target="_blank">{{order.poAttachmentFileName}}</a></div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-5 col-xs-12">
+                        <div class="col-md-6 col-xs-12 as-lnk">Total Net Price: </div> <div class="col-md-6 col-xs-12">{{order.totalNetPrice | currency:'USD':true:'1.2-2'}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Total Discount Provided: </div> <div class="col-md-6 col-xs-12">{{order.totalDiscountPercent*100}}%</div>
+                        <div class="col-md-12">
+                            <label class="control-label as-lnk required">Delivery Contact Details: </label>
+                            <div style="font-size:smaller; font-style:italic; color:lightgray;">(maximum 75 characters)</div>
+                            <input type="text" style="max-width:400px;" class="form-control"
+                                   required maxlength="75"
+                                   [(ngModel)]="order.comments" name="orderComments"
+                                   [disabled]="recordState == 'submitted'" />
+                        </div>
+                    </div>
+                    <div class="hidden-xs col-md-1"></div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Order Items</legend>
+                <order-form-quote-items [quoteId]="order.quoteId"></order-form-quote-items>
+            </fieldset>
+
+            <fieldset>
+                <div *ngIf="recordState == 'new'" class="text-center" style="padding-top:20px;">
+                    <a class="btn btn-default" href="/v2/#/quote/{{order.quoteId}}/existingRecord" style="width:70px;">Cancel</a>
+                    <button class="btn btn-primary" style="width:70px;" [disabled]="orderForm.invalid" (click)="submit()">Submit</button>
+                </div>
+                <div *ngIf="recordState == 'submitted'" class="text-center" style="padding-top:20px;">
+                    <a class="btn btn-default" href="/v2/#/quote/{{order.quoteId}}/existingRecord">Back To Quote</a>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<!-- Modal -->
+<edit-project-location *ngIf="order" [(project)]="order.project"></edit-project-location>
+
+<!-- Modal -->
+<edit-customer-address *ngIf="order" [(project)]="order.project"></edit-customer-address>
+
+<!-- Modal -->
+<edit-seller-address *ngIf="order" [(project)]="order.project"></edit-seller-address>
+
+

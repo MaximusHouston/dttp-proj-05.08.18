@@ -1,0 +1,119 @@
+﻿@model DiscountRequestListModel
+@{
+    ViewBag.Title = ResourceUI.DiscountRequests;
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers")
+}
+
+@Html.Partial("_UserdashboardTabsPartial")
+
+<div class="section b-flush">
+    <div class="admin-strap">
+        <div class="username">
+            <h1>@Model.CurrentUser.DisplayName</h1>
+            <h6>@Model.CurrentUser.BusinessName</h6>
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm("DiscountRequests", "Userdashboard", FormMethod.Get, new { @id="DiscountRequestsListForm" }))
+{
+    @Html.PageMessages()
+    
+    <div class="section">
+
+        @Html.HiddenFor(m => m.SortColumn)
+        @Html.HiddenFor(m => m.IsDesc)
+        @Html.HiddenFor(m => m.Page)
+
+       
+
+        <div class="tbl-opts">
+            @Html.Partial("_TableDisplayOptionsPartial")
+
+            <div class="pull-left">
+             @Html.Partial("_SearchBarPartial")
+            </div>
+             <div class="pull-left" style="margin-top: 1em; margin-left: 1em;">
+                @Html.RadioButtonFor(m => m.PendingRequests, "false")<label>All Requests</label>
+                @Html.RadioButtonFor(m => m.PendingRequests, "true")<label>Pending Requests</label>
+            </div>
+        </div>
+
+        <div class="tbl-holder scroll-x">
+            <table class="tbl" id="discount_requests_table">
+                <thead>
+                    <tr>
+                        <th class="actions"></th>
+                        <th id="discountrequestid">Reference</th>
+                        <th id="businessname">@ResourceUI.BusinessName</th>
+                        <th id="projectname">@ResourceUI.ProjectName</th>
+                        <th id="quotetitle">@ResourceUI.QuoteName</th>
+                        <th id="user">@ResourceUI.User</th>
+                        <th id="requestedon" aria-sort="none">@ResourceUI.RequestDate</th>
+                        <th id="requesttype" aria-sort="none">@ResourceUI.RequestType</th>
+                        <th id="requeststatus" aria-sort="none">@ResourceUI.RequestStatus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        var rowstyle = "";
+
+                        if (item.DiscountRequestStatusTypeId == (byte)DiscountRequestStatusTypeEnum.Rejected) { rowstyle = "lost-row"; }
+                        if (item.DiscountRequestStatusTypeId == (byte)DiscountRequestStatusTypeEnum.Approved) { rowstyle = "won-row"; }
+                        if (item.DiscountRequestStatusTypeId == (byte)DiscountRequestStatusTypeEnum.Deleted) { rowstyle = " disabled-row"; }
+                        //if (item.IsTransferred) { rowstyle = "transfered-row"; }
+                      
+                        <tr class="@rowstyle">
+                            <td class="actions">
+                                <div>
+                                    <ul>
+                                        <li>
+                                            @Html.ActionLink("View", "DiscountRequest", "ProjectDashboard", new { DiscountRequestId = item.DiscountRequestId }, null)
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td>
+                                @Html.ActionLink(item.DiscountRequestId.ToString(), "DiscountRequest", "ProjectDashboard", new { DiscountRequestId = item.DiscountRequestId }, null)
+                            </td>
+                            <td>
+                              @Html.ActionLink(item.BusinessName, "BusinessEdit", new { BusinessId = item.BusinessId })
+                            </td>
+                            <td>
+                                @Html.ActionLink(item.Project.Name, "Project", "ProjectDashboard", new { ProjectId = item.ProjectId }, null)
+                            </td>
+                            <td>
+                                @Html.ActionLink(item.Quote.Title, "Quote", "ProjectDashboard", new { ProjectId = item.ProjectId, quoteId = item.QuoteId }, null)
+                            </td>
+                            <td>
+                                @Html.ActionLink(item.ProjectOwner, "UserEdit", new { UserId = item.ProjectOwnerId })
+                            </td>
+                            <td>@Html.DisplayFor(modelItem => item.RequestedOn)</td>
+                            <td>Discount</td>
+                            <td>@Html.DisplayFor(modelItem => item.DiscountRequestStatusTypeDescription)</td>
+                        </tr>
+                    }
+                </tbody>
+           </table>
+        </div>
+        <div class="pager">@Html.Pager(Model)</div>
+    </div>
+}
+<script>
+    $(function () {
+        tablehelper.setColumnIds('discount_requests_table');
+
+        $('input[name="PendingRequests"]').on('change', function ()
+        {
+            $('#DiscountRequestsListForm').submit();
+        });
+    });
+</script>
+

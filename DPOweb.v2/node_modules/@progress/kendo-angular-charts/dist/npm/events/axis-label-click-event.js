@@ -1,0 +1,24 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var base_event_1 = require("./base-event");
+/**
+ * Arguments for the `axisLabelClick` event.
+ */
+var AxisLabelClickEvent = /** @class */ (function (_super) {
+    tslib_1.__extends(AxisLabelClickEvent, _super);
+    /**
+     * @hidden
+     */
+    function AxisLabelClickEvent(e, sender) {
+        var _this = _super.call(this, sender) || this;
+        _this.axis = e.axis;
+        _this.dataItem = e.dataItem;
+        _this.index = e.index;
+        _this.text = e.text;
+        _this.value = e.value;
+        return _this;
+    }
+    return AxisLabelClickEvent;
+}(base_event_1.BaseEvent));
+exports.AxisLabelClickEvent = AxisLabelClickEvent;

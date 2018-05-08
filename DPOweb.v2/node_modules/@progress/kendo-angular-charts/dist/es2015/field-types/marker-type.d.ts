@@ -1,0 +1,28 @@
+/**
+ * Specifies the marker type.
+ *
+ * @example
+ * ```ts
+ * import { Component } from '@angular/core';
+ * import { MarkerType } from '@progress/kendo-angular-charts';
+ *
+ * _@Component({
+ *   selector: 'my-app',
+ *   template: `
+ *     <kendo-chart>
+ *       <kendo-chart-series>
+ *         <kendo-chart-series-item type="line" [data]="[1, 2, 3]">
+ *           <kendo-chart-series-item-markers [type]="markerType">
+ *           </kendo-chart-series-item-markers>
+ *         </kendo-chart-series-item>
+ *       </kendo-chart-series>
+ *     </kendo-chart>
+ *   `
+ * })
+ * class AppComponent {
+ *   public markerType: MarkerType = "cross";
+ * }
+ *
+ * ```
+ */
+export declare type MarkerType = 'square' | 'circle' | 'triangle' | 'cross';

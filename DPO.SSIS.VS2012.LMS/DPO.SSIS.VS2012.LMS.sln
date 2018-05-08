@@ -1,0 +1,17 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "DPO.SSIS.VS2012.LMS", "DPO.SSIS.VS2012.LMS\DPO.SSIS.VS2012.LMS.dtproj", "{95BB844C-3C72-4A91-BFD0-126E8ED54AFC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{95BB844C-3C72-4A91-BFD0-126E8ED54AFC}.Development|Default.ActiveCfg = Development
+		{95BB844C-3C72-4A91-BFD0-126E8ED54AFC}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

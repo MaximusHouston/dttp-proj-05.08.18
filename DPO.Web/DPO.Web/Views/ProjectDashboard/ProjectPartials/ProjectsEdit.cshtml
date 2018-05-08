@@ -1,0 +1,324 @@
+﻿@model ProjectsModel
+
+@{
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+
+    var canViewDiscountStatus = user.HasAccess(SystemAccessEnum.RequestDiscounts)
+                  || user.HasAccess(SystemAccessEnum.ApproveDiscounts) 
+                  || user.HasAccess(SystemAccessEnum.ViewDiscountRequest);
+
+    var canViewCommissionStatus = user.HasAccess(SystemAccessEnum.RequestCommission)
+                  || user.HasAccess(SystemAccessEnum.ApprovedRequestCommission)
+                  || user.HasAccess(SystemAccessEnum.ViewRequestedCommission);
+}
+
+<div class="tbl-holder scroll-x">
+    <table class="tbl" id="projects_table">
+        <thead>
+            <tr>
+                <th class="alerts c-align">
+                    <div style="float:left;">
+                        <img src="~/Images/context-btn-delete-icon.png" width="20" height="25">
+                    </div>
+                    
+                </th>
+                <th class="alerts c-align"></th>
+                <th id="projectname" aria-sort="none">@ResourceUI.ProjectName</th>
+                <th id="businessname" aria-sort="none">@ResourceUI.BusinessName</th>
+                <th id="projectowner" aria-sort="none" data-hidecol="true">@ResourceUI.ProjectOwner</th>
+                <th id="customername" aria-sort="none" data-hidecol="true">@ResourceUI.Customer</th>
+                <th id="projectid" aria-sort="none" data-hidecol="true">@ResourceUI.ProjectRef</th>
+                <th id="projecttype" aria-sort="none">@ResourceUI.ProjectType</th>
+                <th id="projectstatus" aria-sort="none">@ResourceUI.ProjectStatus</th>
+                <th id="projectopenstatus" aria-sort="none">@ResourceUI.ProjectOpenStatus</th>
+                @if (user.HasAccess(SystemAccessEnum.ViewPipelineData)
+                    || user.HasAccess(SystemAccessEnum.EditPipelineData))
+                {
+                    <th id="projectleadstatus" aria-sort="none" data-hidecol="true">@ResourceUI.ProjectLeadStatus</th>
+                }
+                <th id="biddate" aria-sort="none">@ResourceUI.BidDate</th>
+                <th id="estimatedclose" aria-sort="none">@ResourceUI.EstClose</th>
+                <th id="estimateddelivery" aria-sort="none">@ResourceUI.EstDelivery</th>
+                @if (user.ShowPrices)
+                {
+                    <th id="totallist" aria-sort="none" data-hidecol="true">
+                        @ResourceUI.TotalList
+                        <br />
+                        @Model.TotalList.ToString("C0")
+                    </th>
+                    <th id="totalnet" aria-sort="none" data-hidecol="true">
+                        @ResourceUI.TotalNet
+                        <br />
+                        @Model.TotalNet.ToString("C0")
+                    </th>
+                    <th id="totalsell" aria-sort="none" data-hidecol="true">
+                        @ResourceUI.TotalSell
+                        <br />
+                        @Model.TotalSell.ToString("C0")
+                    </th>
+                }
+                @if (canViewDiscountStatus)
+                {
+                    <th id="activedarlink" aria-sort="none" data-hidecol="true" style="white-space: normal">@ResourceUI.DiscountStatus</th>
+                }
+                <th id="vrvoutdoorcount" aria-sort="none" data-hidecol="true" style="white-space: normal">
+                    @ResourceUI.VRVOutdoorUnitQty
+                    <br />
+                    @Model.TotalVRVOutdoorCount.ToString("N0")
+                </th>
+                <th id="splitcount" aria-sort="none" data-hidecol="true" style="white-space: normal">
+                    @ResourceUI.SplitOutdoorUnitQty
+                    <br />
+                    @Model.TotalSplitCount.ToString("N0")
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @for (var i = 0; i < Model.Items.Count; i++)
+            {
+                var item = Model.Items[i];
+                var rowstyle = "";
+
+                if (item.ProjectStatusId == (int)ProjectStatusTypeEnum.ClosedLost) { rowstyle = "lost-row"; }
+                if (item.ProjectStatusId == (int)ProjectStatusTypeEnum.ClosedWon) { rowstyle = "won-row"; }
+                if (item.IsTransferred) { rowstyle = "transfered-row"; }
+                if (item.Deleted == true) { rowstyle = " disabled-row"; }
+
+                <tr class="@rowstyle">
+                    <td>
+                        @if (user.HasAccess(SystemAccessEnum.EditProject))
+                        {
+                           <div style="height:30px;">
+                              
+                         @Html.CheckBoxFor(m => item.Deleted, new { id = item.ProjectId, Name = item.ProjectId, @class = "project-delete" })
+                         @Html.HiddenFor(m => item.ProjectId)
+                            </div>
+                        }
+                    </td>
+                    <td class="alerts">
+                        @if(item.ProjectStatusId == (int)ProjectStatusTypeEnum.Open)
+                        { 
+                         if (item.Alert && !item.IsTransferred)
+                         {
+                            <div>
+                                <img src="~/Images/alert-icon.png">
+                                <div class="tooltip">
+                                    @item.AlertText
+                                    <img src="~/Images/tooltip-tail.png" />
+                                </div>
+                            </div>
+                         }
+                        }
+                        
+                        @if (item.IsTransferred)
+                        {
+                            <div>
+                                <img src="~/Images/icon_lock.png">
+                                <div class="tooltip">
+                                    Project has been transferred.
+                                    <img src="~/Images/tooltip-tail.png" />
+                                </div>
+                            </div>
+                        }
+                        @Html.HiddenFor2(m => m.Items[i].ModelSaveState)
+                        @if (item.ModelSaveState == (int)SaveStateEnum.Saved)
+                        {
+                            <div>
+                                <img src="~/Images/tick.png" alt="Saved" />
+                                <div class="tooltip">
+                                    Project has been saved.
+                                    <img src="~/Images/tooltip-tail.png" />
+                                </div>
+                            </div>
+                        }
+                        else if (item.ModelSaveState == (int)SaveStateEnum.Error)
+                        {
+                            <div>
+                                <img src="~/Images/cross.png" alt="Error" />
+                                <div class="tooltip">
+                                    @if (item.Messages != null)
+                                    {
+                                        foreach (var msg in item.Messages.Items)
+                                        {
+                                            @msg.Text
+                                            <br />
+                                        }
+                                    }
+                                    <img src="~/Images/tooltip-tail.png" />
+                                </div>
+                            </div>
+                        }
+                    </td>
+
+                    <td style="white-space:normal">
+                        @Html.HiddenFor2(m => m.Items[i].Name)
+                        @Html.ActionLink(item.Name, "Project", new { ProjectId = item.ProjectId })
+                    </td>
+                    <td style="white-space: normal">
+                        @Html.HiddenFor2(m => m.Items[i].BusinessName)
+                        @item.BusinessName
+                    </td>
+                    <td style="white-space: normal">
+                        @Html.HiddenFor2(m => m.Items[i].ProjectOwner)
+                        @item.ProjectOwner
+                    </td>
+                    <td style="white-space: normal">
+                        @Html.HiddenFor2(m => m.Items[i].CustomerName)
+                        @item.CustomerName
+                    </td>
+                    <td>
+                        @Html.HiddenFor2(m => m.Items[i].ProjectId)
+                        @Html.HiddenFor2(m => m.Items[i].Concurrency)
+                        @item.ProjectId
+                    </td>
+                    <td style="white-space: normal">
+                        @if (Model.Items[i].IsEditable)
+                        {
+                            @Html.DropDownProjectTypeListFor(m => m.Items[i].ProjectTypeId, Model.ProjectTypes)
+                            @Html.HiddenFor2(m => m.Items[i].ProjectType)
+                        }
+                        else
+                        {
+                            @Html.HiddenFor2(m => m.Items[i].ProjectTypeId)
+                            @Html.HiddenFor2(m => m.Items[i].ProjectType)
+                            @item.ProjectType
+                        }
+                    </td>
+                    <td>
+                        @if (Model.Items[i].IsEditable)
+                        {
+                            @Html.DropDownProjectStatusTypeListFor(m => m.Items[i].ProjectStatusId, Model.ProjectStatusTypes)
+                            @Html.HiddenFor2(m => m.Items[i].ProjectStatus)
+                        }
+                        else
+                        {
+                            @Html.HiddenFor2(m => m.Items[i].ProjectStatusId)
+                            @Html.HiddenFor2(m => m.Items[i].ProjectStatus)
+                            @item.ProjectStatus
+                        }
+                    </td>
+                    <td>
+                        @if (Model.Items[i].IsEditable)
+                        {
+                            @Html.DropDownProjectOpenStatusTypeListFor(m => m.Items[i].ProjectOpenStatusId, Model.ProjectOpenStatusTypes)
+                            @Html.HiddenFor2(m => m.Items[i].ProjectOpenStatus)
+                        }
+                        else
+                        {
+                            @Html.HiddenFor2(m => m.Items[i].ProjectOpenStatusId)
+                            @Html.HiddenFor2(m => m.Items[i].ProjectOpenStatus)
+                            @item.ProjectOpenStatus
+                        }
+                    </td>
+                    @if (user.HasAccess(SystemAccessEnum.ViewPipelineData)
+                    || user.HasAccess(SystemAccessEnum.EditPipelineData))
+                    {
+                        <td>
+                            @if (Model.Items[i].IsEditable
+                                && user.HasAccess(SystemAccessEnum.EditPipelineData))
+                            {
+                                @Html.DropDownProjectLeadStatusTypeListFor(m => m.Items[i].ProjectLeadStatusId, Model.ProjectLeadStatusTypes)
+                                @Html.HiddenFor2(m => m.Items[i].ProjectLeadStatus)
+                            }
+                            else
+                            {
+                                @Html.HiddenFor2(m => m.Items[i].ProjectLeadStatusId)
+                                @Html.HiddenFor2(m => m.Items[i].ProjectLeadStatus)
+                                @item.ProjectLeadStatus
+                            }
+                        </td>
+                    }
+                    <td>
+                        @if (Model.Items[i].IsEditable)
+                        {
+                            @Html.EditorFor(m => m.Items[i].BidDate)
+                        }
+                        else
+                        {
+                            @Html.HiddenFor2(m => m.Items[i].BidDate)
+                            @Html.DisplayFor(m => m.Items[i].BidDate)
+                        }
+                    </td>
+                    <td>
+                        <span class="@((item.EstimatedClose < DateTime.Now) ? "invalid" : "")">
+                            @if (Model.Items[i].IsEditable)
+                            {
+                                @Html.EditorFor(m => @m.Items[i].EstimatedClose)
+                            }
+                            else
+                            {
+                                @Html.HiddenFor2(m => m.Items[i].EstimatedClose)
+                                @Html.DisplayFor(m => m.Items[i].EstimatedClose)
+                            }
+                        </span>
+                    </td>
+                    <td>
+                        @if (Model.Items[i].IsEditable)
+                        {
+                            @Html.EditorFor(q => q.Items[i].EstimatedDelivery)
+                        }
+                        else
+                        {
+                            @Html.HiddenFor2(m => m.Items[i].EstimatedDelivery)
+                            @Html.DisplayFor(m => m.Items[i].EstimatedDelivery)
+                        }
+                    </td>
+
+
+                    @if (user.ShowPrices)
+                    {
+                        <td>
+                            @Html.DisplayFor(q => q.Items[i].ActiveQuoteSummary.TotalList)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(q => q.Items[i].ActiveQuoteSummary.TotalNet)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(q => q.Items[i].ActiveQuoteSummary.TotalSell)
+                        </td>
+
+                    }
+                    
+                    @if (canViewDiscountStatus)
+                    {
+                        var dr = Model.Items[i].ActiveDiscountRequestSummary;
+                        <td>
+                            @if (dr != null
+                                && !String.IsNullOrWhiteSpace(dr.DiscountRequestStatusTypeDescription))
+                            {
+                                @Html.ActionLink(dr.DiscountRequestStatusTypeDescription, "DiscountRequest", new { discountRequestId = dr.DiscountRequestId })
+                            }
+                        </td>
+                    }
+                    <td>
+                        @Html.DisplayFor(q => q.Items[i].ActiveQuoteSummary.VRVOutdoorCount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(q => q.Items[i].ActiveQuoteSummary.SplitCount)
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+
+    </table>
+</div>
+
+<div class="pager">@Html.Pager(Model, true)</div>
+<script>
+    $(function () {
+        //tablehelper.setColumnIds('projects_table_edit').enableAlertCellPopups();
+        tablehelper.setColumnIds('projects_table').enableAlertCellPopups();
+        var i;
+        var count = @Model.Items.Count;
+        for(i=0; i < count; i++)
+        {
+            $("#Items_" + i + "__ProjectLeadStatusId option[value='3']").attr('disabled', true);
+            $("#Items_" + i + "__ProjectLeadStatusId option[value='4']").attr('disabled',true);
+        }
+
+        
+    });
+    
+</script>

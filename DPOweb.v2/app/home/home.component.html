@@ -1,0 +1,37 @@
+﻿
+<div id="home-bg">
+    <div class="row no-gutters">
+        <div class="pull-right" style="padding:20px 20px 20px 20px">
+            <div class="dropdown pull-left">
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                    Display
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right display-menu">
+                    <li *ngFor="let link of links">
+                        <!--<a (click)="link.show = !link.show"><input type="checkbox" [(ngModel)]="link.show" /> {{link.text}}</a>-->
+                        <a><input class="checkbox-large" type="checkbox" [(ngModel)]="link.show" /> {{link.text}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div *ngFor="let link of links">
+        <div *ngIf="link.show">
+            <div class="col-md-2 col-xs-4">
+                <div class="text-center">
+                    <a href="{{link.url}}"><img src="{{link.image}}" alt="{{link.altText}}" class="img-responsive home-icon-image" width="170" height="170" /></a>
+
+                    <!--<a *ngIf="link.url == '/v2/#/products'; else elseBlock" (click)="browseProducts()"><img src="{{link.image}}" alt="{{link.altText}}" class="img-responsive home-icon-image" width="170" height="170" /></a>
+                    <ng-template #elseBlock>
+                        <a href="{{link.url}}"><img src="{{link.image}}" alt="{{link.altText}}" class="img-responsive home-icon-image" width="170" height="170" /></a>
+                    </ng-template>-->
+                    
+                </div>
+                <div class="text-center home-icon-text">{{link.text}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+

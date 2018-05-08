@@ -1,0 +1,260 @@
+﻿@{
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+
+<div class="btn-bar" ng-controller="quoteButtonBarController">
+    
+    @if(user.ShowPrices)
+    { 
+        if(!Model.IsCommission)
+        { 
+          <a style="visibility:hidden;" id="ShowOrderFormBtn" href="@Url.Action("OrderForm", "Projectdashboard", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })" class="submit-btn h-slim">
+            @ResourceUI.SubmitOrder
+         </a>
+        }
+    }
+
+    @if (user.HasAccess(SystemAccessEnum.EditProject)
+        && !Model.IsTransferred
+        && !Model.HasDAR
+        && Model.ProjectStatusTypeId != (byte)ProjectStatusTypeEnum.Inactive ||
+           Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.AwaitingCSR ||
+           Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Submitted)
+    {
+        if (user.HasAccess(SystemAccessEnum.UndeleteProject) && Model.Deleted)
+        {
+            <a href="#" sc-ajaxpost="@Url.Action("QuoteUnDelete")" class="btn h-slim">
+                <img src="~/Images/context-btn-delete-icon.png" />
+                @ResourceUI.QuoteUndelete
+            </a>
+        }
+    }
+
+    @if (Model.Deleted == false)
+    {
+        if (user.HasAccess(SystemAccessEnum.EditProject)
+            && !Model.IsTransferred
+            &&  Model.ProjectStatusTypeId != (byte)ProjectStatusTypeEnum.Inactive ||
+                Model.ProjectStatusTypeId != (byte)ProjectStatusTypeEnum.ClosedWon ||
+                Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.AwaitingCSR ||
+                Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Submitted) //Don Carroll Removed " && !Model.HasDAR" part of this if statement at the request of Depaak on 7/28/2015 so that a quote could be set to the active quote even if it has a DAR.
+        {
+            if (Model.Active == false)
+            {
+                <a href="#" sc-ajaxpost="@Url.Action("QuoteSetActive")" class="submit-btn h-slim" id="btnSetQuoteActive">
+                    @ResourceUI.QuoteSetAsActive
+                </a>
+            }
+
+            if (!Model.IsCommission)
+            {
+               if (user.HasAccess(SystemAccessEnum.EditProject) && Model.IsTransferred == false && ViewBag.Title != ResourceUI.QuotePrint && !Model.HasDAR)
+               {
+                 if (Model.ProjectStatusTypeId != (byte)ProjectStatusTypeEnum.Inactive &&
+                     Model.ProjectStatusTypeId != (byte)ProjectStatusTypeEnum.ClosedWon &&
+                     Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.AwaitingCSR &&
+                     Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Submitted)
+                 {
+                    <a href="@Url.Action("QuoteEdit", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })" class="btn h-slim">
+                        <img src="~/Images/context-btn-edit-icon.png" style="top: 3px;" />
+                        @ResourceUI.QuoteEdit
+                    </a>
+
+                    <a href="#" sc-ajaxpost="@Url.Action("QuoteDelete")" class="btn h-slim">
+                        <img src="~/Images/context-btn-delete-icon.png" />
+                        @ResourceUI.QuoteDelete
+                    </a>
+
+                      if (user.HasAccess(SystemAccessEnum.RequestDiscounts) && user.ShowPrices && Model.ProjectStatusTypeId == (int)ProjectStatusTypeEnum.Open)
+                      {
+                            <a id="requestDiscountBtn" href="@Url.Action("DiscountRequest", "Projectdashboard", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })" class="btn h-slim">
+                                <img src="~/Images/request.png" width="17" height="17" />
+                                Request Discount
+                            </a>
+                      }
+                 }
+              }
+            }
+            else
+            {
+
+                if (user.HasAccess(SystemAccessEnum.EditProject) && Model.IsTransferred == false && ViewBag.Title != ResourceUI.QuotePrint &&
+                        Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved &&
+                        Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Pending &&
+                        Model.ProjectStatusTypeId != (byte)ProjectStatusTypeEnum.Inactive &&
+                        Model.ProjectStatusTypeId != (byte)ProjectStatusTypeEnum.ClosedWon &&
+                        Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.AwaitingCSR &&
+                        Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Submitted
+                        )
+                {
+                    <a href="@Url.Action("QuoteEdit", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })" class="btn h-slim">
+                        <img src="~/Images/context-btn-edit-icon.png" style="top: 3px;" />
+                        @ResourceUI.QuoteEdit
+                    </a>
+
+                    <a href="#" sc-ajaxpost="@Url.Action("QuoteDelete")" class="btn h-slim">
+                        <img src="~/Images/context-btn-delete-icon.png" />
+                        @ResourceUI.QuoteDelete
+                    </a>
+
+                    if (user.ShowPrices && user.HasAccess(SystemAccessEnum.RequestCommission))
+                    {
+                        if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Rejected &&
+                            Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Deleted &&
+                            Model.ProjectStatusTypeId != (byte)ProjectStatusTypeEnum.Inactive &&
+                            Model.ProjectStatusTypeId != (byte)ProjectStatusTypeEnum.ClosedWon &&
+                            Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.AwaitingCSR &&
+                            Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Submitted)
+                        {
+
+                            <a href="@Url.Action("CommissionRequest", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId, CommissionRequestId = Model.CommissionRequestId})" class="btn h-slim">
+                                <img src="~/Images/request.png" width="17" height="17" />
+                                @ResourceUI.RequestCommission
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("CommissionRequest", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId})" class="btn h-slim">
+                                <img src="~/Images/request.png" width="17" height="17" />
+                                @ResourceUI.RequestCommission
+                            </a>
+                        }
+                    }
+                }
+                
+                }
+
+            }
+        }
+
+    <a id="quote_print_modal_trigger" href="#" class="btn h-slim">
+        <img src="~/Images/print.png" width="17" height="17" />
+        @ResourceUI.QuotePrint
+    </a>
+    <a id="quote_download_modal_trigger" href="#" class="btn h-slim">
+        <img src="~/Images/download.png" width="17" height="17" />
+        @ResourceUI.QuoteDownload
+    </a>
+
+    <a href="@Url.Action("QuotePackage","ProjectDashboard", new { Id = Model.ProjectId, QuoteId = Model.QuoteId })" class="btn h-slim" id="quoteSubmittalPackageBtn">
+        <img src="~/Images/package-quote-icon.png" style="position: relative; top: 6px;" />
+        @ResourceUI.QuotePackage
+    </a>
+
+    @if (user.HasAccess(SystemAccessEnum.EditProject))
+    {
+        if (!Model.HasDAR &&
+            Model.ProjectStatusTypeId != (int)ProjectStatusTypeEnum.Inactive &&
+            Model.ProjectStatusTypeId != (int)ProjectStatusTypeEnum.ClosedWon &&
+            Model.OrderStatusTypeId != (int)OrderStatusTypeEnum.AwaitingCSR &&
+            Model.OrderStatusTypeId != (int)OrderStatusTypeEnum.Submitted &&
+            Model.AwaitingCommissionRequest == false &&
+            Model.CommissionRequestStatusTypeId != (int)CommissionRequestStatusTypeEnum.Pending)
+        {
+               <a href="#" sc-ajaxpost="@Url.Action("QuoteDuplicate")" class="btn h-slim">
+                <img src="~/Images/context-btn-duplicate-icon.png" />
+                  @ResourceUI.QuoteDuplicate
+               </a>
+        }
+        else if (Model.HasDAR &&
+                 !Model.AwaitingDiscountRequest == true &&
+                 Model.ProjectStatusTypeId != (int)ProjectStatusTypeEnum.Inactive &&
+                 Model.ProjectStatusTypeId != (int)ProjectStatusTypeEnum.ClosedWon &&
+                 Model.OrderStatusTypeId != (int)OrderStatusTypeEnum.AwaitingCSR &&
+                 Model.OrderStatusTypeId != (int)OrderStatusTypeEnum.Submitted &&
+                 Model.DiscountRequestStatusTypeId != (int)DiscountRequestStatusTypeEnum.Pending )
+        {
+            <a href="#" sc-ajaxpost="@Url.Action("QuoteDuplicate")" class="btn h-slim">
+                <img src="~/Images/context-btn-duplicate-icon.png" />
+                @ResourceUI.QuoteDuplicate
+            </a>
+        }
+    }
+</div>
+
+@*TODO no need to use these client script to create Dar pdf and Commission pdf.
+ need to be remove by 11/30/2016--Aaron Nguyen*@
+@*@if (Model.HasDAR)
+{
+                    @Html.Partial("DARConfirmExportTypeModal")
+                    <div class="btn-bar" style="display:none;">
+        <a href="#" id="discount_request_print_modal_trigger" class="btn">Print Request</a>
+    </div>
+    @Html.Hidden("createDARpdf", true);
+        }
+
+@if (Model.HasCOM)
+        {
+            @Html.Partial("CommissionConfirmExportTypeModel")
+            <div class="btn-bar" style="display:none;">
+        <a href="#" id="commission_request_print_modal_trigger" class="btn">Print Request</a>
+    </div>
+    @Html.Hidden("createCOMpdf", true);
+    }*@
+
+<script type="text/javascript">
+    $('#btnQuoteSetActive').on('click', function(){
+        //$.post("Projectdashboard/QuoteSetActive", { model = @Model});
+
+        @*$.ajax({
+            url: '@Url.Action("QuoteSetActive", "Projectdashboard")',
+            data: JSON.stringify(@Model),
+            success: alert('success'),
+            error: alert('errors'),
+            cache: false,
+            type: 'POST',
+            contentType: 'application/json, charset=utf-8',
+            dataType: 'json'
+        });*@
+
+        @*var myData = $('#QuoteForm').serialize();
+        $.ajax({
+            url: '@Url.Action("Quote/QuoteSetActive", "Projectdashboard")',
+            type: 'POST',
+            data: JSON.stringify(myData),
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            success: function(data)
+            {
+                alert('OK');
+            },
+            error: function()
+            {
+                alert('BAD');
+    }
+        });*@
+    });
+
+    $(document).ready(function () {
+        var active = @Html.Raw(Json.Encode(Model.Active));
+
+        if(active == "true")
+        {
+            $('#btnQuoteSetActive').visible(false);
+        }
+    });
+
+</script>
+
+<script type="text/javascript">
+    function QuoteButtonBarViewModel() {
+        var self = this;
+        self.projectId = @Html.Raw(Json.Encode(Model.ProjectIdStr));
+        self.projectIdStr =  @Html.Raw(Json.Encode(Model.ProjectIdStr));
+        self.quoteId = @Html.Raw(Json.Encode(Model.QuoteIdStr));
+        self.quoteIdStr = @Html.Raw(Json.Encode(Model.QuoteIdStr));
+    }
+
+    $('#ShowOrderFormBtn').click(function(){
+        
+        var createDARpdf = $('#createDARpdf').val();
+        var createCOMpdf = $('#createCOMpdf').val();
+        if( createDARpdf == "True")
+        {
+            $('#discount_request_print_modal_trigger')[0].click();
+        }
+        if( createCOMpdf == "True")
+        {
+            $('#commission_request_print_modal_trigger')[0].click();
+        }
+    });
+</script>

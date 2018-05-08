@@ -1,0 +1,62 @@
+﻿@model CommunicationsCentreVideoModel
+@{
+    ViewBag.Title = "Daikin City Content Management";
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers")
+}
+
+@Html.Partial("_CityCMSTabsPartial")
+
+
+<ul class="breadcrumbs">
+    <li><a href="@Url.Action("CommunicationsCenter", "CityCMS")">Communications Center</a></li>
+    <li>Video Image Upload</li>
+</ul>
+
+<div class="section t-flush b-flush">
+    <div class="item-strap btm-bdr">
+        <div class="itemname">
+            <h1>Video Image Upload</h1>
+        </div>
+        <div class="btn-bar">
+            <input type="button" value="Reset Changes" class="btn" style="visibility:hidden;">
+        </div>
+    </div>
+</div>
+<br />
+@Html.PageMessages()
+<div class="section form">
+    @using (Html.BeginForm("UploadCommsCenterVideoImage", "CityCMS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(m => m.id)
+        @Html.HiddenFor(m => m.thumb)
+        @Html.HiddenFor(m => m.title)
+        @Html.HiddenFor(m => m.url)
+        @Html.AntiForgeryToken()
+        <h4>current image</h4>
+        
+        string thumbSrc = Model.thumb.Contains("http") ? Model.thumb : "/daikincityweb/images/buildings/communications-center/" + Model.thumb;
+        
+        <img src="@thumbSrc" />
+        <br />
+        <br />
+        @Html.PageMessages()
+        <label for="importFile">Please select an image to upload</label>
+        <i style="font-size: 0.9em;">(Please note: image must be a JPEG/PNG/GIF file with 192px x 108px dimensions)</i>
+        <br />
+        <br />
+        <input id="importfile" type="file" name="importfile">
+        <br />
+        <br />
+        <br />
+        <a href="@Url.Action("CommunicationsCenter","CityCMS")" class="btn cancel-btn">@ResourceUI.Cancel</a>
+        <button type="submit" class="submit-btn">Upload</button>
+    }
+</div>

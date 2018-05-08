@@ -1,0 +1,21 @@
+import { drawing } from '@progress/kendo-drawing';
+import { ConfigurationService } from '../../common/configuration.service';
+import { SettingsComponent } from '../../common/settings.component';
+import { Border, MarkersVisualArgs, MarkerType } from '../../common/property-types';
+import { SeriesMarkers } from '../../common/property-types';
+/**
+ * @hidden
+ */
+export declare abstract class SeriesMarkersComponentGenerated extends SettingsComponent implements SeriesMarkers {
+    configurationService: ConfigurationService;
+    background: string;
+    border: Border;
+    rotation: number;
+    size: number;
+    type: MarkerType;
+    visible: boolean;
+    visual: (e: MarkersVisualArgs) => drawing.Element;
+    from: SeriesMarkers;
+    to: SeriesMarkers;
+    constructor(configurationService: ConfigurationService);
+}

@@ -1,0 +1,104 @@
+﻿<project-tabs [user]="user"></project-tabs>
+
+<div id="main-container" class='container-fluid'>
+
+    <ul class="breadcrumbs">
+        <li><a href="/v2/#/projects">Projects</a></li>
+        <!--<li><a href="/ProjectDashboard/Project?ProjectId={{quote.projectId}}">{{quote.project.name}}</a></li>-->
+        <li><a href="/v2/#/project/{{quote.projectId}}">{{quote.project.name}}</a></li>
+        <li *ngIf="action == 'quoteCreate'">Add New Quote</li>
+        <li *ngIf="action == 'quoteEdit'">Edit Quote</li>
+    </ul>
+
+    <h4 *ngIf="action == 'quoteCreate'">Add New Quote</h4>
+    <h4 *ngIf="action == 'quoteEdit'">Edit Quote</h4>
+    <form #quoteEditForm="ngForm" novalidate>
+        <fieldset>
+            <legend>Quote Details</legend>
+
+            <div class="row">
+                <div class="form-group col-md-6 col-xs-12">
+                    <label class="control-label required">Quote Title</label>
+                    <input type="text" class="form-control" #quoteTitle="ngModel" required name="quoteTitle" [(ngModel)]="quote.title">
+                    <div *ngIf="quoteTitle.touched && quoteTitle.invalid" class="alert alert-danger">
+                        Quote title is required
+                    </div>
+                </div>
+
+                <div class="form-group col-md-3 col-xs-12">
+                    <label class="control-label">Freight Costs</label>
+                    <input type="number" class="form-control" #totalFreight="ngModel" required name="totalFreight" [(ngModel)]="quote.totalFreight">
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-md-6 col-xs-12">
+                    <label class="control-label">Quote Description</label>
+                    <textarea class="form-control" #description="ngModel" name="description" [(ngModel)]="quote.description"></textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-6 col-xs-12">
+                    <label class="control-label">Notes</label>
+                    <textarea class="form-control" #notes="ngModel" name="notes" [(ngModel)]="quote.notes"></textarea>
+
+                </div>
+            </div>
+
+        </fieldset>
+
+        <fieldset>
+            <legend>Pricing Details</legend>
+
+            <div class="row">
+                <label class="control-label col-md-2 col-xs-12">Pricing Type:</label>
+                <span class="col col-md-2 col-xs-6">
+                    <input type="radio" name="pricingType" [(ngModel)]="quote.isCommission" [value]="false"> Buy/Sell<br>
+                </span>
+                <span *ngIf="canRequestCommission" class="col col-md-2 col col-xs-6">
+                    <input type="radio" name="pricingType" [(ngModel)]="quote.isCommission" [value]="true"> Commission Only<br>
+                </span>
+            </div>
+
+
+            <div *ngIf="!quote.isCommission" class="row">
+                <label class="control-label col-md-2 col-xs-12">Pricing Method:</label>
+                <span class="col col-md-2 col-xs-6">
+                    <input type="radio" name="pricingMethod" [(ngModel)]="quote.isGrossMargin" [value]="true"> Gross Margin<br>
+                </span>
+                <span class="col col-md-2 col-xs-6">
+                    <input type="radio" name="pricingMethod" [(ngModel)]="quote.isGrossMargin" [value]="false"> Mark up<br>
+                </span>
+            </div>
+
+            <div *ngIf="!quote.isCommission" class="row">
+                <span class="col col-md-2 col-xs-12">
+                    <label>Commission Percentage:</label>
+                </span>
+                <span class="col col-md-2 col-xs-12">
+                    <!--<input type="number" class="form-control" #commissionPercentage="ngModel" name="commissionPercentage" [(ngModel)]="quote.commissionPercentage">-->
+                    <kendo-numerictextbox [(ngModel)]="quote.commissionPercentage"
+                                          name="commissionPercentage"
+                                          [min]="0" [max]="1" [step]="0.01" [decimals]="2" [format]="'p'" [autoCorrect]="true">
+                    </kendo-numerictextbox>
+                    <div class="grey-text-italic">Enter value from 0.01 to 1.00</div>
+                </span>
+            </div>
+
+        </fieldset>
+
+        <div class="text-center">
+            <div style="padding:10px;">
+                <button class="btn btn-default" style="width:70px;" (click)="cancel()">Cancel</button>
+                <button class="btn btn-primary" style="width:70px;" (click)="submit()" type="submit" [disabled]="quoteEditForm.invalid" id="quoteEditSubmitBtn">Submit</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<!--<p>quote.isCommission: {{quote.isCommission}}</p>
+<p>quote.isGrossMargin: {{quote.isGrossMargin}}</p>-->

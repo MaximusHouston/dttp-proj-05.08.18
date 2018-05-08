@@ -1,0 +1,665 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{608C4A04-1AC7-432D-928D-5C3B51EC8CF6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DPO.Data</RootNamespace>
+    <AssemblyName>DPO.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\..\packages\AutoMapper.5.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmah.Mvc">
+      <HintPath>..\..\packages\Elmah.MVC.2.1.1\lib\net40\Elmah.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.Extended, Version=6.1.0.0, Culture=neutral, PublicKeyToken=05b7e29bdd433584, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\EntityFramework.Extended.6.1.0.95\lib\net45\EntityFramework.Extended.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="envdte, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MiniProfiler, Version=3.2.0.157, Culture=neutral, PublicKeyToken=b44f9351044011a3, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MiniProfiler.3.2.0.157\lib\net40\MiniProfiler.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MiniProfiler.EntityFramework6, Version=3.0.11.0, Culture=neutral, PublicKeyToken=b44f9351044011a3, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MiniProfiler.EF6.3.0.11\lib\net40\MiniProfiler.EntityFramework6.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Context\AccountMultiplier.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Address.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\BillboardPoster.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Brand.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\BrandCompetitorType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Building.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\BuildingFloor.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\BuildingFloorConfiguration.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\BuildingFloorConfigurationsIndoorUnit.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\BuildingFloorLink.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Business.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\BusinessLink.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\BusinessType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\CityArea.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\CitySystem.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\CommissionCalculation.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\CommissionMultiplier.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\CommissionRequest.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\CommissionRequestStatusType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\CommsCenterVideo.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ConstructionType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Contact.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ContactUsFormOption.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ContactUsFormSubject.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Country.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\CustomerType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\C__RefactorLog.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\DaikinEquipmentAtAdvantageType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\DecisionTreeDependancy.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\DecisionTreeNode.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\DecisionTreeSystem.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\DiscountRequest.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\DiscountRequestStatusType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Document.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\DocumentProductLink.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\DocumentType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\DPOContext.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DPOContext.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\DPOContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DPOContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\DPOContext.Entities.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\DPOContext_EF6.Context.cs">
+      <DependentUpon>DPOContext_EF6.Context.tt</DependentUpon>
+      <SubType>Code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Context\Entity.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\FundingType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\GridSetting.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Group.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\HomeScreen.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\InventoryStatus.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\JobRun.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\LibraryDirectory.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\LibraryDocument.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\LibraryDocumentRelationship.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\LineItemOptionType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\LineItemType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Link.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\MultiplierCategoryType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\MultiplierType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\MultiplierTypesMultiplierCategoryType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Order.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\OrderAttachment.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\OrderItem.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\OrderItemOption.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\OrderStatusType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Permission.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\PermissionAudit.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\PermissionType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\PIMAttributeMap.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\PIMAttributeValueMap.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\PIMListOfValuesMap.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\PIMMapType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\PricingType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProbablilityOfCloseType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Product.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductAccessory.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductAccessoryType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductCategory.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductClassCode.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductClassPIM.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductCompressorStage.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductEnergySourceType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductFamily.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductFunctionCategory.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductGasValveType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductHeatExchangerType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductInstallationConfigurationType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductMarketType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductModelType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductMotorSpeedType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductNote.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductNoteType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductPowerVoltageType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductSpecification.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductSpecificationKeyLookup.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductSpecificationLabel.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductStatus.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductSubFamily.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductsWithNoMultiplier.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProductType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Project.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProjectExportType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProjectLeadStatusType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProjectOpenStatusType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProjectPipelineNote.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProjectPipelineNoteType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProjectStatusType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProjectTransfer.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ProjectType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Quote.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\QuoteItem.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\QuoteItemOption.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\RequirementLevel.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\RequirementType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Seed.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\SeedType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\State.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\SubmittalSheetType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\SystemAccess.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\SystemBasisDesignType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Tool.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\UnitaryCommissionCurve.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\UnitInstallationType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\User.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\UserBasketItem.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\UserType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\VerticalMarketType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\VwProductDocument.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\VwProductNote.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\VwProductSpecification.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\VwProductSystemComponent.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\WinLossType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ZoneStrategyType.cs">
+      <DependentUpon>DPOContext.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\DocumentExt.cs" />
+    <Compile Include="Extensions\DocumentProductLinkExt.cs" />
+    <Compile Include="Extensions\BusinessExt.cs" />
+    <Compile Include="Extensions\ContactExt.cs" />
+    <Compile Include="Extensions\AddressExt.cs" />
+    <Compile Include="Extensions\GroupExt.cs" />
+    <Compile Include="Extensions\QuoteExt.cs" />
+    <Compile Include="Extensions\PermissionsExt.cs" />
+    <Compile Include="Context\DPOContext.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DPOContext.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Context\DPOContext_Connection.cs" />
+    <Compile Include="Extensions\UserExt.cs" />
+    <Compile Include="Context\SqlInitializer.cs" />
+    <Compile Include="Models\ProductSpecificationModel.cs" />
+    <Compile Include="Respositories\RepositoryBusinessLinksExt.cs" />
+    <Compile Include="Respositories\RepositoryCommissionMultiplierExt.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Respositories\RepositoryCommissionRequestExt.cs" />
+    <Compile Include="Respositories\RepositoryDocumentExt .cs" />
+    <Compile Include="Respositories\RepositoryDiscountRequestsExt.cs" />
+    <Compile Include="Respositories\RepositoryLinkExt.cs" />
+    <Compile Include="Respositories\RepositoryOrderItemOptionsExt.cs" />
+    <Compile Include="Respositories\RepositoryOrdersExt.cs" />
+    <Compile Include="Respositories\RepositoryQuoteItemOptionsExt.cs" />
+    <Compile Include="Respositories\RepositorySeedExt.cs" />
+    <Compile Include="Respositories\RepositorySystemRoutinesExt.cs" />
+    <Compile Include="Respositories\RepositoryUserBasketExt.cs" />
+    <Compile Include="Respositories\RepositorySystemTypesExt.cs" />
+    <Compile Include="Respositories\RepositoryQuoteItemsExt.cs" />
+    <Compile Include="Respositories\RepositoryProductsExt.cs" />
+    <Compile Include="Respositories\RepositoryQuotesExt.cs" />
+    <Compile Include="Respositories\RepositoryPermissionsExt.cs" />
+    <Compile Include="Respositories\RepositoryProjectsExt.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Respositories\RepositoryGroupsExt.cs" />
+    <Compile Include="Respositories\RepositoryAddressExt.cs" />
+    <Compile Include="Respositories\RepositoryContactExt.cs" />
+    <Compile Include="Respositories\RepositoryBusinessExt.cs" />
+    <Compile Include="Respositories\Repository.cs" />
+    <Compile Include="Respositories\RepositoryUserExt.cs" />
+    <Compile Include="Context\DPOContextExt.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Respositories\RespositoryCityCMSExt.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <EntityDeploy Include="Context\DPOContext.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DPOContext.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="ClassDiagram2.cd" />
+    <None Include="Context\DPOContext.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DPOContext.Context.cs</LastGenOutput>
+      <DependentUpon>DPOContext.edmx</DependentUpon>
+    </None>
+    <None Include="Context\DPOContext.edmx.diagram">
+      <DependentUpon>DPOContext.edmx</DependentUpon>
+    </None>
+    <None Include="Context\DPOContext.Entities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <CustomToolNamespace>DPO.Data</CustomToolNamespace>
+      <TransformOnBuild>False</TransformOnBuild>
+      <LastGenOutput>DPOContext.Entities.cs</LastGenOutput>
+    </None>
+    <None Include="Context\DPOContext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DPOContext.edmx</DependentUpon>
+      <LastGenOutput>DPOContext.cs</LastGenOutput>
+    </None>
+    <None Include="Context\DPOContext_EF6.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DPOContext_EF6.Context.cs</LastGenOutput>
+      <CustomToolNamespace>DPO.Data</CustomToolNamespace>
+    </None>
+    <None Include="Context\EnumGenerator.ttinclude" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\DPO.Common\DPO.Common\DPO.Common.csproj">
+      <Project>{7bc0bb97-5744-4f70-86e2-6b5fefa757ee}</Project>
+      <Name>DPO.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DPO.Common\DPO.Resources\DPO.Resources.csproj">
+      <Project>{0e4dcc1d-edba-433e-bc38-964809f99062}</Project>
+      <Name>DPO.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DPO.Common\FlakeGen\FlakeGen\FlakeGen.csproj">
+      <Project>{c45ef8bc-9493-485e-94e7-020e1d9e083a}</Project>
+      <Name>FlakeGen</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DPO.LightModel\DPO.Model.Light.csproj">
+      <Project>{8ab3678e-4ed3-4f0e-9bf0-93fb9ff60af4}</Project>
+      <Name>DPO.Model.Light</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.SQL.Server.Compact.4.0">
+      <Visible>False</Visible>
+      <ProductName>SQL Server Compact 4.0 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+    <Folder Include="SeedFactory\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

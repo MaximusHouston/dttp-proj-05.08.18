@@ -1,0 +1,66 @@
+﻿
+@model ProductModel
+@{
+    var specs = Model.Specifications;
+}
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Product Model No.</span>
+    <span class="pull-right">@Model.ProductNumber</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Product Model Name:</span>
+    <span class="pull-right">@Model.Name</span>
+</div>
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">AFUE % Rating:</span>
+    <span class="pull-right">@specs.GetDecimal("AFUE", "N0")%</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Rated Heating Capacity (Btu/hr):</span>
+    <span class="pull-right">@specs.GetDecimal("HeatingCapacityRated", "N0")</span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Temperature Rise Range (&deg;F)(Low/High):</span>
+    <span class="pull-right">@specs.GetDecimal("TemperatureRiseRangeLow", "N0") / @specs.GetDecimal("TemperatureRiseRangeHigh", "N0")</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Furnace Input Capacity (Btu/hr):</span>
+    <span class="pull-right">@specs.GetDecimal("HighFireInputCapacity", "N0")</span>
+</div>
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Rated External Static Pressure - inWG:</span>
+    <span class="pull-right">@specs.GetString("ExternalStaticPressureRated")</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Furnace Output Capacity (Btu/hr):</span>
+    <span class="pull-right">@specs.GetDecimal("HighFireOutputCapacity", "N0")</span>
+</div>
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Blower Speed (RPM):</span>
+    <span class="pull-right">@specs.GetDecimal("BlowerMotorRPM", "N0")</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Blower Motor Rating (HP):</span>
+    <span class="pull-right">@specs.GetString("BlowerMotorHorsePower")</span>
+</div>
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Blower Input Power (kW):</span>
+    <span class="pull-right">@specs.GetDecimal("BlowerInputPower", "N2")</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Blower Available AC Tonnage (L/H):</span>
+    <span class="pull-right">@specs.GetDecimal("BlowerAvailableACTonnageLow", "N2") / @specs.GetDecimal("BlowerAvailableACTonnageHigh", "N2")</span>
+</div>
+
+
+
+
+
+

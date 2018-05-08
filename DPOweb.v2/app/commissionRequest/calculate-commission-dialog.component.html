@@ -1,0 +1,173 @@
+﻿<button *ngIf="quote.quoteOptions.canCalculateCommission" class="btn btn-default" data-toggle="modal" data-target="#calculateCommissionPopup" data-backdrop="static"><span class="k-icon k-i-calculator"></span> CALCULATE COMMISSION</button>
+
+<div *ngIf="commissionRequest" id="calculateCommissionPopup" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">OPPORTUNITY COMMISSION AMOUNT REQUESTED</h4>
+            </div>
+            <div class="modal-body ">
+                <div>Total net price based on requested commissions</div>
+                
+                <!-----------------VRV----------------->
+                <!--TODO: should add missing Commission Percentages for Multiplier 0.201 -> 2.369 in database to avoid confusion-->
+                <hr>
+                <div class="row row-eq-height" *ngIf="commissionRequest.approvedTotalsCommission.totalListVRV > 0" style="padding-left:15px; padding-right:15px;">
+
+                    <div class="col col-xs-12 col-md-8 commission-form-left-section">
+                        <div>Enter sell multiplier for VRV and Accessories in this opportunity?</div>
+                        <div>
+                            <kendo-numerictextbox [(ngModel)]="commissionRequest.requestedMultiplierVRV" 
+                                                  [min]="0.2" [max]="1.5" [step]="0.001" [decimals]="3" [format]="'n3'" [autoCorrect]="true"
+                                                  (ngModelChange)="calculateDiscountAmountVRV($event)">
+                            </kendo-numerictextbox>
+                        </div>
+                        <div style="color:gray; font-style:italic">Please enter the range between 0.2 and 1.5</div>
+                    </div>
+                    <div class="col col-xs-12 col-md-4 commission-form-right-section">
+                        <div>Total List</div>
+                        <div>{{commissionRequest.approvedTotalsCommission.totalListVRV | currency:'USD':true:'1.2-2'}}</div>
+                        <div>Total Net</div>
+                        <div>{{commissionRequest.totalNetVRV | currency:'USD':true:'1.2-2'}}</div>
+                        <div>Approved Commission Percent</div>
+                        <div>{{commissionRequest.requestedCommissionPercentageVRV | number: '1.0-3'}}%</div>
+                        <div>Commission Amount</div>
+                        <div>{{commissionRequest.requestedCommissionVRV | currency:'USD':true:'1.2-2'}}</div>
+                        <div>Net Material Value Multiplier</div>
+                        <div>{{commissionRequest.requestedNetMaterialMultiplierVRV | number: '1.0-3'}}</div>
+                        <div>Net Material Value</div>
+                        <div>{{commissionRequest.requestedNetMaterialValueVRV | currency:'USD':true:'1.2-2'}}</div>
+                    </div>
+
+                </div>
+                
+                <!-----------------Ductless----------------->
+                <hr>
+                <div class="row row-eq-height" *ngIf="commissionRequest.approvedTotalsCommission.totalListSplit > 0" style="padding-left:15px; padding-right:15px;">
+                    <div class="col col-xs-12 col-md-8 commission-form-left-section">
+                        <div>Enter sell multiplier for Ductless in this opportunity?</div>
+                        <div>
+                            <kendo-numerictextbox [(ngModel)]="commissionRequest.requestedMultiplierSplit" 
+                                                  [min]="0.35" [max]="1.5" [step]="0.001" [decimals]="3" [format]="'n3'" [autoCorrect]="true"
+                                                  (ngModelChange)="calculateDiscountAmountSplit($event)">
+                            </kendo-numerictextbox>
+                        </div>
+                        <div style="color:gray; font-style:italic">Please enter the range between 0.35 and 1.5</div>
+                    </div>
+                    <div class="col col-xs-12 col-md-4 commission-form-right-section">
+                        <div>Total List</div>
+                        <div>{{commissionRequest.approvedTotalsCommission.totalListSplit | currency:'USD':true:'1.2-2'}}</div>
+                        <div>Total Net</div>
+                        <div>{{commissionRequest.totalNetSplit | currency:'USD':true:'1.2-2'}}</div>
+                        <div>Approved Commission Percent</div>
+                        <div>{{commissionRequest.requestedCommissionPercentageSplit | number: '1.0-3'}}%</div>
+                        <div>Commission Amount</div>
+                        <div>{{commissionRequest.requestedCommissionSplit | currency:'USD':true:'1.2-2'}}</div>
+                        <div>Net Material Value Multiplier</div>
+                        <div>{{commissionRequest.requestedNetMaterialMultiplierSplit | number: '1.0-3'}}</div>
+                        <div>Net Material Value</div>
+                        <div>{{commissionRequest.requestedNetMaterialValueSplit | currency:'USD':true:'1.2-2'}}</div>
+                    </div>
+
+                </div>
+
+               
+                <!-----------------Unitary----------------->
+                <hr>
+                <div class="row row-eq-height" *ngIf="commissionRequest.approvedTotalsCommission.totalListUnitary > 0" style="padding-left:15px; padding-right:15px;">
+
+                    <div class="col col-xs-12 col-md-8 commission-form-left-section">
+                        <div>Enter sell multiplier for Unitary in this opportunity?</div>
+                        <div>
+                            <kendo-numerictextbox [(ngModel)]="commissionRequest.requestedMultiplierUnitary" 
+                                                  [min]="0.8" [max]="1.0" [step]="0.01" [decimals]="2" [format]="'n2'" [autoCorrect]="true"
+                                                  (ngModelChange)="calculateDiscountAmountUnitary($event)">
+                            </kendo-numerictextbox>
+                        </div>
+                        <div style="color:gray; font-style:italic">Please enter the range between 0.8 and 1.0</div>
+                    </div>
+                    <div class="col col-xs-12 col-md-4 commission-form-right-section">
+                        <div>Total List</div>
+                        <div>{{commissionRequest.approvedTotalsCommission.totalListUnitary | currency:'USD':true:'1.2-2'}}</div>
+                        <div>Total Net</div>
+                        <div>{{commissionRequest.totalNetUnitary | currency:'USD':true:'1.2-2'}}</div>
+                        <div>Approved Commission Percent</div>
+                        <div>{{commissionRequest.requestedCommissionPercentageUnitary| number: '1.0-3'}}%</div>
+                        <div>Commission Amount</div>
+                        <div>{{commissionRequest.requestedCommissionUnitary | currency:'USD':true:'1.2-2'}}</div>
+                        <div>Net Material Value Multiplier</div>
+                        <div>{{commissionRequest.requestedNetMaterialMultiplierUnitary | number: '1.0-3'}}</div>
+                        <div>Net Material Value</div>
+                        <div>{{commissionRequest.requestedNetMaterialValueUnitary | currency:'USD':true:'1.2-2'}}</div>
+                    </div>
+
+                </div>
+
+                <!-----------------LC Package----------------->
+                <hr>
+                <div class="row row-eq-height" *ngIf="commissionRequest.approvedTotalsCommission.totalListLCPackage > 0" style="padding-left:15px; padding-right:15px;">
+                    <div class="col col-xs-12 col-md-8 commission-form-left-section">
+                        <div>Enter sell multiplier for LC Package in this opportunity?</div>
+                        <div>
+                            <kendo-numerictextbox [(ngModel)]="commissionRequest.requestedMultiplierLCPackage" 
+                                                  [min]="0.75" [max]="1.0" [step]="0.01" [decimals]="2" [format]="'n2'" [autoCorrect]="true"
+                                                  (ngModelChange)="calculateDiscountAmountLCPackage($event)">
+                            </kendo-numerictextbox>
+                        </div>
+                        <div style="color:gray; font-style:italic">Please enter the range between 0.75 and 1.0</div>
+                    </div>
+                    <div class="col col-xs-12 col-md-4 commission-form-right-section">
+                        <div>Total List</div>
+                        <div>{{commissionRequest.approvedTotalsCommission.totalListLCPackage | currency:'USD':true:'1.2-2'}}</div>
+                        <div>Total Net</div>
+                        <div>{{commissionRequest.totalNetLCPackage | currency:'USD':true:'1.2-2'}}</div>
+                        <div>Approved Commission Percent</div>
+                        <div>{{commissionRequest.requestedCommissionPercentageLCPackage | number: '1.0-3'}}%</div>
+                        <div>Commission Amount</div>
+                        <div>{{commissionRequest.requestedCommissionLCPackage | currency:'USD':true:'1.2-2'}}</div>
+                        <div>Net Material Value Multiplier</div>
+                        <div>{{commissionRequest.requestedNetMaterialMultiplierLCPackage | number: '1.0-3'}}</div>
+                        <div>Net Material Value</div>
+                        <div>{{commissionRequest.requestedNetMaterialValueLCPackage | currency:'USD':true:'1.2-2'}}</div>
+                    </div>
+
+                </div>
+
+                <!-----------------TOTALS----------------->
+                <hr>
+                <div class="row row-eq-height" *ngIf="commissionRequest.approvedTotalsCommission.totalList > 0" style="padding-left:15px; padding-right:15px;">
+                    <div class="col col-xs-12 col-md-8 commission-form-left-section">
+                        <h4>TOTAL COMMISSION</h4>
+                        <label>Total Net Multiplier</label>
+                        <div>{{commissionRequest.requestedMultiplier | number: '1.0-3'}}</div>
+                    </div>
+                    <div class="col col-xs-12 col-md-4 commission-form-right-section">
+                        <div>Total List</div>
+                        <div>{{commissionRequest.approvedTotalsCommission.totalList | currency:'USD':true:'1.2-2'}}</div>
+                        <div>Total Net</div>
+                        <div>{{commissionRequest.totalNet| currency:'USD':true:'1.2-2'}}</div>
+                        <div>Approved Commission Percent</div>
+                        <div>{{commissionRequest.requestedCommissionPercentage | number: '1.0-3'}}%</div>
+                        <div>Commission Amount</div>
+                        <div>{{commissionRequest.requestedCommissionTotal | currency:'USD':true:'1.2-2'}}</div>
+                        <div>Net Material Value Multiplier</div>
+                        <!--<div>{{commissionRequest.requestedNetMaterialMultiplier| number: '1.0-3'}}</div>-->
+                        <div>{{commissionRequest.requestedNetMaterialValueMultiplier| number: '1.0-3'}}</div>
+                        <div>Net Material Value</div>
+                        <div>{{commissionRequest.requestedNetMaterialValue | currency:'USD':true:'1.2-2'}}</div>
+                    </div>
+
+                </div>
+
+              
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="cancel()">Cancel</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="save()">Save</button>
+            </div>
+        </div>
+
+    </div>
+</div>

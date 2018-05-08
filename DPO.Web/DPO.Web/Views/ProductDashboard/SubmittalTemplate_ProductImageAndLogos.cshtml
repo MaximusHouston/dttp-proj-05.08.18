@@ -1,0 +1,30 @@
+﻿@model ProductModel
+@{
+    var idPdf = (bool)ViewData["PdfMode"];
+}
+
+<div class="col-half pad-top">
+    @if (ViewBag.UnitTypeLabel != null)
+    {
+        <h4>@ViewBag.UnitTypeLabel</h4>
+    }
+    else
+    {
+        <h4>&nbsp;</h4>
+    }
+
+    <img src="@((idPdf) ? Model.Image.AbsoultePath : Model.Image.URL)" class="product-image" onerror="this.onerror = null; this.src = '/Images/NoImage.png'" />
+    @if (Model.Logos.Count > 0)
+    {
+        <div class="pad-top">
+            @{
+                var logoWidth = 85 / Model.Logos.Count;
+            }
+
+            @foreach (var logo in Model.Logos)
+            {
+                <img src="@((idPdf) ? logo.AbsoultePath : logo.URL)" alt="@logo.Description" style="display:inline-block; max-width : @logoWidth%; vertical-align: middle;" onerror="this.onerror = null; this.src = '/Images/NoImage.png'" />
+            }
+        </div>
+    }
+</div>

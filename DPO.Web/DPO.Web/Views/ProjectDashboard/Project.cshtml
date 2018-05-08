@@ -1,0 +1,121 @@
+﻿@model ProjectModel
+
+@{
+    ViewBag.Title = ResourceUI.ProjectDetails;
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles",
+        "~/Content/css/bootstrap")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/confirmmodal")
+
+}
+
+@Html.Partial("ConfirmModal")
+@Html.Partial("DARAddressValidationModal")
+@Html.Partial("_ProjectTabsPartial")
+
+<ul class="breadcrumbs">
+    <li><a href="/v2/#/projects">@ResourceUI.Projects</a></li>
+    <li>@Model.Name</li>
+</ul>
+@using (Html.BeginForm("ProjectEdit", "Projectdashboard", FormMethod.Post, new { @id = "ProjectEditForm" }))
+{
+    // Key post data
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.ProjectId)
+    @Html.HiddenFor(m => m.Concurrency)
+
+    <div class="section t-flush">
+        <div class="item-strap">
+            <div class="itemname full">
+                <h1>@Model.Name</h1>
+            </div>
+            @Html.Partial("ProjectButtonBar")
+        </div>
+    </div>
+
+    <ul class="sub-tab-bar">
+        <li class="active-tab">
+            @Html.ActionLink(ResourceUI.Overview, "Project", new { ProjectId = Model.ProjectId })
+        </li>
+        <li>
+            @Html.ActionLink(ResourceUI.Quotes, "ProjectQuotes", new { ProjectId = Model.ProjectId })
+        </li>
+    </ul>
+    
+    @Html.PageMessages()
+
+    @Html.Partial("ActiveQuoteInfoBar", Model)
+
+    <div class="section">
+        <div class="row sub-heading">
+            @if (user.HasAccess(SystemAccessEnum.EditProject) && Model.Deleted == false && Model.IsTransferred == false)
+            {
+                if(Model.OrderStatus != (byte)OrderStatusTypeEnum.AwaitingCSR &&
+                   Model.OrderStatus != (byte)OrderStatusTypeEnum.Submitted &&
+                   Model.OrderStatus != (byte)OrderStatusTypeEnum.Picked &&
+                   Model.OrderStatus != (byte)OrderStatusTypeEnum.Shipped)
+                { 
+                  <a href="@Url.Action("ProjectEdit", "Projectdashboard", new { ProjectId = Model.ProjectId })" id="EditProjectDetailBtn" class="context-btn h-slim pull-right">
+                    <img src="~/Images/context-btn-edit-icon.png" />
+                    @ResourceUI.ProjectEditDetails
+                 </a>
+                }
+            }
+            <h4>@ResourceUI.ProjectDetails</h4>
+            <div class="row-end">&nbsp;</div>
+        </div>
+        @Html.Partial("ProjectDetails", Model)
+        <div class="row sub-heading">
+            <h4>@ResourceUI.ProjectAddresses</h4>
+            <div class="row-end">&nbsp;</div>
+        </div>
+        @Html.Partial("ProjectAddressDetails", Model)
+
+        @if (user.HasAccess(SystemAccessEnum.ViewPipelineData)
+            || user.HasAccess(SystemAccessEnum.EditPipelineData))
+        {
+            <div class="row sub-heading">
+                <h4>@ResourceUI.OrderDetails</h4>
+                <div class="row-end">&nbsp;</div>
+            </div>
+            @Html.Partial("ProjectPartials/ProjectOrderDetails", Model)
+
+
+            <div class="row sub-heading">
+                <h4>@ResourceUI.ProjectUpdateNotes</h4>
+                <div class="row-end">&nbsp;</div>
+            </div>
+            <div ui-view>
+                @if (user.HasAccess(SystemAccessEnum.EditPipelineData))
+                {
+                    <update-notes></update-notes>
+                }
+                else
+                {
+                    <display-notes></display-notes>
+                }
+            </div>
+            @*@Html.Partial("ProjectPartials/ProjectUpdateNotes", Model)*@
+        }
+    </div>
+    <div class="clearfix" />
+}
+<script>
+    $(function () {
+        tablehelper.setColumnIds('ProjectQuotesModel_table');
+
+        //delay project deletion until after confirmation
+        $('[data-confirm="ProjectDelete"]').on('click', function () {
+            confirmModal.showConfirmMsg('@ResourceUI.ProjectDelete', '@ResourceUI.ProjectDeleteConfirm', PostAfterConfirm(this, '#ProjectEditForm'));
+        });
+
+        $('.pagemessage-error').hide();
+
+    });
+</script>

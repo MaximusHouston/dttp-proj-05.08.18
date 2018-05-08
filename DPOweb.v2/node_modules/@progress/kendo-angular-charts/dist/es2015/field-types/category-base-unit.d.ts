@@ -1,0 +1,32 @@
+import { BaseUnit } from './base-unit';
+/**
+ * The `baseUnit` type of the category axis.
+ *
+ * @example
+ * ```ts
+ * import { Component } from '@angular/core';
+ * import { CategoryBaseUnit } from '@progress/kendo-angular-charts';
+ *
+ * _@Component({
+ *   selector: 'my-app',
+ *   template: `
+ *     <kendo-chart>
+ *       <kendo-chart-category-axis>
+ *         <kendo-chart-category-axis-item [baseUnit]="baseUnit" >
+ *         </kendo-chart-category-axis-item>
+ *       </kendo-chart-category-axis>
+ *       <kendo-chart-series>
+ *         <kendo-chart-series-item categoryField="category" [data]="data">
+ *         </kendo-chart-series-item>
+ *       </kendo-chart-series>
+ *     </kendo-chart>
+ *   `
+ * })
+ * class AppComponent {
+ *   public baseUnit: CategoryBaseUnit = "months";
+ *   public data: any[] = [{ category: new Date(2000, 0, 1), value: 1 }, { category: new Date(2001, 0, 1), value: 1}];
+ * }
+ *
+ * ```
+ */
+export declare type CategoryBaseUnit = BaseUnit | 'auto' | 'fit';

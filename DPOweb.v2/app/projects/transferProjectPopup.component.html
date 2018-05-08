@@ -1,0 +1,12 @@
+﻿<form role="form">
+    <div class="form-group">
+        <label>Email:</label>
+        <input [(ngModel)]="transferToEmail" name="transferToEmail"/>
+        <div>You will not be able to edit the project once it is transferred to its new owner. Are you sure you want to transfer this project ?</div>
+        <!--<div>projectId: {{selectedProjectId}}</div>-->
+    </div>
+    <div class="row action text-center">
+        <button class="btn btn-primary" (click)="transferProject()">Ok</button>
+        <button class="btn btn-default" (click)="closePopup()">Cancel</button>
+    </div>
+</form>

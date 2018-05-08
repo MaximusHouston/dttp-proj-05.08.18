@@ -1,0 +1,14 @@
+﻿@{
+    Layout = null;
+    @Styles.Render("~/Content/css/pdf-base");
+}
+<div class="footer-print injected pad-top">
+    <div class="c-align" style="margin-bottom: 5px;">Daikin North America LLC, 5151 San Felipe, Suite 500, Houston, TX, 77056</div>
+    <span class="push-right"><a href="http://www.daikinac.com">www.daikinac.com</a> <a href="http://www.daikincomfort.com">www.daikincomfort.com</a></span>
+    <span class="pull-left">Daikin City Commission Request Form - PDF generated @DateTime.UtcNow</span>
+    <div class="pad-top c-align">(Daikin's products are subject to continuous improvements. Daikin reserves the right to modify product design, specifications and information in this data sheet without notice and without incurring any obligations)</div>
+    <br />
+    <div class="pager push-right">
+        Page {page_number} of {total_pages}
+    </div>
+</div>

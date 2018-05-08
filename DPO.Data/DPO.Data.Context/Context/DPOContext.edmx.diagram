@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6bb30078fae948428b6f26db4a9e729d" Name="Main" ZoomLevel="60">
+        <EntityTypeShape EntityType="DPO.Data.AccountMultiplier" Width="1.5" PointX="5.25" PointY="3.5" FillColor="0, 192, 192" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.Contact" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.Permission" Width="1.5" PointX="8.75" PointY="5.625" FillColor="192, 0, 0" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.CityArea" Width="1.5" PointX="7.75" PointY="9.625" FillColor="192, 0, 0" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.UserType" Width="1.5" PointX="3" PointY="3.625" FillColor="Green" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.SystemAccess" Width="1.5" PointX="9.75" PointY="1.625" FillColor="192, 0, 0" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.Country" Width="1.5" PointX="1.5" PointY="7.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.BusinessType" Width="1.5" PointX="0.75" PointY="0.75" FillColor="0, 192, 192" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.Business" Width="1.5" PointX="3" PointY="2.375" FillColor="0, 192, 192" IsExpanded="false" />
+        <AssociationConnector Association="DPO.Data.FK_AccountMultiplier_Business_AccountMultipliers" />
+        <AssociationConnector Association="DPO.Data.FK_Business_BusinessType_Businesses" />
+        <AssociationConnector Association="DPO.Data.FK_Business_Contact_Businesses" />
+        <EntityTypeShape EntityType="DPO.Data.Brand" Width="1.5" PointX="9.75" PointY="3.625" FillColor="192, 0, 0" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.Address" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="false" />
+        <AssociationConnector Association="DPO.Data.FK_Business_Address_Businesses" />
+        <EntityTypeShape EntityType="DPO.Data.State" Width="1.5" PointX="1.5" PointY="5.875" IsExpanded="false" />
+        <AssociationConnector Association="DPO.Data.FK_Address_State_Addresses" />
+        <AssociationConnector Association="DPO.Data.FK_State_Country_States" />
+        <EntityTypeShape EntityType="DPO.Data.UserBasketItem" Width="1.5" PointX="7.5" PointY="2.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.VwProductDocument" Width="2.25" PointX="9.75" PointY="9.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.VwProductSpecification" Width="1.5" PointX="16.25" PointY="6.625" IsExpanded="false" />
+        <AssociationConnector Association="DPO.Data.FK_Group_ParentGroupChildGroups" />
+        <EntityTypeShape EntityType="DPO.Data.Group" Width="1.5" PointX="3" PointY="9.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.VwProductSystemComponent" Width="1.5" PointX="2.875" PointY="11.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.User" Width="1.5" PointX="5.25" PointY="2.375" IsExpanded="false" />
+        <AssociationConnector Association="DPO.Data.FK_User_Address_Users" />
+        <AssociationConnector Association="DPO.Data.FK_User_Business_Users" />
+        <AssociationConnector Association="DPO.Data.FK_User_Contact_Users" />
+        <AssociationConnector Association="DPO.Data.FK_User_Group_Users" />
+        <AssociationConnector Association="DPO.Data.FK_UserBasketItem_User_UserBasketItems" />
+        <AssociationConnector Association="DPO.Data.FK_User_UserType_Users" />
+        <EntityTypeShape EntityType="DPO.Data.DiscountRequest" Width="2.875" PointX="8" PointY="8.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.BillboardPoster" Width="1.5" PointX="12.25" PointY="7.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.BuildingFloorConfiguration" Width="1.5" PointX="5" PointY="11.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.BuildingFloorConfigurationsIndoorUnit" Width="1.5" PointX="12.375" PointY="11.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.BuildingFloorLink" Width="1.5" PointX="11.75" PointY="1.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.BuildingFloor" Width="1.5" PointX="11.75" PointY="3.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.Building" Width="1.5" PointX="14.75" PointY="11.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.CitySystem" Width="1.5" PointX="0.75" PointY="13.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.CommsCenterVideo" Width="1.5" PointX="2.75" PointY="13.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.ContactUsFormOption" Width="1.5" PointX="12.75" PointY="5.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.ContactUsFormSubject" Width="1.5" PointX="4.75" PointY="13.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.DecisionTreeDependancy" Width="1.5" PointX="14.5" PointY="7.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.DecisionTreeNode" Width="1.5" PointX="6.625" PointY="13.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.DecisionTreeSystem" Width="1.5" PointX="12.75" PointY="9.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.HomeScreen" Width="1.5" PointX="11.25" PointY="13.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.LibraryDirectory" Width="1.5" PointX="4.625" PointY="5.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.LibraryDocumentRelationship" Width="1.5" PointX="7" PointY="5.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.LibraryDocument" Width="1.5" PointX="3.75" PointY="7.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.Tool" Width="1.5" PointX="13.375" PointY="13.625" IsExpanded="false" />
+        <AssociationConnector Association="DPO.Data.FK_LibraryDocumentRelationships_LibraryDirectories" />
+        <AssociationConnector Association="DPO.Data.FK_LibraryDocumentRelationships_LibraryDirectories1" />
+        <EntityTypeShape EntityType="DPO.Data.DaikinEquipmentAtAdvantageType" Width="1.5" PointX="5.75" PointY="9.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.ProbablilityOfCloseType" Width="1.5" PointX="5.75" PointY="7.75" IsExpanded="false" />
+        <AssociationConnector Association="DPO.Data.FK_DiscountRequest_DaikinEquipmentAtAdvantageType_DiscountRequests" />
+        <AssociationConnector Association="DPO.Data.FK_DiscountRequest_ProbablilityOfCloseType_DiscountRequests" />
+        <EntityTypeShape EntityType="DPO.Data.ProjectExportType" Width="1.5" PointX="15.375" PointY="13.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.Link" Width="1.5" PointX="13.75" PointY="1.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.RequirementLevel" Width="1.5" PointX="0.75" PointY="9.375" IsExpanded="false" />
+        <AssociationConnector Association="DPO.Data.FK_BusinessTypes_RequirementLevels" />
+        <EntityTypeShape EntityType="DPO.Data.C__RefactorLog" Width="1.5" PointX="0.75" PointY="15.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.JobRun" Width="1.5" PointX="2.75" PointY="15.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.PermissionType" Width="1.5" PointX="5.375" PointY="14.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.Entity" Width="1.5" PointX="15.75" PointY="3.75" IsExpanded="false" />
+        <AssociationConnector Association="DPO.Data.FK_Permissions_PermissionTypes" />
+        <EntityTypeShape EntityType="DPO.Data.MultiplierCategoryType" Width="1.5" PointX="16.125" PointY="15.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.MultiplierType" Width="1.5" PointX="11.375" PointY="15.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.MultiplierTypesMultiplierCategoryType" Width="1.5" PointX="14" PointY="16" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.ProductClassCode" Width="1.875" PointX="16.375" PointY="0.75" IsExpanded="false" />
+        <AssociationConnector Association="DPO.Data.FK_MultiplierTypeMultiplierCategoryTypes_MultiplierTypes" />
+        <EntityTypeShape EntityType="DPO.Data.ProjectPipelineNote" Width="1.5" PointX="7.625" PointY="18" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.ProjectPipelineNoteType" Width="1.5" PointX="5.375" PointY="18.25" IsExpanded="false" />
+        <AssociationConnector Association="DPO.Data.FK_ProjectPipelineNote_ProjectPipelineNoteType" />
+        <EntityTypeShape EntityType="DPO.Data.CommissionMultiplier" Width="2" PointX="18.375" PointY="15.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.CommissionRequestStatusType" Width="1.875" PointX="18.375" PointY="8.875" IsExpanded="false" />
+        <AssociationConnector Association="DPO.Data.FK_CommissionMultipliers_MultiplierCategoryTypes" />
+        <EntityTypeShape EntityType="DPO.Data.CommissionRequest" Width="2.25" PointX="21" PointY="4.5" IsExpanded="false" />
+        <AssociationConnector Association="DPO.Data.FK_CommissionRequests_CommissionRequestStatusTypes" />
+        <EntityTypeShape EntityType="DPO.Data.Quote" Width="2.125" PointX="0.75" PointY="2.875" IsExpanded="false" />
+        <AssociationConnector Association="DPO.Data.FK_DiscountRequest_Quote_DiscountRequests" />
+        <AssociationConnector Association="DPO.Data.FK_CommissionRequest_Quote_CommissionRequests" />
+        <AssociationConnector Association="DPO.Data.FK_CommissionRequests_CommissionRequests" />
+        <AssociationConnector Association="DPO.Data.FK_CommissionRequests_CommissionRequests1" />
+        <AssociationConnector Association="DPO.Data.FK_ProjectPipelineNotes_Users" />
+        <EntityTypeShape EntityType="DPO.Data.CustomerType" Width="1.5" PointX="18.75" PointY="6.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.FundingType" Width="1.5" PointX="18.75" PointY="18.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.WinLossType" Width="1.5" PointX="17.375" PointY="11.875" IsExpanded="false" />
+        <AssociationConnector Association="DPO.Data.FK_CommissionRequests_CustomerType" />
+        <AssociationConnector Association="DPO.Data.FK_CommissionRequests_FundingType" />
+        <AssociationConnector Association="DPO.Data.FK_CommissionRequests_WinLossType" />
+        <EntityTypeShape EntityType="DPO.Data.OrderAttachment" Width="1.5" PointX="25.625" PointY="12.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.OrderStatusType" Width="1.5" PointX="22" PointY="2.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.CommissionCalculation" Width="3.375" PointX="25.875" PointY="15.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.PricingType" Width="1.5" PointX="7.75" PointY="15.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.sysdiagram" Width="1.5" PointX="0.75" PointY="18.75" />
+        <AssociationConnector Association="DPO.Data.FK_CommissionCalculation_CommissionCalculation" />
+        <AssociationConnector Association="DPO.Data.FK_CommissionCalculation_CommissionRequests" />
+        <AssociationConnector Association="DPO.Data.FK_CommissionCalculation_Quote" />
+        <EntityTypeShape EntityType="DPO.Data.GridSetting" Width="1.5" PointX="0.75" PointY="18.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.PermissionAudit" Width="2.25" PointX="13.75" PointY="18.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.UnitInstallationType" Width="1.5" PointX="3.375" PointY="21.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.UnitaryCommissionCurve" Width="2.75" PointX="5.75" PointY="22" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.DocumentType" Width="1.5" PointX="17.75" PointY="21.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.ProductFunctionCategory" Width="1.5" PointX="17.625" PointY="24" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.ProductSubFamily" Width="1.5" PointX="31" PointY="21.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.PIMAttributeValueMap" Width="2.75" PointX="13.125" PointY="27.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.PIMListOfValuesMap" Width="1.5" PointX="21.5" PointY="28.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.ProductAccessoryType" Width="1.5" PointX="10.375" PointY="19.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.ProductCompressorStage" Width="1.5" PointX="33.625" PointY="15.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.ProductGasValveType" Width="1.5" PointX="33.625" PointY="18.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.ProductHeatExchangerType" Width="1.5" PointX="33.625" PointY="13.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.ProductInstallationConfigurationType" Width="1.5" PointX="33.625" PointY="22.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.ProductMotorSpeedType" Width="1.5" PointX="20.25" PointY="25.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.ProductPowerVoltageType" Width="1.5" PointX="33.625" PointY="20.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.PIMMapType" Width="1.5" PointX="16.625" PointY="27.75" IsExpanded="false" />
+        <AssociationConnector Association="DPO.Data.FK_PIMAttributeValueMap_PIMMapType" />
+        <EntityTypeShape EntityType="DPO.Data.PIMAttributeMap" Width="1.5" PointX="19.25" PointY="28.375" IsExpanded="false" />
+        <AssociationConnector Association="DPO.Data.FK_PIMAttributeMap_PIMMapType" />
+        <AssociationConnector Association="DPO.Data.FK_PIMAttributeValueMap_PIMAttributeMap" />
+        <EntityTypeShape EntityType="DPO.Data.ProductType" Width="1.5" PointX="9.625" PointY="22.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.ProductClassPIM" Width="1.5" PointX="24.75" PointY="0.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.ProductEnergySourceType" Width="1.5" PointX="24.75" PointY="3.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="DPO.Data.ProductStatus" Width="1.5" PointX="22.75" PointY="24.75" IsExpanded="false" />
+        <AssociationConnector Association="DPO.Data.FK_ProductStatuses_ProductStatuses" />
+        <EntityTypeShape EntityType="DPO.Data.BusinessLink" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="false" />
+        <AssociationConnector Association="DPO.Data.FK_BusinessLinks_Businesses" />
+        <AssociationConnector Association="DPO.Data.FK_BusinessLinks_ParentBusinesses" />
+        <EntityTypeShape EntityType="DPO.Data.OrderItem" Width="1.5" PointX="36.375" PointY="11" />
+        <EntityTypeShape EntityType="DPO.Data.QuoteItem" Width="1.5" PointX="36.375" PointY="17.5" />
+        <EntityTypeShape EntityType="DPO.Data.Seed" Width="1.5" PointX="21.625" PointY="11.875" />
+        <EntityTypeShape EntityType="DPO.Data.SeedType" Width="1.5" PointX="19.375" PointY="12.25" />
+        <AssociationConnector Association="DPO.Data.FK_OrderItems_AccountMultipliers" />
+        <AssociationConnector Association="DPO.Data.FK_QuoteItem_AccountMultiplier_QuoteItems" />
+        <AssociationConnector Association="DPO.Data.FK_QuoteItem_Quote_QuoteItems" />
+        <AssociationConnector Association="DPO.Data.FK_Seeds_SeedTypes" />
+        <EntityTypeShape EntityType="DPO.Data.LineItemOptionType" Width="1.5" PointX="36.375" PointY="7.875" />
+        <EntityTypeShape EntityType="DPO.Data.LineItemType" Width="1.5" PointX="34.125" PointY="9.75" />
+        <EntityTypeShape EntityType="DPO.Data.OrderItemOption" Width="1.5" PointX="38.625" PointY="6.625" />
+        <EntityTypeShape EntityType="DPO.Data.QuoteItemOption" Width="1.5" PointX="38.625" PointY="12.375" />
+        <AssociationConnector Association="DPO.Data.FK_OrderItemOptions_LineItemOptionTypes" />
+        <AssociationConnector Association="DPO.Data.FK_QuoteItemOptions_LineItemOptionTypes" />
+        <AssociationConnector Association="DPO.Data.FK_OrderItems_LineItemTypes" />
+        <AssociationConnector Association="DPO.Data.FK_QuoteItem_LineItemType" />
+        <AssociationConnector Association="DPO.Data.FK_OrderItemOptions_OrderItems" />
+        <AssociationConnector Association="DPO.Data.FK_QuoteProductOptions_QuoteItems" />
+        <AssociationConnector Association="DPO.Data.FK_QuoteProductOptions_Quotes" />
+        <EntityTypeShape EntityType="DPO.Data.Order" Width="1.5" PointX="27.25" PointY="0.875" />
+        <AssociationConnector Association="DPO.Data.FK_Orders_Addresses" />
+        <AssociationConnector Association="DPO.Data.FK_Orders_Businesses" />
+        <AssociationConnector Association="DPO.Data.FK_Orders_CommissionRequests" />
+        <AssociationConnector Association="DPO.Data.FK_Orders_DiscountRequests" />
+        <AssociationConnector Association="DPO.Data.FK_OrderAttachments_Orders" />
+        <AssociationConnector Association="DPO.Data.FK_OrderItemOptions_Orders" />
+        <AssociationConnector Association="DPO.Data.FK_OrderItems_Orders" />
+        <AssociationConnector Association="DPO.Data.FK_Orders_OrderStatusTypes" />
+        <AssociationConnector Association="DPO.Data.FK_Orders_Quotes" />
+        <AssociationConnector Association="DPO.Data.FK_Orders_Users" />
+        <AssociationConnector Association="DPO.Data.FK_Orders_Users1" />
+        <AssociationConnector Association="DPO.Data.FK_Orders_Users2" />
+        <EntityTypeShape EntityType="DPO.Data.InventoryStatus" Width="1.5" PointX="38.625" PointY="18.375" />
+        <EntityTypeShape EntityType="DPO.Data.Product" Width="1.5" PointX="40.875" PointY="5.375" />
+        <AssociationConnector Association="DPO.Data.FK_Product_Brand_Products" />
+        <AssociationConnector Association="DPO.Data.FK_Product_InventoryStatuses_Products" />
+        <AssociationConnector Association="DPO.Data.FK_Products_MultiplierTypes" />
+        <AssociationConnector Association="DPO.Data.FK_OrderItemOptions_Products" />
+        <AssociationConnector Association="DPO.Data.FK_OrderItemOptions_Products1" />
+        <AssociationConnector Association="DPO.Data.FK_OrderItems_ParentProducts" />
+        <AssociationConnector Association="DPO.Data.FK_OrderItems_Products" />
+        <AssociationConnector Association="DPO.Data.FK_Products_ProductAccessoryTypes" />
+        <AssociationConnector Association="DPO.Data.FK_Products_ProductClassPIM" />
+        <AssociationConnector Association="DPO.Data.FK_Products_ProductCompressorStages" />
+        <AssociationConnector Association="DPO.Data.FK_Products_ProductEnergySourceTypes" />
+        <AssociationConnector Association="DPO.Data.FK_Products_ProductFunctionCategories" />
+        <AssociationConnector Association="DPO.Data.FK_Products_ProductGasValveTypes" />
+        <AssociationConnector Association="DPO.Data.FK_Products_ProductHeatExchangerTypes" />
+        <AssociationConnector Association="DPO.Data.FK_Products_ProductInstallationConfigurationTypes" />
+        <AssociationConnector Association="DPO.Data.FK_Products_ProductMotorSpeedTypes" />
+        <AssociationConnector Association="DPO.Data.FK_Products_ProductPowerVoltageTypes" />
+        <AssociationConnector Association="DPO.Data.FK_Products_ProductStatuses" />
+        <AssociationConnector Association="DPO.Data.FK_Products_ProductSubFamily" />
+        <AssociationConnector Association="DPO.Data.FK_Products_ProductTypes" />
+        <AssociationConnector Association="DPO.Data.FK_Products_UnitInstallationTypes" />
+        <AssociationConnector Association="DPO.Data.FK_QuoteItem_Product_QuoteItems" />
+        <AssociationConnector Association="DPO.Data.FK_QuoteProductOptions_Products" />
+        <AssociationConnector Association="DPO.Data.FK_QuoteProductOptions_Products1" />
+        </Diagram>
+      <Diagram DiagramId="c2b401f9e84e4d97aa58c875c23f37c5" Name="Projects" ZoomLevel="65" >
+        <EntityTypeShape EntityType="DPO.Data.ProductCategory" Width="1.875" PointX="1.375" PointY="10.875" FillColor="192, 64, 0" />
+        <EntityTypeShape EntityType="DPO.Data.ProductFamily" Width="1.875" PointX="1.375" PointY="4.125" FillColor="192, 64, 0" />
+        <EntityTypeShape EntityType="DPO.Data.ProductSpecificationLabel" Width="2.375" PointX="3.125" PointY="0.75" FillColor="192, 64, 0" />
+        <EntityTypeShape EntityType="DPO.Data.ProductSpecification" Width="2.375" PointX="6.25" PointY="3.75" FillColor="192, 64, 0" />
+        <AssociationConnector Association="DPO.Data.FK_ProductSpecification_ProductSpecificationLabel_ProductSpecifications" />
+        <EntityTypeShape EntityType="DPO.Data.ProductModelType" Width="2" PointX="1.25" PointY="8" FillColor="192, 64, 0" />
+        <EntityTypeShape EntityType="DPO.Data.SubmittalSheetType" Width="2.5" PointX="0.75" PointY="13.375" FillColor="192, 64, 0" />
+        <EntityTypeShape EntityType="DPO.Data.RequirementType" Width="1.5" PointX="7" PointY="1" FillColor="192, 64, 0" />
+        <EntityTypeShape EntityType="DPO.Data.ProductAccessory" Width="1.5" PointX="9.25" PointY="7.375" FillColor="192, 64, 0" />
+        <AssociationConnector Association="DPO.Data.FK_ProductAccessory_RequirementType_ProductAccessories" />
+        <EntityTypeShape EntityType="DPO.Data.Document" Width="1.875" PointX="3.625" PointY="18.5" />
+        <EntityTypeShape EntityType="DPO.Data.DocumentProductLink" Width="1.5" PointX="6.25" PointY="11.625" />
+        <AssociationConnector Association="DPO.Data.FK_DocumentProductLink_Document_Products" />
+        <EntityTypeShape EntityType="DPO.Data.ProductSpecificationKeyLookup" Width="2.125" PointX="6.25" PointY="29.25" FillColor="192, 64, 0" />
+        <AssociationConnector Association="DPO.Data.FK_ProductSpecificationKeyLookups_ProductSpecificationLabel_ProductSpecificationKeyLookups" />
+        <EntityTypeShape EntityType="DPO.Data.ProductNote" Width="1.5" PointX="6.25" PointY="7.375" />
+        <EntityTypeShape EntityType="DPO.Data.ProductNoteType" Width="1.5" PointX="4" PointY="14" />
+        <AssociationConnector Association="DPO.Data.FK_Document_ProductNoteType_ProductNotes" />
+        <EntityTypeShape EntityType="DPO.Data.ConstructionType" Width="2.125" PointX="7.625" PointY="19.125" />
+        <EntityTypeShape EntityType="DPO.Data.ProjectType" Width="1.5" PointX="8.25" PointY="26.125" />
+        <EntityTypeShape EntityType="DPO.Data.VerticalMarketType" Width="1.5" PointX="8.25" PointY="16.625" />
+        <EntityTypeShape EntityType="DPO.Data.ProjectStatusType" Width="1.5" PointX="8.25" PointY="21.375" />
+        <EntityTypeShape EntityType="DPO.Data.ProjectTransfer" Width="1.5" PointX="12.75" PointY="21" />
+        <EntityTypeShape EntityType="DPO.Data.Project" Width="1.875" PointX="10.5" PointY="13.375" IsExpanded="true" />
+        <AssociationConnector Association="DPO.Data.FK_Project_ConstructionType_Projects" />
+        <AssociationConnector Association="DPO.Data.FK_Project_ProjectStatusType_Projects" />
+        <AssociationConnector Association="DPO.Data.FK_Project_ProjectType_Projects" />
+        <AssociationConnector Association="DPO.Data.FK_Project_VerticalMarketType_Projects" />
+        <AssociationConnector Association="DPO.Data.FK_ProjectTransfer_Project_ProjectTransfers" />
+        <EntityTypeShape EntityType="DPO.Data.ZoneStrategyType" Width="1.5" PointX="11.25" PointY="2.125" />
+        <EntityTypeShape EntityType="DPO.Data.BrandCompetitorType" Width="2.875" PointX="11.25" PointY="5.125" />
+        <EntityTypeShape EntityType="DPO.Data.ProjectOpenStatusType" Width="1.5" PointX="8.25" PointY="23.75" />
+        <AssociationConnector Association="DPO.Data.FK_Project_ProjectOpenStatusType_Projects" />
+        <EntityTypeShape EntityType="DPO.Data.ProductMarketType" Width="1.5" PointX="1.75" PointY="15.75" />
+        <EntityTypeShape EntityType="DPO.Data.SystemBasisDesignType" Width="1.5" PointX="11.25" PointY="8.125" />
+        <EntityTypeShape EntityType="DPO.Data.DiscountRequestStatusType" Width="1.5" PointX="13.25" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DPO.Data.Quote" Width="1.5" PointX="12.75" PointY="11.75" IsExpanded="true" />
+        <AssociationConnector Association="DPO.Data.FK_Quote_Project_Quotes" />
+        <EntityTypeShape EntityType="DPO.Data.ProjectLeadStatusType" Width="1.5" PointX="13.375" PointY="7.875" />
+        <AssociationConnector Association="DPO.Data.FK_Projects_ProjectLeadStatusTypes" />
+        <EntityTypeShape EntityType="DPO.Data.ProjectPipelineNote" Width="1.5" PointX="15.125" PointY="12.25" />
+        <EntityTypeShape EntityType="DPO.Data.ProjectPipelineNoteType" Width="1.5" PointX="12.875" PointY="25.625" />
+        <AssociationConnector Association="DPO.Data.FK_ProjectPipelineNote_ProjectPipelineNoteType" />
+        <AssociationConnector Association="DPO.Data.FK_ProjectPipelineNotes_Projects" />
+        </Diagram>
+      <Diagram DiagramId="b38df77cdf1f46b6b182da8250497566" Name="Views" >
+        <EntityTypeShape EntityType="DPO.Data.VwProductDocument" Width="1.5" PointX="7.125" PointY="3.625" />
+        <EntityTypeShape EntityType="DPO.Data.VwProductNote" Width="2.125" PointX="0.75" PointY="3.125" />
+        <EntityTypeShape EntityType="DPO.Data.VwProductSpecification" Width="3" PointX="3.75" PointY="0.875" />
+        <EntityTypeShape EntityType="DPO.Data.VwProductSystemComponent" Width="2" PointX="4.125" PointY="3.5" />
+      </Diagram>
+      <Diagram DiagramId="581b113bb1694adb938fc446931568c7" Name="Businesses" >
+        <EntityTypeShape EntityType="DPO.Data.Business" Width="1.5" PointX="3" PointY="3.25" />
+        <EntityTypeShape EntityType="DPO.Data.BusinessType" Width="1.5" PointX="0.75" PointY="0.875" />
+        <AssociationConnector Association="DPO.Data.FK_Business_BusinessType_Businesses" />
+        <EntityTypeShape EntityType="DPO.Data.Address" Width="1.5" PointX="0.75" PointY="4.5" />
+        <AssociationConnector Association="DPO.Data.FK_Business_Address_Businesses" />
+        <EntityTypeShape EntityType="DPO.Data.AccountMultiplier" Width="1.5" PointX="5.25" PointY="12.875" />
+        <AssociationConnector Association="DPO.Data.FK_AccountMultiplier_Business_AccountMultipliers" />
+        <EntityTypeShape EntityType="DPO.Data.User" Width="1.5" PointX="5.25" PointY="2.875" />
+        <AssociationConnector Association="DPO.Data.FK_User_Address_Users" />
+        <AssociationConnector Association="DPO.Data.FK_User_Business_Users" />
+        <EntityTypeShape EntityType="DPO.Data.RequirementLevel" Width="1.5" PointX="1.5" PointY="10.875" />
+        <AssociationConnector Association="DPO.Data.FK_BusinessTypes_RequirementLevels" />
+        <EntityTypeShape EntityType="DPO.Data.Contact" Width="1.5" PointX="0.75" PointY="13.5" />
+        <AssociationConnector Association="DPO.Data.FK_Business_Contact_Businesses" />
+        <AssociationConnector Association="DPO.Data.FK_User_Contact_Users" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

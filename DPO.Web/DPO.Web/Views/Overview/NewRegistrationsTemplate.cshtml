@@ -1,0 +1,15 @@
+﻿@model WidgetContainerModel
+<li data-templateid="@Model.Widget.TemplateId" data-widgettype="Overview.OverviewWidget" data-renderer="Overview.TextElementRenderer">
+    <div class="widget-body">
+        @Html.Partial("OverviewWidgetTitle")
+        @Html.Partial("OverviewWidgetSettings")
+        @Html.Partial("OverviewWidgetErrorScreen")
+        <div class="contentbox total-projects">
+            <img src="/Images/new-registrations-icon.png" />
+            <div>
+                <h1><strong class="data">&nbsp;</strong></h1>
+                <p>New User Registrations (Financial Year)</p>
+            </div>
+        </div>
+    </div>
+</li>

@@ -1,0 +1,41 @@
+﻿@{
+    bool isInProjects = ViewBag.Title != ResourceUI.ProjectOverview && ViewBag.Title != @ResourceUI.Tools && ViewBag.Title != @ResourceUI.Orders;
+
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+
+}
+<ul class="tab-bar">
+    <li>
+        <a href="/v2/#/home">HOME</a>
+    </li>
+    @if (user.HasAccess(SystemAccessEnum.ViewProject))
+    {
+        <li @Html.Raw((isInProjects) ? "class=\"active-tab\"" : "")>
+            <a href="/v2/#/projects">@ResourceUI.Projects</a>
+        </li>
+    }
+
+    <li @Html.Raw((ViewBag.Title == ResourceUI.Tools) ? "class=\"active-tab\"" : "")>
+        <a href="/v2/#/tools">@ResourceUI.Tools</a>
+    </li>
+    @*<li @Html.Raw((ViewBag.Title == ResourceUI.Tools) ? "class=\"active-tab\"" : "")>
+            <a href="@Url.Action("Tools", "ProjectDashboard")">@ResourceUI.Tools</a>
+        </li>*@
+    <li>
+        <a href="/api/Product/Products">@ResourceUI.ProductBrowse</a>
+    </li>
+
+    @if (user.ShowPrices && (user.HasAccess(SystemAccessEnum.ViewOrder) || user.HasAccess(SystemAccessEnum.SubmitOrder)))
+    {
+        <li @Html.Raw((ViewBag.Title == ResourceUI.Orders) ? "class=\"active-tab\"" : "")>
+            <a href="@Url.Action("Orders", "ProjectDashboard")">@ResourceUI.Orders</a>
+        </li>
+    }
+
+    @if (user.HasAccess(SystemAccessEnum.ViewProject))
+    {
+        <li @Html.Raw((ViewBag.Title == ResourceUI.ProjectOverview) ? "class=\"active-tab\"" : "")>
+            <a href="@Url.Action("OverView", "ProjectDashboard")">REPORTS</a>
+        </li>
+    }
+</ul>

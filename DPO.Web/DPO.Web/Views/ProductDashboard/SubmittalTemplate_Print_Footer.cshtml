@@ -1,0 +1,19 @@
+﻿@model ProductModel
+@{
+    Model.PageNumber += 1;           
+}
+
+<div class="footer-print pad-top">
+    <div class="c-align">Daikin North America LLC, 5151 San Felipe, Suite 500, Houston, TX, 77056</div>
+    <span class="push-right"><a href="http://www.daikinac.com">www.daikinac.com</a> <a href="http://www.daikincomfort.com">www.daikincomfort.com</a></span>
+    <span class="pull-left">Daikin City Generated Submittal Data</span>
+
+    <div class="pad-top c-align">(Daikin's products are subject to continuous improvements. Daikin reserves the right to modify product design, specifications and information in this data sheet without notice and without incurring any obligations)</div>
+    <br />
+    <div class="pager" style="float:left">
+        Submittal Date: @DateTime.Now
+    </div>
+    <div class="pager push-right">
+        Page @Model.PageNumber of @Model.PageTotal
+    </div>
+</div>

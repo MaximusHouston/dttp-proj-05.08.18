@@ -1,0 +1,326 @@
+﻿@model QuoteModel
+@using System.Web.Configuration
+@{
+    if (Model.QuoteId == null)
+    {
+        ViewBag.Title = ResourceUI.QuoteAddNew;
+    }
+    else
+    {
+        ViewBag.Title = ResourceUI.QuoteEdit;
+    }
+
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+
+}
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles", "~/Content/css/nouislider")
+}
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/numericstepperhelpers", "~/bundles/scripts/nouislider")
+}
+
+@*@if (Model.NewRecordAdded == true)
+{
+    @Html.Partial("ConfirmModalQuoteUpdated", Model);
+}*@
+
+    @*@if (Model.TotalList > Convert.ToDecimal(WebConfigurationManager.AppSettings["dpo.sales.commission.default.totalList"]))
+        {
+            @Html.Partial("ConfirmModalCommissionConvert", Model);
+        }*@
+
+    @Html.Partial("_ProjectTabsPartial")
+    <ul class="breadcrumbs">
+        <li><a href="/v2/#/projects">@ResourceUI.Projects</a></li>
+        <li><a href="@Url.Action("Project", new { ProjectId = Model.Project.ProjectId })">@Model.Project.Name</a></li>
+        @if (Model.QuoteId == null)
+        {
+            <li>@ResourceUI.QuoteAddNew</li>
+        }
+        else
+        {
+            <li><a href="@Url.Action("Quote", new { projectId = Model.ProjectId, quoteId = Model.QuoteId })">@Model.Title</a></li>
+            <li>@ResourceUI.QuoteEdit</li>
+        }
+    </ul>
+    @*@using (Html.BeginForm("QuoteEdit", "ProjectdashBoard"))*@
+    @using (Html.BeginForm("QuoteEdit", "ProjectdashBoard", FormMethod.Post))
+    {
+        // Key post data
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.ProjectId)
+        @Html.HiddenFor(m => m.QuoteId)
+        @Html.HiddenFor(m => m.Project.Name)
+        @Html.HiddenFor(m => m.Active)
+        @Html.HiddenFor(m => m.Deleted)
+        @Html.Concurrency()
+
+        @Html.PageMessages()
+
+        <div class="section t-flush">
+            <div class="item-strap">
+                <div class="itemname">
+                    <h1>
+                        @if (Model.QuoteId == null)
+                        {
+                            @ResourceUI.QuoteAddNew
+                        }
+                        else
+                        {
+                            @ResourceUI.QuoteEdit
+                        }
+                    </h1>
+                </div>
+                <div class="btn-bar">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+
+        <div class="section form">
+            <p class="mandatory" style="top: 0; right: 20px;">@ResourceUI.FieldsMarkedWithAStar <span>*</span> @ResourceUI.AreMandatory</p>
+            <div class="row">
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col4 details-list">
+                    <h4>@ResourceUI.QuoteDetails</h4>
+                    <ul>
+                        <li>
+                            @Html.LabelFor(m => m.Title, ResourceUI.QuoteTitle, new { @class = "required" })
+                            @Html.TextBoxFor(m => m.Title, new { @class = "full" })
+                            @Html.KeyMessages(m => m.Title)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.Description, ResourceUI.QuoteDescription)
+                            @Html.TextAreaFor(m => m.Description, new { @class = "full" })
+                            @Html.KeyMessages(m => m.Description)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.Notes, ResourceUI.Notes)
+                            @Html.TextAreaFor(m => m.Notes, new { @class = "full" })
+                            @Html.KeyMessages(m => m.Notes)
+                        </li>
+                    </ul>
+                </div>
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col4 details-list">
+                    <h4>&nbsp;</h4>
+                    <ul>
+                        @if (user.ShowPrices)
+                        {
+                            if (!Model.IsCommission)
+                            {
+                                <li id="freightCost" style="display:none;">
+                                    @Html.LabelFor(m => m.TotalFreight, ResourceUI.FreightCost)
+                                    @Html.TextBoxFor(m => m.TotalFreight, new { @class = "half" })
+                                    @Html.KeyMessages(m => m.TotalFreight)
+                                </li>
+                            }
+                            else
+                            {
+                                <li id="freightCost" style="display:block;">
+                                    @Html.LabelFor(m => m.TotalFreight, ResourceUI.FreightCost)
+                                    @Html.TextBoxFor(m => m.TotalFreight, new { @class = "half" })
+                                    @Html.KeyMessages(m => m.TotalFreight)
+                                </li>
+                            }
+                        }
+
+                    </ul>
+
+                </div>
+                <div class="r-col2">&nbsp;</div>
+                <div class="row-end">&nbsp;</div>
+            </div>
+        </div>
+        if (user.ShowPrices)
+        {
+            @Html.HiddenFor(m => Model.CommissionConvertNo)
+            @Html.HiddenFor(m => Model.CommissionConvertYes)
+            @*@Html.HiddenFor(m => Model.IsCommission)*@
+
+            <br />
+            <div class="section form">
+                <div class="row">
+                    <div class="r-col1">&nbsp;</div>
+                    <div class="r-col10">
+                        <h4>Pricing Details</h4>
+                        <div style="padding-bottom: 12px; margin-bottom: 16px; border-bottom: 1px solid #d1d1d1;">
+
+                            <label style="display:inline-block; vertical-align:top;">@ResourceUI.PricingType</label>
+
+                            @Html.RadioButtonFor(m => m.IsCommission, "false")<label>Buy/Sell</label>
+
+                            @*TODO:  Check for commission scheme allowed*@
+                            @*@if (Model.IsCommissionSchemeAllowed)*@
+
+                            @if (user.HasAccess(SystemAccessEnum.RequestCommission) ||
+                         user.HasAccess(SystemAccessEnum.ViewRequestedCommission) ||
+                         user.HasAccess(SystemAccessEnum.ApprovedRequestCommission)
+                        )
+                            {
+                                @Html.RadioButtonFor(m => m.IsCommission, "true", new { @style = "display:inline;" })
+                                <label style="display:inline;">Commission Only</label>
+                            }
+                            else
+                            {
+                                @Html.RadioButtonFor(m => m.IsCommission, "true", new { @style = "display:none;" })
+                                <label style="display:none;">Commission Only</label>
+                            }
+                            @Html.KeyMessages(m => m.IsCommissionScheme)
+                            @Html.KeyMessages(m => m.IsCommission)
+                        </div>
+                        <div id="commissionBased" class="netvalue-area">
+                            @*Delete after 2016-03-15*@
+                            @*<label style="display: inline-block; margin-right: 12px;">Commission Multiplier:</label>
+                                @Html.DropDownCommissionMultiplierListFor(m => m.Multiplier, Model.CommissionMultipliersTypes)
+                                <div style="padding: 13px;">
+                                    <div id="commissionSlider"></div>
+                                </div>*@
+                        </div>
+                        <div id="buySell" class="netvalue-area">
+                            <label style="display:inline-block; vertical-align:top;">Pricing Method:</label>
+                            @Html.RadioButtonFor(m => m.IsGrossMargin, "true")<label>Gross Margin</label>
+                            @Html.RadioButtonFor(m => m.IsGrossMargin, "false")<label>Markup</label>
+                            <div></div>
+                            <label style="display: inline-block; margin-right: 10px; padding-top: 16px;">@ResourceUI.CommissionPercentage</label>
+                            @Html.EditorFor(m => m.CommissionPercentage, new { htmlAttributes = new { @class = "c-align", @style = "width: 75px;" } })
+                            @Html.KeyMessages(m => m.CommissionPercentage * 100)
+                        </div>
+                    </div>
+                    <div class="r-col1">&nbsp;</div>
+                    <div class="row-end">&nbsp;</div>
+                </div>
+            </div>
+        }
+        <br />
+        <div class="section action c-align">
+            <button type="button" class="btn" onclick="window.location = document.referrer">@ResourceUI.Cancel</button>
+            @*<a href="#" sc-ajaxpost="@Url.Action("QuoteEdit")" class="submit-btn">@((Model.QuoteId == null) ? ResourceUI.Create : @ResourceUI.SaveChanges)</a>*@
+            <input type="submit" class="submit-btn" value="Save Changes" />
+            @Html.Partial("_LastEditedPartial")
+        </div>
+    }
+    <script>
+
+        $(function () {
+
+            if ("@user.ShowPrices" === "True") {
+                //sliders
+                //get values from dropdown
+                @* Delete after 2016-03-15*@
+                @*var multipliers = [];
+
+                $('#Multiplier option').each(function () {
+                    var value = $(this).val();
+                    if (value) multipliers.push(value);
+                });
+
+                $("#commissionSlider").noUiSlider({
+                    start: Number(@Model.Multiplier),
+                    range: {
+                        'min': Number(multipliers[0] * 100),
+                        'max': Number(multipliers[multipliers.length - 1] * 100)
+                    }
+
+                });
+
+
+                function calculateDaikinValueFromSlideValue(val) {
+                    var sliderValue = val;
+                    var daikinValue = (sliderValue / 100).toFixed(4);
+
+                    //if not in array, round to nearest daikin value
+                    if ($.inArray(daikinValue, multipliers) === -1) {
+                        var closest = null;
+                        $.each(multipliers, function () {
+                            if (closest == null || Math.abs(this - daikinValue) < Math.abs(closest - daikinValue)) {
+                                closest = this;
+                            }
+                        });
+
+                        daikinValue = Number(closest).toFixed(4);
+                    }
+
+                    $('#Multiplier').val(daikinValue);
+                }
+
+                $('#commissionSlider').on('slide', function () {
+                    calculateDaikinValueFromSlideValue($(this).val());
+                });
+
+                $('#Multiplier').on('change', function () {
+                    var daikinValue = $(this).val();
+                    var sliderValue = daikinValue * 100;
+                    $('#commissionSlider').val(sliderValue);
+                });*@
+
+                //section visibility changes
+                function pricingTypeChange(e) {
+                    $('.netvalue-area').hide();
+                    if ($(this).val().toLowerCase() === "true") {
+                        $('#commissionBased').show();
+                        $('#freightCost').hide();
+                    }
+                    else {
+                        $('#buySell').show();
+                        $('#freightCost').show();
+                    }
+                }
+                $('input[name="IsCommission"]').on('change', pricingTypeChange);
+
+                //check initial slider values on page load
+                pricingTypeChange.call($('input[name="IsCommission"]:checked'));
+                @* Delete after 2016-03-15*@
+                @*ar initMultiplier = (Number(@Model.Multiplier) > 0) ? Number(@Model.Multiplier) * 100 : 60;
+                calculateDaikinValueFromSlideValue(initMultiplier);
+                $('#Multiplier').trigger('change');*@
+            }
+            else {
+                $('.netvalue-area').hide();
+            }
+
+            //$('#IsCommission').change(function () {
+            //    $('input[name="IsCommission"]').prop('checked', false);
+            //    SetTheRadioValueForCommission();
+
+            //});
+
+            //function SetTheRadioValueForCommission() {
+            //    if ($('#IsCommission').prop('checked')) {
+            //        //$('input[name="IsCommission"]').prop('checked', false);
+            //        $('#IsCommission').val(true);
+            //    }
+            //    else {
+            //        $('#IsCommission').val(false);
+            //    }
+            //}
+
+            //if ($('#IsCommission').prop('checked')) {
+            //    $('input[name="IsCommission"').prop('checked', false);
+            //}
+
+            //$('#IsCommission').change(function () {
+            //    $('#IsCommission').prop('checked', false);
+            //    $('#IsCommission').val(false);
+
+            //});
+
+        });
+
+        @*$(document).ready(function () {
+
+            if ("@Model.IsCommission" === "True") {
+                //alert('IsCommission is True');
+                $('#IsCommission').prop('checked', true);
+                //$('#IsCommission').prop('checked', false);
+            }
+            else {
+                //alert(' IsCommission is false');
+                $('#IsCommission').prop('checked', false);
+                //$('#IsCommission').prop('checked', true);
+            }
+
+        });*@
+
+    </script>

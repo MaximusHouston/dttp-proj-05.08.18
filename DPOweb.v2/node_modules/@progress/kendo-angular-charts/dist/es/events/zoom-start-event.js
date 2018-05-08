@@ -1,0 +1,19 @@
+import * as tslib_1 from "tslib";
+import { PreventableEvent } from './preventable-event';
+/**
+ * Arguments for the `zoomStart` event.
+ */
+var ZoomStartEvent = /** @class */ (function (_super) {
+    tslib_1.__extends(ZoomStartEvent, _super);
+    /**
+     * @hidden
+     */
+    function ZoomStartEvent(e, sender) {
+        var _this = _super.call(this, sender) || this;
+        _this.axisRanges = e.axisRanges;
+        _this.originalEvent = e.originalEvent;
+        return _this;
+    }
+    return ZoomStartEvent;
+}(PreventableEvent));
+export { ZoomStartEvent };

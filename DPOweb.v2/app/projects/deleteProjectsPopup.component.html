@@ -1,0 +1,19 @@
+﻿<form role="form">
+    <div class="form-group">
+        <p>Are you sure you want to delete the following projects?</p>
+
+        <!--<div class="well" style="overflow:scroll;height:200px;">-->
+        <div class="well">
+            <div *ngFor="let project of deleteProjects">
+                <p style="color:red;">{{project.projectName}}</p>
+            </div>
+        </div>
+        
+        <p>Projects selected: {{deleteProjects.length}}</p>
+        
+    </div>
+    <div class="row action text-center">
+        <button class="btn btn-primary" (click)="deleteSelectedProjects()">Delete Projects</button>
+        <button class="btn btn-default" (click)="closeDeleteProjectsWindow()">Cancel</button>
+    </div>
+</form>

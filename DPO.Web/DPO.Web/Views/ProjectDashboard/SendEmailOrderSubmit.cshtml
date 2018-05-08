@@ -1,0 +1,90 @@
+﻿
+@model DPO.Model.Light.OrderSendEmailModel
+@using System.Text
+@{
+    DateTime projectDate = (Model.order.ProjectDate != null) ? (DateTime)Model.order.ProjectDate: DateTime.Now;
+    DateTime now = DateTime.Now;
+    projectDate = projectDate.Add(new TimeSpan(now.Hour, now.Minute, now.Second));
+
+    string projectId = Model.order.ProjectId.ToString();
+
+    if (!Model.RenderTextVersion)
+    {
+        projectId = Html.ActionLink(Model.order.ProjectId.ToString(), "Project", "ProjectDashboard",
+                Request.Url.Scheme, Request.Url.Host, String.Empty, new { ProjectId = Model.order.ProjectId }, null).ToHtmlString();
+    }
+
+    //Hacking code to show the Discount Rquest details
+    //Todo: need to refactory this code to load the discountRequestModel into OrderViewModel--Aaron 06/08/2016
+
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+
+    DiscountRequestServices discountService = new DiscountRequestServices();
+    var discountRequest = discountService.GetDiscountRequestModel(user, Model.order.ProjectId, Model.order.QuoteId).Model as DiscountRequestModel;
+
+    decimal totalSale = 0;
+
+    if(discountRequest.StandardTotals.TotalSell != null && discountRequest.StartUpCosts != null && discountRequest.Quote.TotalFreight != null)
+    {
+        totalSale = discountRequest.StandardTotals.TotalSell + discountRequest.StartUpCosts + discountRequest.Quote.TotalFreight;
+    }
+
+    var totalNet = (Model.order.TotalNetPrice != null) ? Model.order.TotalNetPrice: 0M;
+    var requestedDiscountPercentage = (Model.RequestDiscountPercent) * 100;
+    var approvedDiscountPercentage = (Model.ApprovedDiscountPercent) * 100;
+
+
+    if(requestedDiscountPercentage == 0)
+    {
+        requestedDiscountPercentage = Model.order.RequestedDiscountPercentage;
+    }
+
+    if(approvedDiscountPercentage == 0)
+    {
+        approvedDiscountPercentage = Model.order.ApprovedDiscountPercentage;
+    }
+
+    var requestedDiscountAmount = (totalSale * requestedDiscountPercentage) / 100;
+    var approvedDiscountAmount = (totalSale * approvedDiscountPercentage) / 100;
+
+    string OrderSubmitConfirmEmailMessage = " Thank you for your order! Your order will be reviewed/processed within 1 business day." +
+                                    "If you need to cancel your order please contact your Daikin Customer Service Representative. <br/><br/>";
+
+    string emailMessage = OrderSubmitConfirmEmailMessage + "<br/>" +
+                          string.Format(@" An Order for Project '{0}' and quote '{1}' has been submitted by {2} 
+                                        of {3}.<br /> Project Date: {4}<br /> 
+                                        PO Number: {5} <br />
+                                        TotalNet: {6}<br />
+                                        Discount Requested: {7}%<br />
+                                        Discount Approved: {8}%<br />
+                                        Requested Discount Amount: {9}<br />
+                                        Approved Discount Amount: {10}<br />
+                                        Project Reference: {11}",
+                                        Model.order.ProjectName, Model.order.QuoteTitle, Model.order.ProjectOwner,
+                                        Model.order.BusinessName, projectDate,
+                                        (Model.order.PONumber != null) ? Model.order.PONumber : string.Empty,
+                                        totalNet.ToString("C"),
+                                        string.Format("{0:0.00}",requestedDiscountPercentage),
+                                        string.Format("{0:0.00}",approvedDiscountPercentage),
+                                        requestedDiscountAmount.ToString("C"),
+                                        approvedDiscountAmount.ToString("C"),
+                                        projectId.ToString());
+}
+
+@if (Model.RenderTextVersion)
+{
+    Layout = null;
+    @emailMessage.Replace("<br />", String.Empty)
+}
+else
+{
+    Layout = "~/Views/Shared/EmailTemplate.cshtml";
+
+    <table>
+        <tr>
+            <td style="padding-left: 28px; padding-top: 20px; font-family: Helvetica, Arial, sans-serif; ">
+                @Html.Raw(emailMessage)
+            </td>
+        </tr>
+    </table>
+}

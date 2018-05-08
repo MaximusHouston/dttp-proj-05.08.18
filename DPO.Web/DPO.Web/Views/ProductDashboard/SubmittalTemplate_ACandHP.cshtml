@@ -1,0 +1,53 @@
+﻿@model ProductModel
+@{
+    Layout = null;
+    @Styles.Render("~/Content/css/pdf-base");
+    Model.PageTotal = 3;
+}
+<div class="pdf"> 
+
+    <div class="static-page">
+        @Html.Partial("SubmittalTemplate_Print_Header")
+
+        <div class="row">
+            @Html.Partial("ProductStandardAndCabinetFeatures")
+            @Html.Partial("SubmittalTemplate_ProductImageAndLogos")
+            <div class="row-end">&nbsp;</div>
+        </div>
+
+        @Html.Partial("ProductNotes")
+        @Html.Partial("SubmittalTemplate_Print_Footer")
+    </div>
+
+        <div class="new static-page">
+            @Html.Partial("SubmittalTemplate_Print_Header")
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="4">Performance &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;* Values shown are for AHRI Rated High Sales Volume Tested Combination (HSVTC) </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @Html.Partial("SubmittalTemplate_ACandHP_Performance")
+                </tbody>
+            </table>
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="4">Outdoor Unit Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @Html.Partial("SubmittalTemplate_ACandHP_UnitDetails")
+                </tbody>
+            </table>
+            @Html.Partial("SubmittalTemplate_Print_Footer")
+        </div>
+
+        <div class="new static-page">
+            @Html.Partial("SubmittalTemplate_Print_Header")
+            @Html.Partial("ProductDimensionalDrawing")
+            @Html.Partial("SubmittalTemplate_Print_Footer")
+        </div>
+
+    </div>

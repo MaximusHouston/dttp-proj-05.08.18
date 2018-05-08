@@ -1,0 +1,979 @@
+﻿@model ProjectModel
+
+@{
+    if (Model.ProjectId == null)
+    {
+        ViewBag.Title = ResourceUI.ProjectNew;
+    }
+    else
+    {
+        ViewBag.Title = ResourceUI.ProjectEditDetails;
+    }
+
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles", "~/Content/themes/base/css")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/jqueryui", "~/bundles/scripts/projectedit")
+}
+
+@if (Model.NewRecordAdded == true)
+{
+    @Html.Partial("ConfirmModalProjectCreated", Model);
+}
+
+@Html.Partial("_ProjectTabsPartial")
+
+<ul class="breadcrumbs">
+    <li><a href="/v2/#/projects">@ResourceUI.Projects</a></li>
+    @if (Model.ProjectId == null)
+    {
+        <li>@ResourceUI.ProjectAddNew</li>
+    }
+    else
+    {
+        <li><a href="@Url.Action("Project", new { ProjectId = Model.ProjectId })">@Model.Name</a></li>
+        <li>@ResourceUI.ProjectEdit</li>
+    }
+
+</ul>
+<div ng-controller="projectEditController">
+    @using (Html.BeginForm("ProjectEdit", "ProjectDashboard", FormMethod.Post, new { @id = "ProjectEditForm" }))
+    {
+
+        @Html.AntiForgeryToken()
+        @Html.Concurrency()
+        @Html.PageMessages()
+        @Html.HiddenFor(m => m.ProjectId);
+        @Html.HiddenFor(m => m.OwnerId);
+        @Html.HiddenFor(m => m.Deleted);
+        @Html.HiddenFor(m => m.Expiration);
+        @Html.HiddenFor(m => m.EngineerAddress.AddressId);
+        @Html.HiddenFor(m => m.CustomerAddress.AddressId);
+        @Html.HiddenFor(m => m.SellerAddress.AddressId);
+        @Html.HiddenFor(m => m.ShipToAddress.AddressId);
+
+
+        <div class="section t-flush">
+            <div class="item-strap">
+                <div class="itemname">
+                    @if (Model.ProjectId == null)
+                    {
+                        <h1>@ResourceUI.ProjectNew</h1>
+                    }
+                    else
+                    {
+                        <h1>@ResourceUI.ProjectEditDetails</h1>
+                    }
+                </div>
+                <div class="btn-bar">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+        <br />
+        <ul class="sub-tab-bar">
+            <li class="active-tab" data-view="projectDetails" id="tab_projectDetails">
+                <a href="#">@ResourceUI.ProjectDetails</a>
+            </li>
+            <li data-view="engineerDetails" id="tab_engineerDetails">
+                <a href="#">@ResourceUI.Engineer</a>
+            </li>
+            <li data-view="customerAddress" id="tab_customerAddress">
+                <a href="#">@ResourceUI.Customer</a>
+            </li>
+            <li data-view="sellerAddress" id="tab_sellerAddress">
+                <a href="#">@ResourceUI.Seller</a>
+            </li>
+            <li data-view="shipToAddress" id="tab_shipToAddress">
+                <a href="#">@ResourceUI.ProjectLocation</a>
+            </li>
+            @if (user.HasAccess(SystemAccessEnum.ViewPipelineData)
+                        || user.HasAccess(SystemAccessEnum.EditPipelineData))
+            {
+                <li data-view="internalInformation" id="tab_internalInformation">
+                    <a href="#">@ResourceUI.Internal</a>
+                </li>
+            }
+        </ul>
+
+        <div class="section form sub-tab-view" id="projectDetails">
+            <p class="mandatory" style="top: 0; right: 20px;">@ResourceUI.FieldsMarkedWithAStar <span>*</span> @ResourceUI.AreMandatory</p>
+
+            @*<p class="mandatory" style="top: 10; right: 20px; display:none">Address Validation <span></span><input type="checkbox" id="chkAddress" name="chkAddress" value="true" /></p>*@
+
+            <div class="row">
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col4 details-list">
+                    <h3>@ResourceUI.ProjectDetails</h3>
+                    <ul>
+                        <li>
+                            @Html.LabelFor(m => m.Name, ResourceUI.ProjectName, new { @class = "required" })
+                            @Html.TextBoxFor(m => m.Name, new { @class = "full" })
+                            @Html.KeyMessages(m => m.Name)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.ProjectDate, ResourceUI.ProjectDate)
+                            @Html.TextBoxFor(m => m.ProjectDateDisplay, new { @class = "half", @readonly = "readonly", style = "width: 90px" })
+                            @Html.HiddenFor(m => m.ProjectDate)
+                            @Html.KeyMessages(m => m.ProjectDate)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.ConstructionTypeId, ResourceUI.ProjectConstructionType, new { @class = "required" })
+                            @Html.DropDownConstructionTypeListFor(m => m.ConstructionTypeId, Model.ConstructionTypes)
+                            @Html.KeyMessages(m => m.ConstructionTypeId)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.ProjectStatusTypeId, ResourceUI.ProjectStatus, new { @class = "required" })
+                            @Html.DropDownProjectStatusTypeListFor(m => m.ProjectStatusTypeId, Model.ProjectStatusTypes)
+
+                            <div>
+                                <button type="button" class="submit-btn" id="EditingDisabledMessage" style="margin:0 0 10px 0; display:none; width: 280px; text-align: center;">
+                                    Save to enable editing
+                                </button>
+                            </div>
+
+                            @Html.KeyMessages(m => m.ProjectStatusTypeId)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.ProjectTypeId, ResourceUI.ProjectType, new { @class = "required" })
+                            @Html.DropDownProjectTypeListFor(m => m.ProjectTypeId, Model.ProjectTypes)
+                            @Html.KeyMessages(m => m.ProjectTypeId)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.ProjectOpenStatusTypeId, ResourceUI.ProjectOpenStatus, new { @class = "required" })
+                            @Html.DropDownProjectOpenStatusTypeListFor(m => m.ProjectOpenStatusTypeId, Model.ProjectOpenStatusTypes)
+                            @Html.KeyMessages(m => m.ProjectOpenStatusTypeId)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.VerticalMarketTypeId, ResourceUI.VerticalMarket, new { @class = "required" })
+                            @Html.DropDownVerticalMarketTypeListFor(m => m.VerticalMarketTypeId, Model.VerticalMarketTypes)
+                            @Html.KeyMessages(m => m.VerticalMarketTypeId)
+                        </li>
+                    </ul>
+                </div>
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col4 details-list">
+                    <h3>&nbsp;</h3>
+                    <ul>
+                        <li>
+                            @Html.LabelFor(m => m.BidDate, ResourceUI.BidDate, new { @class = "required" })
+                            @Html.EditorFor(m => m.BidDate, new { htmlAttributes = new { @class = "half" } })
+                            @Html.KeyMessages(m => m.BidDate)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.EstimatedClose, ResourceUI.EstimatedClose, new { @class = "required" })
+                            @Html.EditorFor(m => m.EstimatedClose, new { htmlAttributes = new { @class = "half" } })
+                            @Html.KeyMessages(m => m.EstimatedClose)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.EstimatedDelivery, ResourceUI.EstimatedDelivery, new { @class = "required" })
+                            @Html.EditorFor(m => m.EstimatedDelivery, new { htmlAttributes = new { @class = "half" } })
+                            @Html.KeyMessages(m => m.EstimatedDelivery)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.ShipToAddress.CountryCode, ResourceUI.Country)
+                            @Html.DropDownCountryListFor(m => m.ShipToAddress.CountryCode, m => m.ShipToAddress.StateId, Model.ShipToAddress.Countries)
+                            @Html.KeyMessages(m => m.ShipToAddress.CountryCode)
+
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.ShipToAddress.StateId, ResourceUI.Region)
+                            @Html.DropDownRegionListFor(m => m.ShipToAddress.StateId, Model.ShipToAddress.States)
+                            @Html.KeyMessages(m => m.ShipToAddress.States)
+
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.ShipToAddress.Location, ResourceUI.Location)
+                            @Html.EditorFor(m => m.ShipToAddress.Location)
+                            @Html.KeyMessages(m => m.ShipToAddress.Location)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.Description, ResourceUI.ProjectNotes)
+                            @Html.TextAreaFor(m => m.Description)
+                            @Html.KeyMessages(m => m.Description)
+                        </li>
+                        <li>
+                            @if (Model.ProjectStatusTypeId != (byte)ProjectStatusTypeEnum.Open)
+                            {
+                                <div id="divProjectStatusNotes">
+                                    <label id="lblProjectStatusNotes"></label>
+                                    @Html.TextAreaFor(m => m.ProjectStatusNotes, new { @class = "readonly" })
+                                    @Html.KeyMessages(m => m.ProjectStatusNotes)
+                                </div>
+                            }
+                            else
+                            {
+                                <div id="divProjectStatusNotes" style="display:none;">
+                                    @*@Html.LabelFor(m => m.ProjectStatusNotes, ResourceUI.ProjectStatusNotes)*@
+                                    <label id="lblProjectStatusNotes"></label>
+                                    @Html.TextAreaFor(m => m.ProjectStatusNotes)
+                                    @Html.KeyMessages(m => m.ProjectStatusNotes)
+                                </div>
+                            }
+                        </li>
+                    </ul>
+                </div>
+                <div class="r-col2">&nbsp;</div>
+                <div class="row-end">&nbsp;</div>
+            </div>
+        </div>
+
+        <div class="section form sub-tab-view" id="engineerDetails" style="display:none;">
+            <div class="row">
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col4 details-list">
+                    <h3>@ResourceUI.Engineer</h3>
+                    <ul>
+                        <li>
+                            @Html.LabelFor(m => m.EngineerName, ResourceUI.EngineerName)
+                            @Html.TextBoxFor(m => m.EngineerName, new { @class = "full" })
+                            @Html.KeyMessages(m => m.EngineerName)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.EngineerBusinessName, ResourceUI.BusinessName)
+                            @Html.TextBoxFor(m => m.EngineerBusinessName, new { @class = "full" })
+                            @Html.KeyMessages(m => m.EngineerBusinessName)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.EngineerAddress.CountryCode, ResourceUI.Country)
+                            @Html.DropDownCountryListFor(m => m.EngineerAddress.CountryCode, m => m.EngineerAddress.StateId, Model.EngineerAddress.Countries)
+                            @Html.KeyMessages(m => m.EngineerAddress.CountryCode)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.EngineerAddress.AddressLine1, ResourceUI.AddressLine1)
+                            @Html.TextBoxFor(m => m.EngineerAddress.AddressLine1, new { @class = "full" })
+                            @Html.KeyMessages(m => m.EngineerAddress.AddressLine1)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.EngineerAddress.AddressLine2, ResourceUI.AddressLine2)
+                            @Html.TextBoxFor(m => m.EngineerAddress.AddressLine2, new { @class = "full" })
+                            @Html.KeyMessages(m => m.EngineerAddress.AddressLine2)
+                        </li>
+                    </ul>
+                </div>
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col4 details-list">
+                    <h3>&nbsp;</h3>
+                    <ul>
+                        <li>
+                            @Html.LabelFor(m => m.EngineerAddress.Location, ResourceUI.Location)
+                            @Html.TextBoxFor(m => m.EngineerAddress.Location, new { @class = "full" })
+                            @Html.KeyMessages(m => m.EngineerAddress.Location)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.EngineerAddress.StateId, ResourceUI.Region)
+                            @Html.DropDownRegionListFor(m => m.EngineerAddress.StateId, Model.EngineerAddress.States)
+                            @Html.KeyMessages(m => m.EngineerAddress.CountryCode)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.EngineerAddress.PostalCode, ResourceUI.ZipCode)
+                            @Html.TextBoxFor(m => m.EngineerAddress.PostalCode, new { @class = "half upcase" })
+                            @Html.KeyMessages(m => m.EngineerAddress.PostalCode)
+                        </li>
+                    </ul>
+                </div>
+                <div class="r-col2">&nbsp;</div>
+                <div class="row-end">&nbsp;</div>
+            </div>
+        </div>
+
+        <div class="section form sub-tab-view" id="customerAddress" style="display:none;">
+            <div class="row">
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col4 details-list">
+                    <h3>@ResourceUI.Customer</h3>
+                    <ul>
+                        <li>
+                            @Html.LabelFor(m => m.DealerContractorName, ResourceUI.DealerContractorName)
+                            @Html.TextBoxFor(m => m.DealerContractorName, new { @class = "full" })
+                            @Html.KeyMessages(m => m.DealerContractorName)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.CustomerName, ResourceUI.BusinessName)
+                            @Html.TextBoxFor(m => m.CustomerName, new { @class = "full" })
+                            @Html.KeyMessages(m => m.CustomerName)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.CustomerAddress.CountryCode, ResourceUI.Country)
+                            @Html.DropDownCountryListFor(m => m.CustomerAddress.CountryCode, m => m.CustomerAddress.StateId, Model.CustomerAddress.Countries)
+                            @Html.KeyMessages(m => m.CustomerAddress.CountryCode)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.CustomerAddress.AddressLine1, ResourceUI.AddressLine1)
+                            @Html.TextBoxFor(m => m.CustomerAddress.AddressLine1, new { @class = "full" })
+                            @Html.KeyMessages(m => m.CustomerAddress.AddressLine1)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.CustomerAddress.AddressLine2, ResourceUI.AddressLine2)
+                            @Html.TextBoxFor(m => m.CustomerAddress.AddressLine2, new { @class = "full" })
+                            @Html.KeyMessages(m => m.CustomerAddress.AddressLine2)
+                        </li>
+                    </ul>
+                </div>
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col4 details-list">
+                    <h3>&nbsp;</h3>
+                    <ul>
+                        <li>
+                            @Html.LabelFor(m => m.CustomerAddress.Location, ResourceUI.Location)
+                            @Html.TextBoxFor(m => m.CustomerAddress.Location, new { @class = "full" })
+                            @Html.KeyMessages(m => m.CustomerAddress.Location)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.CustomerAddress.StateId, ResourceUI.Region)
+                            @Html.DropDownRegionListFor(m => m.CustomerAddress.StateId, Model.CustomerAddress.States)
+                            @Html.KeyMessages(m => m.CustomerAddress.CountryCode)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.CustomerAddress.PostalCode, ResourceUI.ZipCode)
+                            @Html.TextBoxFor(m => m.CustomerAddress.PostalCode, new { @class = "half upcase" })
+                            @Html.KeyMessages(m => m.CustomerAddress.PostalCode)
+                        </li>
+                    </ul>
+                </div>
+                <div class="r-col2">&nbsp;</div>
+                <div class="row-end">&nbsp;</div>
+            </div>
+        </div>
+
+        <div class="section form sub-tab-view" id="sellerAddress" style="display:none;">
+            <div class="row">
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col4 details-list">
+                    <h3>@ResourceUI.Seller</h3>
+                    <ul>
+                        <li>
+                            @Html.LabelFor(m => m.SellerName, ResourceUI.BusinessName)
+                            @Html.TextBoxFor(m => m.SellerName, new { @class = "full" })
+                            @Html.KeyMessages(m => m.SellerName)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.SellerAddress.CountryCode, ResourceUI.Country)
+                            @Html.DropDownCountryListFor(m => m.SellerAddress.CountryCode, m => m.SellerAddress.StateId, Model.SellerAddress.Countries)
+                            @Html.KeyMessages(m => m.SellerAddress.CountryCode)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.SellerAddress.AddressLine1, ResourceUI.AddressLine1)
+                            @Html.TextBoxFor(m => m.SellerAddress.AddressLine1, new { @class = "full" })
+                            @Html.KeyMessages(m => m.SellerAddress.AddressLine1)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.SellerAddress.AddressLine2, ResourceUI.AddressLine2)
+                            @Html.TextBoxFor(m => m.SellerAddress.AddressLine2, new { @class = "full" })
+                            @Html.KeyMessages(m => m.SellerAddress.AddressLine2)
+                        </li>
+                    </ul>
+                </div>
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col4 details-list">
+                    <h3>&nbsp;</h3>
+                    <ul>
+                        <li>
+                            @Html.LabelFor(m => m.SellerAddress.Location, ResourceUI.Location)
+                            @Html.TextBoxFor(m => m.SellerAddress.Location, new { @class = "full" })
+                            @Html.KeyMessages(m => m.SellerAddress.Location)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.SellerAddress.StateId, ResourceUI.Region)
+                            @Html.DropDownRegionListFor(m => m.SellerAddress.StateId, Model.SellerAddress.States)
+                            @Html.KeyMessages(m => m.SellerAddress.StateId)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.SellerAddress.PostalCode, ResourceUI.ZipCode)
+                            @Html.TextBoxFor(m => m.SellerAddress.PostalCode, new { @class = "half upcase" })
+                            @Html.KeyMessages(m => m.SellerAddress.PostalCode)
+                        </li>
+                    </ul>
+                </div>
+                <div class="r-col2">&nbsp;</div>
+                <div class="row-end">&nbsp;</div>
+            </div>
+        </div>
+
+        <div class="section form sub-tab-view" id="shipToAddress" style="display:none;">
+            <div class="row">
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col4 details-list">
+                    <h3>@ResourceUI.ProjectLocation</h3>
+                    <ul>
+                        <li>
+                            @Html.LabelFor(m => m.ShipToName, ResourceUI.BusinessName)
+                            @Html.TextBoxFor(m => m.ShipToName, new { @class = "full" })
+                            @Html.KeyMessages(m => m.ShipToName)
+                        </li>
+                        <li>
+                            @*To do: Fix State DDL when Country DDL is changed *@
+                            @Html.LabelFor(m => m.ShipToAddress.CountryCode, ResourceUI.Country)
+                            @*@Html.DropDownCountryListFor(m => m.ShipToAddress.CountryCode, m => m.ShipToAddress.StateId, Model.ShipToAddress.Countries,
+                                new { Name = "CountryCodeForProjectLocation"})*@
+                            @Html.DropDownCountryListFor(m => m.ShipToAddress.CountryCode, m => m.ShipToAddress.StateId, Model.ShipToAddress.Countries)
+
+                            @Html.KeyMessages(m => m.ShipToAddress.CountryCode)
+
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.ShipToAddress.AddressLine1, ResourceUI.AddressLine1)
+                            @Html.TextBoxFor(m => m.ShipToAddress.AddressLine1, new { @class = "full" })
+                            @Html.KeyMessages(m => m.ShipToAddress.AddressLine1)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.ShipToAddress.AddressLine2, ResourceUI.AddressLine2)
+                            @Html.TextBoxFor(m => m.ShipToAddress.AddressLine2, new { @class = "full" })
+                            @Html.KeyMessages(m => m.ShipToAddress.AddressLine2)
+                        </li>
+                    </ul>
+                </div>
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col4 details-list">
+                    <h3>&nbsp;</h3>
+                    <ul>
+                        <li>
+                            @Html.LabelFor(m => m.ShipToAddress.Location, ResourceUI.Location)
+                            @Html.TextBoxFor(m => m.ShipToAddress.Location, new { @class = "full", id = "ShipToAddress_ProjectLocation", Name = "ShipToAddress_ProjectLocation" })
+                            @Html.KeyMessages(m => m.ShipToAddress.Location)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.ShipToAddress.StateId, ResourceUI.Region)
+                            @*@Html.DropDownRegionListFor(m => m.ShipToAddress.StateId, Model.ShipToAddress.States,
+                                new { Name= "StateIdForProjectLocation"})*@
+                            @Html.DropDownRegionListFor(m => m.ShipToAddress.StateId, Model.ShipToAddress.States)
+                            @Html.KeyMessages(m => m.ShipToAddress.StateId)
+
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.ShipToAddress.PostalCode, ResourceUI.ZipCode)
+                            @Html.TextBoxFor(m => m.ShipToAddress.PostalCode, new { @class = "half upcase" })
+                            @Html.KeyMessages(m => m.ShipToAddress.PostalCode)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.SquareFootage, "Square Footage")
+                            @Html.TextBoxFor(m => m.SquareFootage, new { @class = "half upcase" })
+                            @Html.KeyMessages(m => m.SquareFootage)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.NumberOfFloors, "Number Of Floors")
+                            @Html.TextBoxFor(m => m.NumberOfFloors, new { @class = "half upcase" })
+                            @Html.KeyMessages(m => m.NumberOfFloors)
+                        </li>
+                    </ul>
+                </div>
+                <div class="r-col2">&nbsp;</div>
+                <div class="row-end">&nbsp;</div>
+            </div>
+        </div>
+
+
+        if (user.HasAccess(SystemAccessEnum.ViewPipelineData)
+                        || user.HasAccess(SystemAccessEnum.EditPipelineData))
+        {
+            <div class="section form sub-tab-view" id="internalInformation" style="display:none;">
+                <div class="row">
+                    <div class="r-col1">&nbsp;</div>
+                    <div class="r-col4 details-list">
+                        <h3>@ResourceUI.Internal</h3>
+                        <ul>
+                            <li>
+                                @Html.LabelFor(m => m.ProjectLeadStatusTypeId, ResourceUI.ProjectLeadStatus, new { @class = "required" })
+                                @if (user.HasAccess(SystemAccessEnum.EditPipelineData))
+                                {
+                                    @Html.DropDownProjectLeadStatusTypeListFor(m => m.ProjectLeadStatusTypeId, Model.ProjectLeadStatusTypes)
+                                    @Html.KeyMessages(m => m.ProjectLeadStatusTypeId)
+                                }
+                                else
+                                {
+                                    @Model.ProjectLeadStatusTypeId
+                                }
+                                @Html.HiddenFor(m => m.ProjectLeadStatusTypeId)
+                            </li>
+                            <li>
+                                @Html.LabelFor(m => m.ERPFirstOrderNumber, ResourceUI.OrderNumber)
+                                @Html.TextBoxFor(m => m.ERPFirstOrderNumber, new { @readonly = "readonly" })
+                            </li>
+                            <li>
+                                @Html.LabelFor(m => m.ERPFirstOrderDate, ResourceUI.OrderDate)
+                                @Html.TextBoxFor(m => m.ERPFirstOrderDate, new { @readonly = "readonly" })
+                            </li>
+                            <li>
+                                @Html.LabelFor(m => m.ERPFirstPONumber, ResourceUI.OrderPONumber)
+                                @Html.TextBoxFor(m => m.ERPFirstPONumber, new { @readonly = "readonly" })
+                            </li>
+                            <li>
+                                @Html.LabelFor(m => m.ERPFirstOrderComment, ResourceUI.OrderComments)
+                                @Html.TextAreaFor(m => m.ERPFirstOrderComment, 5, 20, new { @class = "full", @readonly = "readonly" })
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="r-col1">&nbsp;</div>
+                    <div class="r-col4 details-list"> &nbsp;</div>
+                    <div class="r-col2">&nbsp;</div>
+                    <div class="row-end">&nbsp;</div>
+                </div>
+            </div>
+        }
+
+        <div class="section action c-align">
+            <button type="button" class="btn" id="btnProjectCancel" onclick="window.location = document.referrer">@ResourceUI.Cancel</button>
+            @if (Model.ProjectId == null)
+            {
+                <a id="ProjectEditFormSubmitBtn" data-sc-ajaxpost="@Url.Action("ProjectEdit")" class="submit-btn">@ResourceUI.Create</a>
+            }
+            else
+            {
+                <a id="ProjectEditFormSubmitBtn" href="#" onclick="clearMessages();" data-sc-ajaxpost="@Url.Action("ProjectEdit")" class="submit-btn">@ResourceUI.SaveChanges</a>
+                @Html.Partial("_LastEditedPartial")
+            }
+
+        </div>
+
+        <input type="hidden" id="ProjectDetailStateSelectCount" name="ProjectDetailStateSelectCount" />
+        <input type="hidden" id="ProjectDetailsCountrySelectCount" name="ProjectDetailsCountrySelectCount" />
+        <input type="hidden" id="ProjectLocationStateSelectCount" name="ProjectLocationStateSelectCount" />
+        <input type="hidden" id="ProjectLocationCountrySelectCount" name="ProjectLocationCountrySelectCount" />
+    }
+</div>
+<script>
+    $(function ()
+    {
+
+        var isNew = @((Model.ProjectId == null)?1:0);
+        //datepickers - need to be reinitialised every time a postback occurs
+        var datePickers = ["#BidDate","#EstimatedClose", "#EstimatedDelivery"];
+
+        if (isNew)
+        {
+            $('#ProjectDate').val($.datepicker.formatDate('@ResourceUI.DateFormat', new Date()));
+        }
+
+        $(datePickers.join(",")).datepicker({
+            showOn: "button",
+            buttonImage: "/Images/datepicker.png",
+            buttonImageOnly: true,
+            dateFormat: "@ResourceUI.DateFormat"
+        });
+
+    });
+
+    // TODO:  Use the enum
+    $('#ProjectStatusTypeId').change(function(){
+        var _projectStatus = $(this).val();
+
+        if( _projectStatus == 3 )
+        {
+            $('#lblProjectStatusNotes').html("Please provide reasons why project lost")
+            $('#divProjectStatusNotes').show();
+        }
+        if( _projectStatus == 4 )
+        {
+            $('#lblProjectStatusNotes').html("Please provide reasons why project Inactive");
+            $('#divProjectStatusNotes').show();
+        }
+        if (_projectStatus == 1 || _projectStatus == 2 )
+        {
+            $('#divProjectStatusNotes').hide();
+        }
+    });
+
+    $('#ProjectTypeId').change(function() {
+        setDefaultProjectDates();
+    });
+
+    $('#ProjectOpenStatusTypeId').change(function() {
+        setDefaultProjectDates();
+    });
+
+    function setDefaultProjectDates() {
+        var ddlProjectType = $('#ProjectTypeId');
+        var ddlProjectOpenStatus = $('#ProjectOpenStatusTypeId');
+        var txtProjectDate = $('#ProjectDateDisplay'); // Something strange going on with ProjectDate, look at value
+        var txtBidDate = $('#BidDate');
+        var txtEstimatedClose = $('#EstimatedClose')
+        var txtEstimatedDelivery = $('#EstimatedDelivery');
+
+        var projectTypeId = ddlProjectType.val();
+        var projectOpenStatusId = ddlProjectOpenStatus.val();
+        var projectDateString = txtProjectDate.val();
+        var bidDate = txtBidDate.val();
+        var estimatedClose = txtEstimatedClose.val();
+        var estimatedDelivery = txtEstimatedDelivery.val();
+
+        // If type, open status selected and no dates have been set 
+        if (projectTypeId && projectOpenStatusId && !bidDate && !estimatedClose && !estimatedDelivery) {
+
+            var projectDate = new Date(projectDateString);
+
+            if (projectTypeId == "6") { // Design/Build
+                // Design build 	
+                //  1. Bid: should be same month as registration date
+                //  2. Close: Add 60 days to bid date	
+                //  3. Delivery: Add 30 days to estimated close
+                //  4. Many time the customer marks D/B as budget or design and they should be all bidding 
+                bidDate = new Date(projectDate);
+
+                estimatedClose = new Date(bidDate);
+                estimatedClose.setDate(estimatedClose.getDate() + 60);
+
+                estimatedDelivery = new Date(estimatedClose);
+                estimatedDelivery.setDate(estimatedDelivery.getDate() + 30);
+
+            } else {
+                
+
+                switch (projectOpenStatusId) {
+                    case "1": // Budget
+                    case "2": // Design
+                        // 1. Bid: Add 9 months to reg date	
+                        // 2. Close: Add 60 days to bid date
+                        // 3. Delivery: Add 30 days to close date	
+                        bidDate = new Date(projectDate);
+                        bidDate.setDate(bidDate.getDate() + (30 * 9));
+
+                        estimatedClose = new Date(bidDate);
+                        estimatedClose.setDate(estimatedClose.getDate() + 60);
+
+                        estimatedDelivery = new Date(estimatedClose);
+                        estimatedDelivery.setDate(estimatedDelivery.getDate() + 30);
+
+                        break;
+
+                    case "3": // Quote
+                    default:
+                        // 1. Bid: Quote 
+                        // 2. Close: Add 60 days 
+                        // 3. Delivery: Add 30 days
+
+                        bidDate = new Date(projectDate);
+
+                        estimatedClose = new Date(bidDate);
+                        estimatedClose.setDate(estimatedClose.getDate() + 60);
+
+                        estimatedDelivery = new Date(estimatedClose);
+                        estimatedDelivery.setDate(estimatedDelivery.getDate() + 30);
+                        break;
+                }
+
+            }
+
+            txtBidDate.val($.datepicker.formatDate("mm/dd/yy", bidDate));
+            txtEstimatedClose.val($.datepicker.formatDate("mm/dd/yy",estimatedClose));
+            txtEstimatedDelivery.val($.datepicker.formatDate("mm/dd/yy",estimatedDelivery));
+        }
+    }
+
+
+    function clearMessages()
+    {
+        var shippingAddressSuggestion = @Html.Raw(Json.Encode(Model.ShippingSuggestionAddress));
+        if ($('.ShippingAddress').length > 1)
+        {
+            $('.ShippingAddress').last().remove();   
+        }
+
+        var dealerAddressSuggestion = @Html.Raw(Json.Encode(Model.DealorContractorSuggestionAddress));
+        if($('.DealerAddress').length > 1)
+        {
+            $('.DealerAddress').last().remove();
+        }
+
+        var engineerAddressSuggestion = @Html.Raw(Json.Encode(Model.EngineerSuggestionAddress));
+        if($('.EngineerAddress').length > 1)
+        {
+            $('.EngineerAddress').last().remove();
+        }
+        
+        var sellerAddressSuggestion = @Html.Raw(Json.Encode(Model.SellerSuggestionAddress));
+        if($('.SellerAddress').length > 1)
+        {
+            $('.SellerAddress').last().remove();
+        }
+
+        $('.pagemessage-error:empty').remove();
+    }
+
+    $(document).ready(function() {
+
+        if ($('#ProjectStatusTypeId').val() == 1)
+        {
+            $('#divProjectStatusNotes').hide();
+        }
+
+        var activeTab = localStorage["ActiveTab"];
+
+        if(activeTab == "sellerAddress")
+        {
+            $('#tab_sellerAddress').attr('class','active-tab');
+            $('#sellerAddress').css('display', 'block');
+
+            $('#projectDetails').css('display', 'none');
+            $('#tab_projectDetails').removeClass('active-tab');
+        }
+        if(activeTab == "shipToAddress")
+        {
+            $('#tab_shipToAddress').attr('class','active-tab');
+            $('#shipToAddress').css('display', 'block');
+
+            $('#projectDetails').css('display', 'none');
+            $('#tab_projectDetails').removeClass('active-tab');
+        }
+        if(activeTab == "customerAddress")
+        {
+            $('#tab_customerAddress').attr('class','active-tab');
+            $('#customerAddress').css('display', 'block');
+
+            $('#projectDetails').css('display', 'none');
+            $('#tab_projectDetails').removeClass('active-tab');
+        }
+        if(activeTab == "projectDetails")
+        {
+            $('#tab_projectDetails').attr('class', 'active-tab');
+            $('#ProjectDetails').css('display', 'block');
+        }
+
+       
+       if( @Html.Raw(Json.Encode(Model.ProjectLeadStatusTypeId)) == 3){ //OpenOrder
+                $('#ProjectLeadStatusTypeId').prop('disabled', true);
+                $('#ERPFirstOrderNumber').prop('disabled', true);
+                $('#ERPFirstOrderDate').prop('disabled', true);
+                $('#ERPFirstPONumber').prop('disabled', true);
+                $('#ProjectStatusTypeId').prop('disabled', true);
+                $('#ProjectOpenStatusTypeId').prop('disabled', true);
+            }
+       
+       
+        //To do: Bind country and state
+        $('#ShipToAddress_Location').on('change',function(e){
+            $('#ShipToAddress_ProjectLocation').val($('#ShipToAddress_Location').val());
+        });
+
+        $('#ShipToAddress_ProjectLocation').on('keyup',function(e){
+            $('#ShipToAddress_Location').val($('#ShipToAddress_ProjectLocation').val());
+        });
+
+        $('#btnProjectCancel').on('click', function(){
+            $('.pagemessage-error').hide();
+        });
+
+        clearMessages();
+
+        //$('#useSuggestionShippingAddress').change( function(){
+            
+        //    if(this.checked)
+        //    {
+                
+        //        if($('#useSuggestionDealorAddress').length > 0) 
+        //        {
+        //            if($('#useSuggestionDealorAddress').is(':checked'))
+        //            {
+        //                if($('#useSuggestionEngineerAddress').length > 0 && $('#useSuggestionEngineerAddress').is(':checked'))
+        //                {
+        //                    alert('1');
+        //                    $('#ProjectEditFormSubmitBtn').removeAttr('disabled');
+        //                    $('#ProjectEditFormSubmitBtn').unbind('click',disabler);
+        //                    $('#ProjectEditFormSubmitBtn').removeAttr('style');
+        //                }
+        //            }
+        //            else
+        //            {
+        //              alert('-1');
+        //              $('#ProjectEditFormSubmitBtn').attr('disabled','disabled');
+        //              $('#ProjectEditFormSubmitBtn').bind('click',disabler);
+        //              $('#ProjectEditFormSubmitBtn').css('pointer-events', 'none')
+           
+        //            }
+                    
+        //        }
+        //        else if($('#useSuggestionEngineerAddress').length > 0 ) 
+        //        {
+        //            if($('#useSuggestionEngineerAddress').is(':checked'))
+        //            {
+        //                if($('#useSuggestionDealorAddress').length > 0 && $('#useSuggestionEngineerAddress').is('checked'))
+        //                {
+        //                    alert('2');
+        //                    $('#ProjectEditFormSubmitBtn').removeAttr('disabled');
+        //                    $('#ProjectEditFormSubmitBtn').unbind('click',disabler);
+        //                    $('#ProjectEditFormSubmitBtn').removeAttr('style');
+        //                }
+        //            }
+        //            else{
+        //                alert('-2');
+        //                $('#ProjectEditFormSubmitBtn').attr('disabled','disabled');
+        //                $('#ProjectEditFormSubmitBtn').bind('click',disabler);
+        //                $('#ProjectEditFormSubmitBtn').css('pointer-events', 'none')
+        //            }
+        //        }
+        //        else
+        //        {
+        //            alert('6');
+        //            $('#ProjectEditFormSubmitBtn').removeAttr('disabled');
+        //            $('#ProjectEditFormSubmitBtn').unbind('click',disabler);
+        //            $('#ProjectEditFormSubmitBtn').removeAttr('style');
+        //        }
+        //    }
+        //    else
+        //    {
+        //        $('#ProjectEditFormSubmitBtn').attr('disabled','disabled');
+        //        $('#ProjectEditFormSubmitBtn').bind('click',disabler);
+        //        $('#ProjectEditFormSubmitBtn').css('pointer-events', 'none');
+        //    }
+        //})
+
+        //$('#useSuggestionDealorAddress').change( function(){
+            
+        //    if(this.checked)
+        //    {
+                
+        //        if($('#useSuggestionShippingAddress').length > 0) 
+        //        {
+        //            if($('#useSuggestionShippingAddress').is(':checked'))
+        //            {
+        //                if($('#useSuggestionEngineerAddress').length > 0 && $('#useSuggestionEngineerAddress').is(':checked'))
+        //                {
+        //                    alert('3');
+        //                    $('#ProjectEditFormSubmitBtn').removeAttr('disabled');
+        //                    $('#ProjectEditFormSubmitBtn').unbind('click',disabler);
+        //                    $('#ProjectEditFormSubmitBtn').removeAttr('style');
+        //                }
+        //            }
+        //            else
+        //            {
+        //                alert('-3');
+        //                $('#ProjectEditFormSubmitBtn').attr('disabled','disabled');
+        //                $('#ProjectEditFormSubmitBtn').bind('click',disabler);
+        //                $('#ProjectEditFormSubmitBtn').css('pointer-events', 'none')
+           
+        //            }
+                    
+        //        }
+        //        else if($('#useSuggestionEngineerAddress').length > 0 ) 
+        //        {
+                    
+        //            if($('#useSuggestionEngineerAddress').is(':checked'))
+        //            {
+                        
+        //                if($('#useSuggestionShippingAddress').length > 0 && ('#useSuggestionShippingAddress').is(':checked'))
+        //                {
+        //                    alert('4');
+        //                $('#ProjectEditFormSubmitBtn').removeAttr('disabled');
+        //                $('#ProjectEditFormSubmitBtn').unbind('click',disabler);
+        //                $('#ProjectEditFormSubmitBtn').removeAttr('style');
+        //                }
+                        
+        //            }
+        //            else{
+        //                alert('-4');
+        //                $('#ProjectEditFormSubmitBtn').attr('disabled','disabled');
+        //                $('#ProjectEditFormSubmitBtn').bind('click',disabler);
+        //                $('#ProjectEditFormSubmitBtn').css('pointer-events', 'none')
+        //            }
+        //        }
+        //        else{
+        //            alert('6');
+        //            $('#ProjectEditFormSubmitBtn').removeAttr('disabled');
+        //            $('#ProjectEditFormSubmitBtn').unbind('click',disabler);
+        //            $('#ProjectEditFormSubmitBtn').removeAttr('style');
+        //        }
+               
+        //    }
+        //    else
+        //    {
+        //        $('#ProjectEditFormSubmitBtn').attr('disabled','disabled');
+        //        $('#ProjectEditFormSubmitBtn').bind('click',disabler);
+        //        $('#ProjectEditFormSubmitBtn').css('pointer-events', 'none');
+        //    }
+        //})
+
+        //$('#useSuggestionEngineerAddress').change( function(){
+            
+        //    if(this.checked)
+        //    {
+                
+        //        if($('#useSuggestionShippingAddress').length > 0) 
+        //        {
+        //            if($('#useSuggestionShippingAddress').is(':checked'))
+        //            {
+        //                if($('#useSuggestionDealorAddress').length > 0 && $('#useSuggestionDealorAddress').is(':checked'))
+        //                {
+        //                    alert('5');
+        //                    $('#ProjectEditFormSubmitBtn').removeAttr('disabled');
+        //                    $('#ProjectEditFormSubmitBtn').unbind('click',disabler);
+        //                    $('#ProjectEditFormSubmitBtn').removeAttr('style');
+        //                }
+        //            }
+        //            else
+        //            {
+        //                alert('-5');
+        //                $('#ProjectEditFormSubmitBtn').attr('disabled','disabled');
+        //                $('#ProjectEditFormSubmitBtn').bind('click',disabler);
+        //                $('#ProjectEditFormSubmitBtn').css('pointer-events', 'none')
+           
+        //            }
+                    
+        //        }
+        //        else if($('#useSuggestionDealorAddress').length > 0 ) 
+        //        {
+        //            if($('#useSuggestionDealorAddress').is(':checked'))
+        //            {
+        //                if($('#useSuggestionShippingAddress').length > 0 && $('#useSuggestionShippingAddress').is(':checked'))
+        //                {
+        //                    alert('6');
+        //                    $('#ProjectEditFormSubmitBtn').removeAttr('disabled');
+        //                    $('#ProjectEditFormSubmitBtn').unbind('click',disabler);
+        //                    $('#ProjectEditFormSubmitBtn').removeAttr('style');
+        //                }
+                       
+        //            }
+        //            else{
+        //                alert('-6');
+        //                $('#ProjectEditFormSubmitBtn').attr('disabled','disabled');
+        //                $('#ProjectEditFormSubmitBtn').bind('click',disabler);
+        //                $('#ProjectEditFormSubmitBtn').css('pointer-events', 'none')
+        //            }
+        //        }
+        //        else
+        //        {
+        //            alert('6');
+        //            $('#ProjectEditFormSubmitBtn').removeAttr('disabled');
+        //            $('#ProjectEditFormSubmitBtn').unbind('click',disabler);
+        //            $('#ProjectEditFormSubmitBtn').removeAttr('style');
+        //        }
+               
+        //    }
+        //    else
+        //    {
+        //        $('#ProjectEditFormSubmitBtn').attr('disabled','disabled');
+        //        $('#ProjectEditFormSubmitBtn').bind('click',disabler);
+        //        $('#ProjectEditFormSubmitBtn').css('pointer-events', 'none');
+        //    }
+        //})
+       
+        //if( $('.pagemessage-error').length > 0)
+        //{
+           
+        //    alert('Not OK');
+        //    $('#ProjectEditFormSubmitBtn').attr('disabled','disabled');
+        //    $('#ProjectEditFormSubmitBtn').bind('click',disabler);
+        //    $('#ProjectEditFormSubmitBtn').css('pointer-events', 'none')
+        //}
+        //else 
+        //{
+        //    $('#ProjectEditFormSubmitBtn').removeAttr('disabled');
+        //    $('#ProjectEditFormSubmitBtn').unbind('click',disabler);
+        //    $('#ProjectEditFormSubmitBtn').removeAttr('style');
+        //}
+
+          
+        //function disabler(event) {
+        //    event.preventDefault();
+        //    return false;
+        //}
+    });
+
+
+
+</script>
+

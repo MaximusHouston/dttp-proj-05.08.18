@@ -1,0 +1,112 @@
+﻿<div class="row">
+    <div class="r-col1 hide-print">&nbsp;</div>
+    <div class="r-col4 details-list">
+        <ul>
+            <li>
+                <p class="detail-name">Order Submitted By:</p>
+
+                <p>{{OrderVM.submittedByUserName}}</p>
+            </li>
+
+            <!--<li>
+                <p class="detail-name">Estimate Release Date:</p>
+                <p>{{OrderVM.estimatedReleaseDate}}</p>
+            </li>-->
+
+            <li>
+                <label class="detail-name required" style="width:49%">Order Release Date:</label>
+                <span ng-hide="OrderVM.orderIdStr!=0" style="width:49%">
+                    <input id="order-release-date" name="order-release-date" kendo-date-picker="OrderReleaseDate" ng-model="OrderVM.orderReleaseDate" required />
+                    <!--<input id="order-release-date" name="order-release-date" kendo-date-picker ng-model="OrderVM.orderReleaseDate"  />-->
+                </span>
+                <span class="k-invalid-msg" data-for="order-release-date"></span>
+
+                <p ng-show="OrderVM.orderIdStr!=0">{{OrderVM.orderReleaseDate}}</p>
+                <error-message ng-if="HasServerError" key="OrderReleaseDate"></error-message>
+               
+            </li>
+
+            <li>
+                <label class="detail-name required" style="width:49%">Purchase Order Number:</label>
+                <input type="text" class="k-textbox" style="margin-right:5px" 
+                       ng-model="OrderVM.poNumber" 
+                       ng-disabled="OrderVM.orderIdStr!=0" 
+                       id="PurchaseOrderNumber" 
+                       name="PurchaseOrderNumber" 
+                       required validationmessage="Purchase Order Number is required" />
+                <error-message ng-if="HasServerError" key="PONumber"></error-message>
+            </li>
+
+            <li>
+                <label class="detail-name required">Purchase Order Attachment:</label>
+                <a ng-show="OrderVM.orderIdStr!=0" ng-click="openFile(OrderVM.poAttachmentFileName)" href="#">{{OrderVM.poAttachmentFileName}}</a>
+                <span ng-show="OrderVM.orderIdStr==0">
+                    <input id="PO-Attachment-upload" type="file" style="width:50%; height:30px;" class="requiredField"
+                           ng-disabled="OrderVM.orderIdStr!=0"
+                           kendo-upload="POAttachmentUpload" k-multiple="false"
+                           k-async="{ saveUrl: '/FileUpload/UploadPOAttachment?quoteId={{OrderVM.quoteIdStr}}', autoUpload: false, allowmultiple: false, batch: true }"
+                           k-select="onSelect"
+                           k-error="onUploadError"
+                           k-success="onUploadSuccess"
+                           name="PurchaseOrderAttachment" />
+                </span>
+                <error-message ng-if="HasServerError" key="POAttachment"></error-message>
+               
+                <label id="uploadError" display="none" style="font-size:smaller; color:red; font-style:normal;"></label>  
+            </li>          
+        </ul>
+    </div>
+
+    <div class="r-col1 hide-print">&nbsp;</div>
+    <div class="r-col4 details-list">
+        <ul>
+            <li>
+                <p class="detail-name">Total Net Price: </p>
+                <p>{{OrderVM.totalNetPrice| currency}}</p>
+            </li>
+            <li>
+                <p class="detail-name">Total Discount Provided: </p>
+                <p>{{OrderVM.totalDiscountPercent*100 | number:3}}%</p>
+            </li>
+            
+            <!--<li>
+                <p class="detail-name">Delivery Appointment</p>
+                <input type="checkbox" style="width: 20px; height:20px; vertical-align: middle;" ng-model="OrderVM.deliveryAppointmentRequired" ng-disabled="OrderVM.orderIdStr!=0" />
+
+            </li>
+
+            <li ng-show="OrderVM.deliveryAppointmentRequired">
+                <label class="detail-name required" style="width:49%">Delivery Contact Name</label>
+                <input type="text" class="k-textbox" id="deliveryContactName" ng-model="OrderVM.deliveryContactName" ng-disabled="OrderVM.orderIdStr!=0" style="width:50%; height:30px;" class="requiredField" name="Delivery Contact Name" validationmessage="{0} is required" />
+            </li>
+
+            <li ng-show="OrderVM.deliveryAppointmentRequired">
+                <label class="detail-name required" style="width:49%">Phone</label>
+                <input type="text" kendo-masked-text-box id="deliveryContactPhone" k-mask="'(000) 000-0000'" ng-model="OrderVM.deliveryContactPhone" ng-disabled="OrderVM.orderIdStr!=0" style="width:50%; height:30px;" class="requiredField" name="Phone" validationmessage="{0} is required" />
+                <error-message ng-if="HasServerError" key="DeliveryContactPhone"></error-message>
+            </li>-->
+                      
+
+            <li>
+                <!--<label class="detail-name required" style="width:49%">Delivery Contact Details</label>-->
+                <div class="detail-name" style="width:49%;float:left">
+                    <label style="font-weight:bold; font-size: 15px;" class="required">Delivery Contact Details:</label>
+                    <div style="font-size:smaller; font-style:italic; color:lightgray;">(maximum 75 characters)</div>
+                </div>
+                <input type="text" required maxlength="75" class="k-textbox requiredField" id="deliveryContactDetails"
+                       ng-model="OrderVM.comments" ng-disabled="OrderVM.orderIdStr!=0"
+                       data-toggle="tooltip" title="Please provide delivery contact details (name, phone number, ect ... )"
+                       name="Delivery Contact Details" validationmessage="{0} is required" />
+               
+            </li>
+           
+        </ul>
+
+    </div>
+
+    <div class="r-col1 hide-print">&nbsp;</div>
+    <div class="row-end">&nbsp;</div>
+
+    <div id="some_container_div"></div>
+</div>
+

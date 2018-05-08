@@ -1,0 +1,47 @@
+﻿@model ProductsModel
+
+<div class=" tbl-holder scroll-x">
+    <table class="tbl table-view" id="projects_table">
+        <thead>
+            <tr>
+                <th>PRODUCT</th>
+                <th>Model NO.</th>
+                <th>&nbsp;</th> @* icon links *@
+                @if(Model.CurrentUser.ShowPrices)
+                { 
+                  <th>PRICE</th>
+                }
+                
+                @if (Model.ProductFamilyId == (int)ProductFamilyEnum.VRV
+                    && Model.ProductModelTypeId == ProductModelTypeEnum.Outdoor)
+                {
+                    <th class="c-align">EER<br /><small>(Non-Ducted)</small></th>
+                    <th class="c-align">IEER<br /><small>(Non-Ducted)</small></th>
+                    <th class="c-align">COP47<br /><small>(Non-Ducted)</small></th>
+                    <th class="c-align">COP17<br /><small>(Non-Ducted)</small></th>
+                }
+                else if (Model.ProductFamilyId == (int)ProductFamilyEnum.Accessories
+                         || ((Model.ProductFamilyId == (int)ProductFamilyEnum.VRV
+                                 || Model.ProductFamilyId == (int)ProductFamilyEnum.MultiSplit)
+                             && Model.ProductModelTypeId == ProductModelTypeEnum.Indoor)
+                        )
+                {
+                    @*Nothing should be displayed*@
+                }
+                else
+                {
+                    <th class="c-align">SEER<br /><small>(Non-Ducted)</small></th>
+                    <th class="c-align">EER<br /><small>(Non-Ducted)</small></th>
+                    <th class="c-align">HSPF<br /><small>(Non-Ducted)</small></th>
+                    <th class="c-align">COP47<br /><small>(Non-Ducted)</small></th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ProductListModel item in Model.Products)
+            {
+                @Html.Partial("ProductsTableProduct", item);
+            }
+        </tbody>
+    </table>
+</div>

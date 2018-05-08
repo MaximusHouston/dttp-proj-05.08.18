@@ -1,0 +1,80 @@
+﻿@model FloorConfigurationModel
+
+@{
+    ViewBag.Title = "Daikin City Content Management";
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+    bool isSystemImage = Model.systemImage != null;
+    string imageTypeName = (isSystemImage) ? "Product Image" : "Overlay Image";
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers")
+}
+
+@Html.Partial("_CityCMSTabsPartial")
+
+<ul class="breadcrumbs">
+    <li><a href="@Url.Action("ApplicationBuildings", "CityCMS")">Application Buildings</a></li>
+    <li><a href="@Url.Action("ApplicationBuildings", "CityCMS")#@Model.buildingName">@Model.buildingName</a></li>
+    <li><a href="@Url.Action("ApplicationBuildingFloor", "CityCMS", new { floorid = Model.floorId, buildingid = Model.buildingId })">@Model.floorName</a></li>
+    <li><a href="@Url.Action("ApplicationBuildingFloor", "CityCMS", new { floorid = Model.floorId, buildingid = Model.buildingId })">@Model.name</a></li>
+    <li>Edit @imageTypeName</li>
+</ul>
+
+<div class="section t-flush b-flush">
+    <div class="item-strap btm-bdr">
+        <div class="itemname">
+            <h1>Edit @imageTypeName</h1>
+        </div>
+        <div class="btn-bar">
+            <input type="button" value="Reset Changes" class="btn" style="visibility:hidden;">
+        </div>
+    </div>
+</div>
+<br />
+@Html.PageMessages()
+
+<div class="section form">
+    @using (Html.BeginForm("ApplicationBuildingFloorConfigurationImageEdit", "CityCMS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(m => m.id)
+        @Html.HiddenFor(m => m.floorId)
+        @Html.HiddenFor(m => m.buildingId)
+        @Html.HiddenFor(m => m.systemImage)
+        @Html.HiddenFor(m => m.overlayImage)
+        @Html.AntiForgeryToken()
+        <h4>Current @imageTypeName</h4>
+        if (Model.systemImage != null)
+        {
+            <img src="@Model.systemImage" />
+        }
+        if (Model.overlayImage != null)
+        {
+            <img src="@Model.overlayImage" />
+        }
+        <br />
+        <br />
+        <label for="importFile">Please select an image to upload</label>
+        if (Model.systemImage != null)
+        {
+            <i style="font-size: 0.9em;">(Please note: image must be a PNG file with 300px x 220px dimensions)</i>
+        }
+        if (Model.overlayImage != null)
+        {
+            <i style="font-size: 0.9em;">(Please note: image must be a PNG file with 600px x 440px dimensions)</i>
+        }
+
+        <br />
+        <br />
+        <input id="importfile" type="file" name="importfile">
+        <br />
+        <br />
+        <br />
+        <a href="@Url.Action("ApplicationBuildingFloor", "CityCMS", new { floorid = Model.floorId, buildingid = Model.buildingId })" class="btn cancel-btn">@ResourceUI.Cancel</a>
+        <button type="submit" class="submit-btn">Upload</button>
+    }
+</div>

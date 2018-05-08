@@ -1,0 +1,551 @@
+﻿<project-tabs [user]="user"></project-tabs>
+
+<div id="main-container" class='container-fluid'>
+    <ul *ngIf="discountRequest" class="breadcrumbs">
+        <li><a href="/v2/#/projects">Projects</a></li>
+        <li><a href="/v2/#/project/{{discountRequest.projectId}}">{{discountRequest.project.name}}</a></li>
+        <li><a href="/v2/#/quote/{{discountRequest.quoteId}}/existingRecord">{{discountRequest.quote.title}}</a></li>
+        <li>Discount Authorization Request (DAR)</li>
+    </ul>
+    <h3>DISCOUNT AUTHORIZATION REQUEST</h3>
+    <h4>NEW REQUEST</h4>
+    <div *ngIf="discountRequest" class="discountRequestForm">
+        <form id="discountRequestForm" #discountRequestForm="ngForm" novalidate>
+            <fieldset>
+                <legend>PROJECT SYSTEMS AND COMPETITIVE POSITION OF OPPORTUNITY</legend>
+                <div class="row no-gutters">
+                    <!--<div class="hidden-xs col-md-1"></div>-->
+                    <div class="col-md-11 col-xs-12">
+                        <h5>Project Details</h5>
+                    </div>
+                </div>
+                <div class="row no-gutters">
+                    <!--<div class="hidden-xs col-md-1"></div>-->
+                    <div class="col-md-6 col-xs-12">
+                        <div class="col-md-6 col-xs-12 as-lnk">Project Name: </div> <div class="col-md-6 col-xs-12">{{discountRequest.project.name}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Project Reference: </div> <div class="col-md-6 col-xs-12">{{discountRequest.project.projectId}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Registration Date: </div> <div class="col-md-6 col-xs-12">{{discountRequest.project.projectDate  | date: 'shortDate'}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Bid Date: </div> <div class="col-md-6 col-xs-12">{{discountRequest.project.bidDate | date: 'shortDate'}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Estimated Close: </div> <div class="col-md-6 col-xs-12">{{discountRequest.project.estimatedClose | date: 'shortDate'}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Estimated Delivery: </div> <div class="col-md-6 col-xs-12">{{discountRequest.project.estimatedDelivery | date: 'shortDate'}}</div>
+                    </div>
+                    <div class="col-md-6 col-xs-12">
+                        <div class="col-md-6 col-xs-12 as-lnk">Construction Type: </div> <div class="col-md-6 col-xs-12">{{discountRequest.project.constructionTypeDescription}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Project Status: </div> <div class="col-md-6 col-xs-12">{{discountRequest.project.projectStatusDescription}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Project Type: </div> <div class="col-md-6 col-xs-12">{{discountRequest.project.projectTypeDescription}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Project Open Status: </div> <div class="col-md-6 col-xs-12">{{discountRequest.project.projectOpenStatusDescription}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Vertical Market: </div> <div class="col-md-6 col-xs-12">{{discountRequest.project.verticalMarketDescription}}</div>
+                        <div class="col-md-6 col-xs-12 as-lnk">Project Status Notes: </div> <div class="col-md-6 col-xs-12">{{discountRequest.project.description}}</div>
+                    </div>
+
+                    <!--<div class="hidden-xs col-md-1"></div>-->
+                </div>
+
+                <hr />
+
+                <div class="row no-gutters">
+                    <div class="form-group col-md-6">
+                        <label class="control-label required">Project System Basis Of Design</label>
+                        <select class="form-control" required [(ngModel)]="discountRequest.systemBasisDesignTypeId" name="systemBasisDesignType">
+                            <option [value]="null" selected disabled>Select ...</option>
+                            <option *ngFor="let item of discountRequest.systemBasisDesignTypes.items"
+                                    [value]="item.value">
+                                {{item.text}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label class="control-label required">Zone Strategy</label>
+                        <select class="form-control" required [(ngModel)]="discountRequest.zoneStrategyTypeId" name="zoneStrategyType">
+                            <option [value]="null" selected disabled>Select ...</option>
+                            <option *ngFor="let item of discountRequest.zoneStrategyTypes.items"
+                                    [value]="item.value">
+                                {{item.text}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label class="control-label required">Select Brand Specified</label>
+                        <select class="form-control" required [(ngModel)]="discountRequest.brandSpecifiedTypeId" name="brandSpecifiedType">
+                            <option [value]="null" selected disabled>Select ...</option>
+                            <option *ngFor="let item of discountRequest.brandSpecifiedTypes.items"
+                                    [value]="item.value">
+                                {{item.text}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label class="control-label required">Select Approved Equals</label>
+                        <select class="form-control" required [(ngModel)]="discountRequest.brandApprovedTypeId" name="brandApprovedType">
+                            <option [value]="null" selected disabled>Select ...</option>
+                            <option *ngFor="let item of discountRequest.brandApprovedTypes.items"
+                                    [value]="item.value">
+                                {{item.text}}
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <hr />
+                <div class="row no-gutters">
+                    <div class="form-group col-md-6">
+                        <p class="control-label">Is a copy of competitors price to customer available?</p>
+                        <kendo-switch [(ngModel)]="discountRequest.hasCompetitorPrice"
+                                      [onLabel]="'Yes'"
+                                      [offLabel]="'No'"
+                                      (ngModelChange)="hasCompetitorPriceChange($event)"
+                                      name="hasCompetitorPrice"></kendo-switch>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label" [ngClass]="{'required': discountRequest.hasCompetitorPrice}">Enter Competitor Price</label>
+                        <!--<input type="number" class="form-control" [(ngModel)]="discountRequest.competitorPrice" name="competitorPrice" />-->
+                        <kendo-numerictextbox id="competitorPrice" class="form-control"
+                                              [disabled]="!discountRequest.hasCompetitorPrice"
+                                              [required]="discountRequest.hasCompetitorPrice"
+                                              [format]="'c0'"
+                                              [min]="0"
+                                              [(ngModel)]="discountRequest.competitorPrice" name="competitorPrice">
+                        </kendo-numerictextbox>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row no-gutters">
+                    <div class="form-group col-md-6">
+                        <p class="control-label">Is a copy of competitors quote to customer available?</p>
+                        <kendo-switch [(ngModel)]="discountRequest.hasCompetitorQuote"
+                                      [onLabel]="'Yes'"
+                                      [offLabel]="'No'"
+                                      (ngModelChange)="hasCompetitorQuoteChange($event)"
+                                      name="hasCompetitorQuote"></kendo-switch>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label" [ngClass]="{'required': discountRequest.hasCompetitorQuote}">Attach Copy Of Competitors Quote</label>
+                        <!--<input type="file" [disabled]="!discountRequest.hasCompetitorQuote"
+                               [required]="discountRequest.hasCompetitorQuote"
+                               (change)="competitorQuoteFileChange($event)"
+                               name="competitorQuoteFile" />-->
+
+                        <kendo-upload [disabled]="!discountRequest.hasCompetitorQuote"
+                                      [required]="discountRequest.hasCompetitorQuote"
+                                      [autoUpload]="false"
+                                      [saveUrl]="'/api/DiscountRequest/UploadCompetitorQuoteFile'"
+                                      [multiple]="false"
+                                      [(ngModel)]="competitorQuoteFiles"
+                                      name="competitorQuoteFile"
+                                      (select)="selectCompetitorQuoteFile($event)"
+                                      (upload)="uploadEventHandler($event)"
+                                      [withCredentials]="true"
+                                      (success)="successEventHandler($event)"
+                                      (error)="errorEventHandler($event)">
+                        </kendo-upload>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row no-gutters">
+                    <div class="form-group col-md-6">
+                        <p class="control-label">Was a line by line comparison of competitor to Daikin completed?</p>
+                        <kendo-switch [(ngModel)]="discountRequest.hasCompetitorLineComparsion"
+                                      [onLabel]="'Yes'"
+                                      [offLabel]="'No'"
+                                      (ngModelChange)="hasCompetitorLineComparsionChange($event)"
+                                      name="hasCompetitorLineComparsion">
+                        </kendo-switch>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label" [ngClass]="{'required': discountRequest.hasCompetitorLineComparsion}">Attach Line By Line</label>
+
+                        <kendo-upload [disabled]="!discountRequest.hasCompetitorLineComparsion"
+                                      [autoUpload]="false"
+                                      [saveUrl]="'/api/DiscountRequest/UploadCompetitorLineComparsionFile'"
+                                      [multiple]="false"
+                                      name="competitorLineComparsionFile"
+                                      (select)="selectLineComparsionFile($event)"
+                                      (upload)="uploadEventHandler($event)"
+                                      [withCredentials]="true"
+                                      (success)="successEventHandler($event)"
+                                      (error)="errorEventHandler($event)">
+                        </kendo-upload>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row no-gutters">
+                    <div class="form-group col-md-6">
+                        <label class="control-label required">Is Daikin Equipment at an Advantage/Disadvantage?</label>
+                        <select class="form-control" required [(ngModel)]="discountRequest.daikinEquipmentAtAdvantageTypeId" name="daikinEquipmentAtAdvantageType">
+                            <option [value]="null" selected disabled>Select ...</option>
+                            <option *ngFor="let item of discountRequest.daikinEquipmentAtAdvantageTypes.items"
+                                    [value]="item.value">
+                                {{item.text}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+
+            </fieldset>
+            <fieldset>
+                <legend>REP/DISTRIBUTOR AND DAIKIN INFORMATION AND COSTING FOR OPPORTUNITY</legend>
+
+                <div class="dactbl-heading border-bottom">Total net price based on standard multiplier(s)</div>
+                <div class="row no-gutters border-bottom">
+                    <div class="col-md-7 col-xs-12 padding-15">Total Listed Value Of This Project Offering</div>
+                    <div class="col-md-5 col-xs-12 padding-15 bluecell">{{discountRequest.standardTotals.totalList | currency:'USD':true:'1.2-2'}}</div>
+                </div>
+
+                <div class="row no-gutters border-bottom">
+                    <div class="col-md-7 col-xs-12 padding-15">Total Net (VRV-GNA + RA-QA + Unitary + LC Package)</div>
+                    <div class="col-md-5 col-xs-12 padding-15 bluecell">
+                        {{discountRequest.standardTotals.totalNet | currency:'USD':true:'1.2-2'}}
+                        ({{discountRequest.standardTotals.totalNetVRV | currency:'USD':true:'1.2-2'}} +
+                        {{discountRequest.standardTotals.totalNetSplit | currency:'USD':true:'1.2-2'}} +
+                        {{discountRequest.standardTotals.totalNetUnitary | currency:'USD':true:'1.2-2'}} +
+                        {{discountRequest.standardTotals.totalNetLCPackage | currency:'USD':true:'1.2-2'}})
+                    </div>
+                </div>
+
+                <div class="row no-gutters border-bottom">
+                    <div class="col-md-7 col-xs-12 padding-15">Freight Costs</div>
+                    <div class="col-md-5 col-xs-12 padding-15 bluecell">{{discountRequest.quote.totalFreight | currency:'USD':true:'1.2-2'}}</div>
+                </div>
+
+                <div class="row no-gutters border-bottom">
+                    <div class="col-md-7 col-xs-12 padding-15">Start up / Commissioning costs</div>
+                    <div class="col-md-5 col-xs-12 padding-15 bluecell">
+                        <!--<input type="number" [(ngModel)]="discountRequest.StartUpCosts"
+                       name="startupcost" />-->
+
+                        <kendo-numerictextbox [format]="'c0'"
+                                              [min]="0"
+                                              [(ngModel)]="discountRequest.startUpCosts" name="startUpCosts"
+                                              (ngModelChange)="startupCostChange()">
+                        </kendo-numerictextbox>
+                    </div>
+                </div>
+
+                <div class="row no-gutters border-bottom">
+                    <div class="col-md-7 col-xs-12 no-padding">
+                        <div class="col-md-10 padding-15">Rep/Distributor Gross Profit on Opportunity</div>
+                        <div class="col-md-2 padding-15 lightbluecell">{{discountRequest.standardTotals.totalCommissionPercentage  | percent:'1.2-2'}}</div>
+                    </div>
+                    <!--<div class="col-md-5 col-xs-12 padding-15 bluecell">{{discountRequest.approvedTotals.totalCommissionAmount | currency:'USD':true:'1.2-2'}}</div>-->
+                    <div class="col-md-5 col-xs-12 padding-15 bluecell">{{discountRequest.standardTotals.totalCommissionAmount | currency:'USD':true:'1.2-2'}}</div>
+                </div>
+
+                <div class="row no-gutters border-bottom">
+                    <div class="col-md-7 col-xs-12 padding-15">Total standard sales value of this opportunity from Rep/Dist to customer</div>
+                    <!--<div class="col-md-5 col-xs-12 padding-15 bluecell">{{(discountRequest.approvedTotals.totalSell + discountRequest.startUpCosts + discountRequest.quote.totalFreight + discountRequest.standardTotals.totalCommissionAmount) | currency:'USD':true:'1.2-2'}}</div>-->
+                    <div class="col-md-5 col-xs-12 padding-15 lightgreycell">{{(discountRequest.standardTotals.totalNet + discountRequest.startUpCosts + discountRequest.quote.totalFreight + discountRequest.standardTotals.totalCommissionAmount) | currency:'USD':true:'1.2-2'}}</div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>OPPORTUNITY DISCOUNT AMOUNT REQUESTED</legend>
+                <div class="dactbl-heading border-bottom">TOTAL NET PRICE BASED ON REQUESTED DISCOUNTS</div>
+                <!--VRV-->
+                <div *ngIf="discountRequest.quote.totalListVRV > 0" class="row no-gutters border-bottom">
+                    <!--Request-->
+                    <div class="col-md-6 col-xs-12 padding-15">
+                        <div>Discount being requested for VRV - GNA in this opportunity?</div>
+                        <div>
+                            <!--<p>{{discountRequest.requestedDiscountVRV | percent:'1.2-2' }}</p>-->
+                            <!--<kendo-numerictextbox [(ngModel)]="discountRequest.requestedDiscountVRV"
+                                                  name="requestedDiscountVRV"
+                                                  [min]="0" [max]="1" [step]="0.01" [decimals]="2" [format]="'p'" [autoCorrect]="true"
+                                                  (ngModelChange)="calculateDiscountAmountVRV($event)">
+                            </kendo-numerictextbox>
+
+                            <div class="grey-text-italic">Enter value from 0.01 to 1.00</div>-->
+
+                            <input type="number" min="0" max="100"
+                                   #requestedDiscountVRV
+                                   [value]="discountRequest.requestedDiscountVRV*100 | number:'1.0-2'"
+                                   name="requestedDiscountVRV"
+                                   (keyup)="calculateDiscountAmountVRV(requestedDiscountVRV.value)"
+                                   (change)="calculateDiscountAmountVRV(requestedDiscountVRV.value)"/>%
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xs-12 padding-15 bluecell discount-row">
+                        <div class="col-md-4">
+                            <div class="black-label">Discount Amount</div>
+                            <div>{{discountRequest.approvedTotals.totalDiscountAmountVRV | currency:'USD':true:'1.2-2'}}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="black-label">Net Multiplier</div>
+                            <div>{{discountRequest.approvedTotals.netMultiplierVRV | number:'1.3-3'}}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="black-label">Net Material Value</div>
+                            <div>{{discountRequest.approvedTotals.netMaterialValueVRV | currency:'USD':true:'1.2-2'}}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Slpit-->
+                <div *ngIf="discountRequest.quote.totalListSplit > 0" class="row no-gutters border-bottom">
+                    <!--Request-->
+                    <div class="col-md-6 col-xs-12 padding-15">
+                        <div>Discount being requested for RA-QA in this opportunity?</div>
+                        <div>
+                            <!--<kendo-numerictextbox [(ngModel)]="discountRequest.requestedDiscountSplit"
+                                                  name="requestedDiscountSplit"
+                                                  [min]="0" [max]="1" [step]="0.01" [decimals]="2" [format]="'p'" [autoCorrect]="true"
+                                                  (ngModelChange)="calculateDiscountAmountSplit($event)">
+                            </kendo-numerictextbox>
+                            <div class="grey-text-italic">Enter value from 0.01 to 1.00</div>-->
+
+                            <input type="number" min="0" max="100"
+                                   #requestedDiscountSplit
+                                   [value]="discountRequest.requestedDiscountSplit*100 | number:'1.0-2'"
+                                   name="requestedDiscountSplit"
+                                   (keyup)="calculateDiscountAmountSplit(requestedDiscountSplit.value)"
+                                   (change)="calculateDiscountAmountSplit(requestedDiscountSplit.value)" />%
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xs-12 padding-15 bluecell discount-row">
+                        <div class="col-md-4">
+                            <div class="black-label">Discount Amount</div>
+                            <div>{{discountRequest.approvedTotals.totalDiscountAmountSplit | currency:'USD':true:'1.2-2'}}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="black-label">Net Multiplier</div>
+                            <div>{{discountRequest.approvedTotals.netMultiplierSplit | number:'1.3-3'}}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="black-label">Net Material Value</div>
+                            <div>{{discountRequest.approvedTotals.netMaterialValueSplit | currency:'USD':true:'1.2-2'}}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Unitary-->
+                <div *ngIf="discountRequest.quote.totalListUnitary > 0" class="row no-gutters border-bottom">
+                    <!--Request-->
+                    <div class="col-md-6 col-xs-12 padding-15">
+                        <div>Discount being requested for Unitary in this opportunity?</div>
+                        <div>
+                            <!--<kendo-numerictextbox [(ngModel)]="discountRequest.requestedDiscountUnitary"
+                                                  name="requestedDiscountUnitary"
+                                                  [min]="0" [max]="1" [step]="0.01" [decimals]="2" [format]="'p'" [autoCorrect]="true"
+                                                  (ngModelChange)="calculateDiscountAmountUnitary($event)">
+                            </kendo-numerictextbox>
+                            <div class="grey-text-italic">Enter value from 0.01 to 1.00</div>-->
+
+                            <input type="number" min="0" max="100"
+                                   #requestedDiscountUnitary
+                                   [value]="discountRequest.requestedDiscountUnitary*100 | number:'1.0-2'"
+                                   name="requestedDiscountUnitary"
+                                   (keyup)="calculateDiscountAmountUnitary(requestedDiscountUnitary.value)"
+                                   (change)="calculateDiscountAmountUnitary(requestedDiscountUnitary.value)" />%
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xs-12 padding-15 bluecell discount-row">
+                        <div class="col-md-4">
+                            <div class="black-label">Discount Amount</div>
+                            <div>{{discountRequest.approvedTotals.totalDiscountAmountUnitary | currency:'USD':true:'1.2-2'}}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="black-label">Net Multiplier</div>
+                            <div>{{discountRequest.approvedTotals.netMultiplierUnitary | number:'1.3-3'}}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="black-label">Net Material Value</div>
+                            <div>{{discountRequest.approvedTotals.netMaterialValueUnitary | currency:'USD':true:'1.2-2'}}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--LCPackage-->
+                <div *ngIf="discountRequest.quote.totalListLCPackage > 0" class="row no-gutters border-bottom">
+                    <!--Request-->
+                    <div class="col-md-6 col-xs-12 padding-15">
+                        <div>Discount being requested for LC Package in this opportunity?</div>
+                        <div>
+                            <!--<kendo-numerictextbox [(ngModel)]="discountRequest.requestedDiscountLCPackage"
+                                                  name="requestedDiscountLCPackage"
+                                                  [min]="0" [max]="1" [step]="0.01" [decimals]="2" [format]="'p'" [autoCorrect]="true"
+                                                  (ngModelChange)="calculateDiscountAmountLCPackage($event)">
+                            </kendo-numerictextbox>
+                            <div class="grey-text-italic">Enter value from 0.01 to 1.00</div>-->
+
+                            <input type="number" min="0" max="100" 
+                                   #requestedDiscountLCPackage
+                                   [value]="discountRequest.requestedDiscountLCPackage*100 | number:'1.0-2'"
+                                   name="requestedDiscountUnitary"
+                                   (keyup)="calculateDiscountAmountLCPackage(requestedDiscountLCPackage.value)"
+                                   (change)="calculateDiscountAmountLCPackage(requestedDiscountLCPackage.value)" />%
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xs-12 padding-15 bluecell discount-row">
+                        <div class="col-md-4">
+                            <div class="black-label">Discount Amount</div>
+                            <div>{{discountRequest.approvedTotals.totalDiscountAmountLCPackage | currency:'USD':true:'1.2-2'}}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="black-label">Net Multiplier</div>
+                            <div>{{discountRequest.approvedTotals.netMultiplierLCPackage | number:'1.3-3'}}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="black-label">Net Material Value</div>
+                            <div>{{discountRequest.approvedTotals.netMaterialValueLCPackage | currency:'USD':true:'1.2-2'}}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Total Discount-->
+                <div class="row no-gutters border-bottom">
+                    <div class="col-md-6 col-xs-12 padding-15">
+                        <div>Total Discount being requested in this opportunity</div>
+                        <div>
+                            {{discountRequest.requestedDiscount | percent:'1.2-2'}}
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xs-12 padding-15 lightgreycell total-discount-row">
+                        <div class="col-md-4">
+                            <div>Discount Amount</div>
+                            <div>{{discountRequest.approvedTotals.totalDiscountAmount | currency:'USD':true:'1.2-2'}}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div>Net Multiplier</div>
+                            <div>{{discountRequest.approvedTotals.netMultiplier | number:'1.3-3'}}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div>Net Material Value</div>
+                            <div>{{discountRequest.approvedTotals.netMaterialValue | currency:'USD':true:'1.2-2'}}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row no-gutters border-bottom">
+                    <div class="col-md-6 col-xs-12 padding-15">Freight Costs</div>
+                    <div class="col-md-6 col-xs-12 padding-15 bluecell" style="padding-left:30px;">
+                        {{discountRequest.quote.totalFreight | currency:'USD':true:'1.2-2'}}
+                    </div>
+                </div>
+
+                <div class="row no-gutters border-bottom">
+                    <div class="col-md-6 col-xs-12 padding-15">Start up / Commissioning costs</div>
+                    <div class="col-md-6 col-xs-12 padding-15 bluecell" style="padding-left:30px;">
+                        {{discountRequest.startUpCosts | currency:'USD':true:'1.2-2'}}
+                    </div>
+                </div>
+
+                <div class="row no-gutters border-bottom">
+                    <div class="col-md-6 col-xs-12 padding-15">
+                        <div>Rep/Distributor revised gross profit on opportunity?</div>
+                        <!--Request-->
+                        <!--Is this the same as discountRequest.standardTotals.totalCommissionPercentage or different ???-->
+                        <div>
+                            <!--<kendo-numerictextbox [(ngModel)]="discountRequest.requestedCommission"
+                                                  name="requestedCommission"
+                                                  [min]="0" [max]="1" [step]="0.01" [decimals]="2" [format]="'p'" [autoCorrect]="true"
+                                                  (ngModelChange)="calculateRevisedGrossProfit($event)">
+                            </kendo-numerictextbox>
+                            <div class="grey-text-italic">Enter value from 0.01 to 1.00</div>-->
+
+                            <input type="number" min="0" max="100"
+                                   #requestedCommission
+                                   [value]="discountRequest.requestedCommission*100 | number:'1.0-2'"
+                                   name="requestedCommission"
+                                   (keyup)="recalculateRevisedGrossProfit(requestedCommission.value)"
+                                   (change)="recalculateRevisedGrossProfit(requestedCommission.value)" />%
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xs-12 padding-15 bluecell" style="height:100px; padding-left:30px;">
+                        <div class="black-label">Revised Gross</div>
+                        <div>{{discountRequest.approvedTotals.totalCommissionAmount | currency:'USD':true:'1.2-2'}}</div>
+                    </div>
+                </div>
+
+                <!--Total Sell-->
+                <div class="row no-gutters border-bottom">
+                    <div class="col-md-6 col-xs-12 padding-15">Total revised Rep/Dist selling price as a result of Discount</div>
+                    <div class="col-md-6 col-xs-12 padding-15 lightgreycell totalcell" style="padding-left:30px;">
+                        {{discountRequest.approvedTotals.totalSell | currency:'USD':true:'1.2-2'}}
+                    </div>
+                </div>
+
+                <div class="row no-gutters border-bottom" style="height:50px;">
+                    
+                </div>
+
+                <div class="row no-gutters border-bottom ">
+                    <div class="form-group col-md-6 padding-15">
+                        <label class="control-label required">Probability of close:</label>
+                        <select class="form-control" required [(ngModel)]="discountRequest.probabilityOfCloseTypeId" name="probabilityOfClose">
+                            <option [value]="null" selected disabled>Select ...</option>
+                            <option *ngFor="let item of discountRequest.probabilityOfCloseTypes.items"
+                                    [value]="item.value">
+                                {{item.text}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row no-gutters border-bottom">
+                    <div class="form-group col-md-6 padding-15">
+                        <label class="control-label required">If approved, when will the order be issued to Daikin?</label>
+                        <div>
+                            <kendo-datepicker #datepicker id="orderIssueDate"
+                                              required name="orderIssueDate"
+                                              (open)="datePickerOpen()"
+                                              [(ngModel)]="discountRequest.orderPlannedFor" placeholder="select...">
+                            </kendo-datepicker>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row no-gutters border-bottom">
+                    <div class="form-group col-md-6 padding-15">
+                        <label class="control-label required">What is the approximate delivery date for required equipment?</label>
+                        <div>
+                            <kendo-datepicker id="estimatedDeliveryDate"
+                                              required name="estimatedDeliveryDate"
+                                              (open)="datePickerOpen()"
+                                              [(ngModel)]="discountRequest.project.estimatedDelivery" placeholder="select...">
+                            </kendo-datepicker>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row no-gutters border-bottom">
+                    <div class="form-group col-md-12 padding-15">
+                        <label class="control-label required">Any further information or reason for discount request</label>
+                        <textarea class="form-control" required name="notes" [(ngModel)]="discountRequest.notes" rows="2"></textarea>
+                    </div>
+                </div>
+
+                <div class="row no-gutters border-bottom ">
+                    <div class="form-group col-md-12 padding-15">
+                        <label class="control-label">Enter Daikin City users' emails you want to notify about this request. Place commas between each email</label>
+                        <textarea class="form-control" name="emailsList" [(ngModel)]="discountRequest.emailsList" rows="2"></textarea>
+                    </div>
+                </div>
+
+
+            </fieldset>
+
+            <!--Submit-->
+            <fieldset>
+                <div class="text-center" style="padding-top:20px;">
+                    <a class="btn btn-default" href="/v2/#/quote/{{discountRequest.quoteId}}/existingRecord" style="width:70px;">Cancel</a>
+                    <!--<button type="submit" value="Submit" class="btn btn-default" style="width:70px;">Submit</button>-->
+                    <button class="btn btn-primary" style="width:70px;" [disabled]="discountRequestForm.invalid" (click)="submit()">Submit</button>
+                </div>
+                <!--<div *ngIf="recordState == 'submitted'" class="text-center" style="padding-top:20px;">
+                    <a class="btn btn-default" href="/v2/#/quote/{{order.quoteId}}/existingRecord">Back To Quote</a>
+                </div>-->
+            </fieldset>
+        </form>
+    </div>
+</div>

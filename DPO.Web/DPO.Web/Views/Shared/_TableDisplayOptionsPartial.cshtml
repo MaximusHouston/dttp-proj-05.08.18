@@ -1,0 +1,33 @@
+﻿@model Search
+@{
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+<div class="tbl-filters">
+    <button type="button" class="display-btn">
+        @ResourceUI.Display
+        <img src="~/Images/btn-dropdown-arrow-down-icon.png" />
+    </button>
+    <ul class="tbl-column-opts" style="display:none;">
+            <li>
+                <strong>Row Amount:</strong>
+            </li>
+            <li>
+            @foreach (var amount in Model.PageSizes)
+            {
+                if (amount == user.DisplaySettingsPageSize)
+                { 
+                    @Html.RadioButtonFor(m => m.PageSize, amount, new { @checked = "checked"})
+                }
+                else
+                {
+                    @Html.RadioButtonFor(m => m.PageSize, amount)
+                }<label>@amount</label>
+            }
+            </li>
+            <li><hr/></li>
+            <li>
+                <strong>Show/Hide Columns:</strong>
+            </li>
+        @* rest populated by js method *@
+    </ul>
+</div>

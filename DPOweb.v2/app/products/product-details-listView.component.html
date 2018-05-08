@@ -1,0 +1,61 @@
+﻿<!--<div class="row product-details no-padding">-->
+<div class="row product-details no-padding">
+    <div class="col col-md-3 product-image no-padding" style="background-color:none">
+        <!--<div class="product-image no-padding" style="background-color:none">-->
+        <product-image [product]="product"></product-image>
+    </div>
+
+    <div class="col col-md-3 product-info" style="background-color:none">
+        <!--<div class="product-info no-padding" style="background-color:none">-->
+        <!--<div class="product-name"><a href="/ProductDashboard/Product?ProductId={{product.productId}}">{{product.name}}</a></div>-->
+        <div class="product-link"><a (click)="productDetails($event, product, 'product-overview')">{{product.name}}</a></div>
+        <div class="as-lnk">Model No.: </div> <div style="font-size:smaller"> {{product.productNumber}}</div>
+        <div *ngIf="userSvc.currentUser.showPrices">
+            <div class="as-lnk">Price: </div> <div style="font-size:smaller"> {{product.price | currency:'USD':true:'1.2-2'}}</div>
+        </div>
+    </div>
+
+    <div class="col product-specs" [ngClass]="{'col-md-4' : basketQuoteId != 0 && basketQuoteId != undefined, 'col-md-6' : basketQuoteId == 0 || basketQuoteId == undefined}" style="background-color:none">
+        <product-spec-bars [product]="product"></product-spec-bars>
+        <div *ngIf="user.showPrices">
+            <span [ngSwitch]="product.productStatusTypeId">
+                <span *ngSwitchCase="enums.ProductStatusTypeEnum.New" style="color:blue; font-size:smaller; text-align:right;">New</span>
+                <span *ngSwitchCase="enums.ProductStatusTypeEnum.Active" style="color:#38c638; font-size:smaller; text-align:right;">Active</span>
+                <span *ngSwitchCase="enums.ProductStatusTypeEnum.HiddenModuleUnit" style="color:red; font-size:smaller; text-align:right;">Hidden</span>
+                <span *ngSwitchCase="enums.ProductStatusTypeEnum.Inactive" style="color:red; font-size:smaller; text-align:right;">Inactive</span>
+                <span *ngSwitchCase="enums.ProductStatusTypeEnum.Obsolete" style="color:red; font-size:smaller; text-align:right;">Obsolete</span>
+            </span>
+            <span [ngSwitch]="product.inventoryStatusId">
+                <span *ngSwitchCase="enums.ProductInventoryStatusTypeEnum.Available" style="color:black; background-color:#6df0af; padding:3px; font-size:smaller; text-align:right;">Available</span>
+                <span *ngSwitchCase="enums.ProductInventoryStatusTypeEnum.NotAvailable" style="color:black; background-color:#ffcce6; padding:3px; font-size:smaller; text-align:right;">Not Available</span>
+
+                <span *ngSwitchCase="enums.ProductInventoryStatusTypeEnum.ContactCSR" style="color:black; background-color:#f7d38c; padding:3px; font-size:smaller; text-align:right;">
+                    <span *ngIf="product.productStatusTypeId == enums.ProductStatusTypeEnum.Active && product.invAvailableDate != null && (user.businessTypeId == enums.BusinessTypeEnum.Daikin || user.businessTypeId == enums.BusinessTypeEnum.ManufacturerRep); else contactCSRBlock">
+                        ETA: {{product.invAvailableDate | date : 'shortDate'}}
+                    </span>
+                    <ng-template #contactCSRBlock>
+                        <span>Contact CSR</span>
+                    </ng-template>
+                </span>
+               
+
+            </span>
+        </div>
+    </div>
+
+    <div *ngIf="basketQuoteId != 0 && basketQuoteId != undefined" class="col col-md-2 product-qty no-padding" style="text-align:center">
+        <div class="productQtyContainer" style="padding:10px 0px 25px 0px;">
+            <div>Quantity</div>
+            <product-quantity-input [(product)]="product"></product-quantity-input>
+            <!--<product-quantity-input [(quantity)]="product.quantity"></product-quantity-input>-->
+        </div>
+        <!--<kendo-numerictextbox [autoCorrect]="autoCorrect" value="{{product.quantity}}" step="1" min="0" style="width:100px;"></kendo-numerictextbox>-->
+        <!--<div>
+            <button (click)="showQty()">Quantity</button>
+        </div>-->
+    </div>
+
+    <!--<hr class="col col-md-12 product-row-line" />-->
+</div>
+
+

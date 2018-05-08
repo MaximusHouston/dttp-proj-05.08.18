@@ -1,0 +1,9 @@
+import { ConfigurationService } from '../../common/configuration.service';
+import { YAxisNotesIconComponentGenerated } from '../y-axis-item/notes.icon.component.generated';
+/**
+ * The icon of the notes.
+ */
+export declare class YAxisNotesIconComponent extends YAxisNotesIconComponentGenerated {
+    configurationService: ConfigurationService;
+    constructor(configurationService: ConfigurationService);
+}

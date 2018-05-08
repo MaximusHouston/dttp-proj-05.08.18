@@ -1,0 +1,49 @@
+﻿<!--<link rel="stylesheet" href="/v2/app/content/adminstyles.css" />
+<link rel="stylesheet" href="/v2/app/content/bootstrap.css" />
+<link rel="stylesheet" href="/v2/app/content/site.css" />-->
+
+
+
+<project-tabs [user]="user"></project-tabs>
+<div id="main-container" class="container-fluid">
+    <div class="main-content">
+        <ul class="breadcrumbs">
+            <li><a href="/v2/#/projects">Projects</a></li>
+            <li><a href="/v2/#/project/{{quote.projectId}}">{{quote.project.name}}</a></li>
+            <li><a href="/v2/#/quote/{{quote.quoteId}}/existingRecord">{{quote.title}}</a></li>
+            <li>Submittal package</li>
+        </ul>
+
+        <documents-and-files [possibleDocsList]="possibleDocsList" 
+                             [quoteItemsList]="quoteItemsList"
+                             [quoteId]="quote.quoteId"
+                             [projectId]="quote.projectId" >
+        </documents-and-files>       
+    </div>
+</div>
+
+<!--<div *ngIf="uploadFiles" id="uploadFilesModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Upload New File</h4>
+            </div>
+            <div class="modal-body">
+                <upload-files></upload-files>
+                
+            </div>
+            <div class="modal-footer">
+
+                <button *ngIf="quoteItems.hasObsoleteAndUnavailableProduct" type="button" class="btn btn-default" data-dismiss="modal">Revise</button>
+
+                <button *ngIf="!quoteItems.hasObsoleteAndUnavailableProduct" type="button" class="btn btn-default" data-dismiss="modal">Revise</button>
+                <a *ngIf="!quoteItems.hasObsoleteAndUnavailableProduct"
+                   href="{{actionUrl}}"
+                   class="btn btn-primary">Continue</a>
+            </div>
+        </div>
+
+    </div>
+</div>-->

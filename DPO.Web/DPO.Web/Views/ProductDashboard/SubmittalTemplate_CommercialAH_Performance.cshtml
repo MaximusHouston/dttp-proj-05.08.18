@@ -1,0 +1,25 @@
+﻿@model ProductModel
+@{
+    var specs = Model.Specifications;
+}
+    <tr>
+        <td>Product Model No.</td>
+        <td>@Model.ProductNumber</td>
+        <td>Product Model Name:</td>
+        <td>@Model.Name</td>
+    </tr>
+    <tr>
+        <td>Type: </td>
+        <td>@specs.GetString("ProductClassPIM")</td>
+
+        <td>Cooling Capacity (Nominal) (Btu/hr):</td>
+        <td>@specs.GetDecimal("CoolingCapacityNominal", "N0")</td>
+    </tr>
+
+     <tr>
+        <td>Blower Motor Rating (HP):</td>
+        <td>@specs.GetString("BlowerMotorHorsePower")</td>
+
+        <td></td>
+        <td></td>
+    </tr>

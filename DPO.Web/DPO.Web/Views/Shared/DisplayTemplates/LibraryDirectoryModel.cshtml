@@ -1,0 +1,33 @@
+﻿@model LibraryDirectoryModel
+<tr data-depth="@Model.depthLevel" data-dir-id="@Model.id" data-childcount="@Model.childCount" class="@((Model.childCount > 0) ? "open" : "")">
+    <td class="actions">
+        <div>
+            <ul>
+               <li><a href="#" class="adddirlink">Add Sub Directory</a></li>
+                @if (Model.depthLevel > 0)
+                {
+                    <li><a href="#" class="editdirlink">Edit Directory Name</a></li>
+                    <li><a href="#" class="movedirlink">Move Directory</a></li>
+                    if(Model.childCount == 0)
+                    {
+                        //only empty directories can be removed
+                         <li><a href="#" class="deletedirlink">Delete Directory</a></li>
+                    }
+                    <li><a href="#" class="protectdirlink">@(Model.Protected ? "Unprotect" : "Protect") Directory</a></li>
+                }
+            </ul>
+        </div>
+    </td>
+    <td class="radiocell" style="display:none;">
+        <input name="dir_destination" type="radio" value="@Model.id"/>
+    </td>
+    <td>
+        <button class="collapseGroupLink@((Model.childCount > 0) ? " haschildren" : "")" style="margin-left:@(Model.depthLevel * 10)px;">&nbsp;</button>
+        <a href="#" @(Model.depthLevel > 0 ? "class=grouplink" : "")>@if(Model.Protected){ <img class="directory-protected" src="/Images/padlock.png" />}@Model.name</a>
+    </td>
+</tr>
+@if(Model.documents != null)
+{
+    @Html.DisplayFor(m => m.documents)
+}
+

@@ -1,0 +1,962 @@
+﻿@model DiscountRequestModel
+@{
+    ViewBag.Title = ResourceUI.DiscountAuthorizationRequest;
+
+    var project = Model.Project;
+
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+}
+
+@section Page_Styles
+{
+    @Styles.Render("~/Content/css/978", "~/Content/css/tabbars", "~/Content/css/adminstyles",
+    "~/Content/css/tablestyles", "~/Content/css/RequestDiscountForm", "~/Content/themes/base/css")
+}
+
+@{
+    var viewOnly = (Model.DiscountRequestStatusTypeId != (byte)DiscountRequestStatusTypeEnum.NewRecord);
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/confirmmodal", "~/bundles/jqueryui",
+        "~/bundles/scripts/numericstepperhelpers")
+
+    @Scripts.Render("~/bundles/scripts/projectdashboard/discountrequest")
+
+    <script>
+        var DATE_FORMAT = "@ResourceUI.DateFormat";
+        var dr = new ProjectDashboard.DiscountRequest(@viewOnly.ToString().ToLower(), numericStepperHelpers, confirmModal, window.scService);
+        //DiscountRequestActionInitialise("@viewOnly");
+    </script>
+}
+
+@Html.Partial("ConfirmModal")
+@Html.Partial("_ProjectTabsPartial")
+
+@if (viewOnly == true)
+{
+    @Html.Partial("DARConfirmExportTypeModal")
+}
+
+<ul class="breadcrumbs">
+    <li><a href="/v2/#/projects">@ResourceUI.Projects</a></li>
+    <li><a href="@Url.Action("Project", new { ProjectId = project.ProjectId })">@project.Name</a></li>
+    @*<li><a href="@Url.Action("Quote", new { ProjectId = project.ProjectId, QuoteId = Model.QuoteId })">@Model.Quote.Title</a></li>*@
+    <li><a href="/v2/#/quote/@Model.QuoteId/existingRecord">@Model.Quote.Title</a></li>
+    <li>@ResourceUI.DiscountAuthorizationRequest (DAR)</li>
+</ul>
+@Html.PageMessages()
+<div class="section b-flush t-flush">
+    <div class="item-strap">
+        <div class="itemname">
+            <h1>@ResourceUI.DiscountAuthorizationRequest</h1>
+            @switch ((DiscountRequestStatusTypeEnum)Model.DiscountRequestStatusTypeId)
+            {
+                case DiscountRequestStatusTypeEnum.Pending:
+                    <h2 class="itemname">Status: Pending</h2>
+                    break;
+                case DiscountRequestStatusTypeEnum.Rejected:
+                <h2 class="itemname">Status: Rejected</h2>
+                    break;
+                case DiscountRequestStatusTypeEnum.Approved:
+                <h2 class="itemname">Status: Approved</h2>
+                    break;
+                case DiscountRequestStatusTypeEnum.Deleted:
+                <h2 class="itemname">Status: Deleted</h2>
+                    break;
+                default:
+                <h2 class="itemname">New request</h2>
+                    break;
+            }
+        </div>
+        @if (viewOnly == true)
+        {
+            <div class="btn-bar">
+                <a href="#" id="discount_request_print_modal_trigger" class="btn" target="_blank">Print Request</a>
+                <a href="#" id="discount_request_download_modal_trigger" class="btn" target="_blank">Export Request</a>
+
+                @if (user.HasAccess(SystemAccessEnum.ApproveDiscounts))
+                {
+                    if (Model.DiscountRequestStatusTypeId != (byte)DiscountRequestStatusTypeEnum.Rejected)
+                    {
+                        <a href="#" data-sc-post="@Url.Action("DiscountRequestReject", new { DiscountRequestId = Model.DiscountRequestId })" class="btn reject_dar_btn">Reject Request</a>
+                    }
+                    if (Model.DiscountRequestStatusTypeId != (byte)DiscountRequestStatusTypeEnum.Approved)
+                    {
+                        <a href="#" data-sc-post="@Url.Action("DiscountRequestApprove", new { DiscountRequestId = Model.DiscountRequestId })" class="btn approve_dar_btn">Approve Request</a>
+                    }
+                }
+                else if (!user.HasAccess(SystemAccessEnum.ViewDiscountRequest))
+                {
+                    if (Model.DiscountRequestStatusTypeId == (byte)DiscountRequestStatusTypeEnum.Pending)
+                    {
+                        <a href="#" data-sc-post="@Url.Action("DiscountRequestDelete", new { DiscountRequestId = Model.DiscountRequestId })" class="btn h-slim delete_dar_btn">Delete Request</a>
+                    }
+                }
+            </div>
+        }
+    </div>
+
+</div>
+
+
+<div id="DAC">
+    @using (Html.BeginForm("DiscountRequest", "Projectdashboard", FormMethod.Post, new { enctype = "multipart/form-data", id = "DiscountRequestForm", autocomplete = "off" }))
+    {
+        @Html.Concurrency()
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.DiscountRequestId)
+        @Html.HiddenFor(m => m.ProjectId)
+        @Html.HiddenFor(m => m.QuoteId)
+        @Html.HiddenFor(m => m.DiscountRequestStatusTypeId)
+        @*@Html.HiddenFor(m => m.RequestedDiscount)*@
+        @Html.HiddenFor(m => m.RequestedCommission)
+
+        //Used Javascript calculations
+        if (user.ShowPrices)
+        {
+            @Html.Hidden("TotalFreight", Model.Quote.TotalFreight.ToString("0.00"), new { disabled = "true" })
+
+            @Html.Hidden("TotalList", Model.Quote.TotalList.HasValue ? Model.Quote.TotalList.Value.ToString("0.00") : "0.00", new { disabled = "true" })
+            @Html.Hidden("TotalNet", Model.Quote.TotalNet.HasValue ? Model.Quote.TotalNet.Value.ToString("0.00") : "0.00", new { disabled = "true" })
+            @Html.Hidden("TotalSell", Model.Quote.TotalSell.HasValue ? Model.Quote.TotalSell.Value.ToString("0.00") : "0.00", new { disabled = "true" })
+
+            @Html.Hidden("TotalListVRV", Model.Quote.TotalListVRV.ToString("0.00"), new { disabled = "true" })
+            @Html.Hidden("TotalNetVRV", Model.Quote.TotalNetVRV.ToString("0.00"), new { disabled = "true" })
+            @Html.Hidden("TotalNetUnitary", Model.Quote.TotalNetUnitary.ToString("0.00"), new { disabled = "true"})
+            @Html.Hidden("TotalNetLCPackage", Model.Quote.TotalNetLCPackage.ToString("0.00"), new { disabled = "true" })
+
+            if (Model.Quote.TotalSellVRV != null)
+            {
+                @Html.Hidden("TotalSellVRV", Model.Quote.TotalSellVRV.Value.ToString("0.00"), new { disabled = "true" })
+            }
+            else
+            {
+                @Html.Hidden("TotalSellVRV", "0.00", new { disabled = "true" })
+            }
+            if (!string.IsNullOrEmpty( Model.Quote.TotalListSplit.ToString()))
+            {
+                @Html.Hidden("TotalListSplit", Model.Quote.TotalListSplit.ToString("0.00"), new { disabled = "true" })
+            }
+            else
+            {
+                @Html.Hidden("TotalListSplit", "0.00", new { disabled = "true" })
+            }
+            if (Model.Quote.TotalNetSplit != null)
+            {
+                @Html.Hidden("TotalNetSplit", Model.Quote.TotalNetSplit.ToString("0.00"), new { disabled = "true" })
+            }
+            else
+            {
+                @Html.Hidden("TotalNetSplit", "0.00", new { disabled = "true" })
+            }
+            @Html.Hidden("TotalSellSplit", Model.Quote.TotalSellSplit.HasValue ? Model.Quote.TotalSellSplit.Value.ToString("0.00") : "0.00", new { disabled = "true" })
+
+            if (Model.Quote.TotalSellUnitary != null)
+            {
+                @Html.Hidden("TotalSellUnitary", Model.Quote.TotalSellUnitary.Value.ToString("0.00"), new { disabled = "true" })
+            }
+            else
+            {
+                @Html.Hidden("TotalSellUnitary", "0.00", new { disabled = "true" })
+            }
+            if ( !string.IsNullOrEmpty(Model.Quote.TotalListUnitary.ToString()))
+            {
+                @Html.Hidden("TotalListUnitary", Model.Quote.TotalListUnitary.ToString("0.00"), new { disabled = "true" })
+            }
+            else
+            {
+                @Html.Hidden("TotalListUnitary", "0.00", new { disabled = "true" })
+            }
+            if (!string.IsNullOrEmpty(Model.Quote.TotalNetUnitary.ToString()))
+            {
+                @Html.Hidden("TotalNetUnitary", Model.Quote.TotalNetUnitary.ToString("0.00"), new { disabled = "true" })
+            }
+            else
+            {
+                @Html.Hidden("TotalNetUnitary", "0.00", new { disabled = "true" })
+            }
+            //LC Package
+            if (!string.IsNullOrEmpty(Model.Quote.TotalListLCPackage.ToString()))
+            {
+                @Html.Hidden("TotalListLCPackage", Model.Quote.TotalListLCPackage.ToString("0.00"), new { disabled = "true" })
+            }
+            else
+            {
+                @Html.Hidden("TotalListLCPackage", "0.00", new { disabled = "true" })
+            }
+            if (!string.IsNullOrEmpty(Model.Quote.TotalNetLCPackage.ToString()))
+            {
+                @Html.Hidden("TotalNetLCPackage", Model.Quote.TotalNetLCPackage.ToString("0.00"), new { disabled = "true" })
+            }
+            else
+            {
+                @Html.Hidden("TotalNetLCPackage", "0.00", new { disabled = "true" })
+            }
+
+        }
+
+        //add reject email send checkbox to DAR form if in view only mode
+        if (viewOnly == true)
+        {
+            @Html.Partial("RejectDARConfirmModal")
+        }
+
+        <div class="section form">
+            <p class="mandatory" style="top: 0; right: 20px;">@ResourceUI.FieldsMarkedWithAStar <span>*</span> @ResourceUI.AreMandatory</p>
+            <div class="row">
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col10">
+                    <h3>project systems and competitive position of opportunity</h3>
+                    @Html.Partial("ProjectDetails", project)
+                    <hr class="blue" />
+                    <div class="row">
+                        <div class="r-col6">
+                            <label class="required">Project System Basis Of Design</label>
+                            @Html.DropDownBusinessListFor(m => m.SystemBasisDesignTypeId, Model.SystemBasisDesignTypes)
+                            @Html.KeyMessages(m => m.SystemBasisDesignTypeId)
+                        </div>
+                        <div class="r-col6">
+                            <label class="required">Zone Strategy</label>
+                            @Html.DropDownBusinessListFor(m => m.ZoneStrategyTypeId, Model.ZoneStrategyTypes)
+                            @Html.KeyMessages(m => m.ZoneStrategyTypeId)
+                        </div>
+                        <div class="row-end">&nbsp;</div>
+                    </div>
+                    <div class="row">
+                        <div class="r-col6">
+                            <label class="required">Select Brand Specified</label>
+                            @Html.DropDownBusinessListFor(m => m.BrandApprovedTypeId, Model.BrandApprovedTypes)
+                            @Html.KeyMessages(m => m.BrandApprovedTypeId)
+                        </div>
+                        <div class="r-col6">
+                            <label class="required">Select Approved Equals</label>
+                            @Html.DropDownBusinessListFor(m => m.BrandSpecifiedTypeId, Model.BrandSpecifiedTypes)
+                            @Html.KeyMessages(m => m.BrandSpecifiedTypeId)
+                        </div>
+                        <div class="row-end">&nbsp;</div>
+                    </div>
+                    <hr class="blue" />
+                    <div class="row" id="competitorPriceAvailableRow">
+                        <div class="r-col6">
+                            <label>Is a copy of competitors price to customer available?</label>
+                            @Html.CheckBoxButtonFor(m => m.HasCompetitorPrice)
+                            <p class="checkboxstatusmsg"></p>
+                        </div>
+                        <div class="r-col6 disabled" id="competitorPriceAvailable">
+                            @Html.LabelFor(m => m.CompetitorPrice, "Enter Competitor Price")
+                            @Html.TextBoxFor(m => m.CompetitorPrice, new { @class = "full", placeholder = "$", disabled = "disabled" })
+                            @Html.KeyMessages(m => m.CompetitorPrice)
+                        </div>
+                        <div class="row-end">&nbsp;</div>
+                    </div>
+                    <hr class="blue" />
+                    <div class="row" id="copyOfCompQuoteRow">
+                        <div class="r-col6" style="padding-right: 10px;">
+                            <label>Is a copy of competitors quote to customer available?</label>
+                            @Html.CheckBoxButtonFor(m => m.HasCompetitorQuote)
+                            @Html.KeyMessages(m => m.HasCompetitorQuote)
+                            <p class="checkboxstatusmsg"></p>
+                        </div>
+                        <div class="r-col6 disabled" id="copyOfCompQuote">
+                            @if (viewOnly)
+                            {
+                                if (Model.HasCompetitorQuote)
+                                {
+                                    <label>Competitors quote attached</label>
+                                    <br />
+                                    <a href="/document/dar/@Model.QuoteId.ToString()/?filename=@Model.CompetitorQuoteFileName">@Model.CompetitorQuoteFileName</a>
+                                }
+                            }
+                            else
+                            {
+                                <label>Attach Copy Of Competitors Quote</label>
+                                <br />
+                                <input id="CompetitorQuoteFile" type="file" name="CompetitorQuoteFile">
+
+                                <input id="CompetitorQuoteFileName" name="CompetitorQuoteFileName" type="hidden" value="@Model.CompetitorQuoteFileName">
+                                <br />
+                                @Html.KeyMessages(m => m.CompetitorQuoteFileName)
+                            }
+                        </div>
+                        <div class="row-end">&nbsp;</div>
+                    </div>
+                    <hr class="blue" />
+                    <div class="row" id="attachLineByLineRow">
+                        <div class="r-col6" style="padding-right: 10px;">
+                            <label>Was a line by line comparison of competitor to Daikin completed?</label>
+                            @Html.CheckBoxButtonFor(m => m.HasCompetitorLineComparsion)
+                            @Html.KeyMessages(m => m.HasCompetitorLineComparsion)
+                            <p class="checkboxstatusmsg"></p>
+                        </div>
+                        <div class="r-col6 disabled" id="attachLineByLine">
+                            @if (viewOnly)
+                            {
+                                if (Model.HasCompetitorQuote)
+                                {
+                                    <label>Competitors line By line comparison file attached</label>
+                                    <br />
+
+                                    <a href="/document/dar/@Model.QuoteId.ToString()/?filename=@Model.CompetitorLineComparsionFileName">@Model.CompetitorLineComparsionFileName</a>
+                                }
+                            }
+                            else
+                            {
+                                <label>Attach Line By Line</label>
+                                <br />
+                                <input id="CompetitorLineComparsionFile" type="file" name="CompetitorLineComparsionFile">
+
+                                <input id="CompetitorLineComparsionFileName" name="CompetitorLineComparsionFileName" type="hidden" value="@Model.CompetitorLineComparsionFileName">
+                                <br />
+                                @Html.KeyMessages(m => m.CompetitorLineComparsionFileName)
+                            }
+                        </div>
+                        <div class="row-end">&nbsp;</div>
+                    </div>
+                    <hr class="blue" />
+                    <div class="row">
+                        <label class="required">Is Daikin Equipment at an Advantage/Disadvantage?</label>
+                        @Html.DropDownBusinessListFor(m => m.DaikinEquipmentAtAdvantageTypeId, Model.DaikinEquipmentAtAdvantageTypes)
+                        @Html.KeyMessages(m => m.DaikinEquipmentAtAdvantageTypeId)
+                        <div class="row-end">&nbsp;</div>
+                    </div>
+                    <hr class="blue" />
+                    <div class="row" style="display:none">
+                        <label>Is rep/distributor confident that competition offer is equal to this offer?</label>
+                        @Html.CheckBoxButtonFor(m => m.IsConfidentCompetitorQuote)
+                        @Html.KeyMessages(m => m.IsConfidentCompetitorQuote)
+                        <p class="checkboxstatusmsg"></p>
+                        <div class="row-end">&nbsp;</div>
+                    </div>
+                </div>
+                <div class="r-col1">&nbsp;</div>
+                <div class="row-end">&nbsp;</div>
+            </div>
+        </div>
+        <br />
+        if (user.ShowPrices)
+        {
+            <div class="section form">
+                <div class="row">
+                    <div class="r-col1">&nbsp;</div>
+                    <div class="r-col10">
+                        <h3>rep/distributor and daikin information and costing for opportunity</h3>
+                        <div class="dactbl-heading">Total net price based on standard multiplier(s)</div>
+                        <table class="tbl dactbl">
+                            <tbody>
+                                <tr>
+                                    <td>Total Listed Value Of This Project Offering</td>
+                                    <td></td>
+                                    <td class="blucell">
+                                        @Html.DisplayFor(m => Model.StandardTotals.TotalList)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Total Net (VRV-GNA + RA-QA + Unitary + LC Package)</td>
+                                    <td></td>
+                                    <td class="blucell">
+                                        <span id="NetPriceDisplayVRV"></span>
+                                          @Html.DisplayFor(m => Model.StandardTotals.TotalNet) 
+                                         (
+                                           @Html.DisplayFor(m => Model.StandardTotals.TotalNetVRV) + 
+                                           @Html.DisplayFor(m => Model.StandardTotals.TotalNetSplit) +
+                                           @Html.DisplayFor( m => Model.StandardTotals.TotalNetUnitary) + 
+                                           @Html.DisplayFor(m => Model.StandardTotals.TotalNetLCPackage)
+                                         )
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Freight Costs</td>
+                                    <td></td>
+                                    <td class="blucell">
+                                        @Html.DisplayFor(m => Model.Quote.TotalFreight)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Start up / Commissioning costs</td>
+                                    <td></td>
+                                    <td class="blucell">
+                                    @Html.TextBox("StartUpCosts", Model.StartUpCosts.ToString("0.00"))
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Rep/Distributor Gross Profit on Opportunity</td>
+                                    <td class="blucell" style="background-color:#EAF9FE;">
+                                        @Html.DisplayFor(m => Model.StandardTotals.TotalCommissionPercentage)%
+                                    </td>
+                                    <td class="blucell">
+                                        @*@string.Format("{0:C}", Model.StandardTotals.TotalCommissionAmount.ToString() ?? "0.00")*@
+                                        @string.Format("{0:C}", Model.ApprovedTotals.TotalCommissionAmount.ToString() ?? "0.00")
+                                    </td>
+                                </tr>
+                                <tr class="totalrow">
+                                    <td colspan="2">Total standard sales value of this opportunity<br />from Rep/Dist to customer</td>
+                                    <td id="TotalSaleValue" class="totalcell">
+                                        @*@string.Format("{0:C}", Model.StandardTotals.TotalSell + Model.StartUpCosts + Model.Quote.TotalFreight)*@
+                                        @string.Format("{0:C}", Model.ApprovedTotals.TotalSell + Model.StartUpCosts + Model.Quote.TotalFreight) @*+ Model.ApprovedTotals.TotalCommissionAmount ????*@
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="r-col1">&nbsp;</div>
+                    <div class="row-end">&nbsp;</div>
+                </div>
+            </div>
+
+            <br />
+            <div class="section form">
+                <div class="row">
+                    <div class="r-col1">&nbsp;</div>
+                    <div class="r-col10">
+                        <h3>Opportunity discount amount requested</h3>
+                        <div class="dactbl-heading">Total net price based on requested discounts</div>
+                        <table class="tbl dactbl" style="margin-bottom: 80px;">
+                            <tbody>
+                                <!--#region VRV Type-->
+                                @if (Model.Quote.TotalListVRV > 0)
+                                {
+                                    <tr id="rowVRVDiscountAmount">
+                                        <td>
+                                            <label class="required" id="lblApproveDiscount">Discount being requested for VRV - GNA in this opportunity?</label>
+                                            @if (viewOnly)
+                                            {
+                                                @(string.Format("{0} {1}", @Model.RequestedDiscountVRV.ToString("#.##"), " %"));
+
+                                                <br />
+                                                <br />
+                                                if (user.HasAccess(SystemAccessEnum.ApproveDiscounts))
+                                                {
+                                                    <label class="required" id="lblApproveDiscount">Discount approved for VRV - GNA in this opportunity?</label>
+                                                    @Html.NumericStepperFor((float)Model.ApprovedDiscountVRV, new { id = "DiscountRequestStepperVRV", data_decimal = 2, data_step = 1, @class = "js-alwaysactive" })
+                                                    @Html.KeyMessages(m => m.ApprovedDiscountVRV)
+                                                    @Html.HiddenFor(m => Model.ApprovedDiscountVRV)
+                                                }
+                                                else if (Model.DiscountRequestStatusTypeId == (byte)DiscountRequestStatusTypeEnum.Approved)
+                                                {
+                                                    <label class="required" id="lblApproveDiscount">Discount approved for VRV - GNA in this opportunity?</label>
+                                                    <span class="bold">
+                                                       
+                                                        @(string.Format("{0} {1}", @Model.ApprovedDiscountVRV.ToString("#.##"), " %"));
+                                                    </span>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                @Html.NumericStepperFor((float)Model.RequestedDiscountVRV, new { id = "DiscountRequestStepperVRV", data_decimal = 2, data_step = 1 })
+                                                @Html.KeyMessages(m => m.RequestedDiscountVRV)
+                                                @Html.HiddenFor(m => Model.RequestedDiscountVRV)
+                                            }
+                                        </td>
+
+                                        <td class="blucell inputs">
+                                            <label>@ResourceUI.DiscountAmount</label>
+                                            <span id="DiscountAmountDisplayVRV">@Html.DisplayFor(m => Model.ApprovedTotals.TotalDiscountAmountVRV)</span>
+                                            <label>&nbsp;</label>
+                                            <label>@ResourceUI.NetMultiplier</label>
+                                            @* total net - discount amount, %  total listed value of this project offering?*@
+                                            <span id="NetMultiplierDisplayVRV">@Html.DisplayFor(m => Model.ApprovedTotals.NetMultiplierVRV)</span>
+                                            <label>&nbsp;</label>
+                                            <label>Net Material Value</label>
+                                            <span id="NetMaterialValueDisplayVRV">@Html.DisplayFor(m => Model.ApprovedTotals.NetMaterialValueVRV)</span>
+                                        </td>
+                                    </tr>
+                                }
+                                <!--#endregion-->
+
+                                <!-- #region Split Type-->
+                                @if (Model.Quote.TotalListSplit > 0)
+                                {
+                                    <tr id="rowSplitDiscountAmount">
+                                        <td>
+                                            <label class="required" id="lblApproveDiscount">Discount being requested for RA-QA in this opportunity?</label>
+
+                                            @if (viewOnly) /*Aproving*/
+                                            {
+                                                @(string.Format("{0} {1}", @Model.RequestedDiscountSplit.ToString("#.##"), " %"));
+                                                <br />
+                                                <br />
+                                                if (user.HasAccess(SystemAccessEnum.ApproveDiscounts))
+                                                {
+                                                    <label class="required" id="lblApproveDiscount">Discount being approved for RA-QA in this opportunity?</label>
+                                                    @Html.NumericStepperFor((float)Model.ApprovedDiscountSplit, new { id = "DiscountRequestStepperSplit", data_decimal = 2, data_step = 1, @class = "js-alwaysactive" })
+                                                    @Html.KeyMessages(m => m.ApprovedDiscountSplit)
+                                                    @Html.HiddenFor(m => Model.ApprovedDiscountSplit)
+                                                }
+                                                else if (Model.DiscountRequestStatusTypeId == (byte)DiscountRequestStatusTypeEnum.Approved)
+                                                {
+                                                    <label class="required" id="lblApproveDiscount">Discount approved for RA-QA in this opportunity</label>
+                                                    <span class="bold">
+                                                        @(string.Format("{0} {1}", @Model.ApprovedDiscountSplit.ToString("#.##"), " %"));
+                                                    </span>
+                                                }
+                                            }
+                                            else /*Requesting*/
+                                            {
+                                                @Html.NumericStepperFor((float)Model.RequestedDiscountSplit, new { id = "DiscountRequestStepperSplit", data_decimal = 2, data_step = 1 })
+                                                @Html.KeyMessages(m => m.RequestedDiscountSplit)
+                                                @Html.HiddenFor(m => Model.RequestedDiscountSplit)
+                                            }
+                                        </td>
+                                        <td class="blucell inputs">
+                                            <label>@ResourceUI.DiscountAmount</label>
+                                            <span id="DiscountAmountDisplaySplit">@Html.DisplayFor(m => Model.ApprovedTotals.TotalDiscountAmountSplit)</span>
+                                            <label>&nbsp;</label>
+                                            <label>@ResourceUI.NetMultiplier</label>
+                                            @* total net - discount amount, %  total listed value of this project offering?*@
+                                            <span id="NetMultiplierDisplaySplit">@Html.DisplayFor(m => Model.ApprovedTotals.NetMultiplierSplit)</span>
+                                            <label>&nbsp;</label>
+                                            <label>Net Material Value</label>
+                                            <span id="NetMaterialValueDisplaySplit">@Html.DisplayFor(m => Model.ApprovedTotals.NetMaterialValueSplit)</span>
+                                        </td>
+                                    </tr>
+                                }
+                                <!-- #endregion-->
+
+                                <!-- #region Unitary Type -->
+                                @if (Model.Quote.TotalListUnitary > 0)
+                                {
+                                    <tr id="rowUnitaryDiscountAmount">
+                                        <td>
+                                            <label class="required" id="lblApproveDiscount">
+                                               Discount being requested for Unitary in this opportunity?
+                                            </label>
+
+                                            @if (viewOnly)
+                                            {
+                                                @(string.Format("{0} {1}", @Model.RequestedDiscountUnitary.ToString("#.##"), " %"));
+
+                                                <br />
+                                                <br />
+                                                if (user.HasAccess(SystemAccessEnum.ApproveDiscounts))
+                                                {
+                                                    <label class="required" id="lblApproveDiscount">
+                                                     Discount approved for Unitary in this opportunity ?
+                                                    </label>
+
+                                                    @Html.NumericStepperFor((float)Model.ApprovedDiscountUnitary,
+                                                                             new { id = "DiscountRequestStepperUnitary",
+                                                                                   data_decimal = 2, data_step = 1,
+                                                                                   @class = "js-alwaysactive" })
+
+                                                    @Html.KeyMessages(m => m.ApprovedDiscountUnitary)
+                                                    @Html.HiddenFor(m => Model.ApprovedDiscountUnitary)
+                                                }
+                                                else if (Model.DiscountRequestStatusTypeId == (byte)DiscountRequestStatusTypeEnum.Approved)
+                                                {
+                                                    <label class="required" id="lblApproveDiscount">
+                                                     Discount approved for Unitary in this opportunity?
+                                                    </label>
+                                                    <span class="bold">
+                                                        @(string.Format("{0} {1}", @Model.ApprovedDiscountUnitary.ToString("#.##"), " %"));
+                                                    </span>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                @Html.NumericStepperFor((float)Model.RequestedDiscountUnitary,
+                                                                        new { id = "DiscountRequestStepperUnitary",
+                                                                              data_decimal = 2, data_step = 1 })
+
+                                                @Html.KeyMessages(m => m.RequestedDiscountUnitary)
+                                                @Html.HiddenFor(m => Model.RequestedDiscountUnitary)
+                                            }
+                                        </td>
+
+                                        <td class="blucell inputs">
+                                            <label>@ResourceUI.DiscountAmount</label>
+                                            <span id="DiscountAmountDisplayUnitary">
+                                              @Html.DisplayFor(m => Model.ApprovedTotals.TotalDiscountAmountUnitary)
+                                            </span>
+                                            <label>&nbsp;</label>
+                                            <label>@ResourceUI.NetMultiplier</label>
+                                            <span id="NetMultiplierDisplayUnitary">
+                                              @Html.DisplayFor(m => Model.ApprovedTotals.NetMultiplierUnitary)
+                                            </span>
+                                            <label>&nbsp;</label>
+                                            <label>Net Material Value</label>
+                                            <span id="NetMaterialValueDisplayUnitary">
+                                             @Html.DisplayFor(m => Model.ApprovedTotals.NetMaterialValueUnitary)
+                                            </span>
+                                        </td>
+                                    </tr>
+                                }
+                                <!-- #endregion -->
+
+                                <!-- #region LC Package Type-->
+                                @if (Model.Quote.TotalListLCPackage > 0)
+                                {
+                                    <tr id="rowLCPackageDiscountAmount">
+                                        <td>
+                                            <label class="required" id="lblApproveDiscount">Discount being requested for LC Package in this opportunity?</label>
+
+                                            @if (viewOnly)
+                                            {
+                                                @(string.Format("{0} {1}", @Model.RequestedDiscountLCPackage.ToString("#.##"), " %"));
+                                                <br />
+                                                <br />
+                                                if (user.HasAccess(SystemAccessEnum.ApproveDiscounts))
+                                                {
+                                                    <label class="required" id="lblApproveDiscount">Discount being approved for LC Package in this opportunity?</label>
+                                                    @Html.NumericStepperFor((float)Model.ApprovedDiscountLCPackage, new { id = "DiscountRequestStepperLCPackage", data_decimal = 2, data_step = 1, @class = "js-alwaysactive" })
+                                                    @Html.KeyMessages(m => m.ApprovedDiscountLCPackage)
+                                                    @Html.HiddenFor(m => Model.ApprovedDiscountLCPackage)
+                                                }
+                                                else if (Model.DiscountRequestStatusTypeId == (byte)DiscountRequestStatusTypeEnum.Approved)
+                                                {
+                                                    <label class="required" id="lblApproveDiscount">Discount approved for LC Package in this opportunity</label>
+                                                    <span class="bold">
+                                                        @(string.Format("{0} {1}", @Model.ApprovedDiscountLCPackage.ToString("#.##"), " %"));
+                                                    </span>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                @Html.NumericStepperFor((float)Model.RequestedDiscountLCPackage, new { id = "DiscountRequestStepperLCPackage", data_decimal = 2, data_step = 1 })
+                                                @Html.KeyMessages(m => m.RequestedDiscountLCPackage)
+                                                @Html.HiddenFor(m => Model.RequestedDiscountLCPackage)
+                                            }
+                                        </td>
+                                        <td class="blucell inputs">
+                                            <label>@ResourceUI.DiscountAmount</label>
+                                            <span id="DiscountAmountDisplayLCPackage">@Html.DisplayFor(m => Model.ApprovedTotals.TotalDiscountAmountLCPackage)</span>
+                                            <label>&nbsp;</label>
+                                            <label>@ResourceUI.NetMultiplier</label>
+                                            @* total net - discount amount, %  total listed value of this project offering?*@
+                                            <span id="NetMultiplierDisplayLCPackage">@Html.DisplayFor(m => Model.ApprovedTotals.NetMultiplierLCPackage)</span>
+                                            <label>&nbsp;</label>
+                                            <label>Net Material Value</label>
+                                            <span id="NetMaterialValueDisplayLCPackage">@Html.DisplayFor(m => Model.ApprovedTotals.NetMaterialValueLCPackage)</span>
+                                        </td>
+                                    </tr>
+                                }
+                                <!-- #endregion-->
+                                <tr>
+                                    <td>
+                                        <label class="required" id="lblApproveDiscount">
+                                         Total Discount being requested in this opportunity?
+                                        </label>
+                                        <span id="TotalDiscountPercent">
+                                            @if (viewOnly)
+                                            {
+                                                <span id="DisplayTotalDiscountPercent">
+                                                    @if (Model.DiscountRequestStatusTypeId == (byte)DiscountRequestStatusTypeEnum.Approved)
+                                                    {
+                                                        @(string.Format("{0:#,0.000} {1}", @Model.ApprovedTotals.TotalDiscountPercentage, " %"));
+                                                    }
+                                                    else
+                                                    {
+                                                        @(string.Format("{0:#,0.000} {1}", @Model.RequestedDiscount.ToString("#.###"), " %"));
+                                                    }
+                                                </span>
+                                                if (user.HasAccess(SystemAccessEnum.ApproveDiscounts))
+                                                {
+                                                    @Html.HiddenFor(m => Model.ApprovedDiscount)
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (user.HasAccess(SystemAccessEnum.ApproveDiscounts))
+                                                {
+                                                    <span id="DisplayTotalDiscountPercent">
+                                                        @(string.Format("{0:#,0.000} {1}", @Model.ApprovedDiscount, "%"))
+                                                    </span>
+                                                    @Html.HiddenFor(m => Model.ApprovedDiscount)
+                                                }
+                                                else
+                                                {
+                                                    <span id="DisplayTotalDiscountPercent">
+                                                        @(string.Format("{0:#,0.000} {1}", @Model.RequestedDiscount, "%"))
+                                                    </span>
+                                                    @Html.HiddenFor(m => m.RequestedDiscount)
+                                                }
+                                            }
+                                        </span>
+                                    </td>
+                                    <td class="blucell inputs">
+                                        <label>@ResourceUI.DiscountAmount</label>
+                                        <span id="DiscountAmountDisplay">@Html.DisplayFor(m => Model.ApprovedTotals.TotalDiscountAmount)</span>
+                                        <label>&nbsp;</label>
+                                        <label>@ResourceUI.NetMultiplier</label>
+                                        <span id="NetMultiplierDisplay">@Html.DisplayFor(m => Model.ApprovedTotals.NetMultiplier)</span>
+                                        <label>&nbsp;</label>
+                                        <label>Net Material Value</label>
+                                        <span id="NetMaterialValueDisplay">@Html.DisplayFor(m => Model.ApprovedTotals.NetMaterialValue)</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="required">Rep/Distributor revised gross profit on opportunity?</label>
+                                        @if (viewOnly == true)
+                                        {
+
+                                            @Html.DisplayFor(m => m.RequestedCommission)
+                                            if (user.HasAccess(SystemAccessEnum.ApproveDiscounts))
+                                            {
+                                                @Html.HiddenFor(m => m.RequestedCommission)
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @Html.NumericStepperFor((long)Model.RequestedCommission, new { id = "CommissionRequestStepper" })
+                                            @Html.KeyMessages(m => m.RequestedCommission)
+                                        }
+                                    </td>
+                                    <td class="blucell inputs">
+                                        <label>Revised Gross</label>
+                                        <span id="RequestedCommissionAmountDisplay">
+                                            @string.Format("{0:C}", Model.ApprovedTotals.TotalCommissionAmount)
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr class="totalrow">
+                                    <td>Total revised Rep/Dist selling price as a<br />result of Discount</td>
+                                    <td id="RevisedTotalSaleDisplay" class="totalcell">@Html.DisplayFor(m => Model.ApprovedTotals.TotalSell)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <hr class="blue" />
+                        @*<div class="row">
+                                <label>Will approval of this request assure Rep/Dist of order?</label>
+                                @Html.CheckBoxButtonFor(m => m.ApprovalAssuresOrder)
+                                @Html.KeyMessages(m => m.ApprovalAssuresOrder)
+                                <p class="checkboxstatusmsg"></p>
+                                <div class="row-end">&nbsp;</div>
+                            </div>*@
+                        <div class="row">
+                            <label class="required">Probability of close:</label>
+                            @Html.DropDownBusinessListFor(m => m.ProbabilityOfCloseTypeId, Model.ProbabilityOfCloseTypes)
+                            @Html.KeyMessages(m => m.ProbabilityOfCloseTypeId)
+                            <div class="row-end">&nbsp;</div>
+                        </div>
+                        <hr class="blue" />
+                        <div class="row">
+                            <label for="OrderPlannedFor" class="required">If approved, when will the order be issued to Daikin?</label>
+                            @Html.EditorFor(m => m.OrderPlannedFor, new { htmlAttributes = new { @class = "half datepicker", @readonly = "readonly" } })
+                            @Html.KeyMessages(m => m.OrderPlannedFor)
+                            <div class="row-end">&nbsp;</div>
+                        </div>
+                        <hr class="blue" />
+                        <div class="row">
+                            <label for="OrderDeliveryDate" class="required">What is the approximate delivery date for required equipment?</label>
+                            @*@Html.EditorFor(m => m.OrderDeliveryDate, new { htmlAttributes = new { @class = "half datepicker", @readonly = "readonly" } })*@
+                            @Html.EditorFor(m => m.Project.EstimatedDelivery, new { htmlAttributes = new { @class = "half datepicker", @readonly = "readonly" } })
+                            @Html.KeyMessages(m => m.OrderDeliveryDate)
+                            <div class="row-end">&nbsp;</div>
+                        </div>
+                        <hr class="blue" />
+                        <div class="row">
+                            <label class="required">Any further information or reason for discount request</label>
+                            @if (viewOnly == false)
+                            {
+                                @Html.TextAreaFor(m => m.Notes)
+                                @Html.KeyMessages(m => m.Notes)
+                            }
+                            else
+                            {
+                                <br />
+                                @Html.DisplayTextFor(m => m.Notes);
+                                @Html.HiddenFor(m => m.Notes);
+                            }
+                            <div class="row-end">&nbsp;</div>
+                        </div>
+                    </div>
+                    <div class="r-col1">&nbsp;</div>
+                    <div class="row-end">&nbsp;</div>
+                </div>
+            </div>
+        }
+
+        if (viewOnly == true)
+        {
+            if (user.HasAccess(SystemAccessEnum.ApproveDiscounts) || Model.ResponseNotes != null)
+            {
+                <br />
+                <div class="section form">
+                    <div class="row" style="padding-top: 0;">
+                        <div class="r-col1">&nbsp;</div>
+                        <div class="r-col10">
+                            <div class="row ">
+                                <label>Response from approval team:</label>
+                                @if (user.HasAccess(SystemAccessEnum.ApproveDiscounts))
+                                {
+                                    @Html.TextAreaFor(m => m.ResponseNotes);
+                                    @Html.KeyMessages(m => m.ResponseNotes)
+                                }
+                                else
+                                {
+                                    <br />
+                                    @Html.DisplayTextFor(m => m.ResponseNotes);
+                                }
+                                <div class="row-end">&nbsp;</div>
+                            </div>
+                        </div>
+                        <div class="r-col1">&nbsp;</div>
+                        <div class="row-end">&nbsp;</div>
+                    </div>
+                </div>
+            }
+        }
+
+        <br />
+
+        <div class="section form">
+            <div class="row" style="padding-top: 0;">
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col10">
+                    <div class="row ">
+
+                        <label>@ResourceUI.EnterDaikinCityUserEmailsYouWantToNotifyAboutThisRequest</label>
+                        @if (!viewOnly)
+                        {
+                            <label class="FontSmall" style="color: gray">@ResourceUI.PlaceCommasBetweenEachEmail</label>
+                            @Html.TextAreaFor(m => m.EmailsList)
+                            @Html.KeyMessages(m => m.EmailsList)
+                            @Html.HiddenFor(m => m.EmailsList)
+                            if (!Model.IsValidEmails)
+                            {
+                                <label class="FontSmall" style="color:red">
+                                    @ResourceUI.InvalidEmails
+                                </label>
+                            }
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(m => m.EmailsList)
+                            @Html.HiddenFor(m => m.EmailsList)
+                        }
+                        <div class="row-end">&nbsp;</div>
+                    </div>
+                </div>
+                <div class="r-col1">&nbsp;</div>
+                <div class="row-end">&nbsp;</div>
+            </div>
+        </div>
+
+        <br />
+        <div class="section action c-align">
+
+            @if (viewOnly == false)
+            {
+                @*<a href="#" class="btn" onclick="window.location = document.referrer">@ResourceUI.Cancel</a>*@
+                <a href="/v2/#/quote/@Model.QuoteId/existingRecord" class="btn">@ResourceUI.Cancel</a>
+                <a href="#" data-sc-post="@Url.Action("DiscountRequest")" class="btn submit_dar_btn">@ResourceUI.Submit</a>
+            }
+            else
+            {
+                if (user.HasAccess(SystemAccessEnum.ApproveDiscounts))
+                {
+                    if (Model.DiscountRequestStatusTypeId != (byte)DiscountRequestStatusTypeEnum.Rejected)
+                    {
+                        <a href="#"
+                           data-sc-post="@Url.Action("DiscountRequestReject",
+                           new { DiscountRequestId = Model.DiscountRequestId })"
+                           class="btn reject_dar_btn">Reject Request</a>
+                    }
+                    if (Model.DiscountRequestStatusTypeId != (byte)DiscountRequestStatusTypeEnum.Approved)
+                    {
+                        <a href="#"
+                           data-sc-post="@Url.Action("DiscountRequestApprove",
+                           new { DiscountRequestId = Model.DiscountRequestId })"
+                           class="btn approve_dar_btn" id="btnApproveRequest">Approve Request</a>
+                    }
+                }
+                else if (!user.HasAccess(SystemAccessEnum.ViewDiscountRequest))
+                {
+                    if (Model.DiscountRequestStatusTypeId == (byte)DiscountRequestStatusTypeEnum.Pending)
+                    {
+                        <a href="#" data-sc-post="@Url.Action("DiscountRequestDelete", new { DiscountRequestId = Model.DiscountRequestId })" class="btn h-slim delete_dar_btn">Delete Request</a>
+                    }
+                }
+            }
+
+        </div>
+    }
+</div>
+
+@if (Model.Quote.HasDAR)
+{
+    @Html.Partial("DARConfirmExportTypeModal")
+    <div class="btn-bar" style="display:none;">
+        <a href="#" id="discount_request_print_modal_trigger" class="btn">Print Request</a>
+    </div>
+    @Html.Hidden("createDARpdf", true);
+}
+
+<script>
+    $(function () {
+        $('.cb-switch').on('change', changeCheckboxStatusMsg);
+
+        function changeCheckboxStatusMsg() {
+            var msgBox = $(this).parent().find('.checkboxstatusmsg');
+            if (msgBox.length) {
+                var isChecked = $(this).is(':checked');
+                msgBox.text((isChecked) ? '@ResourceUI.Yes' : '@ResourceUI.No');
+            }
+        }
+
+        $('.cb-switch').each(function () {
+            changeCheckboxStatusMsg.call(this);
+        });
+
+        var count = 0;
+        $('#btnApproveModification').click(function () {
+
+            count += 1;
+            if (count % 2 === 0) {
+                $('.minus').prop('disabled', true);
+                $('.plus').prop('disabled', true);
+                $('.numbers').prop('disabled', true);
+                $('.numbers').val('');
+                $(this).text("Approve Request Modification");
+            }
+            else {
+
+                $('.numbers').prop('disabled', false);
+                $('.plus').prop('disabled', false);
+                $('.minus').prop('disabled', false);
+                $('.numeric-stepper').prop('disabled', false);
+                $('#stepIncrease').prop('disabled', false);
+                $('#stepDerease').prop('disabled', false);
+                $('#RequestedDiscount').prop('disabled', false);
+                @*$('#lblFormerDiscountRequest').show();
+                $('#formerRequestDiscountAmount').text(@Model.RequestedDiscount + "%")*@
+                $('#DiscountRequestStepper').prop('disabled', false);
+                $('#lblApproveDiscount').text("Discount being approved for this opportunity");
+                $(this).text("Cancel");
+            }
+        });
+
+        $('#btnApproveRequest').click(function () {
+            var discountRequest = $('.numbers').val();
+        })
+
+        $('.submit_dar_btn').click(function(){
+            var createDARpdf = $('#createDARpdf').val();
+            if( createDARpdf == "True")
+            {
+                $('#discount_request_print_modal_trigger')[0].click();
+            }
+        });
+
+        var showAlert = true;
+
+        //$('#StartUpCosts').change(function(){
+        //    var startUpCosts = $(this).val();
+        //    if(startUpCosts > 100000)
+        //    {
+        //        if(showAlert)
+        //        {
+        //            if(confirm("StartUpCost greater than 500K, Are you sure it correct ?")){
+        //                showAlert = false;
+        //            }
+        //            else{
+        //                showAlert = true;
+        //            }
+        //        }
+        //    }
+        //});
+
+    });
+</script>

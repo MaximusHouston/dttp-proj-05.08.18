@@ -1,0 +1,14 @@
+﻿@model List<TabModel>
+<ul class="tab-bar prod-cat">
+
+    <li class="@(!Model.Any(m=>m.IsActive) ? "active-tab" : "")">
+        <a href="@Url.Action("ProductFamilies", "ProductDashboard")">Products home</a>
+    </li>
+   
+    @foreach (var tab in Model)
+{
+    <li class="@((tab.IsActive)?"active-tab" : "")">
+        <a href="@Url.Action("Products", "ProductDashboard", new { ProductFamilyId = tab.Id })">@tab.Description</a>
+    </li>
+}
+</ul>

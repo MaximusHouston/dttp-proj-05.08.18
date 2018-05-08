@@ -1,0 +1,88 @@
+﻿<div class="modal confirm" id="confirm_modal_discount_request_export_type" style="display: none;">
+    <div style="top: 20%;">
+        <img src="~/Images/modal-close-btn.png" class="close-btn" />
+        <h1>Show cost pricing</h1>
+        <p>Should cost pricing be included in this report?</p>
+        <a class="btn cancel-btn" id="confirm_modal_discount_request_export_yes" target="_blank" href="#">@ResourceUI.Yes</a>
+        <a class="btn cancel-btn" id="confirm_modal_discount_request_export_no" target="_blank" href="#">@ResourceUI.No</a>
+    </div>
+</div>
+
+<script>
+
+    //TODO need to be remove by 11/30/2016. This coded has been used before
+    //to trigger the click event of export Dar in DarConfirmExportModel.--Aaron Nguyen
+    @*$(function () {
+        $('#discount_request_download_modal_trigger, #discount_request_print_modal_trigger').on('click', function (e)
+        {
+            e.preventDefault();
+            var CreateDARpdf = $('#createDARpdf').val();
+
+            switch ($(this).attr('id')) {
+                case 'discount_request_download_modal_trigger':
+                    $('#confirm_modal_discount_request_export_type p').text('Should cost pricing be included in this export?');
+
+                    $('#confirm_modal_discount_request_export_yes').attr('href', "@Url.Action("DiscountRequestExportWithCostPricing", "Projectdashboard", new { DiscountRequestId = Model.DiscountRequestId, QuoteId = Model.QuoteId, ProjectId = Model.ProjectId})");
+                    $('#confirm_modal_discount_request_export_no').attr('href', "@Url.Action("DiscountRequestExport", "Projectdashboard", new { DiscountRequestId = Model.DiscountRequestId, QuoteId = Model.QuoteId, ProjectId = Model.ProjectId })");
+                    break;
+
+                case 'discount_request_print_modal_trigger':
+
+                    $('#confirm_modal_discount_request_export_type p').text('Should cost pricing be included in this print report?');
+
+                    if (CreateDARpdf == "True") {
+                     
+                        $('#confirm_modal_discount_request_export_yes').removeAttr('target');
+                        $('#confirm_modal_discount_request_export_yes').attr('href', "@Url.Action("DiscountRequestPrintWithCostPricing", "Document", new { Id = Model.DiscountRequestId, QuoteId = Model.QuoteId, ProjectId = Model.ProjectId, createDARpdf = true })");
+                    }
+                    else
+                    {
+                       
+                        $('#confirm_modal_discount_request_export_yes').attr('href', "@Url.Action("DiscountRequestPrintWithCostPricing", "Document", new { Id = Model.DiscountRequestId, QuoteId = Model.QuoteId, ProjectId = Model.ProjectId })");
+                    }
+
+                    $('#confirm_modal_discount_request_export_no').attr('href', "@Url.Action("DiscountRequestPrint", "Document", new { Id = Model.DiscountRequestId, QuoteId = Model.QuoteId, ProjectId = Model.ProjectId })");
+
+                    break;
+            }
+            
+          
+            if ( typeof( CreateDARpdf ) == 'undefined'|| !CreateDARpdf) {
+                $('#confirm_modal_discount_request_export_type').fadeIn(200);
+            }
+            else
+            {
+                $('#confirm_modal_discount_request_export_yes')[0].click();
+            }
+        });
+    });*@
+
+    $(function () {
+        $('#discount_request_download_modal_trigger, #discount_request_print_modal_trigger').on('click', function (e)
+        {
+            e.preventDefault();
+          
+            switch ($(this).attr('id')) {
+                case 'discount_request_download_modal_trigger':
+                    $('#confirm_modal_discount_request_export_type p').text('Should cost pricing be included in this export?');
+
+                    $('#confirm_modal_discount_request_export_yes').attr('href', "@Url.Action("DiscountRequestExportWithCostPricing", "Projectdashboard", new { DiscountRequestId = Model.DiscountRequestId, QuoteId = Model.QuoteId, ProjectId = Model.ProjectId})");
+                    $('#confirm_modal_discount_request_export_no').attr('href', "@Url.Action("DiscountRequestExport", "Projectdashboard", new { DiscountRequestId = Model.DiscountRequestId, QuoteId = Model.QuoteId, ProjectId = Model.ProjectId })");
+                    break;
+
+                case 'discount_request_print_modal_trigger':
+
+                    $('#confirm_modal_discount_request_export_type p').text('Should cost pricing be included in this print report?');
+                    $('#confirm_modal_discount_request_export_yes').attr('href', "@Url.Action("DiscountRequestPrintWithCostPricing", "Document", new { Id = Model.DiscountRequestId, QuoteId = Model.QuoteId, ProjectId = Model.ProjectId })");
+                    $('#confirm_modal_discount_request_export_no').attr('href', "@Url.Action("DiscountRequestPrint", "Document", new { Id = Model.DiscountRequestId, QuoteId = Model.QuoteId, ProjectId = Model.ProjectId })");
+
+                    break;
+            }
+            
+            $('#confirm_modal_discount_request_export_type').fadeIn(200);
+           
+        });
+    });
+
+</script>
+

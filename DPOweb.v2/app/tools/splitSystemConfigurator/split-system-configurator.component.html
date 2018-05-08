@@ -1,0 +1,205 @@
+﻿<basket id="userBasket" [userBasket]="userBasket"></basket>
+<project-tabs [user]="user"></project-tabs>
+
+<div id="main-container" class='container-fluid'>
+    <div class="main-content">
+        <h4>Split System Matchup</h4>
+        <div *ngIf="isAuthenticated" id="splitSystemConfiguratorTool">
+            <div class="row" id="systemConfigForm">
+                <!--Instructions-->
+                <div class="col col-md-3 col-xs-12">
+                    <fieldset>
+                        <legend style="font-weight:bold">INSTRUCTIONS</legend>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="UserHeaderTd">How to use this configurator:</td>
+                                </tr>
+                                <tr>
+                                    <td class="UserText">1. Select outdoor unit information</td>
+                                </tr>
+                                <tr>
+                                    <td class="UserText">2. Select indoor unit information</td>
+                                </tr>
+                                <tr>
+                                    <td class="UserText">3. Click "show results"</td>
+                                </tr>
+                                <tr>
+                                    <td class="UserText">4. Before using System Configurator, please read the Terms and Conditions information.</td>
+                                </tr>
+                                <tr>
+                                    <td class="UserText">5. By using System Configurator, you are in agreement with all <a href="/SystemMatchups-Daikin/disclaimer.jsp">Terms and Conditions</a></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="UserText">
+                                        <b>Note:</b><br /> If your matchup does not show up in System Configurator, it may have been archived.  You can submit a request to retrieve archived certifications by filling out a request form through AHRI, which can be accessed in the link below.  Note that additional fields will appear as you complete the form.  Please allow at least 3 business days for AHRI to process your request.<br>
+                                        <a href="https://www.ahridirectory.org/ahridirectory/pages/Techsupport/support.aspx">https://www.ahridirectory.org</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                </div>
+
+
+                <!--Search Form-->
+                <div class="col col-md-9 col-xs-12 form-horizontal" style="font-size:small; padding-left: 50px;">
+
+                    <fieldset>
+                        <legend style="font-weight:bold">
+                            OUTDOOR UNIT
+                        </legend>
+
+                        <div class="row">
+                            <div class="row configToolRow">
+                                <!--Outdoor Unit Type-->
+                                <div class="col col-md-4 col-xs-12 form-group">
+                                    <label class="col col-md-6 configToolLabel control-label" for="outDoorUnitTypeDDL">Unit Type:<font color="red">*</font></label>
+                                    <div class="col col-md-6">
+                                        <select id="outDoorUnitTypeDDL"></select>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                        <!--Outdoor Unit - Search By System Needs-->
+                        <div class="row">
+
+                            <div>
+                                <div style="padding-left:50px; color:#656565; text-decoration: underline">UNIT CRITERIA</div>
+                            </div>
+
+
+                            <div class="row configToolRow">
+                                <div class="col col-md-4 col-xs-12 form-group">
+                                    <div class="col col-md-6 configToolLabel control-label">Tonnage:<font color="red">*</font></div>
+                                    <div class="col col-md-6">
+                                        <select id="tonnageDDL"></select>
+                                    </div>
+                                </div>
+
+                        <div class="col col-md-4 col-xs-12 form-group">
+                            <!--Temporary disabled-->
+                            <!--<div class="col col-md-6 configToolLabel control-label">Voltage:</div>
+                            <div class="col col-md-6">
+                                <kendo-dropdownlist [data]="voltageOptions" [textField]="'text'" [valueField]="'value'"
+                                                    [(ngModel)]="voltage">
+                                </kendo-dropdownlist>
+                            </div>-->
+                        </div>
+                    </div>
+                    <div [hidden]="tonnage > 5" class="row configToolRow form-group" style="margin-left:-35px;">
+                        <div class="col col-md-2 col-xs-12 configToolLabel control-label">SEER:<font color="red">*</font></div>
+                        <div class="col col-md-10 col-xs-12">
+                            <span class="col col-md-2 col col-xs-12" style="padding:0px">Min <input id="minSEER" [(ngModel)]="minSEER" style="width: 100px" /></span>
+                            <span class="col col-md-2 col col-xs-12" style="padding:0px">Max <input id="maxSEER" [(ngModel)]="maxSEER" style="width: 100px" /></span>
+                        </div>
+                    </div>
+
+                            <div *ngIf="tonnage > 5" class="row configToolRow form-group" style="margin-left:-35px;">
+                                <div class="col col-md-2 col-xs-12 configToolLabel control-label">IEER:<font color="red">*</font></div>
+                                <div class="col col-md-10 col-xs-12">
+                                    <span class="col col-md-2 col col-xs-12" style="padding:0px">Min <input id="minIEER" [(ngModel)]="minIEER" style="width: 100px" /></span>
+                                    <span class="col col-md-2 col col-xs-12" style="padding:0px">Max <input id="maxIEER" [(ngModel)]="maxIEER" style="width: 100px" /></span>
+                                </div>
+                            </div>
+
+                            <div class="row configToolRow form-group" style="margin-left:-35px;">
+                                <div class="col col-md-2 col-xs-12 configToolLabel control-label">EER:</div>
+                                <div class="col col-md-10 col-xs-12">
+                                    <span class="col col-md-2 col col-xs-12" style="padding:0px">Min <input id="minEER" [(ngModel)]="minEER" style="width: 100px" /></span>
+                                    <span class="col col-md-2 col col-xs-12" style="padding:0px">Max <input id="maxEER" [(ngModel)]="maxEER" style="width: 100px" /></span>
+
+                                </div>
+                            </div>
+                            <div class="row configToolRow form-group" style="margin-left:-35px;" *ngIf="outDoorUnitType == 'hp'">
+                                <div class="col col-md-2 col-xs-12 configToolLabel control-label">HSPF:</div>
+                                <div class="col col-md-10 col-xs-12">
+                                    <span class="col col-md-2 col col-xs-12" style="padding:0px">Min <input id="minHSPF" [(ngModel)]="minHSPF" style="width: 100px" /></span>
+                                    <span class="col col-md-2 col col-xs-12" style="padding:0px">Max <input id="maxHSPF" [(ngModel)]="maxHSPF" style="width: 100px" /></span>
+
+                                </div>
+                            </div>
+                            <div class="row configToolRow">
+                                <div class="col col-md-4  col-xs-12 form-group">
+                                    <div class="col col-md-6 col-xs-12 configToolLabel control-label">TXV:</div>
+                                    <div class="col col-md-6 col-xs-12">
+                                        <kendo-dropdownlist [data]="txvOptions" [textField]="'text'" [valueField]="'value'"
+                                                            [(ngModel)]="txv">
+                                        </kendo-dropdownlist>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row configToolRow">
+                                <div class="col col-md-4  col-xs-12 form-group">
+                                    <div class="col col-md-6 col-xs-12 configToolLabel control-label">Status:</div>
+                                    <div class="col col-md-6 col-xs-12">
+                                        <kendo-dropdownlist [data]="statusOptions" [textField]="'text'" [valueField]="'value'"
+                                                            [(ngModel)]="status">
+                                        </kendo-dropdownlist>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!--</fieldset>-->
+
+
+                        </div>
+                    </fieldset>
+
+
+                    <!--Indoor Unit - Search By System Needs-->
+                    <div>
+                        <fieldset>
+                            <legend style="font-weight:bold">
+                                INDOOR UNIT
+                            </legend>
+                            <div class="row configToolRow form-group" style="margin-left:-35px;">
+                                <div class="col col-md-2 col-xs-12 configToolLabel control-label">Unit Type:<font color="red">*</font></div>
+                                <div class="col col-md-10 col-xs-12">
+                                    <div class="row">
+                                        <span class="col col-md-2 col col-xs-12"><input type="radio" name="indoorUnitType" value="coilOnly" [(ngModel)]="indoorUnitType" (ngModelChange)="indoorUnitTypeOnChange()" /> Coil(only)</span>
+                                        <span class="col col-md-2 col col-xs-12"><input type="radio" name="indoorUnitType" value="airHandler" [(ngModel)]="indoorUnitType" (ngModelChange)="indoorUnitTypeOnChange()" /> Air Handler</span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+
+                        </fieldset>
+
+                    </div>
+
+
+
+                    <!--Show result/ reset-->
+                    <div class="form-group">
+                        <div class="pull-right">
+                            <button id="showResultBtn" type="submit" class="btn btn-primary" (click)="getResult()">Show Result</button>
+                            <button id="resetBtn" class="btn btn-default" (click)="reset()">Reset</button>
+
+                            <!--<button id="testBtn" class="btn btn-default" (click)="getEqModelList()">Test</button>-->
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="splitMatchupResultGrid">
+                <split-matchup-master-grid *ngIf="matchupResult" [matchupResult]="matchupResult" [indoorUnitType]="indoorUnitType" [outDoorUnitType]="outDoorUnitType" [userBasket]="userBasket"></split-matchup-master-grid>
+            </div>
+        </div>
+
+
+    </div>
+</div>

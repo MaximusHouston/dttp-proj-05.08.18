@@ -1,0 +1,92 @@
+﻿@model FloorConfigurationLayoutsModel
+@{
+    ViewBag.Title = "Daikin City Content Management";
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/confirmmodal")
+}
+
+@Html.Partial("_CityCMSTabsPartial")
+
+<ul class="breadcrumbs">
+    <li><a href="@Url.Action("ApplicationBuildings", "CityCMS")">Application Buildings</a></li>
+    <li><a href="@Url.Action("ApplicationBuildings", "CityCMS")#@Model.buildingName">@Model.buildingName</a></li>
+    <li><a href="@Url.Action("ApplicationBuildingFloor", "CityCMS", new { floorid = Model.floorId, buildingid = Model.buildingId })">@Model.floorName</a></li>
+    <li><a href="@Url.Action("ApplicationBuildingFloor", "CityCMS", new { floorid = Model.floorId, buildingid = Model.buildingId })">@Model.configName</a></li>
+    <li>Edit Configuration Products</li>
+</ul>
+
+<div class="section t-flush b-flush">
+    <div class="item-strap">
+        <div class="itemname">
+            <h1 style="padding-bottom: 0;">Edit Configuration Products</h1>
+            <h4>@Model.configName</h4>
+        </div>
+        <div class="btn-bar">
+            <a style="visibility:hidden;" href="#" class="submit-btn">&nbsp;</a>
+        </div>
+    </div>
+</div>
+
+@using(Html.BeginForm())
+{
+    <div class="section">
+
+        <div style="width: 888px; margin: 0 auto;">
+            <h4>Example layout</h4>
+            <img src="~/Images/decision-tree.png" style="width: 888px; height: 200px;"/>
+        </div>
+       
+
+        <div class="tbl-holder scroll-x" style="width: 888px; margin: 0 auto;">
+            <h4>@Model.configName layout</h4>
+            <table class="tbl" id="decision_trees">
+                <thead>
+                    <tr>
+                        <th>Level</th>
+                        <th>A</th>
+                        <th>B</th>
+                        <th>C</th>
+                    </tr>
+                </thead>
+                <tbody style="background-color: #fff;">
+                    <tr>
+                        <td style="font-size: 0.85em;">Zone Level</td>
+                        <td data-cell="a1">@Html.DropDownListFor(m => m.decisionTree.Systems[0], new SelectList(Model.systems, "id", "name", Model.decisionTree.Systems[0]), new { style="width: 200px;"})</td>
+                        <td data-cell="b1">
+                            @Html.DropDownListFor(m => m.decisionTree.Systems[1], new SelectList(Model.systems, "id", "name", Model.decisionTree.Systems[1]), new { style = "width: 200px;" })
+                            @Html.DropDownListFor(m => m.decisionTree.Dependancies[0], new SelectList(Model.dependancies, "index", "name", Model.decisionTree.Dependancies[0]), new { style = "width:65px;", @class = "cell-link" })
+                        </td>
+                        <td data-cell="c1">
+                            @Html.DropDownListFor(m => m.decisionTree.Systems[2], new SelectList(Model.systems, "id", "name", Model.decisionTree.Systems[2]), new { style = "width: 200px;" })
+                            @Html.DropDownListFor(m => m.decisionTree.Dependancies[1], new SelectList(Model.dependancies, "index", "name", Model.decisionTree.Dependancies[1]), new { style="width:65px;", @class="cell-link"})
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 0.85em;">System Level</td>
+                        <td data-cell="a2">@Html.DropDownListFor(m => m.decisionTree.Systems[3], new SelectList(Model.systems, "id", "name", Model.decisionTree.Systems[3]), new { style = "width: 200px;" })</td>
+                        <td data-cell="b2">
+                            @Html.DropDownListFor(m => m.decisionTree.Systems[4], new SelectList(Model.systems, "id", "name", Model.decisionTree.Systems[4]), new { style = "width: 200px;" })
+                            @Html.DropDownListFor(m => m.decisionTree.Dependancies[2], new SelectList(Model.dependancies, "index", "name", Model.decisionTree.Dependancies[2]), new { style="width:65px;", @class="cell-link" })
+                        </td>
+                        <td data-cell="c2">
+                            @Html.DropDownListFor(m => m.decisionTree.Systems[5], new SelectList(Model.systems, "id", "name", Model.decisionTree.Systems[5]), new { style = "width: 200px;" })
+                            @Html.DropDownListFor(m => m.decisionTree.Dependancies[3], new SelectList(Model.dependancies, "index", "name", Model.decisionTree.Dependancies[3]), new { style="width:65px;", @class="cell-link"})
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section action c-align">
+        <button type="button" class="btn" onclick="location.replace('@Url.Action("ApplicationBuildingFloor", "CityCMS", new { floorid = Model.floorId, buildingid = Model.buildingId })')">Cancel</button>
+        <button type="submit" class="submit-btn">Save</button>
+    </div>
+}

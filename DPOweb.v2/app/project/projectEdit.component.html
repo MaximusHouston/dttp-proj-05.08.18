@@ -1,0 +1,435 @@
+﻿
+<project-tabs [user]="user"></project-tabs>
+
+<div id="main-container" class='container-fluid'>
+    <div class="main-content">
+
+        <ul class="breadcrumbs">
+            <li><a href="/v2/#/projects">Projects</a></li>
+            <li *ngIf="action == 'projectCreate'">Add New Project</li>
+            <li *ngIf="action == 'projectEdit'">Edit Project</li>
+        </ul>
+
+        <h4 *ngIf="action == 'projectCreate'">New Project</h4>
+        <h4 *ngIf="action == 'projectEdit'">Edit Project</h4>
+
+        <form #projectEditForm="ngForm" novalidate>
+
+            <ul class="hidden-xs nav nav-tabs">
+                <li class="active tabs-header"><a data-toggle="tab" href="#projectDetails">PROJECT DETAILS</a></li>
+                <li class="tabs-header"><a data-toggle="tab" href="#engineerDetails">ENGINEER</a></li>
+                <li class="tabs-header"><a data-toggle="tab" href="#dealerDetails">DEALER/CONTRACTOR</a></li>
+                <li class="tabs-header"><a data-toggle="tab" href="#sellerDetails">SELLER</a></li>
+                <li class="tabs-header"><a data-toggle="tab" id="shipToAddressLink" href="#shippingAddressDetails">SHIPPING ADDRESS/ PROJECT LOCATION</a></li>
+                <li class="tabs-header"><a data-toggle="tab" href="#projectInternal">INTERNAL</a></li>
+            </ul>
+            
+            <div class="visible-xs scrollmenu">
+                <ul class="sub-tab-bar">
+                    <li class="active tabs-header"><a data-toggle="tab" href="#projectDetails">PROJECT DETAILS</a></li>
+                    <li class="tabs-header"><a data-toggle="tab" class="tabs-header" href="#engineerDetails">ENGINEER</a></li>
+                    <li class="tabs-header"><a data-toggle="tab" class="tabs-header" href="#dealerDetails">DEALER/CONTRACTOR</a></li>
+                    <li class="tabs-header"><a data-toggle="tab" class="tabs-header" href="#sellerDetails">SELLER</a></li>
+                    <li class="tabs-header"><a data-toggle="tab" class="tabs-header" href="#shippingAddressDetails">SHIPPING ADDRESS/ PROJECT LOCATION</a></li>
+                    <li class="tabs-header"><a data-toggle="tab" class="tabs-header" href="#projectInternal">INTERNAL</a></li>
+                </ul>
+            </div>
+
+            <div class="tab-content" style="margin:10px;">
+                <!--PROJECT DETAILS-->
+                <div id="projectDetails" class="tab-pane fade in active">
+                    <!--bk color: #E5F2FA-->
+                    <!--<div class="hidden-xs col-md-1"></div>-->
+                    <div class="row no-gutters">
+                        <div class="col-md-5 col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label required">Project Name</label>
+                                <input type="text" class="form-control" #projectName="ngModel" required name="projectName" [(ngModel)]="project.name" (ngModelChange)="projectNameChange($event)">
+                                <div *ngIf="projectName.touched && projectName.invalid" class="alert alert-danger">
+                                    Project Name is required
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="projectDate" class="control-label">Registration Date</label>
+                                <div>
+                                    <kendo-datepicker [value]="projectDate" [disabled]="true">
+                                    </kendo-datepicker>
+
+                                </div>
+                            </div>
+
+                            <!--Example from Kendo- not working. Weird!-->
+                            <!--<div class="example-config">
+                            Selected Value: {{selectedValue}}
+                        </div>
+                        <kendo-dropdownlist [data]="listItems"
+                                            textField="text"
+                                            valueField="value"
+                                            name="constructionType"
+                                            [valuePrimitive]="true"
+                                            [(ngModel)]="selectedValue">
+                        </kendo-dropdownlist>-->
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <p class="control-label required">Contruction Type</p>
+                                    <!--working-->
+                                    <select class="form-control" required [(ngModel)]="project.constructionTypeId" (ngModelChange)="constructionTypeChange($event)" name="constructionType">
+                                        <option [value]="null" selected disabled>Select ...</option>
+                                        <option *ngFor="let item of project.constructionTypes.items"
+                                                [value]="item.value">
+                                            {{item.text}}
+                                        </option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <p class="control-label required">Project Status</p>
+                                    <select class="form-control" required [(ngModel)]="project.projectStatusTypeId" (ngModelChange)="projectStatusTypeChange($event)" name="projectStatusType">
+                                        <option [value]="null" selected disabled>Select ...</option>
+                                        <option *ngFor="let item of project.projectStatusTypes.items"
+                                                [value]="item.value">
+                                            {{item.text}}
+                                        </option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <p class="control-label required">Project Type</p>
+                                    <select class="form-control" required [(ngModel)]="project.projectTypeId" (ngModelChange)="projectTypeChange($event)" name="projectType">
+                                        <option [value]="null" selected disabled>Select ...</option>
+                                        <option *ngFor="let item of project.projectTypes.items"
+                                                [value]="item.value">
+                                            {{item.text}}
+                                        </option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <p class="control-label required">Project Open Status</p>
+                                    <select class="form-control" required [(ngModel)]="project.projectOpenStatusTypeId" (ngModelChange)="projectOpenStatusTypeChange($event)" name="projectOpenStatusType">
+                                        <option [value]="null" selected disabled>Select ...</option>
+                                        <option *ngFor="let item of project.projectOpenStatusTypes.items"
+                                                [value]="item.value">
+                                            {{item.text}}
+                                        </option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <p class="control-label required">Vertical Market</p>
+                                    <select class="form-control" required [(ngModel)]="project.verticalMarketTypeId" (ngModelChange)="verticalMarketTypeChange($event)" name="verticalMarketType">
+                                        <option [value]="null" selected disabled>Select ...</option>
+                                        <option *ngFor="let item of project.verticalMarketTypes.items"
+                                                [value]="item.value">
+                                            {{item.text}}
+                                        </option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-5 col-sm-12">
+
+                            <div class="form-group">
+                                <label class="control-label required">Bid Date</label>
+                                <div>
+                                    <kendo-datepicker required [(value)]="project.bidDate"></kendo-datepicker>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label required">Estimated Close</label>
+                                <div>
+                                    <kendo-datepicker required [(value)]="project.estimatedClose"></kendo-datepicker>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label required">Estimated Delivery</label>
+                                <div>
+                                    <kendo-datepicker required [(value)]="project.estimatedDelivery"></kendo-datepicker>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <p class="control-label">Country</p>
+                                    <select class="form-control" [(ngModel)]="project.shipToAddress.countryCode" (ngModelChange)="countryCodeChange($event)" name="shipToCountryCode">
+                                        <option [value]="null" selected disabled>Select ...</option>
+                                        <option *ngFor="let item of project.shipToAddress.countries.items"
+                                                [value]="item.value">
+                                            {{item.text}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <!--<div>{{project.shipToAddress.countryCode}}</div>-->
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <p class="control-label">State</p>
+                                    <select class="form-control" [(ngModel)]="project.shipToAddress.stateId" name="shipToState">
+                                        <option [value]="null" selected disabled>Select ...</option>
+                                        <option *ngFor="let item of project.shipToAddress.states.items"
+                                                [value]="item.value">
+                                            {{item.text}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <!--<div>stateId: {{project.shipToAddress.stateId}}</div>-->
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label class="control-label">City</label>
+                                    <input type="text" class="form-control" #shipToLocation="ngModel" name="shipToLocation" [(ngModel)]="project.shipToAddress.location">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Project Note</label>
+                                <textarea class="form-control" #description="ngModel" name="description" [(ngModel)]="project.description"></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+                <!--ENGINEER-->
+                <div id="engineerDetails" class="tab-pane fade">
+
+
+                    <div class="row no-gutters">
+                        <div class="form-group col-md-5 col-xs-12">
+                            <label class="control-label">Contact Name</label>
+                            <input type="text" class="form-control" #engineerName="ngModel" name="engineerName" [(ngModel)]="project.engineerName">
+                        </div>
+                        <div class="form-group col-md-5 col-xs-12">
+                            <label class="control-label">Business Name</label>
+                            <input type="text" class="form-control" #engineerBusinessName="ngModel" name="engineerBusinessName" [(ngModel)]="project.engineerBusinessName">
+                        </div>
+                    </div>
+
+                
+                    <div class="row">
+                        <div class="col-md-10">
+                            <hr />
+                        </div>
+                    </div>
+
+                    <address [project]="project"
+                             [addressType]="'engineer'"
+                             [address]="project.engineerAddress"
+                             [projectEditForm]="projectEditForm">
+
+                    </address>
+
+
+                </div>
+
+                <!--DEALER/CONTRACTOR-->
+                <div id="dealerDetails" class="tab-pane fade">
+
+                    <div class="row no-gutters">
+                        <div class="form-group col-md-5 col-xs-12">
+                            <label class="control-label">Contact Name</label>
+                            <input type="text" class="form-control" #dealerContractorName="ngModel" name="dealerContractorName" [(ngModel)]="project.dealerContractorName">
+                        </div>
+
+                        <div class="form-group col-md-5 col-xs-12">
+                            <label class="control-label">Business Name</label>
+                            <input type="text" class="form-control" #customerName="ngModel" name="customerName" [(ngModel)]="project.customerName">
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-10">
+                            <hr />
+                        </div>
+                    </div>
+
+                    <address [project]="project"
+                             [addressType]="'customer'"
+                             [address]="project.customerAddress"
+                             [projectEditForm]="projectEditForm">
+
+                    </address>
+
+                </div>
+
+                <!--SELLER-->
+                <div id="sellerDetails" class="tab-pane fade">
+
+
+                    <div class="row no-gutters">
+                        <div class="form-group col-md-5 col-xs-12">
+                            <label class="control-label">Business Name</label>
+                            <input type="text" class="form-control" #sellerName="ngModel" name="sellerName" [(ngModel)]="project.sellerName">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-10">
+                            <hr />
+                        </div>
+                    </div>
+
+                    <address [project]="project"
+                             [addressType]="'seller'"
+                             [address]="project.sellerAddress"
+                             [projectEditForm]="projectEditForm">
+                    </address>
+
+                </div>
+
+                <!--SHIPPING ADDRESS/ PROJECT LOCATION-->
+                <div id="shippingAddressDetails" class="tab-pane fade">
+
+                    <div class="row no-gutters">
+                        <div class="form-group col-md-5 col-xs-12">
+                            <label class="control-label">Business Name</label>
+                            <input type="text" class="form-control" #shipToName="ngModel" name="shipToName" [(ngModel)]="project.shipToName">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-10">
+                            <hr />
+                        </div>
+                    </div>
+
+                    <address [project]="project"
+                             [addressType]="'shipToAddress'"
+                             [address]="project.shipToAddress"
+                             [projectEditForm]="projectEditForm">
+
+                    </address>
+
+                    <div class="row">
+                        <div class="col-md-10">
+                            <hr />
+                        </div>
+                    </div>
+
+                    <div class="row no-gutters">
+                        <div class="form-group col-md-2 col-xs-12">
+                            <label class="control-label">Square Footage</label>
+                            <input type="text" class="form-control" #squareFootage="ngModel" name="squareFootage" [(ngModel)]="project.squareFootage">
+                        </div>
+                        <div class="form-group col-md-3 col-xs-12">
+                            <label class="control-label">Number Of Floors</label>
+                            <input type="text" class="form-control" #numberOfFloors="ngModel" name="numberOfFloors" [(ngModel)]="project.numberOfFloors">
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!--INTERNAL-->
+                <div *ngIf="canViewPipelineData || canEditPipelineData" id="projectInternal" class="tab-pane fade">
+                    <project-internal [user]="user" [project]="project" [projectEditForm]="projectEditForm"></project-internal>
+                </div>
+            </div>
+
+            <div class="row text-center">
+                <div class="col-md-10" style="padding:10px;">
+                    <button class="btn btn-default" style="width:70px;" (click)="cancel()">Cancel</button>
+                    <button class="btn btn-primary" style="width:70px;" (click)="submit()" type="submit" id="projectEditSubmitBtn">Submit</button>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+
+
+<!--<div *ngIf="project">
+            Project Name: {{project.name}}<br />
+            ContructionTypeId: {{project.constructionTypeId}}<br />
+            Project Status TypeId: {{project.projectStatusTypeId}}<br />
+            Project Type Id: {{project.projectTypeId}}<br />
+            Project Open Status Id: {{project.projectOpenStatusTypeId}}<br />
+            Vertical Market TypeId: {{project.verticalMarketTypeId}}<br />
+            ProjectLeadStatusTypeId: {{project.projectLeadStatusTypeId}}<br />
+            Bid Date: {{project.bidDate}}<br />
+            Country Code: {{project.shipToAddress.countryCode}}<br />
+            State: {{project.shipToAddress.stateId}}<br />
+
+        </div>-->
+<!--{{diagnostic}}-->
+
+
+<div id="shippingAddressDialog" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+          <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Shipping Address</h4>
+            </div>
+            <div class="modal-body" *ngIf="!suggestedAddress">
+                <p>We were unable to verify entered address, please review. Do you want to continue?</p>
+            </div>
+            <div class="modal-footer" *ngIf="!suggestedAddress">
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="reEnterAddress()">Re-enter address</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="continue()">Continue</button>
+            </div>
+
+            <div class="modal-body" *ngIf="suggestedAddress">
+                <p>Address you entered:</p>
+                <div>
+                    <p>
+                        <span>{{project.shipToAddress.addressLine1}}</span>
+                        <span>{{project.shipToAddress.addressLine2}},</span>
+                        <span>{{project.shipToAddress.location}}, </span>
+                        <span>{{project.shipToAddress.stateName}}</span>
+                        <span>{{project.shipToAddress.postalCode}}</span>
+                    </p>
+                </div>
+                <p>Suggested Address:</p>
+                <div>
+                    <p>
+                        <input type="checkbox" class="checkbox-large" id="useSuggestedAddress" name="useSuggestedAddress" [(ngModel)]="useSuggestedAddress">
+
+                        <span>{{suggestedAddress.line1}}</span>
+                        <span>{{suggestedAddress.line2}},</span>
+                        <span>{{suggestedAddress.city}}, </span>
+                        <span>{{suggestedAddress.stateProvince}} </span>
+                        <span>{{suggestedAddress.zipCode}}</span>
+                    </p>
+
+                </div>
+            </div>
+            <div class="modal-footer" *ngIf="suggestedAddress">
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="reEnterAddress()">Re-enter address</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="continue()">Continue</button>
+            </div>
+        </div>
+
+    </div>
+</div>

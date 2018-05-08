@@ -1,0 +1,34 @@
+﻿<div *ngIf="product.accessories.length == 0">
+    No Related Accessories
+</div>
+
+
+<div class="row row-nomargin border-bottom-row accessory-list-row" *ngFor="let item of product.accessories ; let idx = index">
+
+    <div class="col col-md-3 product-image no-padding" style="height:130px;">
+        <!--<product-image [product]="item.accessory"></product-image>-->
+        <img src="{{item.accessory.image.url}}" style="width:130px; height:110px;" class="sub-product-img"/>
+    </div>
+
+    <div class="product-info" [ngClass]="{'col col-md-7' : quoteId != 0 && quoteId != undefined, 'col col-md-9' : quoteId == 0 || quoteId == undefined}" style="background-color:none">
+        <div>
+            <a (click)="accessoryDetails($event, item.accessory)" class="product-link" >  {{item.accessory.name}}</a>
+        </div>
+         <div>
+            <span class="as-lnk">Model No.: </span> <span class="pull-right"> {{item.accessory.productNumber}}</span>
+        </div>
+        <div *ngIf="showPrices">
+            <span class="as-lnk">Price: </span> <span class="pull-right"> {{item.accessory.price | currency:'USD':true:'1.2-2'}}</span>
+        </div>
+        <div>
+            <span class="as-lnk">Quantity required: </span> <span class="pull-right"> {{item.quantity}}</span>
+        </div>
+
+    </div>
+
+    <div *ngIf="quoteId != 0 && quoteId != undefined" class="col col-md-2 product-qty no-padding" style="text-align:center">
+        
+        <product-quantity-add [product]="item.accessory"></product-quantity-add>
+    </div>
+   
+</div>

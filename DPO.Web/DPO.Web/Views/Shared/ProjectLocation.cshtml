@@ -1,0 +1,139 @@
+﻿@model CommissionRequestModel
+
+
+<div class="row">
+    <div class="r-col1 hide-print">&nbsp;</div>
+    <div class="r-col3 details-list">
+        <h5>@ResourceUI.ProjectLocation</h5>
+
+        <ul>
+            <li>
+                <p class="detail-name">@ResourceUI.BusinessName:</p>
+                @if (Model.Project.ShipToName == null)
+                {
+                    <p style="word-wrap: break-word; color:red; font-style:italic;">(please fill in Business Name)</p>
+                }
+                else
+                {
+                    <p style="word-wrap: break-word;">@Model.Project.ShipToName</p>
+                    @Html.KeyMessages(m => m.Project.ShipToName)
+                }
+
+            </li>
+            <li>
+                <p class="detail-name">@ResourceUI.Country:</p>
+                @if (Model.Project.ShipToAddress.CountryCode == null)
+                {
+                    <p style="word-wrap: break-word; color:red; font-style:italic;">(please fill in Country Code)</p>
+                }
+                else
+                {
+                    <p>@Model.Project.ShipToAddress.CountryCode</p>
+                    @Html.KeyMessages(m => m.Project.ShipToAddress.CountryCode)
+                }
+
+            </li>
+            <li>
+                <p class="detail-name">@ResourceUI.AddressLine1:</p>
+                @if (Model.Project.ShipToAddress.AddressLine1 == null)
+                {
+                    <p style="word-wrap: break-word; color:red; font-style:italic;">(please fill in Address Line 1)</p>
+                }
+                else
+                {
+                    <p>@Html.DisplayFor(m => m.Project.ShipToAddress.AddressLine1)</p>
+                    @Html.KeyMessages(m => m.Project.ShipToAddress.AddressLine1)
+                }
+
+            </li>
+            <li>
+                <p class="detail-name">@ResourceUI.AddressLine2:</p>
+                <p>@Html.DisplayFor(m => m.Project.ShipToAddress.AddressLine2)</p>
+            </li>
+        </ul>
+
+    </div>
+
+    <br />
+    <br />
+    <br />
+    <div class="r-col1 hide-print">&nbsp;</div>
+    <div class="r-col3 details-list">
+        <ul>
+            <li>
+                <p class="detail-name">@ResourceUI.Location</p>
+                @if (Model.Project.ShipToAddress.Location == null)
+                {
+                    <p style="word-wrap: break-word; color:red; font-style:italic;">(please fill in City)</p>
+                }
+                else
+                {
+                  <p>@Html.DisplayFor(m => m.Project.ShipToAddress.Location)</p>
+                }
+            </li>
+            <li>
+                <p class="detail-name">@ResourceUI.State:</p>
+                @if (Model.Project.ShipToAddress.StateId == null)
+                {
+                    <p style="word-wrap: break-word; color:red; font-style:italic;">(please select State)</p>
+                }
+                else
+                {
+
+                    var shipToAddressState = Model.Project.ShipToAddress.States.Items
+                        .Where(s => s.Value == Model.Project.ShipToAddress.StateId.ToString())
+                        .Select(s => s.Text).FirstOrDefault();
+
+                    <p>@shipToAddressState</p>
+                }
+            </li>
+            <li>
+                <p class="detail-name">@ResourceUI.ZipCode:</p>
+                @if (Model.Project.ShipToAddress.PostalCode == null)
+                {
+                    <p style="word-wrap: break-word; color:red; font-style:italic;">(please enter Postal Code)</p>
+                }
+                else
+                {
+
+                    <p>@Html.DisplayFor(m => m.Project.ShipToAddress.PostalCode)</p>
+                }
+
+            </li>
+        </ul>
+    </div>
+
+
+
+    <div class="r-col1 hide-print">&nbsp;</div>
+    <div class="r-col3 details-list">
+        @if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved &&
+            Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Rejected &&
+            Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Pending &&
+            Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Deleted)
+        {
+            <a href="@Url.Action("ProjectEdit", new { ProjectId = Model.ProjectId, QuoteId= Model.QuoteId, CommissionRequestId = Model.CommissionRequestId })" id="btn_Edit_ProjectLocation">Edit</a>
+         
+        }
+       
+
+    </div>
+
+    @*<div class="r-col2 hide-print">&nbsp;</div>*@
+    <div class="row-end">&nbsp;</div>
+
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        if ($('#btn_Edit_ProjectLocatio') != "undefined") {
+            $('#btn_Edit_ProjectLocation').on('click', function () {
+
+                localStorage["ActiveTab"] = "shipToAddress";
+                var value = localStorage['ActiveTab'];
+            });
+        }
+    });
+
+</script>

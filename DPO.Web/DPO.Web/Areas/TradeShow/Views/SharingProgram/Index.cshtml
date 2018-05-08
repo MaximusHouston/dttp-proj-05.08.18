@@ -1,0 +1,27 @@
+﻿@model List<DPO.Web.Areas.Apps.Models.Requester>
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<div>
+  <table class="tbl">
+    <th>
+
+    </th>
+@foreach ( var requester in Model)
+{
+    <tr>
+        <td>
+          @requester.FirstName
+        </td>
+        <td>
+         @requester.LastName
+        </td>
+    </tr>
+}
+ </table>
+</div>

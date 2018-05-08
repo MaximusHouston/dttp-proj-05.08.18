@@ -1,0 +1,152 @@
+﻿<div id="editShipToAddressModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <form #shipToAddressForm="ngForm" novalidate>
+                <div class="modal-header">
+                    <h4 class="modal-title">Shipping Address</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row no-gutters">
+                        <div class="form-group col-md-6 col-xs-12">
+                            <label class="control-label required">Business Name</label>
+                            <input type="text" class="form-control" required #shipToName="ngModel" name="shipToName" [(ngModel)]="project.shipToName">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr />
+                        </div>
+                    </div>
+
+                    <div class="row no-gutters">
+                        <div class="form-group col-md-6">
+                            <label class="control-label required">Address Line 1</label>
+                            <input type="text" class="form-control" required #addressLine1="ngModel" name="addressLine1" [(ngModel)]="project.shipToAddress.addressLine1">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Address Line 2</label>
+                            <input type="text" class="form-control" #addressLine2="ngModel" name="addressLine2" [(ngModel)]="project.shipToAddress.addressLine2">
+                        </div>
+                    </div>
+
+
+                    <div class="row no-gutters">
+                        <div class="form-group col-md-3">
+                            <label class="control-label required">Country</label>
+                            <select class="form-control" [(ngModel)]="project.shipToAddress.countryCode" (ngModelChange)="countryCodeChange($event)" name="countryCode">
+                                <option [value]="null" selected disabled>Select ...</option>
+                                <option *ngFor="let item of project.shipToAddress.countries.items"
+                                        [value]="item.value">
+                                    {{item.text}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label class="control-label required">State</label>
+                            <select class="form-control" [(ngModel)]="project.shipToAddress.stateId" name="state" (ngModelChange)="stateChange($event)">
+                                <option [value]="null" selected disabled>Select ...</option>
+                                <option *ngFor="let item of project.shipToAddress.states.items"
+                                        [value]="item.value">
+                                    {{item.text}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label class="control-label required">City</label>
+                            <input type="text" class="form-control" required #location="ngModel" name="location" [(ngModel)]="project.shipToAddress.location">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label class="control-label required">Zip Code</label>
+                            <input type="text" class="form-control" required #postalCode="ngModel" name="postalCode" [(ngModel)]="project.shipToAddress.postalCode">
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr />
+                        </div>
+                    </div>
+
+                    <div class="row no-gutters">
+                        <div class="form-group col-md-3 col-xs-12">
+                            <label class="control-label">Square Footage</label>
+                            <input type="text" class="form-control" #squareFootage="ngModel" name="squareFootage" [(ngModel)]="project.squareFootage">
+                        </div>
+                        <div class="form-group col-md-3 col-xs-12">
+                            <label class="control-label">Number Of Floors</label>
+                            <input type="text" class="form-control" #numberOfFloors="ngModel" name="numberOfFloors" [(ngModel)]="project.numberOfFloors">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="cancel()">Close</button>
+                        <button type="submit" [disabled]="shipToAddressForm.invalid" class="btn btn-primary" (click)="submit()">Submit</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+<div id="verifyAddressDialog" class="modal fade verifyAddressDialog" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Verify Shipping Address</h4>
+            </div>
+            <div class="modal-body" *ngIf="!suggestedAddress">
+                <p>We were unable to verify entered address, please review. Do you want to continue?</p>
+            </div>
+            <div class="modal-footer" *ngIf="!suggestedAddress">
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="reEnterAddress()">Re-enter address</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="continue()">Continue</button>
+            </div>
+
+            <div class="modal-body" *ngIf="suggestedAddress">
+                <p>Address you entered:</p>
+                <div>
+                    <p>
+                        <span>{{project.shipToAddress.addressLine1}}</span>
+                        <span>{{project.shipToAddress.addressLine2}},</span>
+                        <span>{{project.shipToAddress.location}}, </span>
+                        <span>{{project.shipToAddress.stateName}}</span>
+                        <span>{{project.shipToAddress.postalCode}}</span>
+                    </p>
+                </div>
+                <p>Suggested Address:</p>
+                <div>
+                    <p>
+                        <input type="checkbox" class="checkbox-large" id="useSuggestedAddress" name="useSuggestedAddress" [(ngModel)]="useSuggestedAddress">
+
+                        <span>{{suggestedAddress.line1}}</span>
+                        <span>{{suggestedAddress.line2}},</span>
+                        <span>{{suggestedAddress.city}}, </span>
+                        <span>{{suggestedAddress.stateProvince}} </span>
+                        <span>{{suggestedAddress.zipCode}}</span>
+                    </p>
+
+                </div>
+            </div>
+            <div class="modal-footer" *ngIf="suggestedAddress">
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="reEnterAddress()">Re-enter address</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="continue()">Continue</button>
+            </div>
+        </div>
+
+    </div>
+</div>

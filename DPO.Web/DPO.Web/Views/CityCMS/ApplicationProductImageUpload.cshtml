@@ -1,0 +1,58 @@
+﻿@model CitySystemModel
+@{
+    ViewBag.Title = "Daikin City Content Management";
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers")
+}
+
+@Html.Partial("_CityCMSTabsPartial")
+
+
+<ul class="breadcrumbs">
+    <li><a href="@Url.Action("ApplicationProducts","CityCMS")">Application Products</a></li>
+    <li><a href="@Url.Action("ApplicationProductEdit", new { systemid = Model.id })">Edit Application Product</a></li>
+    <li>Application Product Image Upload</li>
+</ul>
+
+<div class="section t-flush b-flush">
+    <div class="item-strap btm-bdr">
+        <div class="itemname">
+            <h1>Application Product Image Upload</h1>
+        </div>
+        <div class="btn-bar">
+            <input type="button" value="Reset Changes" class="btn" style="visibility:hidden;"/>
+        </div>
+    </div>
+</div>
+<br />
+@Html.PageMessages()
+<div class="section form">
+    @using (Html.BeginForm("UploadApplicationProductImage", "CityCMS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.id)
+        @Html.HiddenFor(m => m.image)
+        
+        <h4>current image</h4>
+        <img src="/daikincityweb/images/systems/@Model.image" onerror="this.onerror = null; this.src = '/Images/NoImage.png'" />
+        <br />
+        <br />
+        <label for="importFile">Please select an image to upload</label>
+        <i style="font-size: 0.9em;">(Please note: image must be a PNG file with 300px x 220px dimensions)</i>
+        <br />
+        <br />
+        <input id="importfile" type="file" name="importfile">
+        <br />
+        <br />
+        <br />
+        <a href="@Url.Action("ApplicationProductEdit", new { systemid = Model.id })" class="btn cancel-btn">@ResourceUI.Cancel</a>
+        <button type="submit" class="submit-btn">Upload</button>
+    }
+</div>

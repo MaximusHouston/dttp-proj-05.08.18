@@ -1,0 +1,12 @@
+﻿@model ProjectModel
+<div class="modal confirm" id="confirm_modal_project_created">
+    <div style="top: 20%;">
+        <a href="/v2/#/projects">
+        <img src="~/Images/modal-close-btn.png" class="f-close-btn" />
+        </a>
+        <h1>Project Created</h1>
+        <p>Your project has been created and a new quote added.<br />Click next to edit the quote details, or click cancel to return to the projects list</p>
+        <a href="/v2/#/projects" class="btn">Cancel</a>
+        <a href="@Url.Action("QuoteEdit", "Projectdashboard", new { projectId = Model.ProjectId })" class="submit-btn" id="confirm_modal_project_created_next">@ResourceUI.Next</a>
+    </div>
+</div>

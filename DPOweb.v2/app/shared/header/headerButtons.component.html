@@ -1,0 +1,87 @@
+﻿<!--<a href="javascript:window.location.href='/'" id="home_btn">
+    <img src="app/images/daikin-logo.png" height="50" alt="www.daikin.co.uk" />
+</a>-->
+
+<nav id="topHeader" class="navbar navbar-default">
+
+    <div class="navbar-header">
+        <a href="javascript:window.location.href='/'" id="home_btn">
+            <img src="app/images/daikin-logo.png" height="50" alt="www.daikin.co.uk" />
+        </a>
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topMenuBar">
+            <!--<span>Main Menu</span>-->
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+
+        <!--<a href="" id="home_btn">
+            <img src="app/images/daikin-logo.png" height="50" alt="www.daikin.co.uk" />
+        </a>-->
+
+    </div>
+
+    <!--<a href="javascript:window.location.href='/'" id="home_btn">
+        <img src="app/images/daikin-logo.png" height="50" alt="www.daikin.co.uk" />
+    </a>-->
+
+    <div class="collapse navbar-collapse" id="topMenuBar">
+        <ul id="headerButtons" class="nav navbar-nav navbar-right">
+            <!--<li><a href="/#library"><img src="/v2/app/images/library-icon-s.png" /> Documents Library</a></li>-->
+            <li><a href="{{libraryLink}}"><img src="/v2/app/images/library-icon-s.png" /> Documents Library</a></li>
+
+            <!--User has logged in-->
+            <!--<li><a *ngIf="isAuthenticated" id="projectOfficeBtn" href="#"><img src="/v2/app/images/project-office-icon-s.png" /> Project Office</a></li>-->
+            <li><a *ngIf="isAuthenticated" id="projectOfficeBtn" href="/v2/#/home"><img src="/v2/app/images/project-office-icon-s.png"/> Project Office</a></li>
+            <li class="dropdown" *ngIf="isAuthenticated">
+                <a id="signInBtn" class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <!--<span class="glyphicon glyphicon-user"></span> Signed in as: <span class="glyphicon glyphicon-menu-down"></span>-->
+                    <img src="/v2/app/images/user-icon-s.png" /> Signed in as: <span class="glyphicon glyphicon-menu-down"></span>
+                    <br />
+                    <span id="loggedin-username" class="loggedinusername" style="padding-left:35px;">
+                        <!--{{currentUser.displayName}}-->
+                    </span>
+
+
+                </a>
+                <ul id="userOptionsDropdown" class="dropdown-menu">
+                    <li><a href="/Content/pdf/DaikinCityUserGuide.pdf" target="_blank">USER GUIDE</a></li>
+                    <li><a href="/Account/AccountDetailsEdit">YOUR ACCOUNT</a></li>
+                    <li id="hidden-management-li" hidden></li>
+                    <li id="hidden-content-management-li" hidden></li>
+                    <li *ngIf="currentUser"><a href="/Account/Logoff">SIGN OUT</a></li>
+                </ul>
+            </li>
+            <!--------------------->
+            <!--User has not logged in-->
+            <li *ngIf="!isAuthenticated">
+                <a id="loginLink" href="/v2/#/account/login">
+                    <span class="glyphicon glyphicon-user"></span>
+                    <span>Sign In</span>
+                </a>
+            </li>
+            <!-------------------------->
+            <li class="dropdown">
+                <!--<a id="menu-dropdown" class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-menu-hamburger"></span> Menu</a>-->
+                <a id="menu-dropdown" class="dropdown-toggle" data-toggle="dropdown" href="#"><img src="/v2/app/images/menu-icon-s.png" /> Menu</a>
+                <ul id="cityLocationsDropdown" class="dropdown-menu">
+                    <li><a href="/#conveniencestore"> <span class="glyphicon glyphicon-menu-right"></span> CONVENIENCE STORE</a></li>
+                    <li><a href="/#bank"><span class="glyphicon glyphicon-menu-right"></span> BANK</a></li>
+                    <li><a href="/#hotel"><span class="glyphicon glyphicon-menu-right"></span> HOTEL</a></li>
+                    <li><a href="/#office"><span class="glyphicon glyphicon-menu-right"></span> OFFICE</a></li>
+                    <li><a href="/#restaurant"><span class="glyphicon glyphicon-menu-right"></span> RESTAURANT</a></li>
+                    <li><a href="/#retailstore"><span class="glyphicon glyphicon-menu-right"></span> RETAIL STORE</a></li>
+                    <li><a href="/#commscenter"><span class="glyphicon glyphicon-menu-right"></span> SCHOOL</a></li>
+                    <li><a href="/#conveniencestore"><span class="glyphicon glyphicon-menu-right"></span> COMMS CENTER</a></li>
+                    <li><a href="/#projectoffice"><span class="glyphicon glyphicon-menu-right"></span> PROJECT OFFICE</a></li>
+                    <li><a href="/#trainingcenter"><span class="glyphicon glyphicon-menu-right"></span> TRAINING CENTER</a></li>
+                    <li *ngIf="canAccessLibrary"><a href="/#library"> <span class="glyphicon glyphicon-menu-right"></span> LIBRARY</a></li>
+                    <li *ngIf="canAccessLogistic"><a href="/#logisticscenter"> <span class="glyphicon glyphicon-menu-right"></span> LOGISTICS CENTER</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+

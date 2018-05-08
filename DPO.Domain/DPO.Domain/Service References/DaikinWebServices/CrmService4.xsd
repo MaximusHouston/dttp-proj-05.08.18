@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://crmtestisv.goodmanmfg.com/Services/DPOServices/CrmService.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="https://crmtestisv.goodmanmfg.com/Services/DPOServices/CrmService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="DateTimeConditionExpression">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Operator" type="tns:DPOConditionOperator" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Values" nillable="true" type="q1:ArrayOfdateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DateTimeConditionExpression" nillable="true" type="tns:DateTimeConditionExpression" />
+  <xs:simpleType name="DPOConditionOperator">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="GreaterThan">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GreaterEqual">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LessThan">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LessEqual">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Equal">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">5</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Like">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">6</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="In">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">7</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NotIn">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">8</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Between">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">9</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="DPOConditionOperator" nillable="true" type="tns:DPOConditionOperator" />
+  <xs:complexType name="PagingDetail">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="HasMoreRecords" type="xs:boolean" />
+      <xs:element minOccurs="0" name="PageNumber" type="xs:int" />
+      <xs:element minOccurs="0" name="PagingCookie" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RecordsPerPage" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PagingDetail" nillable="true" type="tns:PagingDetail" />
+  <xs:complexType name="ArrayOfProduct">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Product" nillable="true" type="tns:Product" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfProduct" nillable="true" type="tns:ArrayOfProduct" />
+  <xs:complexType name="Product">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DPOEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AFUE" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="AccessLevel" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="AdditionalRefrigerantCharge" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="AirFlowRateHigh" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="AirFlowRateHighText" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="AirFlowRateLow" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="AirFlowRateMedium" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="AirFlowRateSuperHigh" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="AirFlowRateSuperLow" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="AllowExternalCommission" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="0" name="BackupHeater" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="BlowerAvailableACTonageHigh" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="BlowerAvailableACTonageLow" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="BlowerMotorRatingHP" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="BlowerPowerInputReqd" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="BlowerSizeDiameter" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="BlowerSizeWidth" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="BlowerSpeed" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="BoosterHeat" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="Brand" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="COP17Ducted" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="COP17Nonducted" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="COP47Ducted" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="COP47Nonducted" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="CapacityControlRangeMax" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="CapacityControlRangeMin" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="CapacityIndexLimitMax" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="CapacityIndexLimitMin" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="CompressorType" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="CondensateDrainOutlet" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="CondensatePumpLiftCapacity" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="CoolingCapacityMax" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="CoolingCapacityMin" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="CoolingCapacityNominal" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="CoolingCapacityRated" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="CoolingCapacitySensible" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="CoolingInletWaterTempStdMax" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="CoolingInletWaterTempStdMin" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="CoolingInputPower" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="CoolingOperationRangeGeoMax" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="CoolingOperationRangeGeoMin" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="CoolingOperationRangeStdMax" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="CoolingOperationRangeStdMin" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="CoolingOperationRangewBaffleMax" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="CoolingOperationRangewBaffleMin" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DimensionsDepth" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DimensionsHeight" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DimensionsWidth" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DimensionswBoxDepth" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DimensionswBoxHeight" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DimensionswBoxWidth" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="EERDucted" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="EERNonducted" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="FactoryStdRefrigerantCharge" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="FactoryStdRefrigerantChargeText" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Family" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="FanMotorOutput" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="FurnaceInputCapacity" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="FurnaceOutputCapacity" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="FuseSize" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="GasHeatingCapacityIOHigh" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="GasHeatingCapacityIOLow" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="GasValveType" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="HLEqualizing" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="HLPressureLine" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="HSPFDucted" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="HSPFNonducted" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="HeatExchangerType" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="HeatingCapacityCop17" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="HeatingCapacityMax" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="HeatingCapacityMin" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="HeatingCapacityNominal" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="HeatingCapacityRated" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="HeatingInletWaterTempStdMax" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="HeatingInletWaterTempStdMin" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="HeatingInputPower" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="HeatingOperationRangeGeoMax" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="HeatingOperationRangeGeoMin" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="HeatingOperationRangeStdMax" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="HeatingOperationRangeStdMin" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="HeatingOperationRangewBaffleMax" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="HeatingOperationRangewBaffleMin" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="HeatingVentDiameterMax" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="HeatingVentDiameterMin" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="IEERDucted" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="IEERNonducted" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="InERP" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="0" name="InstallationConfiguration" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="InterConnectingWires" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MarketType" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="MaxConnectionPorts" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="MaxExternalStaticPressure" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="MaxIndoorUnits" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="MaxIndoortoIndoorPiping" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="MaxOutdoorUnits" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="MaxOvercurrentProtection" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="MaxOvercurrentProtectionText" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MaxPipeLengthTotal" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="MaxPipeLengthVertical" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="MaxStartingCurrent" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="MaxStartingCurrentText" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MaxWaterPressure" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="MaxWaterPressureDrop" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="MaxWaterTemp" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="MinCircuitAmps" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="MinCircuitAmpsText" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MinSysWaterVol" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="ModelType" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="MoistureRemovalRate" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="MotorType" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="NoBurners" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="NomVolume" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="NomWaterFlowRateCooling" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="NomWaterFlowRateHeating" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="NumberofConnections" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="PanelDimensionsDepth" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PanelDimensionsHeight" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PanelDimensionsWidth" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PanelWeight" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="PipeSizeGas" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="PipeSizeLiquid" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="PistonSize" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PowerFrequency" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="PowerPhase" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="PowerVoltage" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="Price" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="ProductClassCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProductClassName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProductNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RatedCoolingConditionAmbientDB" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="RatedCoolingConditionAmbientWB" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="RatedCoolingConditionRoomDB" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="RatedCoolingConditionRoomWB" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="RatedExternalStaticPressure" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="RatedHeatingConditionAmbientDB" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="RatedHeatingConditionAmbientWB" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="RatedHeatingConditionRoomDB" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="RatedHeatingConditionRoomWB" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="RatedHeightDifference" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="RatedLoadAmps" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="RatedLoadAmpsText" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RatedPipingLength" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="RefrigerantPreChargedPipeLength" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="RefrigerantType" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="ReleaseStatus" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="SCHEDucted" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="SCHENonducted" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="SEERDucted" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="SEERNonducted" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="SeriesName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ShortName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SoundPower" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="SoundPressureHigh" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="SoundPressureLow" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="SoundPressureMedium" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="SoundPressureSuperHigh" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="SoundPressureSuperLow" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="SubmittalDatasheetTemplate" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="TemperatureRiseRangeHigh" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="TemperatureRiseRangeLow" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="UnitCategory" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="UnitHeatRejection" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="UnitInstallationType" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="WaterFlowRangeMax" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="WaterFlowRangeMin" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="WaterInletConnection" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="WaterOutletConnection" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="WeightGross" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="WeightGrossText" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="WeightNet" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="WeightNetText" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Product" nillable="true" type="tns:Product" />
+  <xs:complexType name="DPOEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CreatedOn" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Id" nillable="true" type="ser:guid" />
+      <xs:element minOccurs="0" name="ModifiedOn" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DPOEntity" nillable="true" type="tns:DPOEntity" />
+  <xs:complexType name="ArrayOfGroup">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Group" nillable="true" type="tns:Group" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfGroup" nillable="true" type="tns:ArrayOfGroup" />
+  <xs:complexType name="Group">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DPOEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IsDisabled" type="xs:boolean" />
+          <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ParentGroupCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ParentGroupId" nillable="true" type="ser:guid" />
+          <xs:element minOccurs="0" name="ParentGroupName" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Group" nillable="true" type="tns:Group" />
+  <xs:complexType name="ArrayOfAccount">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Account" nillable="true" type="tns:Account" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAccount" nillable="true" type="tns:ArrayOfAccount" />
+  <xs:complexType name="Account">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DPOEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AccountCategoryCode" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="AccountCategoryCodeName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="AccountClassificationCode" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="AccountClassificationCodeName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="AccountManager" nillable="true" type="tns:User" />
+          <xs:element minOccurs="0" name="AccountManagerEmail" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="AccountOwner" nillable="true" type="tns:User" />
+          <xs:element minOccurs="0" name="AccountOwnerEmail" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address1City" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address1Country" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address1County" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address1Line1" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address1Line2" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address1Line3" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address1Name" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address1PostalCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address1StateOrProvince" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="Address1StateOrProvinceName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address2City" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address2Country" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address2Line1" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address2Line2" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address2Line3" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address2Name" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address2PostalCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address2StateOrProvince" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="AllowExternalCommission" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="0" name="BillingAccountNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CRMAccountNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DaikinCity" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="0" name="DaikinComfortPro" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="0" name="EMailAddress1" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OpenOrderTotals" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OwningGroup" nillable="true" type="tns:Group" />
+          <xs:element minOccurs="0" name="StatusCode" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="Telephone1" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="VRVPro" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="0" name="WebAddress" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="YearToDateSales" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Account" nillable="true" type="tns:Account" />
+  <xs:complexType name="User">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DPOEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="BusinessUnitCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="BusinessUnitId" nillable="true" type="ser:guid" />
+          <xs:element minOccurs="0" name="BusinessUnitName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DomainName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FirstName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="InternalEMailAddress" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IsDisabled" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="0" name="LastName" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="User" nillable="true" type="tns:User" />
+  <xs:complexType name="ArrayOfAccountMultiplier">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AccountMultiplier" nillable="true" type="tns:AccountMultiplier" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAccountMultiplier" nillable="true" type="tns:ArrayOfAccountMultiplier" />
+  <xs:complexType name="AccountMultiplier">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DPOEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CrmAccountNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DiscountPercentage" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="ItemClass" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ItemClassCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AccountMultiplier" nillable="true" type="tns:AccountMultiplier" />
+  <xs:complexType name="ArrayOfSystemComponent">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SystemComponent" nillable="true" type="tns:SystemComponent" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSystemComponent" nillable="true" type="tns:ArrayOfSystemComponent" />
+  <xs:complexType name="SystemComponent">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DPOEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ParentProductNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProductNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Quantity" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="RequirementLevel" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="RequirementLevelName" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SystemComponent" nillable="true" type="tns:SystemComponent" />
+  <xs:complexType name="ArrayOfSalesLiterature">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SalesLiterature" nillable="true" type="tns:SalesLiterature" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSalesLiterature" nillable="true" type="tns:ArrayOfSalesLiterature" />
+  <xs:complexType name="SalesLiterature">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DPOEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Attachments" nillable="true" type="tns:ArrayOfSalesLiteratureItem" />
+          <xs:element minOccurs="0" name="Rank" type="xs:int" />
+          <xs:element minOccurs="0" name="Title" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TypeCode" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="TypeCodeName" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SalesLiterature" nillable="true" type="tns:SalesLiterature" />
+  <xs:complexType name="ArrayOfSalesLiteratureItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SalesLiteratureItem" nillable="true" type="tns:SalesLiteratureItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSalesLiteratureItem" nillable="true" type="tns:ArrayOfSalesLiteratureItem" />
+  <xs:complexType name="SalesLiteratureItem">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DPOEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="FileBytes64" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FileName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MimeType" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SalesLiteratureItem" nillable="true" type="tns:SalesLiteratureItem" />
+  <xs:complexType name="ArrayOfProductSalesLiterature">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ProductSalesLiterature" nillable="true" type="tns:ProductSalesLiterature" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfProductSalesLiterature" nillable="true" type="tns:ArrayOfProductSalesLiterature" />
+  <xs:complexType name="ProductSalesLiterature">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DPOEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Attachments" nillable="true" type="tns:ArrayOfSalesLiteratureItem" />
+          <xs:element minOccurs="0" name="ProductNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Rank" type="xs:int" />
+          <xs:element minOccurs="0" name="SalesLiteratureId" nillable="true" type="ser:guid" />
+          <xs:element minOccurs="0" name="Title" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TypeCode" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="TypeCodeName" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ProductSalesLiterature" nillable="true" type="tns:ProductSalesLiterature" />
+  <xs:complexType name="ArrayOfUser">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="User" nillable="true" type="tns:User" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUser" nillable="true" type="tns:ArrayOfUser" />
+  <xs:complexType name="ArrayOfProductNote">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ProductNote" nillable="true" type="tns:ProductNote" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfProductNote" nillable="true" type="tns:ArrayOfProductNote" />
+  <xs:complexType name="ProductNote">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DPOEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProductId" nillable="true" type="ser:guid" />
+          <xs:element minOccurs="0" name="ProductNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Rank" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="Type" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="TypeName" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ProductNote" nillable="true" type="tns:ProductNote" />
+  <xs:complexType name="ArrayOfOption">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Option" nillable="true" type="tns:Option" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOption" nillable="true" type="tns:ArrayOfOption" />
+  <xs:complexType name="Option">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DPOEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AttributeName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DisplayOrder" type="xs:int" />
+          <xs:element minOccurs="0" name="EntityName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Value" type="xs:int" />
+          <xs:element minOccurs="0" name="ValueLabel" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Option" nillable="true" type="tns:Option" />
+</xs:schema>

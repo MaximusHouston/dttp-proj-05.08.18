@@ -1,0 +1,45 @@
+﻿<div class="row" style="margin-bottom:10px">
+    <div id="dk-productFamilies" class="row">
+        <kendo-grid [data]="productFamilies" 
+                    [pageSize]="pageSize"
+          [skip]="skip"
+          [pageable]="{
+            buttonCount: buttonCount,
+            info: info,
+            type: type,
+            pageSizes: pageSizes,
+            previousNext: previousNext
+          }"
+          [scrollable]="'none'"
+          (pageChange)="pageChange($event)">
+            <kendo-grid-column field="Id">
+                <template kendoCellTemplate let-dataItem let-rowIndex="rowIndex">
+                    <strong>{{dataItem.Id}}</strong>
+                </template>
+            </kendo-grid-column>
+            <kendo-grid-column field="Name">
+                <template kendoCellTemplate let-dataItem let-rowIndex="rowIndex">
+                    <strong>{{dataItem.Name}}</strong>
+                </template>
+            </kendo-grid-column>
+        </kendo-grid>
+
+      <!--<table>
+          <thead>
+              <tr>
+              <th>Id</th>
+              <th>Name</th>
+          </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let productFamily of productFamilies">
+                  <td>{{ productFamily.Id}}</td>
+                  <td>{{ productFamily.Name }}</td>
+              </tr>
+          </tbody>
+      </table>-->
+    </div>
+</div>
+
+
+

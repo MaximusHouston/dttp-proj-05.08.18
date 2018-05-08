@@ -1,0 +1,67 @@
+﻿@model ProductModel
+@{
+    Layout = null;
+    @Styles.Render("~/Content/css/pdf-base");
+    Model.PageTotal  = 3;
+}
+<div class="pdf"> 
+
+    <div class="static-page">
+        @Html.Partial("SubmittalTemplate_Print_Header")
+
+        <div class="row">
+            @Html.Partial("ProductFeaturesAndBenefits")
+            @Html.Partial("SubmittalTemplate_ProductImageAndLogos")
+            <div class="row-end">&nbsp;</div>
+        </div>
+
+        @Html.Partial("ProductNotes")
+        @Html.Partial("SubmittalTemplate_Print_Footer")
+    </div>
+
+        <div class="new static-page">
+            @Html.Partial("SubmittalTemplate_Print_Header")
+
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="4">Performance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @Html.Partial("SubmittalTemplate_AirCooled_Performance")
+                </tbody>
+            </table>
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="4">Outdoor Unit Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @Html.Partial("SubmittalTemplate_AirCooled_UnitDetails")
+                </tbody>
+            </table>
+
+            @Html.Partial("SubmittalTemplate_Print_Footer")
+        </div>
+
+        <div class="new static-page">
+            @Html.Partial("SubmittalTemplate_Print_Header")
+
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="4">System Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @Html.Partial("SubmittalTemplate_System_Details")
+                </tbody>
+            </table>
+
+            @Html.Partial("ProductDimensionalDrawing")
+            @Html.Partial("SubmittalTemplate_Print_Footer")
+        </div>
+
+    </div>

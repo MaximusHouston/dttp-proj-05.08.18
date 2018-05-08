@@ -1,0 +1,19 @@
+import * as tslib_1 from "tslib";
+import { BaseEvent } from './base-event';
+/**
+ * Arguments for the `zoomEnd` event.
+ */
+var ZoomEndEvent = /** @class */ (function (_super) {
+    tslib_1.__extends(ZoomEndEvent, _super);
+    /**
+     * @hidden
+     */
+    function ZoomEndEvent(e, sender) {
+        var _this = _super.call(this, sender) || this;
+        _this.axisRanges = e.axisRanges;
+        _this.originalEvent = e.originalEvent;
+        return _this;
+    }
+    return ZoomEndEvent;
+}(BaseEvent));
+export { ZoomEndEvent };

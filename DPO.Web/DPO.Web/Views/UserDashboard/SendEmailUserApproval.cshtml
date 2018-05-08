@@ -1,0 +1,19 @@
+﻿@model DPO.Common.SendEmailModel
+@{
+    var model = Model as SendEmailModel;
+}
+@if (Model.RenderTextVersion)
+{
+    Layout = null;
+    <text>Your recent registration for Daikin Office has been approved.</text>
+}
+else
+{
+    Layout = "~/Views/Shared/EmailTemplate.cshtml";
+
+    <table>
+        <tr>
+            <td style="padding-left: 28px; padding-top: 20px; font-family: Helvetica, Arial, sans-serif; ">Your recent registration for Daikin Office has been approved.</td>
+        </tr>
+    </table>
+}

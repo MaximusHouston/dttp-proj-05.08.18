@@ -1,0 +1,72 @@
+﻿@model ProjectsModel
+
+@{
+    var projecstModel = ViewData["ProjectsModel"];
+}
+<div class="modal confirm" id="projects_delete_modal">
+    <div style="top: 2%; width:450px;">
+        @*<img src="~/Images/modal-close-btn.png" class="close-btn" />*@
+        <h1>Delete Projects</h1>
+        <p>Are you sure you want to delete the following projects ?</p>
+      
+        <div style="width: 400px; height: 300px; overflow: scroll;">
+            @foreach (ProjectModel project in Model.DeleteProjects)
+            {
+                <p style="padding-left:10px; color:red;">
+                    @project.Name
+                </p>
+            }
+           
+         </div>
+        <div>
+            @if(Model.DeleteProjects.Count > 1)
+            { 
+              <p>Projects selected: @Model.DeleteProjects.Count </p>
+            }
+            else
+            {
+              <p>Project selected: @Model.DeleteProjects.Count </p>
+            }
+        </div>
+            <br />
+            <br />
+            @*<a href="@Url.Action("Projects", "ProjectDashboard", new { ModelMode = DPO.Common.Models.Project.ModelModeEnum.Edit })" class="submit-btn">@ResourceUI.Cancel</a>*@
+            <input type="submit" class="submit-btn" value="@ResourceUI.Cancel" id="btnDeleteProjectsCancel" />
+            @*<input type="submit" class="submit-btn" value="@ResourceUI.ProjectsDelete" id="btnDeleteProjects" style="float:right;"/>*@
+            <a href="@Url.Action("ProjectsDelete", "ProjectDashboard")" class="submit-btn" style="float:right;">@ResourceUI.ProjectsDelete</a>
+        </div>
+</div>
+<script>
+    $('#btnDeleteProjects').on('click', function (e) {
+        e.preventDefault();
+
+        var projectsURL = '@Url.Action("Projects","Projectdashboard")';
+        @*var projectsDeleteURL = '@Url.Action("ProjectsDelete", "ProjectDashboard", new { ModelMode = @DPO.Common.Models.Project.ModelModeEnum.Delete })';*@
+
+        var $projectsForm = $('#ProjectsForm');
+
+        if (!$projectsForm.length) return;
+
+        //$projectsForm.attr('action', projectsDeleteURL);
+
+        //$projectsForm.submit();
+
+        $projectsForm.attr('action', projectsURL);
+
+        $('#btnSetFilters').click();
+    });
+
+    $('#btnDeleteProjectsCancel').on('click', function (e) {
+        e.preventDefault();
+        var projectsURL = '@Url.Action("Projects","Projectdashboard")';
+        var $projectsForm = $('#ProjectsForm');
+
+        if (!$projectsForm.length) return;
+
+        $projectsForm.submit();
+        $projectsForm.attr('action', projectsURL);
+
+        $('#btnSetFilters').click();
+    })
+       
+</script>

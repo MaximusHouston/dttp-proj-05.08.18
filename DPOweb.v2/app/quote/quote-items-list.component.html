@@ -1,0 +1,205 @@
+﻿<!--<kendo-dialog title="UPDATE QUOTE ITEM TAGS" *ngIf="tagEditorOpened" (close)="closeTagEditor()" style="margin:auto;">
+    <p style="text-align: center;">Please enter your tags for this item (max 500 characters)?</p>
+    <textarea id="quoteItemTagText" rows="4" maxlength="500" style="width:100%;">
+
+    </textarea>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="closeTagEditor()">Cancel</button>
+        <button kendoButton (click)="saveTagUpdate()" primary="true">Update</button>
+    </kendo-dialog-actions>
+</kendo-dialog>-->
+<!--//kendo dialog-->
+<!--<div kendoDialogContainer></div>-->
+
+<div *ngIf="!quoteItems">
+    <span class="k-icon k-i-loading" style="width:100%; font-size:32px;"></span>
+</div>
+
+<kendo-grid *ngIf="quoteItems" #grid id="quoteItemsGrid" [data]="quoteItems.items">
+
+    <ng-template kendoGridToolbarTemplate>
+        <button class='k-button' [disabled]="!gridIsModified" (click)="saveChanges(grid);">Save Changes</button>
+        <button class='k-button' [disabled]="!gridIsModified" (click)="cancelChanges(grid);">Cancel Changes</button>
+    </ng-template>
+
+    <kendo-grid-column media="(max-width: 450px)" title="Products">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <dl>
+                <dt>Product</dt>
+                <dd>
+                    {{ dataItem.productNumber }}
+                    <!--<div *ngIf="dataItem.inventoryStatusId == enums.ProductInventoryStatusTypeEnum.NotAvailable" style="color:red; font-size:smaller; font-style: italic">[{{dataItem.inventoryStatusDescription}}]</div>
+            <div *ngIf="dataItem.productStatusTypeId == enums.ProductStatusTypeEnum.Obsolete" style="color:red; font-size:smaller; font-style: italic">[{{dataItem.productStatusTypeDescription}}]</div>-->
+                    <div *ngIf="user.showPrices">
+                        <div [ngSwitch]="dataItem.productStatusTypeId">
+                            <span *ngSwitchCase="enums.ProductStatusTypeEnum.New" style="color:blue; font-size:smaller; ">New</span>
+                            <span *ngSwitchCase="enums.ProductStatusTypeEnum.Active" style="color:#38c638; font-size:smaller;">Active</span>
+                            <span *ngSwitchCase="enums.ProductStatusTypeEnum.HiddenModuleUnit" style="color:red; font-size:smaller;">Hidden</span>
+                            <span *ngSwitchCase="enums.ProductStatusTypeEnum.Inactive" style="color:red; font-size:smaller;">Inactive</span>
+                            <span *ngSwitchCase="enums.ProductStatusTypeEnum.Obsolete" style="color:red; font-size:smaller;">Obsolete</span>
+                        </div>
+                        <div [ngSwitch]="dataItem.inventoryStatusId">
+                            <span *ngSwitchCase="enums.ProductInventoryStatusTypeEnum.Available" style="color:black; background-color:#6df0af; padding:3px;">Available</span>
+                            <span *ngSwitchCase="enums.ProductInventoryStatusTypeEnum.NotAvailable" style="color:black; background-color:#ffcce6; padding:3px;">Not Available</span>
+                            <span *ngSwitchCase="enums.ProductInventoryStatusTypeEnum.ContactCSR" style="color:black; background-color:#f7d38c; padding:3px;">
+                                <span *ngIf="dataItem.productStatusTypeId == enums.ProductStatusTypeEnum.Active && dataItem.invAvailableDate != null && (user.businessTypeId == enums.BusinessTypeEnum.Daikin || user.businessTypeId == enums.BusinessTypeEnum.ManufacturerRep); else contactCSRBlock">
+                                    ETA: {{dataItem.invAvailableDate | date : 'shortDate'}}
+                                </span>
+                                <ng-template #contactCSRBlock>
+                                    <span>Contact CSR</span>
+                                </ng-template>
+                            </span>
+                        </div>
+                    </div>
+
+                </dd>
+                <dt>Description</dt>
+                <dd>
+                    <span *ngIf="dataItem.lineItemTypeId == enums.LineItemTypeEnum.Configured; else elseBlock">
+                        Configured Product
+                    </span>
+                    <ng-template #elseBlock>
+                        {{dataItem.description}}
+                    </ng-template>
+                </dd>
+                <dt>Quantity</dt>
+                <!--<dd>{{ dataItem.quantity }}</dd>-->
+                <dd>
+                    <input *ngIf="quote.quoteOptions.canEditQuote" class="numericTextBox productQuantity" type="number" [(ngModel)]="dataItem.quantity" (change)="validateQuantity($event)" min="0" step="1" style="width:70px; line-height:30px; font-size:1.2em; text-align: center;" />
+                    <span *ngIf="!quote.quoteOptions.canEditQuote">{{dataItem.quantity}}</span>
+                </dd>
+                <dt *ngIf="user.userTypeId == enums.UserTypeEnum.DaikinSuperUser">Model#</dt>
+                <dd *ngIf="user.userTypeId == enums.UserTypeEnum.DaikinSuperUser">{{ dataItem.productClassCode }}</dd>
+                <dt *ngIf="user.userTypeId == enums.UserTypeEnum.DaikinSuperUser">Commission Scheme</dt>
+                <dd *ngIf="user.userTypeId == enums.UserTypeEnum.DaikinSuperUser">{{ dataItem.isCommissionable }}</dd>
+                <dt>List Price Each</dt>
+                <dd>{{ dataItem.priceList| currency:'USD':true:'1.2-2' }}</dd>
+                <dt>Net Price Each</dt>
+                <dd>{{ dataItem.priceNet| currency:'USD':true:'1.2-2' }}</dd>
+                <dt>Extended Price</dt>
+                <dd>{{ dataItem.priceNet * dataItem.quantity| currency:'USD':true:'1.2-2' }}</dd>
+            </dl>
+        </ng-template>
+    </kendo-grid-column>
+
+
+
+    <kendo-grid-column media="(min-width: 450px)" field="productNumber" title="Product" width="200">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <span *ngIf="dataItem.lineItemTypeId == enums.LineItemTypeEnum.Configured; else elseBlock">
+                {{dataItem.codeString}}
+            </span>
+            <!--<ng-template #elseBlock>{{dataItem.productNumber}}</ng-template>-->
+            <ng-template #elseBlock>
+                <a (click)="productDetails(dataItem)" style="color: #337ab7">{{dataItem.productNumber}}</a>
+                <div *ngIf="user.showPrices" style="text-align:right">
+                    <span [ngSwitch]="dataItem.productStatusTypeId">
+                        <span *ngSwitchCase="enums.ProductStatusTypeEnum.New" style="color:blue; font-size:smaller;">New</span>
+                        <span *ngSwitchCase="enums.ProductStatusTypeEnum.Active" style="color:#38c638; font-size:smaller;">Active</span>
+                        <span *ngSwitchCase="enums.ProductStatusTypeEnum.HiddenModuleUnit" style="color:red; font-size:smaller;">Hidden</span>
+                        <span *ngSwitchCase="enums.ProductStatusTypeEnum.Inactive" style="color:red; font-size:smaller;">Inactive</span>
+                        <span *ngSwitchCase="enums.ProductStatusTypeEnum.Obsolete" style="color:red; font-size:smaller;">Obsolete</span>
+                    </span>
+                    <span [ngSwitch]="dataItem.inventoryStatusId">
+                        <span *ngSwitchCase="enums.ProductInventoryStatusTypeEnum.Available" style="color:black; background-color:#6df0af; padding:3px; font-size:smaller;">Available</span>
+                        <span *ngSwitchCase="enums.ProductInventoryStatusTypeEnum.NotAvailable" style="color:black; background-color:#ffcce6; padding:3px; font-size:smaller;">Not Available</span>
+                        <span *ngSwitchCase="enums.ProductInventoryStatusTypeEnum.ContactCSR" style="color:black; background-color:#f7d38c; padding:3px; font-size:smaller;">
+                            <span *ngIf="dataItem.productStatusTypeId == enums.ProductStatusTypeEnum.Active && dataItem.invAvailableDate != null && (user.businessTypeId == enums.BusinessTypeEnum.Daikin || user.businessTypeId == enums.BusinessTypeEnum.ManufacturerRep); else contactCSRBlock">
+                                ETA: {{dataItem.invAvailableDate | date : 'shortDate'}}
+                            </span>
+                            <ng-template #contactCSRBlock>
+                                <span>Contact CSR</span>
+                            </ng-template>
+                        </span>
+                    </span>
+                </div>
+            </ng-template>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" field="description" title="Product Description">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <span *ngIf="dataItem.lineItemTypeId == enums.LineItemTypeEnum.Configured; else elseBlock">
+                Configured Product
+            </span>
+            <ng-template #elseBlock>{{dataItem.description}}</ng-template>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" field="" title="Tags" width="70">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <!--<tag-edit-popup [quote]="quote" [quoteItem]="dataItem"></tag-edit-popup>-->
+
+            <div *ngIf="quote.quoteOptions.canEditTags">
+                <img *ngIf="dataItem.tags ; else emptyTagBlock" src="/Images/tags-icon-tick.png" (click)="openTagEditor(dataItem)" title="{{dataItem.tags}}" />
+                <ng-template #emptyTagBlock>
+                    <img src="/Images/tags-icon.png" (click)="openTagEditor(dataItem)" />
+                </ng-template>
+            </div>
+
+            <div *ngIf="!quote.quoteOptions.canEditTags">
+                <img *ngIf="dataItem.tags ; else emptyTagBlock" src="/Images/tags-icon-tick-gray.png" title="{{dataItem.tags}}" />
+                <ng-template #emptyTagBlock>
+                    <img src="/Images/tags-icon-gray.png" />
+                </ng-template>
+            </div>
+
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" title="Quantity" width="100">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <input *ngIf="quote.quoteOptions.canEditQuote" class="numericTextBox productQuantity" type="number" [(ngModel)]="dataItem.quantity" (change)="validateQuantity($event)" min="0" step="1" style="width:70px; line-height:30px; font-size:1.2em; text-align: center;" />
+            <span *ngIf="!quote.quoteOptions.canEditQuote">{{dataItem.quantity}}</span>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" *ngIf="user.userTypeId == enums.UserTypeEnum.DaikinSuperUser" field="productClassCode" title="Model #" width="100">
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" *ngIf="user.userTypeId == enums.UserTypeEnum.DaikinSuperUser" field="isCommissionable" title="Commission Scheme">
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" *ngIf="user.showPrices" field="priceList" title="List Price Each">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            {{dataItem.priceList| currency:'USD':true:'1.2-2'}}
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" *ngIf="user.showPrices" field="priceNet" title="Net Price Each">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            {{dataItem.priceNet| currency:'USD':true:'1.2-2'}}
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" *ngIf="user.showPrices" field="extendedNet" title="Extended Price">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            {{dataItem.priceNet * dataItem.quantity| currency:'USD':true:'1.2-2'}}
+        </ng-template>
+    </kendo-grid-column>
+
+
+    <div *kendoGridDetailTemplate="let dataItem; let rowIndex = rowIndex; showIf: hasOptionItems">
+        <option-items attr.id="option-items-{{rowIndex}}" [configuredItem]="dataItem" [unitQuantity]="dataItem.quantity"></option-items>
+    </div>
+
+    <!--<ng-template kendoGridDetailTemplate let-dataItem let-rowIndex="rowIndex" [kendoGridDetailTemplateShowIf]="hasOptionItems">
+        <option-items [configuredItem]="dataItem"></option-items>
+    </ng-template>-->
+
+</kendo-grid>
+
+<div id="tagEditor" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">UPDATE QUOTE ITEM TAGS</h4>
+            </div>
+            <div class="modal-body">
+                <textarea rows="4" maxlength="500" style="width:100%;" *ngIf="quoteItem" [(ngModel)]="quoteItem.tags"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeTagEditor()">Cancel</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="saveTagUpdate()">Update</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+

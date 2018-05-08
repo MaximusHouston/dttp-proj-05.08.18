@@ -1,0 +1,7 @@
+﻿@model ProductsModel
+
+@foreach (ProductListModel item in Model.Products)
+{
+    @Html.Partial("ProductsGridProduct", item);
+}
+@*<div class="clear-fix"></div>*@

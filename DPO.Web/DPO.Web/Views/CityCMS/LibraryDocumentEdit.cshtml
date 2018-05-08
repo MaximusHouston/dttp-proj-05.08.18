@@ -1,0 +1,47 @@
+﻿@model LibraryDocumentEditModel
+
+@{
+    bool documentIsURL = (Model.path != null && (Model.path.ToLower().StartsWith("ftp") || Model.path.ToLower().StartsWith("http") || Model.path.ToLower().StartsWith("https")) );
+}
+
+<h1>Edit Document</h1>
+@if (documentIsURL)
+{
+    <h4 style="padding-bottom: 5px;">Document type: Link</h4>
+}
+else
+{
+    <h4 style="padding-bottom: 5px;">Document type: File</h4>
+}
+
+<br />
+
+@using (Html.BeginForm("EditLibraryDocument", "CityCMS", FormMethod.Post, new { @id = "library_document_edit_form", @class = "details-list", enctype = "multipart/form-data", target = "document-edit-iframe" }))
+{
+    @Html.HiddenFor(m => m.id, new { @id = "editing_document_id" })
+    @Html.HiddenFor(m => m.DirectoryId)
+    @Html.HiddenFor(m => m.thumb)
+
+    <label>Document Name</label>
+    @Html.TextBoxFor(m => m.name, new { @class = "full" })
+    <br />
+    if (documentIsURL)
+    {
+        <label>Document Path</label>
+        @Html.TextBoxFor(m => m.path, new { @class = "full" })
+        <br/>
+    }
+    else
+    {
+        string currentFile = Model.path.Remove(0, Model.path.LastIndexOf("/") + 1);
+        <p style="width: 100%; font-size: 0.9em;">Current file: <a href="@Model.path" target="_blank">@currentFile</a></p>
+        <input id="uploaddocument" type="file" name="uploaddocument" style="width: 100%;">
+    }
+
+    <br />
+    <div>
+        <br />
+        <a class="btn cancel-btn" href="#">Cancel</a>
+        <input type="submit" class="submit-btn" id="library_document_modal_add_btn" value="Update">
+    </div>
+}

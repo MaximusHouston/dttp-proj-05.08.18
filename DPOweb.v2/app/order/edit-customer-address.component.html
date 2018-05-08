@@ -1,0 +1,90 @@
+﻿<div id="editCustomerAddressModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <form #customerAddressForm="ngForm" novalidate>
+                <div class="modal-header">
+                    <h4 class="modal-title">Dealer/Contractor</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row no-gutters">
+                        <div class="form-group col-md-6 col-xs-12">
+                            <label class="control-label required">Contact Name</label>
+                            <input type="text" class="form-control" required #dealerContractorName="ngModel" name="shipToName" [(ngModel)]="project.dealerContractorName">
+                        </div>
+                        <div class="form-group col-md-6 col-xs-12">
+                            <label class="control-label required">Business Name</label>
+                            <input type="text" class="form-control" required #customerName="ngModel" name="shipToName" [(ngModel)]="project.customerName">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr />
+                        </div>
+                    </div>
+
+                    <div class="row no-gutters">
+                        <div class="form-group col-md-6">
+                            <label class="control-label required">Address Line 1</label>
+                            <input type="text" class="form-control" required #addressLine1="ngModel" name="addressLine1" [(ngModel)]="project.customerAddress.addressLine1">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Address Line 2</label>
+                            <input type="text" class="form-control" #addressLine2="ngModel" name="addressLine2" [(ngModel)]="project.customerAddress.addressLine2">
+                        </div>
+                    </div>
+
+
+                    <div class="row no-gutters">
+                        <div class="form-group col-md-3">
+                            <label class="control-label required">Country</label>
+                            <select class="form-control" required [(ngModel)]="project.customerAddress.countryCode" (ngModelChange)="countryCodeChange($event)" name="countryCode">
+                                <option [value]="null" selected disabled>Select ...</option>
+                                <option *ngFor="let item of project.customerAddress.countries.items"
+                                        [value]="item.value">
+                                    {{item.text}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label class="control-label required">State</label>
+                            <select class="form-control" required [(ngModel)]="project.customerAddress.stateId" name="state" (ngModelChange)="stateChange($event)">
+                                <option [value]="null" selected disabled>Select ...</option>
+                                <option *ngFor="let item of project.customerAddress.states.items"
+                                        [value]="item.value">
+                                    {{item.text}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label class="control-label required">City</label>
+                            <input type="text" class="form-control" required #location="ngModel" name="location" [(ngModel)]="project.customerAddress.location">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label class="control-label required">Zip Code</label>
+                            <input type="text" class="form-control" required #postalCode="ngModel" name="postalCode" [(ngModel)]="project.customerAddress.postalCode">
+
+                        </div>
+
+                    </div>
+
+                    
+
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="cancel()">Close</button>
+                        <button type="submit" [disabled]="customerAddressForm.invalid" class="btn btn-primary" (click)="submit()">Submit</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>

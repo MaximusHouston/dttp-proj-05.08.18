@@ -1,0 +1,134 @@
+﻿/* header / nav bar */
+#header
+{
+    width:100%;
+    background-color:#FFF;
+    position:relative;
+    z-index:1001;
+    margin-bottom: 30px;
+    padding-bottom: 4px;
+}
+
+#header #headerBtns
+{
+    position:absolute;
+    right:0;
+    top:0;
+}
+
+#header a{
+    text-decoration: none;
+    color: #fff;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#header a:visited, #header a:active{
+    color: #fff;
+}
+/* user account options dropdown and city locations list - closed state */
+#user_account_options{
+    background: url(/Images/user-icon.png) 10px 0px no-repeat;
+    padding: 0px 10px 0px 50px;
+}
+#city_locations_list{
+    background: url(/Images/menu-icon.png) 10px 0px no-repeat;
+     padding: 0px 20px 0px 50px;
+}
+#user_account_options, #city_locations_list{
+    display:inline-block;
+    position: relative;
+    cursor:pointer;
+    margin: 0;
+    height: 63px;
+     -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;  
+}
+
+#user_account_options .loggedinuser{
+    font-size: 15px;
+    bottom: 12px;
+    line-height: 20px;
+}
+#user_account_options .loggedinusername{color: #2E3641;}
+#user_account_options ul, #city_locations_list ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    left:0;
+    top: 63px;
+    background-image: url(/Images/lightboxmask.png);
+    overflow:hidden;
+    max-height: 0px;
+}
+#user_account_options ul
+{
+    width:100%;
+}
+
+#city_locations_list ul{
+    width: 220px;
+    right: 0px;
+    left: auto;
+}
+
+#user_account_options ul li, #city_locations_list ul li{padding: 10px 15px 10px 10px;}
+#user_account_options ul li span, #city_locations_list ul li span{
+    color: #fff;
+    font-size: 1em;
+    text-transform: uppercase;
+}
+
+#city_locations_list ul li{
+    background: url(/Images/project-overview-chevron.png);
+    background-repeat: no-repeat;
+    background-position: 12px 10px;
+    padding-left: 18px;
+}
+
+/* user account options dropdown - open state */
+#user_account_options, #user_account_options.open,
+#user_account_options.open ul,#city_locations_list, #city_locations_list.open,
+#city_locations_list.open ul{
+    -webkit-transition: .25s all ease;
+    -moz-transition: .25s all ease;
+    -o-transition: .25s all ease;
+    transition: .25s all ease; 
+}
+#user_account_options.open{
+    background-color: #00A1E4;
+    background-image: url(/Images/user-icon-light.png);
+}
+
+#city_locations_list.open{
+    background-color: #00A1E4;
+    background-image: url(/Images/menu-icon-light.png);
+}
+
+#user_account_options.open
+#user_account_options.open .loggedinuser, #user_account_options.open .loggedinusername{color: #fff;}
+#user_account_options.open ul, #city_locations_list.open ul{
+    max-height: 768px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+#headerBtns > a span, #city_locations_list > span{
+   bottom: 21px;
+   font-size: 18px;
+}
+
+#header a span, #user_account_options span, #city_locations_list > span{
+  position: relative;
+  display: inline-block;
+  color: #00A1E4;
+}
+
+#user_account_options.open span,#city_locations_list.open span{
+    color: #fff;
+}
+

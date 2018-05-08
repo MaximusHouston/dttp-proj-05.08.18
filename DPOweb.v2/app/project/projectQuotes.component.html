@@ -1,0 +1,164 @@
+﻿<h4 class="col">PROJECT QUOTES</h4>
+
+<kendo-grid [data]="projectQuotes.items">
+    <!--Mobile-->
+    <kendo-grid-column media="(max-width: 450px)" title="Products">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <div class="row no-gutters">
+                <div class="col-xs-5" style="font-weight:700;">Actions</div>
+                <div class="7">
+                    <kendo-dropdownbutton [data]="actionOptions" [imageUrl]="'/Images/action-icon.png'">
+                        <ng-template kendoDropDownButtonItemTemplate>
+                            <ul class="nav nav-stacked">
+                                <li *ngIf="user.showPrices">
+                                    <a href="/ProjectDashboard/QuotePrintExcel?projectId={{project.projectId}}&quoteId={{dataItem.quoteId}}&withCostPrices=true">Export Quote</a>
+                                </li>
+                                <li *ngIf="!user.showPrices">
+                                    <a href="/ProjectDashboard/QuotePrintExcel?projectId={{project.projectId}}&quoteId={{dataItem.quoteId}}&withCostPrices=false">Export Quote</a>
+                                </li>
+                                <li>
+                                    <a href="/v2/#/quoteEdit/{{project.projectId}}/{{dataItem.quoteId}}">Edit Quote</a>
+                                </li>
+                                <li>
+                                    <a href="/Projectdashboard/QuoteDuplicate?projectId={{project.projectId}}&quoteId={{dataItem.quoteId}}">Duplicate Quote</a>
+                                </li>
+                            </ul>
+                        </ng-template>
+                    </kendo-dropdownbutton>
+                </div>
+            </div>
+            
+            <div class="row no-gutters">
+                <div class="col-xs-5" style="font-weight:700;">Quote:</div>
+                <!--<div class="7">{{ dataItem.title }}</div>-->
+
+                <div class="col-xs-5" style="font-weight:700;">Alert:</div>
+                <div class="7">{{ dataItem.alert }}</div>
+                <div class="col-xs-5" style="font-weight:700;">Revision:</div>
+                <div class="7">{{ dataItem.revision }}</div>
+                <div class="col-xs-5" style="font-weight:700;">Date:</div>
+                <div class="7">{{ dataItem.timestamp | date: 'shortDate' }}</div>
+                <div class="col-xs-5" *ngIf="user.showPrices" style="font-weight:700;">Total List:</div>
+                <div class="7" *ngIf="user.showPrices">{{ dataItem.totalList | currency:'USD':true:'1.2-2' }}</div>
+                <div class="col-xs-5" *ngIf="user.showPrices" style="font-weight:700;">Total Net:</div>
+                <div class="7" *ngIf="user.showPrices">{{ dataItem.totalNet | currency:'USD':true:'1.2-2' }}</div>
+                <div class="col-xs-5" *ngIf="user.showPrices" style="font-weight:700;">Total Sell:</div>
+                <div class="7" *ngIf="user.showPrices">{{ dataItem.totalSell | currency:'USD':true:'1.2-2' }}</div>
+                
+            </div>
+            <div class="row no-gutters">
+                <div class="col-xs-5" style="font-weight:700;">Actvie</div>
+                <div class="7">
+                    <kendo-switch [(ngModel)]="dataItem.active" (ngModelChange)="setQuoteActive(dataItem)"></kendo-switch>
+                </div>
+            </div>
+        </ng-template>
+    </kendo-grid-column>
+
+    <!--Desktop-->
+    <kendo-grid-column media="(min-width: 450px)" title="" width="60">
+        <ng-template kendoGridCellTemplate let-dataItem>
+
+            <!--Does not work: This toggle all row at the same time-->
+            <!--<div #anchor (click)="actionWindowToggle()">
+                <img  src='/Images/action-icon.png' class='actions actions-icon' />
+            </div>
+            <kendo-popup [popupClass]="'content popup'" [anchor]="anchor" (anchorViewportLeave)="show = false" *ngIf="showActionWindow">
+                <ul class="nav nav-stacked">
+                        <li>
+                            <a href="/ProjectDashboard/QuotePrintExcel?projectId={{project.projectId}}&quoteId={{dataItem.quoteId}}&withCostPrices=true">Export Quote</a>
+                        </li>
+                        <li>
+                            <a href="/v2/#/quoteEdit/{{project.projectId}}/{{dataItem.quoteId}}">Edit Quote</a>
+                        </li>
+                        <li>
+                            <a href="/Projectdashboard/QuoteDuplicate?projectId={{project.projectId}}&quoteId={{dataItem.quoteId}}">Duplicate Quote</a>
+                        </li>
+                    </ul>
+            </kendo-popup>-->
+
+            <kendo-dropdownbutton [data]="actionOptions" [imageUrl]="'/Images/action-icon.png'">
+                <ng-template kendoDropDownButtonItemTemplate>
+                    <ul class="nav nav-stacked">
+                        <li *ngIf="user.showPrices">
+                            <a href="/ProjectDashboard/QuotePrintExcel?projectId={{project.projectId}}&quoteId={{dataItem.quoteId}}&withCostPrices=true">Export Quote</a>
+                        </li>
+                        <li *ngIf="!user.showPrices">
+                            <a href="/ProjectDashboard/QuotePrintExcel?projectId={{project.projectId}}&quoteId={{dataItem.quoteId}}&withCostPrices=false">Export Quote</a>
+                        </li>
+                        <li>
+                            <a href="/v2/#/quoteEdit/{{project.projectId}}/{{dataItem.quoteId}}">Edit Quote</a>
+                        </li>
+                        <li>
+                            <a href="/Projectdashboard/QuoteDuplicate?projectId={{project.projectId}}&quoteId={{dataItem.quoteId}}">Duplicate Quote</a>
+                        </li>
+                    </ul>
+                </ng-template>
+
+
+            </kendo-dropdownbutton>
+
+            <!--Does not work: Action Links display all in 1 line->
+            <!--<kendo-dropdownbutton [data]="actionOptions" [imageUrl]="'/Images/action-icon.png'">
+
+                <ng-template kendoDropDownButtonItemTemplate>
+                    <div>
+                        <a href="/ProjectDashboard/QuotePrintExcel?projectId={{project.projectId}}&quoteId={{dataItem.quoteId}}&withCostPrices=true">Export Quote</a>
+                    </div>
+                    <div>
+                        <a href="/v2/#/quoteEdit/{{project.projectId}}/{{dataItem.quoteId}}">Edit Quote</a>
+                    </div>
+                    <div>
+                        <a href="/Projectdashboard/QuoteDuplicate?projectId={{project.projectId}}&quoteId={{dataItem.quoteId}}">Duplicate Quote</a>
+                    </div>
+                </ng-template>
+
+            </kendo-dropdownbutton>-->
+            <!--Does not work: quoteId is undefined-->
+            <!--<kendo-dropdownbutton [data]="actionOptions" [imageUrl]="'/Images/action-icon.png'">
+                <ng-template kendoDropDownButtonItemTemplate let-dataItem>
+                    <a href="{{dataItem.url}}">{{ dataItem.text }}</a>
+                </ng-template>
+            </kendo-dropdownbutton>-->
+
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" title="Quote">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <a href="/v2/#/quote/{{dataItem.quoteId}}/existingRecord">{{ dataItem.title}}</a>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" field="alert" title="Alert">
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" field="revision" title="Revision">
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" field="itemCount" title="Items">
+    </kendo-grid-column>
+    <!--<kendo-grid-column field="UnitsInStock" title="In stock" width="80">
+    </kendo-grid-column>-->
+    <kendo-grid-column media="(min-width: 450px)" title="Date">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            {{ dataItem.timestamp | date: 'shortDate'}}
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" *ngIf="user.showPrices" title="Total List">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            {{ dataItem.totalList | currency:'USD':true:'1.2-2'}}
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" *ngIf="user.showPrices" title="Total Net">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            {{ dataItem.totalNet | currency:'USD':true:'1.2-2'}}
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" *ngIf="user.showPrices" title="Total Sell">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            {{ dataItem.totalSell | currency:'USD':true:'1.2-2'}}
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" title="Active">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <kendo-switch [(ngModel)]="dataItem.active" (ngModelChange)="setQuoteActive(dataItem)"></kendo-switch>
+        </ng-template>
+    </kendo-grid-column>
+</kendo-grid>

@@ -1,0 +1,21 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var base_event_1 = require("../../events/base-event");
+/**
+ * The arguments for the `navigatorFilter` event.
+ */
+var NavigatorFilterEvent = /** @class */ (function (_super) {
+    tslib_1.__extends(NavigatorFilterEvent, _super);
+    /**
+     * Constructs the event arguments from a raw object.
+     */
+    function NavigatorFilterEvent(e, sender) {
+        var _this = _super.call(this, sender) || this;
+        _this.from = e.from;
+        _this.to = e.to;
+        return _this;
+    }
+    return NavigatorFilterEvent;
+}(base_event_1.BaseEvent));
+exports.NavigatorFilterEvent = NavigatorFilterEvent;

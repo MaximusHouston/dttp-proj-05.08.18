@@ -1,0 +1,9 @@
+﻿<!--This view is not used. Delete after 01/06/2017-->
+<div class="dk-list-header">TECHNICAL SPECIFICATIONS</div>
+    <!--<div class="dk-list-header">TECHNICAL SPECIFICATIONS</div>-->
+    <div *ngFor="let item of specs ; let idx = index">
+        <div *ngIf="item.name" class="row row-nomargin row-halfpage border-bottom-row" style="margin:5px;">
+            <span class="pull-left">{{item.name}}</span>
+            <span class="pull-right">{{item.value}}</span>
+        </div>
+    </div>

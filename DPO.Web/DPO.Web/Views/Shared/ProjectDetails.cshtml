@@ -1,0 +1,135 @@
+﻿@model ProjectModel
+
+<div class="row">
+    <div class="r-col1 hide-print">&nbsp;</div>
+    <div class="r-col3 details-list">
+        <br />
+        <br />
+        <h5>@ResourceUI.ProjectDetails</h5>
+        <ul>
+            <li>
+                <p class="detail-name"><strong>@ResourceUI.ProjectName:</strong></p>
+                <p style="word-wrap: break-word;">@Model.Name</p>
+            </li>
+            <li>
+                <p class="detail-name">@ResourceUI.ProjectID:</p>
+                <p>@Model.ProjectId</p>
+            </li>
+            <li>
+                <p class="detail-name">@ResourceUI.ProjectDate:</p>
+                @if (Model.ProjectDate == null)
+                {
+                    <p style="word-wrap: break-word; color:lightgray; font-style:italic;">(please fill in Project Date)</p>
+                }
+                else
+                {
+                    <p>@Html.DisplayFor(i => i.ProjectDate)</p>
+                }
+
+            </li>
+            <li>
+                <p class="detail-name">@ResourceUI.BidDate:</p>
+                @if (Model.BidDate == null)
+                {
+                    <p style="word-wrap: break-word; color:lightgray; font-style:italic;">(please fill in Bid Date)</p>
+                }
+                else
+                {
+                    <p>@Html.DisplayFor(i => i.BidDate)</p>
+                }
+
+            </li>
+            <li>
+                <p class="detail-name">@ResourceUI.EstimatedClose:</p>
+                @if (Model.EstimatedClose == null)
+                {
+                    <p style="word-wrap: break-word; color:lightgray; font-style:italic;">(please fill in Estimate Closed)</p>
+                }
+                else
+                {
+                    <p>@Html.DisplayFor(i => i.EstimatedClose)</p>
+                }
+
+            </li>
+            <li>
+                <p class="detail-name">@ResourceUI.EstimatedDelivery:</p>
+                @if (Model.EstimatedDelivery == null)
+                {
+                    <p style="word-wrap: break-word; color:lightgray; font-style:italic;">(please fill in Estimate Delivery)</p>
+                }
+                else
+                {
+                    <p>@Html.DisplayFor(i => i.EstimatedDelivery)</p>
+                }
+
+            </li>
+            @Html.HiddenFor(i => i.EstimatedDelivery)
+        </ul>
+    </div>
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <div class="r-col1 hide-print">&nbsp;</div>
+    <div class="r-col3 details-list">
+        <ul>
+            <li>
+                <p class="detail-name">@ResourceUI.ProjectConstructionType:</p>
+                <p>@Model.ConstructionTypeDescription</p>
+            </li>
+            <li>
+                <p class="detail-name">@ResourceUI.ProjectStatus:</p>
+                <p>@Model.ProjectStatusDescription</p>
+            </li>
+            <li>
+                <p class="detail-name">@ResourceUI.ProjectType:</p>
+                <p>@Model.ProjectTypeDescription</p>
+            </li>
+            <li>
+                <p class="detail-name">@ResourceUI.ProjectOpenStatus:</p>
+                <p>@Model.ProjectOpenStatusDescription</p>
+            </li>
+            <li>
+                <p class="detail-name">@ResourceUI.VerticalMarket:</p>
+                <p>@Model.VerticalMarketDescription</p>
+            </li>
+            <li>
+                <p class="detail-name full" style="display: block;">@ResourceUI.ProjectNotes:</p>
+                <p class="full">@Model.Description</p>
+            </li>
+            @if (Model.ProjectStatusTypeId == 3 || Model.ProjectStatusTypeId == 4)
+            {
+                <li>
+                    <div id="divProjectStatusReason">
+                        <p class="detail-name">@ResourceUI.ProjectStatusNotes:</p>
+                        <p>@Model.ProjectStatusNotes</p>
+                    </div>
+                </li>
+            }
+        </ul>
+
+    </div>
+
+    <div class="r-col1 hide-print">&nbsp;</div>
+    <div class="r-col3 details-list">
+        @*<a href="@Url.Action("ProjectEdit", new { ProjectId = Model.ProjectId, QuoteId= Model.QuoteId, CommissionRequestId = Model.CommissionRequestId })" id="btn_Edit_ProjectDetails">Edit</a>*@
+    </div>
+
+    @*<div class="r-col2 hide-print">&nbsp;</div>*@
+    <div class="row-end">&nbsp;</div>
+
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#btn_Edit_ProjectDetails').on('click', function () {
+
+            localStorage["ActiveTab"] = "projectDetails";
+            var value = localStorage['ProjectDetails'];
+        });
+    });
+
+</script>

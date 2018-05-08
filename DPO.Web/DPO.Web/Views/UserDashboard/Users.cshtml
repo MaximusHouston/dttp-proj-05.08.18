@@ -1,0 +1,169 @@
+﻿@model UsersModel
+@{
+    ViewBag.Title = ResourceUI.AllUsers;
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/confirmmodal")
+}
+
+@Html.Partial("ConfirmModal")
+
+@Html.Partial("_UserdashboardTabsPartial")
+
+@Html.HiddenFor(m => m.UserTypeId)
+
+<div class="section b-flush">
+    <div class="admin-strap">
+        <div class="username">
+            <h1>@Model.CurrentUser.DisplayName</h1>
+            <h6>@Model.CurrentUser.BusinessName</h6>
+        </div>
+        @if (user.HasAccess(SystemAccessEnum.EditUser))
+        {
+            <div class="btn-bar">
+                <a href="@Url.Action("UserEdit", "Userdashboard")" class="submit-btn">
+                    <img src="~/Images/add-new-user-icon.png"/>
+                    @ResourceUI.UserAddNew
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+@using (Html.BeginForm("Users", "Userdashboard", FormMethod.Get, new { @id = "AllUsersForm" }))
+{
+    @Html.HiddenFor(m => m.SortColumn)
+    @Html.HiddenFor(m => m.IsDesc)
+    @Html.HiddenFor(m => m.Page)
+    @Html.PageMessages()
+    
+    <div class="section">
+    
+    <div class="tbl-opts">
+        @Html.Partial("_TableDisplayOptionsPartial")
+        @Html.Partial("_SearchBarPartial")
+    </div>
+    <div class="tbl-holder scroll-x">
+        <table class="tbl" id="allusers_table">
+            <thead>
+                <tr>
+                    @if (user.HasAccess(new SystemAccessEnum[]{SystemAccessEnum.EditUser,SystemAccessEnum.UndeleteUser}))
+                    { 
+                        <th class="actions"></th>
+                    }
+                    <th id="name" aria-sort="none">@ResourceUI.Name</th>
+                    <th id="emailaddress" aria-sort="none">@ResourceUI.EmailAddress</th>
+                    <th id="registeredon" aria-sort="none" data-hidecol="true">@ResourceUI.RegisteredOn</th>
+                    <th id="approvedon" aria-sort="none" data-hidecol="true">@ResourceUI.ApprovedOn</th>
+                    <th id="lastlogin" aria-sort="none">@ResourceUI.LastLogin</th>
+                    <th id="accountid" aria-sort="none" data-hidecol="true">@ResourceUI.AccountID</th>
+                    <th id="daikincityid" aria-sort="none" data-hidecol="true">@ResourceUI.DaikinCityId</th>
+                    <th id="businessname" aria-sort="none">@ResourceUI.BusinessName</th>
+                    <th id="businessdescription" aria-sort="none" data-hidecol="true">@ResourceUI.BusinessDescription</th>
+                    <th id="usertype" aria-sort="none">@ResourceUI.UserType</th>
+                    @if (user.HasAccess(SystemAccessEnum.UndeleteUser))
+                    {
+                        <th class="c-align" data-hidecol="true">@ResourceUI.Enabled</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        @if (user.HasAccess(new SystemAccessEnum[]{SystemAccessEnum.EditUser,SystemAccessEnum.UndeleteUser}))
+                        {
+                            <td class="actions">
+                                <div>
+                                    <ul>
+                                        @if (user.HasAccess(SystemAccessEnum.EditUser))
+                                        {
+                                            <li>
+                                                @Html.ActionLink("Edit User", "UserEdit", new { userId = item.UserId })
+                                            </li>
+                                        }
+                                        @if (user.HasAccess(SystemAccessEnum.UndeleteUser))
+                                        {
+                                            <li>
+                                                @if (item.Enabled)
+                                                {
+                                                    <a href="#" data-confirm="disableUser" data-sc-ajaxpost="@Url.Action("Disable", "Userdashboard", new { UserId = @item.UserId })">@ResourceUI.UserDisable</a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="#" data-confirm="EnableUser" data-sc-ajaxpost="@Url.Action("Enable", "Userdashboard", new { UserId = @item.UserId })">@ResourceUI.UserEnable</a>
+                                                }
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </td>
+                        }
+                        <td>
+                        @if (user.HasAccess(SystemAccessEnum.EditUser))
+                        {
+                            <a href="@Url.Action("UserEdit", new { userid = item.UserId })">@item.DisplayName</a>
+                        }
+                        else
+                        {
+                            @item.DisplayName
+                        }
+                        </td>
+                        <td>
+                            @item.Email
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.RegisteredOn)</td>
+                        <td>@Html.DisplayFor(modelItem => item.ApprovedOn)</td>
+                        <td>@Html.DisplayFor(modelItem => item.LastLoginOn)</td>
+                        <td>@Html.DisplayFor(modelItem => item.AccountId)</td>
+                        <td>@Html.DisplayFor(modelItem => item.DaikinCityId)</td>
+                        <td>@Html.DisplayFor(modelItem => item.BusinessName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.BusinessTypeDescription)</td>
+                        <td>@Html.DisplayFor(modelItem => item.UserTypeDescription)</td>
+                        @if (user.HasAccess(SystemAccessEnum.UndeleteUser))
+                        {
+                            <td class="c-align">
+                                @if (item.Enabled)
+                                {
+                                    <a href="#" data-confirm="disableUser" data-sc-ajaxpost="@Url.Action("Disable", "Userdashboard", new { UserId = @item.UserId })">
+                                        <img src="/Images/switch-on.png" />
+                                    </a>
+                                }
+                                else
+                                {
+                                     <a href="#" data-confirm="EnableUser" data-sc-ajaxpost="@Url.Action("Enable", "Userdashboard", new { UserId = @item.UserId })"><img src="/Images/switch-off.png" /></a>
+                                }
+                        </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table> 
+    </div>
+    <div class="pager">@Html.Pager(Model)</div>
+</div>
+}
+<script>
+
+    $(function ()
+    {
+        tablehelper.setColumnIds('allusers_table');
+
+        //delay user disable until after confirmation
+        $('[data-confirm="disableUser"]').on('click', function () {
+            confirmModal.showConfirmMsg('@ResourceUI.UserDisable', '@ResourceUI.UserDisableConfirm', PostAfterConfirm(this,'#AllUsersForm'));
+        });
+
+        //delay user disable until after confirmation
+        $('[data-confirm="EnableUser"]').on('click', function () {
+            confirmModal.showConfirmMsg('@ResourceUI.UserEnable', '@ResourceUI.UserEnableConfirm', PostAfterConfirm(this, '#AllUsersForm'));
+        });
+
+    });
+</script>

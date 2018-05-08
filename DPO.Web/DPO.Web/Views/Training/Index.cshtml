@@ -1,0 +1,21 @@
+﻿@model DPO.Common.DaikinUniversity.AesSsoLoginViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Logging in to the University!</title>
+</head>
+<body onload="document.forms[0].submit();">
+    <div>
+        <form method="POST" action="@Model.LoginUrl">
+            <input type="hidden" id="key" name="key" value="@Model.Key" />
+            <input type="hidden" id="ouid" name="ouid" value="@Model.OuId" />
+        </form>
+    </div>
+</body>
+</html>

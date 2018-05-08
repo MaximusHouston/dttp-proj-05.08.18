@@ -1,0 +1,70 @@
+﻿@model DPO.Common.SendEmailApprovalModel
+@using System.Text
+
+@{
+    var wording = (Model.Approved) ? "has been approved by " + Model.ModifierName : "has not been approved";
+
+    DateTime projectDate = (DateTime)Model.ProjectDate;
+    DateTime now = DateTime.Now;
+    projectDate = projectDate.Add(new TimeSpan(now.Hour, now.Minute, now.Second));
+
+    string projectId = Model.ProjectId.ToString();
+
+    if (!Model.RenderTextVersion)
+    {
+        projectId = Html.ActionLink(Model.ProjectId.ToString(), "Project", "ProjectDashboard",
+                Request.Url.Scheme, Request.Url.Host, String.Empty, new { ProjectId = Model.ProjectId }, null).ToHtmlString();
+    }
+    
+    var totalList = Model.TotalList ?? 0M;
+    var totalNet = Model.TotalNet ?? 0M;
+    var commissionPercent = Model.ApprovedCommissionPercentage / 100;
+    var commissionAmount = totalNet - (totalNet * commissionPercent);
+    
+    string emailMessage = string.Format(
+    @" Commission request for Project '{0}' and quote '{1}' submitted by {2} of {3} {4}.<br /><br />
+    Project Date: {5}<br />
+    List Price: ${6}<br />
+    Requested Purchase Order Amount: ${7}<br />
+    Sell multiplier requested: {8}<br/>
+    Sell multiplier approved: {9}<br />
+    Commission percent requested: {10}%<br />
+    Commission percent approved: {11}%<br />
+    Approved Purchase Order Amount: ${12} <br />
+    Reason given : {13}<br />
+    Project Reference : {14}",
+        Model.ProjectName, 
+        Model.QuoteTitle, 
+        Model.ProjectOwnerName,
+        Model.BusinessName, wording, 
+        projectDate,
+        string.Format("{0:#,0.00}", Model.TotalList),
+        string.Format("{0:#,0.00}",Model.TotalNet),
+        Model.RequestedMultiplier,
+        Model.ApprovedMultiplier,
+        Model.RequestedCommissionPercentage,
+        Model.Approved != false ? Model.ApprovedCommissionPercentage : 0,
+        //Model.TotalNet.HasValue ? (Model.Approved != false) ? string.Format("{0:#,0.00}", commissionAmount) : "0" : "0",
+         (Model.Approved != false) ? string.Format("{0:#,0.00}", Model.ApprovedTotalNet) : "0",
+        string.IsNullOrEmpty(Model.Reason) ? "None given" : Model.Reason,
+        projectId);
+}
+
+@if (Model.RenderTextVersion)
+{
+    Layout = null;
+
+    @emailMessage.Replace("<br />", String.Empty)
+}
+else
+{
+    Layout = "~/Views/Shared/EmailTemplate.cshtml";
+
+    <table>
+        <tr>
+            <td style="padding-left: 28px; padding-top: 20px; font-family: Helvetica, Arial, sans-serif; ">
+                @Html.Raw(emailMessage)
+            </td>
+        </tr>
+    </table>
+}

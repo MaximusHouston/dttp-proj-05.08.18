@@ -1,0 +1,17 @@
+@model DateTime?
+
+@*@(Html.Kendo().DateTimePickerFor(m => m))*@
+
+<input type="datetime" id="@Html.IdFor(m => m)" name="@Html.NameFor(m => m)" value="@(Model.HasValue ? Model.Value.ToShortDateString() : String.Empty)" style="width: 90px" class="datePicker" />
+
+<script>
+    $(function () {
+        $(".datePicker").datepicker({
+            showOn: "button",
+            buttonImage: "/Images/datepicker.png",
+            buttonImageOnly: true,
+            dateFormat: "@ResourceUI.DatePickerDateFormat"
+        });
+        datePickerAlreadySetup = true;
+    });
+</script>

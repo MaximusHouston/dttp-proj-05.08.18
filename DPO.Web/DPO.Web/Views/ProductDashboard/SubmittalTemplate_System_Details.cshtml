@@ -1,0 +1,93 @@
+﻿@model ProductModel
+@{
+    var specs = Model.Specifications;
+}
+        <tr>
+            <td>Refrigerant Type:</td>
+            <td>@specs.GetString("RefrigerantType")</td>
+            <td>Cooling Operation Range (&deg;F DB):</td>
+            <td>@specs.GetDecimal("CoolingOperationRangeStdMin", "N0") - @specs.GetDecimal("CoolingOperationRangeStdMax", "N0")</td>
+        </tr>
+        <tr>
+            <td>Holding Refrigerant Charge (lbs):</td>
+            <td>
+            @if (specs.GetString("FactoryStdRefrigerantCharge") != null)
+            {
+                @specs.GetString("FactoryStdRefrigerantCharge")
+            }
+            </td>
+
+            <td>Heating Operation Range (&deg;F WB):</td>
+            <td>@specs.GetDecimal("HeatingOperationRangeStdMin", "N0") - @specs.GetDecimal("HeatingOperationRangeStdMax", "N0")</td>
+        </tr>
+        <tr>
+            <td>Additional Charge (lb/ft):</td>
+            <td>@specs.GetDecimal("AdditionalRefrigerantCharge", "N2")</td>
+
+            <td>Max. Pipe Length (Vertical) (ft):</td>
+            <td>@specs.GetDecimal("MaxPipeLengthVertical", "N0")</td>
+        </tr>
+        <tr>
+            <td>Pre-charge Piping (Length) (ft):</td>
+            <td>@specs.GetDecimal("RefrigerantPreChargedLineLength", "N0")</td>
+
+            @if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.VRVIIIWaterCooled)
+            {
+                <td>Cooling Inlet Water Temp<br />(Standard) (&deg;F DB):</td>
+                <td>@specs.GetDecimal("CoolingInletWaterTempStdMin", "N0") / @specs.GetDecimal("CoolingInletWaterTempStdMax", "N0")</td>
+            }
+            else
+            {
+                <td>Cooling Range w/Baffle (&deg;F DB):</td>
+                <td>@specs.GetDecimal("CoolingOperationRangewBaffleMin", "N0") - @specs.GetDecimal("CoolingOperationRangewBaffleMax", "N0")</td>
+            }
+        </tr>
+ 
+    <tr>
+        <td>Max. Pipe Length (Total) (ft):</td>
+        <td>@specs.GetDecimal("MaxPipeLengthTotal", "N0")</td>
+
+        @if(Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.VRVIIIWaterCooled)
+        {
+            <td>Heating Inlet Water Temp<br />(Standard) (&deg;F WB):</td>
+            <td>@specs.GetDecimal("HeatingInletWaterTempStdMin", "N0") / @specs.GetDecimal("HeatingInletWaterTempStdMax", "N0")</td>
+        }
+        else
+        {
+            <td>Heating Range w/Baffle (&deg;F WB):</td>
+            <td>@specs.GetDecimal("HeatingOperationRangewBaffleMin", "N0") - @specs.GetDecimal("HeatingOperationRangewBaffleMax", "N0")</td>
+        }
+        
+    </tr>
+
+    <tr>
+        <td>Max Height Separation (Ind to Ind ft):</td>
+        <td>@specs.GetDecimal("RatedHeightDifference", "N0")</td>
+
+        @if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.VRVIIIWaterCooled)
+        {
+            <td>Cooling Inlet Water Temp<br />(Geothermal) (&deg;F DB):</td>
+            <td>@specs.GetDecimal("CoolingOperationRangeGeoMin", "N0") / @specs.GetDecimal("CoolingOperationRangeGeoMax", "N0")</td>
+        }
+        else
+        {
+            <td></td>
+            <td></td>
+        }
+    </tr>
+       
+    @if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.VRVIIIWaterCooled)
+    {
+        <tr>
+            <td>Water Flow Range (GPM):</td>
+            <td>@specs.GetDecimal("WaterFlowRangeMin", "N0") - @specs.GetDecimal("WaterFlowRangeMax", "N0") </td>
+
+            <td>Heating Inlet Water Temp<br />(Geothermal) (&deg;F WB):</td>
+            <td>@specs.GetDecimal("HeatingOperationRangeGeoMin", "N0") / @specs.GetDecimal("HeatingOperationRangeGeoMax", "N0")</td>
+        </tr>
+    }
+
+
+                    
+
+ 

@@ -1,0 +1,66 @@
+﻿@model DPO.Common.UserLoginModel
+
+@{
+    ViewBag.Title = ResourceUI.Login;
+}
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/login")
+}
+<div id="po-bg">
+    @using (Html.BeginForm())
+    {
+        <div id="po-login">
+            <div id="po-existing">
+                <h1>@ResourceUI.SignIn</h1>
+                <div style="margin-left: 27px;">
+                    @*Email*@
+                    @Html.LabelFor(m => m.Email, ResourceUI.EmailAddress)
+                    @Html.TextBoxFor(m => m.Email)
+                    @Html.KeyMessages(m => m.Email)
+                    @*Password*@
+                    @Html.LabelFor(m => m.Password, ResourceUI.Password)
+                    @Html.PasswordFor(m => m.Password, new { autocorrect = "off", autocapitalize = "off" })
+                    @Html.KeyMessages(m => m.Password)
+                    <br />
+                    @Html.LabelFor(m => m.Persistent, ResourceUI.RememberMe)
+                    @Html.CheckBoxFor(m => m.Persistent)
+                    <a href="@Url.Action("RequestNewPassword")" class="pull-right" style="margin-right: 52px">@ResourceUI.ForgotPassword</a>
+                    <br /><br />
+                    @ResourceUI.JumpTo
+                    <br />
+                    @Html.DropDownListFor(m => m.SelectedLink, Model.Links, null, null, new { style = "width: 200px" })
+                    <input type="submit" id="loginButton" value="@ResourceUI.SignIn" class="submit-btn pull-right" style="margin-right: 52px;" />
+                </div>
+            </div>
+            <div id="po-new">
+                <p class="call">Create a new account</p>
+                <p>Not registered yet?<br />Click the button below to get started</p>
+                <br /><br /><br />
+                <a href="@Url.Action("UserRegistration", "Account")" class="submit-btn">
+                    @ResourceUI.SignUp
+                </a>
+            </div>
+            @Html.PageMessages()
+            <div class="clearfix">&nbsp;</div>
+        </div>
+    }
+</div>
+<script>
+    $(function () {
+        var ButtonKeys = { "EnterKey": 13 };
+        @*$('#@Html.IdFor(m => m.SelectedLink)').change(function (e) {
+            $("#loginButton").click();
+            return false;
+        });*@
+
+        $('#@Html.IdFor(m => m.SelectedLink)').keypress(function (e) {
+            if (e.which == ButtonKeys.EnterKey) {
+                $("#loginButton").click();
+                return false;
+            }
+        });
+    })
+</script>
+
+
+

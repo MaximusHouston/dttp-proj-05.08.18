@@ -1,0 +1,229 @@
+﻿@model UsersModel
+
+@{
+    ViewBag.Title = ResourceUI.ApprovalRequests;
+}
+
+@section Page_Styles {
+  @Styles.Render("~/Content/css", "~/Content/css/978", "~/Content/css/tablestyles",
+        "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers")
+}
+
+@Html.Partial("_UserdashboardTabsPartial")
+
+<div class="section b-flush">
+    <div class="admin-strap">
+        <div class="username">
+            <h1>@Model.CurrentUser.DisplayName</h1>
+            <h6>@Model.CurrentUser.BusinessName</h6>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("ApprovalRequests", "Userdashboard", FormMethod.Get, new { id = "ApprovalRequests" }))
+{
+    @Html.HiddenFor(m => m.SortColumn)
+    @Html.HiddenFor(m => m.IsDesc)
+    @Html.HiddenFor(m => m.Page)
+
+    @Html.PageMessages()
+    @Html.HiddenFor(m => m.UserTypeId)
+    
+    <div class="section">
+    
+        <div class="tbl-opts">
+            @Html.Partial("_TableDisplayOptionsPartial")
+            <div class="pull-left">
+                @Html.Partial("_SearchBarPartial")
+            </div>
+                <div class="pull-left" style="margin-top: 1em; margin-left: 1em;">
+                    @{
+                        var rejected = (Model.Rejected.HasValue && Model.Rejected == true);
+                    }
+                    <input type="radio" name="Rejected" value="false" id="awaitingApprovals" @(!rejected ? "checked" : "")><label style="margin-right: 0.5em;">Awaiting Approvals</label>
+                    <input type="radio" name="Rejected" value="true" id="rejectedUsers" @(rejected ? "checked" : "")><label>Rejected Users</label>
+                </div>
+            </div>
+
+    <div class="tbl-holder scroll-x">
+        <table class="tbl" id="approvalrequests_table">
+            <thead>
+                <tr>
+                    @* All table heading must have ids, in lowercase (for sorting and user column display prefs)*@
+                    <th class="actions"></th>
+                    <th id="displayname" aria-sort="none">@ResourceUI.Name</th>
+                    <th>@ResourceUI.AccountID</th>
+                    <th>@ResourceUI.DaikinCityId</th>
+                    <th id="businessname" aria-sort="none" data-hidecol="false">@ResourceUI.BusinessName</th>
+                    <th>@ResourceUI.BusinessType</th>
+                    <th id="registeredon" aria-sort="none">@ResourceUI.RegisteredOn</th>
+                    <th>@ResourceUI.Email</th>
+                    <th>@ResourceUI.UserType</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Items != null)
+                {
+                    foreach (var item in Model.Items)
+                    {
+                        <tr id="@item.UserId">
+                            <td class="actions">
+                                <div>
+                                    <ul>
+                                        <li>
+                                            @Html.ActionLink(ResourceUI.UserEdit, "UserEdit", new { userid = item.UserId })
+                                        </li>
+                                        <li>
+                                            <a href="#" onclick="return ApproveUser('@item.UserId', '@item.AccountId', '@item.DisplayName');">@ResourceUI.UserApprove</a>
+                                        </li>
+                                        @if (!item.Rejected)
+                                        {
+                                            <li>
+                                                <a href="#" onclick="return RejectUser('@item.UserId');">@ResourceUI.UserReject</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </td>
+                            <td>
+                                <a href="@Url.Action("UserEdit", new { userid = item.UserId, userTypeId = item.UserTypeId })">@item.DisplayName</a>
+                            </td>
+                            <td>
+                                @*@item.AccountId*@
+                                @Html.DisplayFor(modelItem => item.AccountId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DaikinCityId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BusinessName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BusinessTypeDescription)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RegisteredOn)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td class="select-cell">
+                                @Html.DropDownUserTypeListFor(modelItem => item.UserTypeId, item.UserTypes)
+                            </td>
+                        </tr>
+                    }
+                }
+           </tbody>       
+    </table>
+    </div>
+    @*@{
+    int count = 0;
+    Model.Page = 1;
+    for (int i = 0; i < Model.Items.Count; i++ )
+    {
+        if ( Model.Items[i].Rejected == false  && Model.Items[i].Approved == false)
+        {
+            count += 1;
+        }
+        
+        if ( i == 99)
+        {
+            i = 0;
+            Model.Page = Model.Page + 1;
+            if ( Model.Page == Model.PageSizes.Count())
+            {
+                break;
+            }
+        }
+    }
+
+        Model.TotalRecords = count;
+    Model.PageSize = 20;
+     }*@
+
+    <div class="pager">
+           @Html.Pager(Model)
+    </div>
+ </div>   
+    }
+    
+<script>
+    function GetUserType(usertype) {
+        console.log(usertype);
+    }
+
+    $(function () {
+        tablehelper.setColumnIds('approvalrequests_table');
+
+        $('input[name="Rejected"]').on('change', function (e) {
+            $("#ApprovalRequests").submit();
+        });
+
+        // Prevent usertype being sent on url
+        //$('select[name="UserTypeId"]').attr("name", "");
+    });
+
+    function ApproveUser(userid, accountId, fullName) {
+        var userTypeId = $("#" + userid).find("select").val();
+        var notSetVal = @((int)UserTypeEnum.NotSet);
+        var token = $('[name=__RequestVerificationToken]').val();
+
+        if (userTypeId == notSetVal)
+        {
+            alert("You must selected a User Type");
+            return false;
+        }
+
+        var position = $('#header');
+
+        if (fullName)
+        {
+            fullName = fullName.replace(/'/g, '&#39;');
+        }
+        var html = "<div id='dlgApproveUserEdit' title='Approve - " + fullName + "'>";
+        html += "<div class='loading' />";
+        html += "</div>";
+
+        var dialog = $(html).appendTo('body').dialog({
+            close: function (event, ui) {
+                dialog.remove();
+            },
+            modal: true,
+            width: 'auto',
+            minWidth: 800,
+            width: 1000,
+            minHeight: 600,
+            height: 600,
+            position: { my: "center middle", at: "center" }
+        });
+
+        var req = { __RequestVerificationToken: token, UserId: userid, UserTypeId: userTypeId };
+       
+        dialog.load('@Url.Action("ApprovalUserEdit")', req, function()
+        {
+            $('#dlgApproveUserEdit').find('.loading').remove();
+            $('#btnWizardClose').click(function()
+            {
+                $('#dlgApproveUserEdit').dialog("close");
+            });
+        });
+
+        //$.post("/UserDashboard/Approve", { userid: userid, usertypeid: usertypid, accountid: accountId }, function (data) {
+        //    PostAction("content", data);
+        //});
+
+        return false;
+    }
+
+    function RejectUser(userid) {
+        usertypid = $("#" + userid).find("select").val();
+        $.post("/Userdashboard/reject", { userid: userid }, function (data) {
+            PostAction("content", data);
+        });
+        return false;
+    }
+</script>

@@ -1,0 +1,27 @@
+﻿@model ProductModel
+
+@{
+    var activeQuote = ViewData["ActiveQuoteId"] as long?;
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+<div class="row" style="margin-bottom: 10px;">
+    @Html.Partial("ItemQuantityBox", new QuoteItemModel { ProductId = Model.ProductId, QuoteId = activeQuote })
+    <div class="product-details">
+        <div class="product-image pull-left">
+            <a style="padding:0; text-decoration:none;" href="@Url.Action("Product", new { ProductId = Model.ProductId })">
+                    <img src="@Model.Image.URL" onerror="this.onerror = null; this.src = '/Images/NoImage.png'" />
+            </a>
+        </div>
+        <div class="product-model-info">
+            <p style=""><a style="padding:0;" href="@Url.Action("Product", new { ProductId = Model.ProductId })"><strong>@Model.Name</strong></a></p>
+            <p class="as-lnk">Model No.:</p>
+            <p>@Model.ProductNumber</p>
+            @if (user.ShowPrices)
+            {
+                <p class="as-lnk">Price:</p>
+                <p>@Html.DisplayFor(p => Model.Price)</p>
+            }
+        </div>
+    </div>
+    <div class="row-end">&nbsp;</div>
+</div>

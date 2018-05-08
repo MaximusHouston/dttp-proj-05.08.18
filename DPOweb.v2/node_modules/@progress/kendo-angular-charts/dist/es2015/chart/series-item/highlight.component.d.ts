@@ -1,0 +1,9 @@
+import { ConfigurationService } from '../../common/configuration.service';
+import { SeriesHighlightComponentGenerated } from '../series-item/highlight.component.generated';
+/**
+ * The Chart series highlighting configuration options.
+ */
+export declare class SeriesHighlightComponent extends SeriesHighlightComponentGenerated {
+    configurationService: ConfigurationService;
+    constructor(configurationService: ConfigurationService);
+}

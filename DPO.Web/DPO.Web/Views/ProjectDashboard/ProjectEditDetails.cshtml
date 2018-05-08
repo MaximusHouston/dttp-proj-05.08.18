@@ -1,0 +1,108 @@
+﻿@model ProjectModel
+@{
+    Layout = null;
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+    //ViewBag.type = "ProjectLocation";
+}
+
+@section Page_Styles {
+    @*@Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles", "~/Content/themes/base/css")*@
+    @Styles.Render("~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles", "~/Content/themes/base/css", "~/Content/bootstrap.css")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/jqueryui", "~/bundles/scripts/projectedit")
+}
+
+<div ng-controller="projectEditDetailsController">
+
+    <form>
+        <div class="row section form sub-tab-view">
+            <div class="col-md-6">
+                <label>Project Name:</label>
+                <div class="row"><input type="text" class="row k-textbox" ng-model="projectVM.model.Name" style="width:80%;" /></div>
+
+                <label>Project Date:</label>
+                <div class="row"><input kendo-date-picker ng-model="projectVM.model.ProjectDate" k-format="'MM-dd-yyyy'" ng-disabled="true" /></div>
+
+                <label>Bid Date:</label>
+                <div class="row"><input kendo-date-picker ng-model="projectVM.model.BidDate" k-format="'MM-dd-yyyy'" /></div>
+
+                <label>Estimated Close:</label>
+                <div class="row"><input kendo-date-picker ng-model="projectVM.model.EstimatedClose" k-format="'MM-dd-yyyy'" /></div>
+
+                <label>Estimated Delivery:</label>
+                <div class="row"><input kendo-date-picker ng-model="projectVM.model.EstimatedDelivery" k-format="'MM-dd-yyyy'" /></div>
+
+            </div>
+            <div class="col-md-5">
+
+                <label>Project Construction Type:</label>
+                <div class="row">
+                    <select kendo-drop-down-list k-ng-model="projectVM.model.ConstructionTypeId" style="width:65%;"
+                            k-value-primitive="true"
+                            k-data-text-field="'Text'"
+                            k-data-value-field="'Value'"
+                            data-option-label="'select ...'"
+                            k-data-source="projectVM.model.ConstructionTypes.Items"></select>
+                </div>
+
+                <label>Project Status:</label>
+                <div class="row"><input type="text" class="row k-textbox" ng-model="projectVM.model.ProjectStatusDescription" ng-disabled="true" /></div>
+                
+                <label>Project Type: </label>
+                <div class="row">
+                    <select kendo-drop-down-list k-ng-model="projectVM.model.ProjectTypeId" style="width:65%;"
+                            k-value-primitive="true"
+                            k-data-text-field="'Text'"
+                            k-data-value-field="'Value'"
+                            data-option-label="'select ...'"
+                            k-data-source="projectVM.model.ProjectTypes.Items"></select>
+                </div>
+
+                <label>Project Open Status:</label>
+                <div class="row">
+                    <select kendo-drop-down-list k-ng-model="projectVM.model.ProjectOpenStatusTypeId" style="width:65%;"
+                            k-value-primitive="true"
+                            k-data-text-field="'Text'"
+                            k-data-value-field="'Value'"
+                            data-option-label="'select ...'"
+                            k-data-source="projectVM.model.ProjectOpenStatusTypes.Items"></select>
+                </div>
+
+                <label>Vertical Market:</label>
+                <div class="row">
+                    <select kendo-drop-down-list k-ng-model="projectVM.model.VerticalMarketTypeId" style="width:65%;"
+                            k-value-primitive="true"
+                            k-data-text-field="'Text'"
+                            k-data-value-field="'Value'"
+                            data-option-label="'select ...'"
+                            k-data-source="projectVM.model.VerticalMarketTypes.Items"></select>
+                </div>
+
+                <label>Project Notes: </label>
+                <div class="row"><textarea rows="4" class="k-textbox" ng-model="projectVM.model.Description" style="width:100%;" /></div>
+
+            </div>
+        </div>
+
+        <div class="row section action c-align">
+            <button type="button" class="btn btn-default" ng-click="cancel()">@ResourceUI.Cancel</button>
+
+            <input type="submit" class="btn btn-primary" value="Update" />
+            @Html.Partial("_LastEditedPartial")
+
+        </div>
+    </form>
+
+</div>
+<script type="text/javascript">
+    function ProjectViewModel() {
+        var self = this;
+        self.model = @Html.Raw(Json.Encode(Model));
+    }
+
+
+</script>
+
+

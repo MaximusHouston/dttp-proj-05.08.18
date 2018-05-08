@@ -1,0 +1,172 @@
+﻿@model ProductsModel
+@using System.Collections;
+@using System.Collections.Generic;
+@using System.Web.Mvc;
+
+@{
+    var activeQuote = Session["BasketQuoteId"] ?? 0;
+    //var product = Model.Product;
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+    var quoteModel = ViewData["QuoteModel"] as QuoteModel;
+}
+
+@using (Html.BeginForm("ProductsAddToQuote", "ProductDashboard", FormMethod.Post, new { Id = "ProductItemsSubmit", QuoteId = activeQuote }))
+{
+    <input type="hidden" id="QuoteId" name="QuoteId" />
+
+    @*if (activeQuote == null)
+    {
+        <script type="text/javascript">
+
+            var quoteId = $('#ActiveQuoteId').val()
+            $('#quoteId').val(quoteId);
+        </script>
+    }
+
+    if (Request.UrlReferrer != null)
+    {
+        string query = "";
+
+        if (Request.UrlReferrer.Query != "")
+        {
+            query = Request.UrlReferrer.Query.ToString();
+            query = query.Substring(9);
+        }
+        else
+        {
+
+            if (Request.RawUrl != "")
+            {
+                if (Request.RawUrl.Length > 45)
+                {
+                    query = Request.RawUrl.ToString();
+                    query = query.Substring(45);
+                }
+            }
+        }
+
+        if (Convert.ToInt64(activeQuote) == 0)
+        {
+            if (query.Length != null)
+            {
+                activeQuote = Convert.ToInt64(query);
+            }
+        }
+
+    }*@
+
+    for (int i = 0; i < Model.Products.Count; i++)
+    {
+        <div class="row">
+
+            @if (activeQuote != null && Convert.ToInt64(activeQuote) > 0)
+            {
+                //@Html.Partial("ItemQuantityBox", new QuoteItemModel { ProductId = Model.Products[i].Product.ProductId, QuoteId = (long)activeQuote  })
+                <div class="product-qty-picker" style="display: block;">
+                  <p class="c-align">Quantity</p>
+                    @Html.NumericStepperFor2(m => Model.Products[i].Product.Quantity, Model.Products[i].Product, i, new { @class = "c-align" })
+                    @Html.HiddenFor(m => Model.Products[i].Product.Quantity)
+                </div>
+            }
+
+            @Html.HiddenFor(m => m.Products[i].Product.ProductId)
+
+
+            <div class="product-details">
+                <div class="product-image pull-left">
+                    @Html.Partial("ProductImages", Model.Products[i].Product)
+                </div>
+                <div class="product-model-info">
+
+                    <p style="">
+                        <a style="padding:0;"
+                           href="@Url.Action("Product", new { quoteId = activeQuote, ProductId = Model.Products[i].Product.ProductId })"><strong>@Model.Products[i].Product.Name</strong></a>
+                    </p>
+                    @Html.HiddenFor(m => m.Products[i].Product.Name)
+
+                    <p class="as-lnk">Model No.:</p>
+                    <p>@Model.Products[i].Product.ProductNumber</p>
+                    @Html.HiddenFor(m => m.Products[i].Product.ProductNumber)
+
+                    @if (user.ShowPrices)
+                    {
+                        <p class="as-lnk">Price:</p>
+                        <p>@Html.DisplayFor(p => Model.Products[i].Product.Price)</p>
+                        @Html.HiddenFor(m => m.Products[i].Product.Price)
+                    }
+
+                    @if(user.ShowPrices)
+                    {
+                        @Html.HiddenFor( m => m.Products[i].Product.ProductClassCode)
+                    }
+
+                </div>
+            </div>
+            <div class="product-ratings">
+                @Html.Partial("ProductSpecificationBars", Model.Products[i].Product)
+            </div>
+            <div class="row-end">&nbsp;</div>
+        </div>
+
+        @*<div class="clear-fix"></div>*@
+
+    }
+
+    <div style="position:absolute;margin-left:870px;display:none;">
+        <input type="submit" value="AddProducts"
+               class="context-btn submit"
+               id="hdnSubmitButton"
+               style="display:none;" />
+    </div>
+}
+
+<div style="display:none;">
+ <input type="button" id="btnAddProducts" style="position:absolute;" value="Add Products To Quote" class="context-btn submit" />
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var btnAddProducts = $('#btnAddProducts');
+        $('#divAddProducts').append(btnAddProducts);
+    });
+
+    $('#btnAddProducts').click(function () {
+        var hdnSubmitButton = document.getElementById('hdnSubmitButton');
+        hdnSubmitButton.click();
+    });
+
+   
+    $('.plus').prop('disabled', false);
+    $('.minus').prop('disabled', false);
+    
+    function updateStepper(isIncrement) {
+        var config = {
+            step: 1,
+            decimalPoints: 0,
+            trailingChars: ''
+        };
+
+        var stepper = $(this).parents('.numeric-stepper');
+        var input = stepper.find('.numbers');
+        var _trailingChars = stepper.attr('data-trail') || config.trailingChars;
+        var _step = stepper.attr('data-step') || config.step;
+        var _decimalPoints = stepper.attr('data-decimal') || config.decimalPoints;
+
+        var inputVal = input.val().split(_trailingChars).join('');
+
+        if (!isIncrement) {
+            if (inputVal >= _step) input.val(Number(inputVal - _step).toFixed(_decimalPoints) + _trailingChars);
+            else (input.val((0).toFixed(_decimalPoints) + _trailingChars));
+            return;
+        }
+
+        var newVal = (Number(inputVal) + Number(_step)).toFixed(_decimalPoints);
+        input.val(newVal + _trailingChars);
+    }
+
+
+</script>
+
+
+

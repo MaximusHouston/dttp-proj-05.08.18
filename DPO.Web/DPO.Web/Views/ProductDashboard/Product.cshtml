@@ -1,0 +1,45 @@
+﻿@model ProductModel
+@{
+    ViewBag.Title = "Product Details";
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+    var activeQuote = ViewData["ActiveQuoteId"] as long?;
+}
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles", "~/Content/css/productlisting")
+}
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/numericstepperhelpers", "~/bundles/scripts/productpages")
+}
+@Html.Partial("ProductItemCount")
+@Html.Partial("ProductFamilyTabs", Model.ProductFamilyTabs)
+<div style="position: relative; top: 15px;">
+    @Html.PageMessages()
+</div>
+<ul class="breadcrumbs">
+    <li><a href="@Url.Action("ProductFamilies")">Products</a></li>
+    <li><a href="@Url.Action("Products", new { ProductFamilyId = Model.ProductFamilyId })">@Model.ProductFamilyName</a></li>
+    <li>@(Model.Name + " / " + Model.ProductNumber)</li>
+</ul>
+<div class="section t-flush">
+    <div class="item-strap">
+        <div class="itemname full">
+            <h1>@Model.Name</h1>
+        </div>
+        <div class="btn-bar">
+            @* no search here? *@
+        </div>
+    </div>
+</div>
+
+
+@if (Model.IsSystem || Model.ProductModelTypeId == ProductModelTypeEnum.System)
+{
+    @Html.Partial("ProductPartial/ProductSystemDetail", Model)
+} else if (Model.ProductModelTypeId == ProductModelTypeEnum.Accessory)
+{
+    @Html.Partial("ProductPartial/ProductAccessoryDetail", new ProductAccessoryModel { Accessory = Model });
+}
+else
+{
+    @Html.Partial("ProductPartial/ProductGeneralDetail", Model)
+}

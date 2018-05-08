@@ -1,0 +1,82 @@
+﻿@model ProductModel
+@{
+    var specs = Model.Specifications;
+}
+    <tr>
+        <td>Outdoor Unit Model No.</td>
+        <td>@Model.ProductNumber</td>
+        <td>Outdoor Unit Name:</td>
+        <td>@Model.Name</td>
+    </tr>
+    <tr>
+        <td>Rated Cooling Conditions:</td>
+        <td>
+            Indoor (&deg;F DB/WB): @specs.GetDecimal("RatedCoolingConditionRoomDB", "N0") / @specs.GetDecimal("RatedCoolingConditionRoomWB", "N0")
+            <br />
+            Ambient (&deg;F DB/WB): @specs.GetDecimal("RatedCoolingConditionAmbientDB", "N0") / @specs.GetDecimal("RatedCoolingConditionAmbientWB", "N0")
+        </td>
+        <td>Rated Heating Conditions:</td>
+        <td>
+            Indoor (&deg;F DB/WB): @specs.GetDecimal("RatedHeatingConditionRoomDB", "N0") / @specs.GetDecimal("RatedHeatingConditionRoomWB", "N0")
+            <br />
+            Ambient (&deg;F DB/WB): @specs.GetDecimal("RatedHeatingConditionAmbientDB", "N0") / @specs.GetDecimal("RatedHeatingConditionAmbientWB", "N0")
+        </td>
+    </tr>
+    <tr>
+        <td>Max/Min Cooling Capacity (Btu/hr):</td>
+        @if (specs.GetDecimal("CoolingCapacityMax", "N0") != null || specs.GetDecimal("CoolingCapacityMin", "N0") != null)
+        {
+            <td>@specs.GetDecimal("CoolingCapacityMax", "N0") / @specs.GetDecimal("CoolingCapacityMin", "N0")</td>
+        }
+        else
+        {
+            <td></td>
+        }
+
+        <td>Max/Min Heating Capacity (Btu/hr):</td>
+        @if (specs.GetDecimal("HeatingCapacityMax", "N0") != null || specs.GetDecimal("HeatingCapacityMin", "N0") != null)
+        {
+            <td>@specs.GetDecimal("HeatingCapacityMax", "N0") / @specs.GetDecimal("HeatingCapacityMin", "N0")</td>
+        }
+        else
+        {
+            <td></td>
+        }
+    </tr>
+    <tr>
+        <td>* Rated Cooling Capacity (Btu/hr):</td>
+        <td>@specs.GetDecimal("CoolingCapacityRated", "N0")</td>
+
+        <td>* Rated Heating Capacity (Btu/hr):</td>
+        <td>@specs.GetDecimal("HeatingCapacityRated", "N0")</td>
+    </tr>
+
+    <tr>
+        @if (specs.GetDecimal("EERDucted", "N2") != null)
+        {
+            <td>* EER:</td>
+            <td>@specs.GetDecimal("EERDucted", "N2")</td>
+        }
+        else
+        {
+            <td>* EER:</td>
+            <td></td>
+        }
+        <td>* Heating COP:</td>
+        <td>@specs.GetDecimal("COP47Ducted", "N1")</td>
+    </tr>
+    <tr>
+        @if (specs.GetDecimal("SEERDucted", "N2") != null)
+        {
+            <td>* SEER:</td>
+            <td>@specs.GetDecimal("SEERDucted", "N2")</td>
+        }
+        else
+        {
+            <td>* SEER:</td>
+            <td></td>
+        }
+        <td>* HSPF:</td>
+        <td>@specs.GetDecimal("HSPFDucted", "N1")</td>
+    </tr>
+

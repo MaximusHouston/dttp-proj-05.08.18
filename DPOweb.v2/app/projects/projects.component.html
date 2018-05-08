@@ -1,0 +1,29 @@
+﻿<!--<project-tabs></project-tabs>
+
+<div class="tab-header">
+    <h4>PROJECTS</h4>
+</div>
+
+<div id="projectsGridContainer" >
+    <project-grid ></project-grid>
+</div>-->
+
+<project-tabs [user]="user"></project-tabs>
+
+<div id="main-container" class='container-fluid'>
+    <div class="main-content">      
+
+        <div class="tab-header">
+            <h4>PROJECTS</h4>
+        </div>
+   
+        <div *ngIf="canViewProject ; else elseBlock" id="projectsGridContainer">
+            <project-grid></project-grid>
+        </div>
+        <ng-template #elseBlock>No permission to view projects</ng-template>
+    </div>
+</div>
+
+
+
+

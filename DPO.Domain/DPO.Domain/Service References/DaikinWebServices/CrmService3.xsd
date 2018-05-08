@@ -1,0 +1,887 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://crmtestisv.goodmanmfg.com/Services/DPOServices/CrmService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+  <xs:import schemaLocation="https://crmtestisv.goodmanmfg.com/Services/DPOServices/CrmService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="VerifyAccountRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RequestOfVerifyAccountResponse5BsmBqU5">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="VerifyAccountRequest" nillable="true" type="tns:VerifyAccountRequest" />
+  <xs:complexType name="RequestOfVerifyAccountResponse5BsmBqU5">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RequestOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="VerifyAccountResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="TokenID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestOfVerifyAccountResponse5BsmBqU5" nillable="true" type="tns:RequestOfVerifyAccountResponse5BsmBqU5" />
+  <xs:complexType name="VerifyAccountResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:Response">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="IsValid" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="VerifyAccountResponse" nillable="true" type="tns:VerifyAccountResponse" />
+  <xs:complexType name="Response">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="Response" nillable="true" type="tns:Response" />
+  <xs:complexType name="RetrieveProductsRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleQueryExpressionRequestBaseOfProductRetrieveProductsResponseh8uvi2ih">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ProductNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveProductsRequest" nillable="true" type="tns:RetrieveProductsRequest" />
+  <xs:complexType name="RetrieveMultipleQueryExpressionRequestBaseOfProductRetrieveProductsResponseh8uvi2ih">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleQueryExpressionRequestBaseOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="Product" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+          <GenericParameter Name="RetrieveProductsResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleRequestBaseOfProductRetrieveProductsResponseh8uvi2ih">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleQueryExpressionRequestBaseOfProductRetrieveProductsResponseh8uvi2ih" nillable="true" type="tns:RetrieveMultipleQueryExpressionRequestBaseOfProductRetrieveProductsResponseh8uvi2ih" />
+  <xs:complexType name="RetrieveMultipleRequestBaseOfProductRetrieveProductsResponseh8uvi2ih">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleRequestBaseOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="Product" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+          <GenericParameter Name="RetrieveProductsResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RequestOfRetrieveProductsResponse5BsmBqU5">
+        <xs:sequence>
+          <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="CreatedOnCondition" nillable="true" type="q1:DateTimeConditionExpression" />
+          <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="ModifiedOnCondition" nillable="true" type="q2:DateTimeConditionExpression" />
+          <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="PageDetail" nillable="true" type="q3:PagingDetail" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleRequestBaseOfProductRetrieveProductsResponseh8uvi2ih" nillable="true" type="tns:RetrieveMultipleRequestBaseOfProductRetrieveProductsResponseh8uvi2ih" />
+  <xs:complexType name="RequestOfRetrieveProductsResponse5BsmBqU5">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RequestOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="RetrieveProductsResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="TokenID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestOfRetrieveProductsResponse5BsmBqU5" nillable="true" type="tns:RequestOfRetrieveProductsResponse5BsmBqU5" />
+  <xs:complexType name="RetrieveProductsResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleResponseBaseOfProductF1Xcoezk">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveProductsResponse" nillable="true" type="tns:RetrieveProductsResponse" />
+  <xs:complexType name="RetrieveMultipleResponseBaseOfProductF1Xcoezk">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleResponseBaseOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="Product" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:Response">
+        <xs:sequence>
+          <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="Entities" nillable="true" type="q4:ArrayOfProduct" />
+          <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="PageDetail" nillable="true" type="q5:PagingDetail" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleResponseBaseOfProductF1Xcoezk" nillable="true" type="tns:RetrieveMultipleResponseBaseOfProductF1Xcoezk" />
+  <xs:complexType name="RetrieveGroupsRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleQueryExpressionRequestBaseOfGroupRetrieveGroupsResponseh8uvi2ih">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveGroupsRequest" nillable="true" type="tns:RetrieveGroupsRequest" />
+  <xs:complexType name="RetrieveMultipleQueryExpressionRequestBaseOfGroupRetrieveGroupsResponseh8uvi2ih">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleQueryExpressionRequestBaseOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="Group" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+          <GenericParameter Name="RetrieveGroupsResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleRequestBaseOfGroupRetrieveGroupsResponseh8uvi2ih">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleQueryExpressionRequestBaseOfGroupRetrieveGroupsResponseh8uvi2ih" nillable="true" type="tns:RetrieveMultipleQueryExpressionRequestBaseOfGroupRetrieveGroupsResponseh8uvi2ih" />
+  <xs:complexType name="RetrieveMultipleRequestBaseOfGroupRetrieveGroupsResponseh8uvi2ih">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleRequestBaseOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="Group" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+          <GenericParameter Name="RetrieveGroupsResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RequestOfRetrieveGroupsResponse5BsmBqU5">
+        <xs:sequence>
+          <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="CreatedOnCondition" nillable="true" type="q6:DateTimeConditionExpression" />
+          <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="ModifiedOnCondition" nillable="true" type="q7:DateTimeConditionExpression" />
+          <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="PageDetail" nillable="true" type="q8:PagingDetail" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleRequestBaseOfGroupRetrieveGroupsResponseh8uvi2ih" nillable="true" type="tns:RetrieveMultipleRequestBaseOfGroupRetrieveGroupsResponseh8uvi2ih" />
+  <xs:complexType name="RequestOfRetrieveGroupsResponse5BsmBqU5">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RequestOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="RetrieveGroupsResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="TokenID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestOfRetrieveGroupsResponse5BsmBqU5" nillable="true" type="tns:RequestOfRetrieveGroupsResponse5BsmBqU5" />
+  <xs:complexType name="RetrieveGroupsResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleResponseBaseOfGroupF1Xcoezk">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveGroupsResponse" nillable="true" type="tns:RetrieveGroupsResponse" />
+  <xs:complexType name="RetrieveMultipleResponseBaseOfGroupF1Xcoezk">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleResponseBaseOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="Group" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:Response">
+        <xs:sequence>
+          <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="Entities" nillable="true" type="q9:ArrayOfGroup" />
+          <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="PageDetail" nillable="true" type="q10:PagingDetail" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleResponseBaseOfGroupF1Xcoezk" nillable="true" type="tns:RetrieveMultipleResponseBaseOfGroupF1Xcoezk" />
+  <xs:complexType name="RetrieveAccountsRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleQueryExpressionRequestBaseOfAccountRetrieveAccountsResponseh8uvi2ih">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CRMAccountNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveAccountsRequest" nillable="true" type="tns:RetrieveAccountsRequest" />
+  <xs:complexType name="RetrieveMultipleQueryExpressionRequestBaseOfAccountRetrieveAccountsResponseh8uvi2ih">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleQueryExpressionRequestBaseOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="Account" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+          <GenericParameter Name="RetrieveAccountsResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleRequestBaseOfAccountRetrieveAccountsResponseh8uvi2ih">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleQueryExpressionRequestBaseOfAccountRetrieveAccountsResponseh8uvi2ih" nillable="true" type="tns:RetrieveMultipleQueryExpressionRequestBaseOfAccountRetrieveAccountsResponseh8uvi2ih" />
+  <xs:complexType name="RetrieveMultipleRequestBaseOfAccountRetrieveAccountsResponseh8uvi2ih">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleRequestBaseOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="Account" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+          <GenericParameter Name="RetrieveAccountsResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RequestOfRetrieveAccountsResponse5BsmBqU5">
+        <xs:sequence>
+          <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="CreatedOnCondition" nillable="true" type="q11:DateTimeConditionExpression" />
+          <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="ModifiedOnCondition" nillable="true" type="q12:DateTimeConditionExpression" />
+          <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="PageDetail" nillable="true" type="q13:PagingDetail" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleRequestBaseOfAccountRetrieveAccountsResponseh8uvi2ih" nillable="true" type="tns:RetrieveMultipleRequestBaseOfAccountRetrieveAccountsResponseh8uvi2ih" />
+  <xs:complexType name="RequestOfRetrieveAccountsResponse5BsmBqU5">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RequestOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="RetrieveAccountsResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="TokenID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestOfRetrieveAccountsResponse5BsmBqU5" nillable="true" type="tns:RequestOfRetrieveAccountsResponse5BsmBqU5" />
+  <xs:complexType name="RetrieveAccountsResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleResponseBaseOfAccountF1Xcoezk">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveAccountsResponse" nillable="true" type="tns:RetrieveAccountsResponse" />
+  <xs:complexType name="RetrieveMultipleResponseBaseOfAccountF1Xcoezk">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleResponseBaseOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="Account" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:Response">
+        <xs:sequence>
+          <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="Entities" nillable="true" type="q14:ArrayOfAccount" />
+          <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="PageDetail" nillable="true" type="q15:PagingDetail" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleResponseBaseOfAccountF1Xcoezk" nillable="true" type="tns:RetrieveMultipleResponseBaseOfAccountF1Xcoezk" />
+  <xs:complexType name="RetrieveAccountMultipliersRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleQueryExpressionRequestBaseOfAccountMultiplierRetrieveAccountMultipliersResponseh8uvi2ih">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveAccountMultipliersRequest" nillable="true" type="tns:RetrieveAccountMultipliersRequest" />
+  <xs:complexType name="RetrieveMultipleQueryExpressionRequestBaseOfAccountMultiplierRetrieveAccountMultipliersResponseh8uvi2ih">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleQueryExpressionRequestBaseOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="AccountMultiplier" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+          <GenericParameter Name="RetrieveAccountMultipliersResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleRequestBaseOfAccountMultiplierRetrieveAccountMultipliersResponseh8uvi2ih">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleQueryExpressionRequestBaseOfAccountMultiplierRetrieveAccountMultipliersResponseh8uvi2ih" nillable="true" type="tns:RetrieveMultipleQueryExpressionRequestBaseOfAccountMultiplierRetrieveAccountMultipliersResponseh8uvi2ih" />
+  <xs:complexType name="RetrieveMultipleRequestBaseOfAccountMultiplierRetrieveAccountMultipliersResponseh8uvi2ih">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleRequestBaseOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="AccountMultiplier" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+          <GenericParameter Name="RetrieveAccountMultipliersResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RequestOfRetrieveAccountMultipliersResponse5BsmBqU5">
+        <xs:sequence>
+          <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="CreatedOnCondition" nillable="true" type="q16:DateTimeConditionExpression" />
+          <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="ModifiedOnCondition" nillable="true" type="q17:DateTimeConditionExpression" />
+          <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="PageDetail" nillable="true" type="q18:PagingDetail" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleRequestBaseOfAccountMultiplierRetrieveAccountMultipliersResponseh8uvi2ih" nillable="true" type="tns:RetrieveMultipleRequestBaseOfAccountMultiplierRetrieveAccountMultipliersResponseh8uvi2ih" />
+  <xs:complexType name="RequestOfRetrieveAccountMultipliersResponse5BsmBqU5">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RequestOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="RetrieveAccountMultipliersResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="TokenID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestOfRetrieveAccountMultipliersResponse5BsmBqU5" nillable="true" type="tns:RequestOfRetrieveAccountMultipliersResponse5BsmBqU5" />
+  <xs:complexType name="RetrieveAccountMultipliersResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleResponseBaseOfAccountMultiplierF1Xcoezk">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveAccountMultipliersResponse" nillable="true" type="tns:RetrieveAccountMultipliersResponse" />
+  <xs:complexType name="RetrieveMultipleResponseBaseOfAccountMultiplierF1Xcoezk">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleResponseBaseOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="AccountMultiplier" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:Response">
+        <xs:sequence>
+          <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="Entities" nillable="true" type="q19:ArrayOfAccountMultiplier" />
+          <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="PageDetail" nillable="true" type="q20:PagingDetail" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleResponseBaseOfAccountMultiplierF1Xcoezk" nillable="true" type="tns:RetrieveMultipleResponseBaseOfAccountMultiplierF1Xcoezk" />
+  <xs:complexType name="RetrieveSystemComponentsRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleQueryExpressionRequestBaseOfSystemComponentRetrieveSystemComponentsResponseh8uvi2ih">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveSystemComponentsRequest" nillable="true" type="tns:RetrieveSystemComponentsRequest" />
+  <xs:complexType name="RetrieveMultipleQueryExpressionRequestBaseOfSystemComponentRetrieveSystemComponentsResponseh8uvi2ih">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleQueryExpressionRequestBaseOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="SystemComponent" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+          <GenericParameter Name="RetrieveSystemComponentsResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleRequestBaseOfSystemComponentRetrieveSystemComponentsResponseh8uvi2ih">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleQueryExpressionRequestBaseOfSystemComponentRetrieveSystemComponentsResponseh8uvi2ih" nillable="true" type="tns:RetrieveMultipleQueryExpressionRequestBaseOfSystemComponentRetrieveSystemComponentsResponseh8uvi2ih" />
+  <xs:complexType name="RetrieveMultipleRequestBaseOfSystemComponentRetrieveSystemComponentsResponseh8uvi2ih">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleRequestBaseOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="SystemComponent" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+          <GenericParameter Name="RetrieveSystemComponentsResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RequestOfRetrieveSystemComponentsResponse5BsmBqU5">
+        <xs:sequence>
+          <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="CreatedOnCondition" nillable="true" type="q21:DateTimeConditionExpression" />
+          <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="ModifiedOnCondition" nillable="true" type="q22:DateTimeConditionExpression" />
+          <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="PageDetail" nillable="true" type="q23:PagingDetail" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleRequestBaseOfSystemComponentRetrieveSystemComponentsResponseh8uvi2ih" nillable="true" type="tns:RetrieveMultipleRequestBaseOfSystemComponentRetrieveSystemComponentsResponseh8uvi2ih" />
+  <xs:complexType name="RequestOfRetrieveSystemComponentsResponse5BsmBqU5">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RequestOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="RetrieveSystemComponentsResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="TokenID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestOfRetrieveSystemComponentsResponse5BsmBqU5" nillable="true" type="tns:RequestOfRetrieveSystemComponentsResponse5BsmBqU5" />
+  <xs:complexType name="RetrieveSystemComponentsResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleResponseBaseOfSystemComponentF1Xcoezk">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveSystemComponentsResponse" nillable="true" type="tns:RetrieveSystemComponentsResponse" />
+  <xs:complexType name="RetrieveMultipleResponseBaseOfSystemComponentF1Xcoezk">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleResponseBaseOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="SystemComponent" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:Response">
+        <xs:sequence>
+          <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="Entities" nillable="true" type="q24:ArrayOfSystemComponent" />
+          <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="PageDetail" nillable="true" type="q25:PagingDetail" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleResponseBaseOfSystemComponentF1Xcoezk" nillable="true" type="tns:RetrieveMultipleResponseBaseOfSystemComponentF1Xcoezk" />
+  <xs:complexType name="RetrieveSalesLiteratureRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleQueryExpressionRequestBaseOfSalesLiteratureRetrieveSalesLiteratureResponseh8uvi2ih">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="RetrieveAttachments" type="xs:boolean" />
+          <xs:element minOccurs="0" name="SalesLiteratureId" nillable="true" type="ser:guid" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveSalesLiteratureRequest" nillable="true" type="tns:RetrieveSalesLiteratureRequest" />
+  <xs:complexType name="RetrieveMultipleQueryExpressionRequestBaseOfSalesLiteratureRetrieveSalesLiteratureResponseh8uvi2ih">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleQueryExpressionRequestBaseOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="SalesLiterature" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+          <GenericParameter Name="RetrieveSalesLiteratureResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleRequestBaseOfSalesLiteratureRetrieveSalesLiteratureResponseh8uvi2ih">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleQueryExpressionRequestBaseOfSalesLiteratureRetrieveSalesLiteratureResponseh8uvi2ih" nillable="true" type="tns:RetrieveMultipleQueryExpressionRequestBaseOfSalesLiteratureRetrieveSalesLiteratureResponseh8uvi2ih" />
+  <xs:complexType name="RetrieveMultipleRequestBaseOfSalesLiteratureRetrieveSalesLiteratureResponseh8uvi2ih">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleRequestBaseOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="SalesLiterature" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+          <GenericParameter Name="RetrieveSalesLiteratureResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RequestOfRetrieveSalesLiteratureResponse5BsmBqU5">
+        <xs:sequence>
+          <xs:element xmlns:q26="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="CreatedOnCondition" nillable="true" type="q26:DateTimeConditionExpression" />
+          <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="ModifiedOnCondition" nillable="true" type="q27:DateTimeConditionExpression" />
+          <xs:element xmlns:q28="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="PageDetail" nillable="true" type="q28:PagingDetail" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleRequestBaseOfSalesLiteratureRetrieveSalesLiteratureResponseh8uvi2ih" nillable="true" type="tns:RetrieveMultipleRequestBaseOfSalesLiteratureRetrieveSalesLiteratureResponseh8uvi2ih" />
+  <xs:complexType name="RequestOfRetrieveSalesLiteratureResponse5BsmBqU5">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RequestOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="RetrieveSalesLiteratureResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="TokenID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestOfRetrieveSalesLiteratureResponse5BsmBqU5" nillable="true" type="tns:RequestOfRetrieveSalesLiteratureResponse5BsmBqU5" />
+  <xs:complexType name="RetrieveSalesLiteratureResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleResponseBaseOfSalesLiteratureF1Xcoezk">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveSalesLiteratureResponse" nillable="true" type="tns:RetrieveSalesLiteratureResponse" />
+  <xs:complexType name="RetrieveMultipleResponseBaseOfSalesLiteratureF1Xcoezk">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleResponseBaseOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="SalesLiterature" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:Response">
+        <xs:sequence>
+          <xs:element xmlns:q29="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="Entities" nillable="true" type="q29:ArrayOfSalesLiterature" />
+          <xs:element xmlns:q30="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="PageDetail" nillable="true" type="q30:PagingDetail" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleResponseBaseOfSalesLiteratureF1Xcoezk" nillable="true" type="tns:RetrieveMultipleResponseBaseOfSalesLiteratureF1Xcoezk" />
+  <xs:complexType name="RetrieveProductSalesLiteratureRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleQueryExpressionRequestBaseOfProductSalesLiteratureRetrieveProductSalesLiteratureResponseh8uvi2ih">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ProductNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RetrieveAttachments" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveProductSalesLiteratureRequest" nillable="true" type="tns:RetrieveProductSalesLiteratureRequest" />
+  <xs:complexType name="RetrieveMultipleQueryExpressionRequestBaseOfProductSalesLiteratureRetrieveProductSalesLiteratureResponseh8uvi2ih">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleQueryExpressionRequestBaseOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="ProductSalesLiterature" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+          <GenericParameter Name="RetrieveProductSalesLiteratureResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleRequestBaseOfProductSalesLiteratureRetrieveProductSalesLiteratureResponseh8uvi2ih">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleQueryExpressionRequestBaseOfProductSalesLiteratureRetrieveProductSalesLiteratureResponseh8uvi2ih" nillable="true" type="tns:RetrieveMultipleQueryExpressionRequestBaseOfProductSalesLiteratureRetrieveProductSalesLiteratureResponseh8uvi2ih" />
+  <xs:complexType name="RetrieveMultipleRequestBaseOfProductSalesLiteratureRetrieveProductSalesLiteratureResponseh8uvi2ih">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleRequestBaseOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="ProductSalesLiterature" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+          <GenericParameter Name="RetrieveProductSalesLiteratureResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RequestOfRetrieveProductSalesLiteratureResponse5BsmBqU5">
+        <xs:sequence>
+          <xs:element xmlns:q31="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="CreatedOnCondition" nillable="true" type="q31:DateTimeConditionExpression" />
+          <xs:element xmlns:q32="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="ModifiedOnCondition" nillable="true" type="q32:DateTimeConditionExpression" />
+          <xs:element xmlns:q33="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="PageDetail" nillable="true" type="q33:PagingDetail" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleRequestBaseOfProductSalesLiteratureRetrieveProductSalesLiteratureResponseh8uvi2ih" nillable="true" type="tns:RetrieveMultipleRequestBaseOfProductSalesLiteratureRetrieveProductSalesLiteratureResponseh8uvi2ih" />
+  <xs:complexType name="RequestOfRetrieveProductSalesLiteratureResponse5BsmBqU5">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RequestOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="RetrieveProductSalesLiteratureResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="TokenID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestOfRetrieveProductSalesLiteratureResponse5BsmBqU5" nillable="true" type="tns:RequestOfRetrieveProductSalesLiteratureResponse5BsmBqU5" />
+  <xs:complexType name="RetrieveProductSalesLiteratureResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleResponseBaseOfProductSalesLiteratureF1Xcoezk">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveProductSalesLiteratureResponse" nillable="true" type="tns:RetrieveProductSalesLiteratureResponse" />
+  <xs:complexType name="RetrieveMultipleResponseBaseOfProductSalesLiteratureF1Xcoezk">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleResponseBaseOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="ProductSalesLiterature" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:Response">
+        <xs:sequence>
+          <xs:element xmlns:q34="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="Entities" nillable="true" type="q34:ArrayOfProductSalesLiterature" />
+          <xs:element xmlns:q35="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="PageDetail" nillable="true" type="q35:PagingDetail" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleResponseBaseOfProductSalesLiteratureF1Xcoezk" nillable="true" type="tns:RetrieveMultipleResponseBaseOfProductSalesLiteratureF1Xcoezk" />
+  <xs:complexType name="RetrieveInternalUsersRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleQueryExpressionRequestBaseOfUserRetrieveInternalUsersResponseh8uvi2ih">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveInternalUsersRequest" nillable="true" type="tns:RetrieveInternalUsersRequest" />
+  <xs:complexType name="RetrieveMultipleQueryExpressionRequestBaseOfUserRetrieveInternalUsersResponseh8uvi2ih">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleQueryExpressionRequestBaseOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="User" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+          <GenericParameter Name="RetrieveInternalUsersResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleRequestBaseOfUserRetrieveInternalUsersResponseh8uvi2ih">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleQueryExpressionRequestBaseOfUserRetrieveInternalUsersResponseh8uvi2ih" nillable="true" type="tns:RetrieveMultipleQueryExpressionRequestBaseOfUserRetrieveInternalUsersResponseh8uvi2ih" />
+  <xs:complexType name="RetrieveMultipleRequestBaseOfUserRetrieveInternalUsersResponseh8uvi2ih">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleRequestBaseOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="User" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+          <GenericParameter Name="RetrieveInternalUsersResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RequestOfRetrieveInternalUsersResponse5BsmBqU5">
+        <xs:sequence>
+          <xs:element xmlns:q36="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="CreatedOnCondition" nillable="true" type="q36:DateTimeConditionExpression" />
+          <xs:element xmlns:q37="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="ModifiedOnCondition" nillable="true" type="q37:DateTimeConditionExpression" />
+          <xs:element xmlns:q38="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="PageDetail" nillable="true" type="q38:PagingDetail" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleRequestBaseOfUserRetrieveInternalUsersResponseh8uvi2ih" nillable="true" type="tns:RetrieveMultipleRequestBaseOfUserRetrieveInternalUsersResponseh8uvi2ih" />
+  <xs:complexType name="RequestOfRetrieveInternalUsersResponse5BsmBqU5">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RequestOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="RetrieveInternalUsersResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="TokenID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestOfRetrieveInternalUsersResponse5BsmBqU5" nillable="true" type="tns:RequestOfRetrieveInternalUsersResponse5BsmBqU5" />
+  <xs:complexType name="RetrieveInternalUsersResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleResponseBaseOfUserF1Xcoezk">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveInternalUsersResponse" nillable="true" type="tns:RetrieveInternalUsersResponse" />
+  <xs:complexType name="RetrieveMultipleResponseBaseOfUserF1Xcoezk">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleResponseBaseOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="User" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:Response">
+        <xs:sequence>
+          <xs:element xmlns:q39="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="Entities" nillable="true" type="q39:ArrayOfUser" />
+          <xs:element xmlns:q40="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="PageDetail" nillable="true" type="q40:PagingDetail" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleResponseBaseOfUserF1Xcoezk" nillable="true" type="tns:RetrieveMultipleResponseBaseOfUserF1Xcoezk" />
+  <xs:complexType name="RetrieveProductNotesRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleQueryExpressionRequestBaseOfProductNoteRetrieveProductNotesResponseh8uvi2ih">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ProductNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveProductNotesRequest" nillable="true" type="tns:RetrieveProductNotesRequest" />
+  <xs:complexType name="RetrieveMultipleQueryExpressionRequestBaseOfProductNoteRetrieveProductNotesResponseh8uvi2ih">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleQueryExpressionRequestBaseOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="ProductNote" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+          <GenericParameter Name="RetrieveProductNotesResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleRequestBaseOfProductNoteRetrieveProductNotesResponseh8uvi2ih">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleQueryExpressionRequestBaseOfProductNoteRetrieveProductNotesResponseh8uvi2ih" nillable="true" type="tns:RetrieveMultipleQueryExpressionRequestBaseOfProductNoteRetrieveProductNotesResponseh8uvi2ih" />
+  <xs:complexType name="RetrieveMultipleRequestBaseOfProductNoteRetrieveProductNotesResponseh8uvi2ih">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleRequestBaseOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="ProductNote" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+          <GenericParameter Name="RetrieveProductNotesResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RequestOfRetrieveProductNotesResponse5BsmBqU5">
+        <xs:sequence>
+          <xs:element xmlns:q41="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="CreatedOnCondition" nillable="true" type="q41:DateTimeConditionExpression" />
+          <xs:element xmlns:q42="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="ModifiedOnCondition" nillable="true" type="q42:DateTimeConditionExpression" />
+          <xs:element xmlns:q43="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="PageDetail" nillable="true" type="q43:PagingDetail" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleRequestBaseOfProductNoteRetrieveProductNotesResponseh8uvi2ih" nillable="true" type="tns:RetrieveMultipleRequestBaseOfProductNoteRetrieveProductNotesResponseh8uvi2ih" />
+  <xs:complexType name="RequestOfRetrieveProductNotesResponse5BsmBqU5">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RequestOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="RetrieveProductNotesResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="TokenID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestOfRetrieveProductNotesResponse5BsmBqU5" nillable="true" type="tns:RequestOfRetrieveProductNotesResponse5BsmBqU5" />
+  <xs:complexType name="RetrieveProductNotesResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleResponseBaseOfProductNoteF1Xcoezk">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveProductNotesResponse" nillable="true" type="tns:RetrieveProductNotesResponse" />
+  <xs:complexType name="RetrieveMultipleResponseBaseOfProductNoteF1Xcoezk">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleResponseBaseOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="ProductNote" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:Response">
+        <xs:sequence>
+          <xs:element xmlns:q44="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="Entities" nillable="true" type="q44:ArrayOfProductNote" />
+          <xs:element xmlns:q45="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="PageDetail" nillable="true" type="q45:PagingDetail" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleResponseBaseOfProductNoteF1Xcoezk" nillable="true" type="tns:RetrieveMultipleResponseBaseOfProductNoteF1Xcoezk" />
+  <xs:complexType name="RetrieveOptionsRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleSqlRequestBaseOfOptionRetrieveOptionsResponseh8uvi2ih">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AttributeName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="EntityName" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveOptionsRequest" nillable="true" type="tns:RetrieveOptionsRequest" />
+  <xs:complexType name="RetrieveMultipleSqlRequestBaseOfOptionRetrieveOptionsResponseh8uvi2ih">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleSqlRequestBaseOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="Option" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+          <GenericParameter Name="RetrieveOptionsResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleRequestBaseOfOptionRetrieveOptionsResponseh8uvi2ih">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleSqlRequestBaseOfOptionRetrieveOptionsResponseh8uvi2ih" nillable="true" type="tns:RetrieveMultipleSqlRequestBaseOfOptionRetrieveOptionsResponseh8uvi2ih" />
+  <xs:complexType name="RetrieveMultipleRequestBaseOfOptionRetrieveOptionsResponseh8uvi2ih">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleRequestBaseOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="Option" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+          <GenericParameter Name="RetrieveOptionsResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RequestOfRetrieveOptionsResponse5BsmBqU5">
+        <xs:sequence>
+          <xs:element xmlns:q46="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="CreatedOnCondition" nillable="true" type="q46:DateTimeConditionExpression" />
+          <xs:element xmlns:q47="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="ModifiedOnCondition" nillable="true" type="q47:DateTimeConditionExpression" />
+          <xs:element xmlns:q48="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="PageDetail" nillable="true" type="q48:PagingDetail" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleRequestBaseOfOptionRetrieveOptionsResponseh8uvi2ih" nillable="true" type="tns:RetrieveMultipleRequestBaseOfOptionRetrieveOptionsResponseh8uvi2ih" />
+  <xs:complexType name="RequestOfRetrieveOptionsResponse5BsmBqU5">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RequestOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="RetrieveOptionsResponse" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="TokenID" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestOfRetrieveOptionsResponse5BsmBqU5" nillable="true" type="tns:RequestOfRetrieveOptionsResponse5BsmBqU5" />
+  <xs:complexType name="RetrieveOptionsResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RetrieveMultipleResponseBaseOfOptionF1Xcoezk">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveOptionsResponse" nillable="true" type="tns:RetrieveOptionsResponse" />
+  <xs:complexType name="RetrieveMultipleResponseBaseOfOptionF1Xcoezk">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="RetrieveMultipleResponseBaseOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="Option" Namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:Response">
+        <xs:sequence>
+          <xs:element xmlns:q49="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="Entities" nillable="true" type="q49:ArrayOfOption" />
+          <xs:element xmlns:q50="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" minOccurs="0" name="PageDetail" nillable="true" type="q50:PagingDetail" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RetrieveMultipleResponseBaseOfOptionF1Xcoezk" nillable="true" type="tns:RetrieveMultipleResponseBaseOfOptionF1Xcoezk" />
+</xs:schema>

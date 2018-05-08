@@ -1,0 +1,35 @@
+﻿@model DPO.Common.SendEmailProjectTransfer
+
+@if (Model.RenderTextVersion)
+{
+    Layout = null;
+    if (!string.IsNullOrEmpty(Model.ProjectName))
+    {
+        string.Format("'{0}' has transferred DPO Project '{1}' to you.", @Model.TransferFrom, @Model.ProjectName);
+    }
+    else
+    {
+        string.Format("'{0}' has transferred DPO Project 'Unknown' to you.", @Model.TransferFrom);
+    }
+}
+else
+{
+    Layout = "~/Views/Shared/EmailTemplate.cshtml";
+
+    <table> 
+        <tr>
+            @if (!string.IsNullOrEmpty(Model.ProjectName))
+            {
+                <td style="padding-left: 28px; padding-top: 20px; font-family: Helvetica, Arial, sans-serif; ">
+                  @string.Format("'{0}' has transferred DPO Project '{1}' to you.", @Model.TransferFrom, @Model.ProjectName)
+                </td>
+            }
+            else
+            {
+                <td style="padding-left: 28px; padding-top: 20px; font-family: Helvetica, Arial, sans-serif; ">
+                    @string.Format("'{0}' has transferred DPO Project 'Unknown' to you.", @Model.TransferFrom)
+                </td>
+            }
+        </tr>
+    </table>
+} 

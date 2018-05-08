@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Daikin City Content Management";
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/confirmmodal")
+}
+
+@Html.Partial("_CityCMSTabsPartial")
+
+<div class="section b-flush t-flush">
+    <div class="item-strap btm-bdr">
+        <div class="itemname">
+            <h1>Daikin City CMS</h1>
+        </div>
+        <div class="btn-bar">
+            &nbsp;
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    Options available:
+    <br/>
+    <br/>
+    <a href="@Url.Action("Systems","CityCMS")">Systems</a>
+    <br/>
+    <br/>
+    <a href="@Url.Action("CommunicationsCenterVideos","CityCMS")">Communications Center Videos</a>
+    <br />
+    <br />
+    <a href="@Url.Action("BillboardPosters","CityCMS")">Billboard Posters</a>
+</div>
+
+
+

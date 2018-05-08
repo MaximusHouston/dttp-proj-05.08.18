@@ -1,0 +1,30 @@
+﻿@model ProductModel
+@{
+    Layout = null;
+   
+    var idPdf = (bool)ViewData["PdfMode"];
+    var isInQuotePackage = (bool)ViewData["IsInQuotePackage"];
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+}
+<div class="header-print">
+    <img src="~/Images/daikin-logo-print.png" />
+    <h2 style="margin-bottom: 2px; padding-bottom: 0;"><strong>Submittal Data Sheet</strong></h2>
+
+    @if (isInQuotePackage)
+    {
+        <p class="single-line" style="font-size: 1.6em; margin-bottom: 6px;">@Model.Name - @Model.ProductNumber</p>
+        <p class="single-line">Project: @ViewData["ProjectName"]</p>
+        <p class="single-line">Submitted by: @user.FirstName @user.LastName of @user.BusinessName on @DateTime.Now.Date.ToString("d")</p>
+        <p>Submitted to: @((ViewData["SubmittedTo"] == null) ? "No Engineer Name Specified" : ViewData["SubmittedTo"])</p>
+        if (Model.Tags != null)
+        {
+            <p style="word-wrap: break-word;">Tags: @Model.Tags</p>
+        }
+    }
+    else
+    {
+        <p style="font-size: 1.6em;" class="single-line">@Model.Name</p>
+        <p style="font-size: 1.6em;" class="single-line">@Model.ProductNumber</p>
+    }
+    
+</div>

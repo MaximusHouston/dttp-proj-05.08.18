@@ -1,0 +1,62 @@
+﻿.configToolLabel {
+    font-weight: bold;
+}
+
+.configToolRow {
+    /*margin-top: 10px;
+    margin-bottom: 10px;*/
+}
+
+/*fix extra space on kendo grid*/
+/*#matchup-master-grid, #matchup-detail-grid {
+    border-width: 0px;
+}*/
+
+/* systemConfig tab bar */
+.systemConfig-tab-bar {
+    /*margin:0 30px 18px 30px;*/
+    list-style-type: none;
+    display: block;
+    padding: 0;
+    border-bottom: 4px solid #007FCC;
+    width: 100%;
+    text-align: left;
+}
+
+.systemConfig-tab-bar li {
+    display: inline-block;
+    /*text-transform: uppercase;*/
+    color: #000;
+    cursor: pointer;
+    /*-moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;*/
+}
+
+    .systemConfig-tab-bar li span, .systemConfig-tab-bar li a {
+        padding: 10px 20px;
+        display: block;
+        text-decoration: none;
+        color: inherit;
+    }
+
+
+    .systemConfig-tab-bar li.active-tab, .systemConfig-tab-bar li.active-tab:hover,
+    .systemConfig-tab-bar li.active, .systemConfig-tab-bar li.active:hover {
+        color: #fff;
+        background-color: #007FCC;
+    }
+
+.systemConfig-tab-bar a.active-tab, .systemConfig-tab-bar a.active-tab:hover {
+    color: #fff;
+    background-color: #007FCC;
+}
+
+.outDoorUnitCriteria {
+    border-style:solid; 
+    border-width:1px; 
+    border-radius:7px; 
+    margin:10px; 
+    padding-top: 10px;
+    padding-bottom: 10px;
+}

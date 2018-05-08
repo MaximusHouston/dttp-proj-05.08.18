@@ -1,0 +1,12 @@
+﻿<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="DaikinEmail"
+  DTS:DTSID="{92C249E8-53CC-4CBE-93F7-ECB9B82A35F7}"
+  DTS:CreationName="SMTP">
+  <DTS:PropertyExpression
+    DTS:Name="ConnectionString">@[$Project::DaikinEmail_ConnectionString]</DTS:PropertyExpression>
+  <DTS:ObjectData>
+    <SmtpConnectionManager
+      ConnectionString="SmtpServer=mailgw.goodmanmfg.com;UseWindowsAuthentication=False;EnableSsl=False;" />
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

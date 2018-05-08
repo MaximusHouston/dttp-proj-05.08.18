@@ -1,0 +1,81 @@
+﻿@{
+    
+    bool isInHomeScreen = Html.IsPage("HomeScreen") || Html.IsPage("HomeScreenBillboardImageUpload");
+
+    bool isInCommsCenter = Html.IsPage("CommunicationsCenter") || Html.IsPage("CommunicationsCenterUploadImage") || Html.IsPage("ContactUsFormEdit");
+
+    bool isInApplicationProducts = Html.IsPage("ApplicationProducts") || Html.IsPage("ApplicationProductEdit");
+
+    bool isInApplicationBuildings = Html.IsPage("ApplicationBuildings") || Html.IsPage("ApplicationBuildingFloor") || Html.IsPage("ApplicationBuildingFloorConfigurationProducts") || Html.IsPage("ApplicationBuildingFloorConfiguration") || Html.IsPage("ApplicationBuildingFloorConfigurationIndoorUnits") || Html.IsPage("ApplicationBuildingFloorConfigurationImageEdit");
+    
+    bool isInFunctionalBuildings = Html.IsPage("FunctionalBuildings") || Html.IsPage("FunctionalBuilding");
+
+    bool isInProductFamilyImages = Html.IsPage("ProductFamilies");
+
+    bool isInTools = Html.IsPage("Tools") || Html.IsPage("ToolEdit");
+
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+    
+}
+
+<ul class="tab-bar prod-cat" style="font-size: 0.75em;">
+
+    @if (user.HasAccess(SystemAccessEnum.ContentManagementHomeScreen))
+    {
+        <li class=@((isInHomeScreen) ? "active-tab" : "")>
+            <a href="@Url.Action("HomeScreen","CityCMS")">Home Screen</a>
+        </li>
+    }
+    
+    @if (user.HasAccess(SystemAccessEnum.ContentManagementFunctionalBuildings))
+    {
+        <li class=@((isInFunctionalBuildings)? "active-tab" : "")>
+            <a href="@Url.Action("FunctionalBuildings","CityCMS")">Functional Buildings</a>
+        </li>
+    }
+    
+    @if (user.HasAccess(SystemAccessEnum.ContentManagementApplicationBuildings))
+    {
+        <li class=@((isInApplicationBuildings) ? "active-tab" : "")>
+            <a href="@Url.Action("ApplicationBuildings","CityCMS")">Application Buildings</a>
+        </li>
+    }
+    
+    @if (user.HasAccess(SystemAccessEnum.ContentManagementApplicationProducts))
+    {
+        <li class=@((isInApplicationProducts) ? "active-tab" : "")>
+            <a href="@Url.Action("ApplicationProducts","CityCMS")">Application Products</a>
+        </li>
+    }
+   
+    @if (user.HasAccess(SystemAccessEnum.ContentManagementLibrary))
+    {
+        <li class=@((Html.IsPage("Library")) ? "active-tab" : "")>
+            <a href="@Url.Action("Library", "CityCMS")">Library</a>
+        </li>
+    }
+    
+    @if (user.HasAccess(SystemAccessEnum.ContentManagementCommsCenter))
+    {
+        <li class=@((isInCommsCenter) ? "active-tab" : "")>
+            <a href="@Url.Action("CommunicationsCenter", "CityCMS")">Comms Center</a>
+        </li>
+    }
+    
+    @if (user.HasAccess(SystemAccessEnum.ContentManagementProductFamilies))
+    {
+        <li class=@((isInProductFamilyImages) ? "active-tab" : "")>
+            <a href="@Url.Action("ProductFamilies", "CityCMS")">Product Families</a>
+        </li>
+    }
+    
+    @if (user.HasAccess(SystemAccessEnum.ContentManagementTools))
+    {
+        <li class=@((isInTools) ? "active-tab" : "")>
+            <a href="@Url.Action("Tools", "CityCMS")">Tools</a>
+        </li>
+    }
+
+    
+</ul>
+

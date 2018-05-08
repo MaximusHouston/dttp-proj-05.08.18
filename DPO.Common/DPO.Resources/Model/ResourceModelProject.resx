@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="MP001" xml:space="preserve">
+    <value>Project name already in use. </value>
+  </data>
+  <data name="MP002" xml:space="preserve">
+    <value>Project Estimated Close Date can't be less than Bid Date.</value>
+  </data>
+  <data name="MP003" xml:space="preserve">
+    <value>Project Bid Date can't be less than Project Registration Date.</value>
+  </data>
+  <data name="MP004" xml:space="preserve">
+    <value>Project is not accessible.</value>
+  </data>
+  <data name="MP005" xml:space="preserve">
+    <value>Quote is not accessible.</value>
+  </data>
+  <data name="MP006" xml:space="preserve">
+    <value>Project Estimated Delivery Date can't be less than Close Date.</value>
+  </data>
+  <data name="MP007" xml:space="preserve">
+    <value>Active quote cannot be deleted.</value>
+  </data>
+  <data name="MP008" xml:space="preserve">
+    <value>Project does not exist.</value>
+  </data>
+  <data name="MP009" xml:space="preserve">
+    <value>Quote does not exist.</value>
+  </data>
+  <data name="MP010" xml:space="preserve">
+    <value>Quote item does not exit.</value>
+  </data>
+  <data name="MP011" xml:space="preserve">
+    <value>Project Registration  Date can't be changed once project has been created.</value>
+  </data>
+  <data name="MP012" xml:space="preserve">
+    <value>Project must be open before updates are allowed.</value>
+  </data>
+  <data name="MP013" xml:space="preserve">
+    <value>Please select a value.</value>
+  </data>
+  <data name="MP014" xml:space="preserve">
+    <value>Your account is not authorised to use the commission model pricing scheme.</value>
+  </data>
+  <data name="MP015" xml:space="preserve">
+    <value>Buy/sell model not possible.</value>
+  </data>
+  <data name="MP016" xml:space="preserve">
+    <value>Total list price of commissionable products must exceed {0:C} to use this multiplier.</value>
+  </data>
+  <data name="MP017" xml:space="preserve">
+    <value>Multiplier value for this commission based quote is outside permitted range, or invalid.</value>
+  </data>
+  <data name="MP018" xml:space="preserve">
+    <value>Product list total has exceed the threshold of {0:C}. Quote must switch to commission scheme.</value>
+  </data>
+  <data name="MP019" xml:space="preserve">
+    <value>Quote contains non commissionable products. Please remove these to use commission scheme.</value>
+  </data>
+  <data name="MP020" xml:space="preserve">
+    <value>Project must be open before quote updates are allowed.</value>
+  </data>
+  <data name="MP021" xml:space="preserve">
+    <value>Product {0} is no longer pricing or invalid, please remove the product from the the quote.</value>
+  </data>
+  <data name="MP022" xml:space="preserve">
+    <value>Basket has no quote assigned to it.</value>
+  </data>
+  <data name="MP023" xml:space="preserve">
+    <value>Imported product number '{0}' not found so record was ignored.</value>
+  </data>
+  <data name="MP024" xml:space="preserve">
+    <value>Please go to a quote you wish to import to before you import.</value>
+  </data>
+  <data name="MP025" xml:space="preserve">
+    <value>Successful import of  {0} records.</value>
+  </data>
+  <data name="MP026" xml:space="preserve">
+    <value>File being attached is too big, Max allowed {0}Mb.</value>
+  </data>
+  <data name="MP027" xml:space="preserve">
+    <value>Project has been transferred, no edits allowed.</value>
+  </data>
+  <data name="MP028" xml:space="preserve">
+    <value>No edits are allowed once a discount request has been assigned to the quote.</value>
+  </data>
+  <data name="MP100" xml:space="preserve">
+    <value>Competitors' price required.</value>
+  </data>
+  <data name="MP101" xml:space="preserve">
+    <value>Please select a competitor quote file to upload.</value>
+  </data>
+  <data name="MP102" xml:space="preserve">
+    <value>Please select a competitor line by line comparsion file to upload.</value>
+  </data>
+  <data name="MP103" xml:space="preserve">
+    <value>Quote currently has a discount request waiting for approval.</value>
+  </data>
+  <data name="MP104" xml:space="preserve">
+    <value>Quote already assigned a discount request. </value>
+  </data>
+  <data name="MP105" xml:space="preserve">
+    <value>Please enter percentages requested.</value>
+  </data>
+  <data name="MP106" xml:space="preserve">
+    <value>Please enter a reason for requesting the discount.</value>
+  </data>
+  <data name="MP107" xml:space="preserve">
+    <value>Please enter a reason.</value>
+  </data>
+  <data name="MP108" xml:space="preserve">
+    <value>Please select a System Basis Of Design</value>
+  </data>
+  <data name="MP109" xml:space="preserve">
+    <value>Please select a Zone Strategy</value>
+  </data>
+  <data name="MP110" xml:space="preserve">
+    <value>Please select a Specified Brand</value>
+  </data>
+  <data name="MP111" xml:space="preserve">
+    <value>Please select an Approved Equals</value>
+  </data>
+  <data name="MP112" xml:space="preserve">
+    <value>Please select an issue date</value>
+  </data>
+  <data name="MP113" xml:space="preserve">
+    <value>Please select an approximate delivery date</value>
+  </data>
+  <data name="MP114" xml:space="preserve">
+    <value>Please select an option</value>
+  </data>
+  <data name="MP115" xml:space="preserve">
+    <value>Please select a probability of close percentage</value>
+  </data>
+  <data name="MP116" xml:space="preserve">
+    <value>Cannot change Project Status to Closed while a Discount Request is pending</value>
+  </data>
+  <data name="MP117" xml:space="preserve">
+    <value>CC Email is not a valid Daikin City user</value>
+  </data>
+  <data name="MP118" xml:space="preserve">
+    <value>Please select a Pricing Type</value>
+  </data>
+  <data name="MP119" xml:space="preserve">
+    <value>Please enter PO Number</value>
+  </data>
+  <data name="MP120" xml:space="preserve">
+    <value>Please provide Project Bid Date</value>
+  </data>
+  <data name="MP121" xml:space="preserve">
+    <value>Please provide Estimate Close Date</value>
+  </data>
+  <data name="MP122" xml:space="preserve">
+    <value>Please provide Delivery Contact Name</value>
+  </data>
+  <data name="MP123" xml:space="preserve">
+    <value>Please provide Delivery Contact Number</value>
+  </data>
+  <data name="MP124" xml:space="preserve">
+    <value>Please provide Order Submit Email</value>
+  </data>
+  <data name="MP125" xml:space="preserve">
+    <value>Please provide a PO Number</value>
+  </data>
+  <data name="MP126" xml:space="preserve">
+    <value>PO Attachment is not created</value>
+  </data>
+  <data name="MP127" xml:space="preserve">
+    <value>Please provide Order Attachment</value>
+  </data>
+  <data name="MP128" xml:space="preserve">
+    <value>Estimate Release Date must  be set to 10 days before Estimate Delivery Date</value>
+  </data>
+  <data name="MP129" xml:space="preserve">
+    <value>Can not Submit Order.Project Open Status is either Inactive or Closed-Losted.</value>
+  </data>
+  <data name="MP130" xml:space="preserve">
+    <value>An Order can only be submit one time.You can not resubmit same Order.</value>
+  </data>
+  <data name="MP131" xml:space="preserve">
+    <value>Quote must be Buy/Sell in order to Submit</value>
+  </data>
+  <data name="MP132" xml:space="preserve">
+    <value>Quote must be set to Active before submit Order</value>
+  </data>
+  <data name="MP133" xml:space="preserve">
+    <value>Please provide Order Release Date </value>
+  </data>
+  <data name="MP134" xml:space="preserve">
+    <value>Order Release Date must be greater than Order Submit Date.</value>
+  </data>
+  <data name="MP135" xml:space="preserve">
+    <value>Order does not have any Order Item.Please add items to Order</value>
+  </data>
+  <data name="MP136" xml:space="preserve">
+    <value>Item Quantity is 0. </value>
+  </data>
+  <data name="MP137" xml:space="preserve">
+    <value>Please provide some comments</value>
+  </data>
+  <data name="MP138" xml:space="preserve">
+    <value>Please provide Delivery Contact Name</value>
+  </data>
+  <data name="MP139" xml:space="preserve">
+    <value>Please provide Delivery Contact Phone</value>
+  </data>
+  <data name="MP140" xml:space="preserve">
+    <value>Unable to calculate commission. No quote found.</value>
+  </data>
+  <data name="MP141" xml:space="preserve">
+    <value>Invalid file format.  Please try a different file.</value>
+  </data>
+  <data name="MP142" xml:space="preserve">
+    <value>Cannot process Order. Found error on Product Number: {0}. Please contact Daikin.</value>
+  </data>
+</root>

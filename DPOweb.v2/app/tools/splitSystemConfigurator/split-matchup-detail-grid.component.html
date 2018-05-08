@@ -1,0 +1,57 @@
+﻿<kendo-grid id="split-matchup-detail-grid" *ngIf="matchupResultDetail"
+            [data]="gridViewData"
+            [pageSize]="pageSize"
+            [skip]="skip"
+            [sortable]="true"
+            [sort]="sort"
+            [pageable]="true"
+            [scrollable]="'none'"
+            (dataStateChange)="dataStateChange($event)">
+    <kendo-grid-column field="arirefNumber" title="AHRI"></kendo-grid-column>
+    <kendo-grid-column field="outdoor_Model" title="Outdoor Model"></kendo-grid-column>
+    <kendo-grid-column *ngIf="indoorUnitType == 'coilOnly'" field="coill_Model" title="Coil"></kendo-grid-column>
+    <kendo-grid-column *ngIf="indoorUnitType == 'airHandler'" field="coill_Model" title="Coil/AirHandler"></kendo-grid-column>
+   
+
+    <!--Blower-->
+    <kendo-grid-column *ngIf="indoorUnitType == 'airHandler'" field="blower_Model" title="Blower"></kendo-grid-column>
+
+
+    <kendo-grid-column field="tonnage" title="Tonnage"></kendo-grid-column>
+    <kendo-grid-column *ngIf="outDoorUnitType != 'pkg'" field="txv" title="TXV/Piston"></kendo-grid-column>
+
+    <!--Add To Quote-->
+    <kendo-grid-column *ngIf="userBasket.quoteId != 0 && userBasket.quoteId != undefined" field="quantity" title="Quantity">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <span>
+                <input class="numericTextBox productQuantity" type="number" [(ngModel)]="dataItem.quantity" (change)="validateQuantity($event)" min="0" step="1" style="width:70px; line-height:30px; font-size:1.2em; text-align: center;" />
+            </span>
+        </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column *ngIf="userBasket.quoteId != 0 && userBasket.quoteId != undefined">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <span>
+                <button class="btn btn-default" (click)="addToQuote(dataItem)">Add To Quote</button>
+            </span>
+        </ng-template>
+    </kendo-grid-column>
+    <!-------------->
+
+    <kendo-grid-column field="seer" title="SEER"></kendo-grid-column>
+    <kendo-grid-column field="eer" title="EER"></kendo-grid-column>
+    <kendo-grid-column field="cooling" title="Cooling"></kendo-grid-column>
+    <kendo-grid-column field="fit" title="Fit"></kendo-grid-column>
+   
+    <kendo-grid-column *ngIf="outDoorUnitType == 'hp'" field="highHeat" title="High Heat"></kendo-grid-column>
+    <kendo-grid-column *ngIf="outDoorUnitType == 'hp'" field="highCop" title="High COP"></kendo-grid-column>
+    <kendo-grid-column *ngIf="outDoorUnitType == 'hp'" field="hspf" title="HSPF"></kendo-grid-column>
+    <kendo-grid-column *ngIf="outDoorUnitType == 'hp'" field="lowHeat" title="Low Heat"></kendo-grid-column>
+    <kendo-grid-column *ngIf="outDoorUnitType == 'hp'" field="lowCop" title="Low COP"></kendo-grid-column>
+    <kendo-grid-column field="status" title="Status"></kendo-grid-column>
+
+
+
+
+
+</kendo-grid>

@@ -1,0 +1,35 @@
+﻿@model DPO.Common.SendEmailContactUsModel
+
+@if (Model.RenderTextVersion)
+{
+    Layout = null;
+    string.Format("Contact request\n");
+    string.Format("From : {0}", Model.UserName);
+    string.Format("Email : {0}", Model.UserEmail);
+    string.Format("Subject : {0}", Model.Subject);
+    string.Format("Message : {0}", Model.Message);
+}
+else
+{
+    Layout = "~/Views/Shared/EmailTemplate.cshtml";
+
+    <table>
+        <tr>
+            <td style ="padding-left: 28px; padding-top: 20px; font-family: Helvetica, Arial, sans-serif; ">Name :</td>
+            <td style="padding-left: 28px; padding-top: 20px; font-family: Helvetica, Arial, sans-serif; ">@Model.UserName)</td>
+        </tr>
+        <tr>
+            <td style="padding-left: 28px; padding-top: 20px; font-family: Helvetica, Arial, sans-serif; ">Email :</td>
+            <td style="padding-left: 28px; padding-top: 20px; font-family: Helvetica, Arial, sans-serif; ">@Model.UserEmail)</td>
+        </tr>
+        <tr>
+            <td style="padding-left: 28px; padding-top: 20px; font-family: Helvetica, Arial, sans-serif; ">Subject :</td>
+            <td style="padding-left: 28px; padding-top: 20px; font-family: Helvetica, Arial, sans-serif; ">@Model.Subject</td>
+        </tr>
+        <tr>
+            <td style="padding-left: 28px; padding-top: 20px; font-family: Helvetica, Arial, sans-serif; ">Message :</td>
+            <td style="padding-left: 28px; padding-top: 20px; font-family: Helvetica, Arial, sans-serif; ">@Model.Message)</td>
+        </tr>
+
+    </table>
+}

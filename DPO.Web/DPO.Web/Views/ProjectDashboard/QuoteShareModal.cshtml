@@ -1,0 +1,48 @@
+﻿<div class="modal" id="quote_share_modal" style="display: none;">
+    <div id="quote_share_confirm" style="display:none;">
+        <img src="~/Images/modal-close-btn.png" class="close-btn" />
+        <h1>Share</h1>
+        <p>Sample quote one from sample project one has been shared with sample user one</p>
+        <button type="button" class="btn cancel-btn">OK</button>
+    </div>
+    <div id="quote_share_select_user">
+        <img src="~/Images/modal-close-btn.png" class="close-btn" />
+        <h1>Share</h1>
+        <p>Share project quotes with another user: Implementation **TBD**</p>
+        <p>Quote(s) to share</p>
+
+        <div class="tbl-holder" style="max-height: 400px; overflow-y:auto;">
+            <ul>
+                <li>
+                    <img src="~/Images/quote-icon.png"/>
+                    <span>Sample Quote One</span>
+                </li>
+            </ul>
+        </div>
+
+        @Html.PageMessages()
+        @using (Html.BeginForm())
+        {
+            <label>Enter Recipients username</label>
+            <input type="text" placeholder="Username"/>
+            <br />
+            <p>Once Shared, this quote will be locked and you will need to duplicate it in order to make nay changes.</p>
+            <br />
+            <a href="#" id="quote_share_confirm" data-sc-ajaxpost="@Url.Action("QuoteShare")" class="submit-btn">@ResourceUI.Submit</a>
+            <button type="button" class="btn cancel-btn">@ResourceUI.Cancel</button>
+        }
+    </div>
+</div>
+<script>
+    $(function ()
+    {
+        $('#quote_share_confirm').on('click', function ()
+        {
+            //Post...
+            //Show confirm msg after post is successful...
+        });
+    });
+</script>
+
+
+

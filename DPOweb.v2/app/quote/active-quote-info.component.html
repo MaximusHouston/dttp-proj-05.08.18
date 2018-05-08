@@ -1,0 +1,80 @@
+﻿<!--TODO: Add code for permissions -->
+<div *ngIf="quote.quoteId != 0" id="active-quote-info" class="row no-gutters align-items-center active-quote-bar">
+    <div class="col col-md-3"> <a (click)="showQuoteOverview()"> <span class="glyphicon glyphicon-list-alt"></span> {{quote.title}} </a></div>
+    <!--<div class="col col-md-2">
+         <div class="row">
+             <div *ngIf="quote.quoteOptions.canAddProducts" class="col col-md-12">
+                 <div class="col col-xs-6 col-md-12">Pricing has changed</div>
+                 <div class="col col-xs-6 col-md-12"><button class="btn btn-default">RECALCULATE</button></div>
+             </div>
+         </div>
+    </div>-->
+
+    <div class="col col-md-9">
+        <div class="row ">
+
+            <div class="col col-md-2 no-padding">
+                <div *ngIf="quote.recalculationRequired" class="col col-xs-6 col-md-12 no-padding as-lnk"><span class="k-icon k-i-warning"></span> Pricing has changed</div>
+                <div *ngIf="quote.recalculationRequired" class="col col-xs-6 col-md-12 no-padding"><button class="btn btn-default" (click)="quoteRecalculate()">RECALCULATE</button></div>
+            </div>
+
+            <div *ngIf="quote.isCommission && user.showPrices ; else elseBlock">
+                <div class="col col-md-1">
+                    <div class="col col-xs-6 col-md-12 no-padding">Revision</div>
+                    <div class="col col-xs-6 col-md-12 no-padding">{{quote.revision}}</div>
+                </div>
+                <div class="col col-md-1">
+                    <div class="col col-xs-6 col-md-12 no-padding">Date</div>
+                    <div class="col col-xs-6 col-md-12 no-padding">{{quote.timestamp | date:'shortDate'}}</div>
+                </div>
+
+                <div *ngIf="user.showPrices" class="col col-md-2">
+                    <div class="col col-xs-6 col-md-12 no-padding">List Price</div>
+                    <div class="col col-xs-6 col-md-12 no-padding">{{quote.totalList | currency:'USD':true:'1.2-2'}}</div>
+                </div>
+
+                <div *ngIf="user.showPrices" class="col col-md-2">
+                    <div class="col col-xs-6 col-md-12 no-padding">Net Price</div>
+                    <div class="col col-xs-6 col-md-12 no-padding">{{quote.totalNetCommission | currency:'USD':true:'1.2-2'}}</div>
+                </div>
+
+                <div class="col col-md-2">
+                    <div class="col col-xs-8 col-md-12 no-padding">Commission Amount</div>
+                    <div class="col col-xs-4 col-md-12 no-padding">{{quote.commissionAmount | currency:'USD':true:'1.2-2'}}</div>
+                </div>
+                <div class="col col-md-2">
+                    <div class="col col-xs-8 col-md-12 no-padding">Net Material Value</div>
+                    <div class="col col-xs-4 col-md-12 no-padding">{{quote.commissionNetMultiplierValue | currency:'USD':true:'1.2-2'}}</div>
+                </div>
+            </div>
+            <ng-template #elseBlock>
+                <div class="col col-md-2">
+                    <div class="col col-xs-6 col-md-12 no-padding">Revision</div>
+                    <div class="col col-xs-6 col-md-12 no-padding">{{quote.revision}}</div>
+                </div>
+                <div class="col col-md-2">
+                    <div class="col col-xs-6 col-md-12 no-padding">Date</div>
+                    <div class="col col-xs-6 col-md-12 no-padding">{{quote.timestamp | date:'shortDate'}}</div>
+                </div>
+
+                <div *ngIf="user.showPrices" class="col col-md-2">
+                    <div class="col col-xs-6 col-md-12 no-padding">Net Price</div>
+                    <div class="col col-xs-6 col-md-12 no-padding">{{quote.totalNet | currency:'USD':true:'1.2-2'}}</div>
+                </div>
+
+                <div *ngIf="user.showPrices" class="col col-md-2">
+                    <div class="col col-xs-6 col-md-12 no-padding">List Price</div>
+                    <div class="col col-xs-6 col-md-12 no-padding">{{quote.totalList | currency:'USD':true:'1.2-2'}}</div>
+                </div>
+                <div *ngIf="user.showPrices" class="col col-md-2">
+                    <div class="col col-xs-6 col-md-12 no-padding">Total Price</div>
+                    <div class="col col-xs-6 col-md-12 no-padding">{{quote.totalSell | currency:'USD':true:'1.2-2'}}</div>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="quote.quoteId == 0" id="active-quote-info" class="row no-gutters align-items-center active-quote-bar">
+    <div> <span class="glyphicon glyphicon-list-alt"></span> No Active Quote</div>
+</div>

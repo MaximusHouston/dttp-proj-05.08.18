@@ -1,0 +1,136 @@
+﻿@model ProductModel
+@{
+    Layout = null;
+    @Styles.Render("~/Content/css/pdf-base");
+    Model.PageTotal = 4;
+}
+<div class="pdf">
+
+    <div class="static-page">
+
+        @Html.Partial("SubmittalTemplate_Print_Header")
+
+        <div class="row">
+            @Html.Partial("ProductFeaturesAndBenefits", Model)
+            <div class="row-end">&nbsp;</div>
+        </div>
+
+        <div class="row clearfix">
+            @{
+                ViewBag.UnitTypeLabel = "Indoor Unit";
+            }
+
+            @Html.Partial("SubmittalTemplate_ProductImageAndLogos", Model.GetSystemIndoorUnit)
+           
+             @{
+                ViewBag.UnitTypeLabel = "Outdoor Unit";
+            }
+           
+             @Html.Partial("SubmittalTemplate_ProductImageAndLogos", Model.GetSystemOutdoorUnit)
+            <div class="row-end">&nbsp;</div>
+        </div>
+
+        @{
+            ViewBag.UnitTypeLabel = "";
+        }
+        @Html.Partial("ProductNotes", Model)
+
+
+        @Html.Partial("SubmittalTemplate_Print_Footer")
+    </div>
+
+
+
+    <div class="new static-page">
+        @Html.Partial("SubmittalTemplate_Print_Header")
+
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="4">System Performance</th>
+                </tr>
+            </thead>
+            <tbody>
+                @Html.Partial("SubmittalTemplate_System_Performance", Model)
+            </tbody>
+        </table>
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="4">System Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                @Html.Partial("SubmittalTemplate_System_Details", Model)
+            </tbody>
+        </table>
+
+        @Html.Partial("SubmittalTemplate_Print_Footer")
+    </div>
+   
+    <div class="new static-page">
+        @Html.Partial("SubmittalTemplate_Print_Header")
+
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="4">Indoor Unit Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                @Html.Partial("SubmittalTemplate_Indoor_UnitDetails", Model.GetSystemIndoorUnit)
+            </tbody>
+        </table>
+
+        @{
+            ViewBag.UnitTypeLabel = "Indoor Unit";
+        }
+
+        @Html.Partial("ProductDimensionalDrawing", Model.GetSystemIndoorUnit)
+
+        @Html.Partial("SubmittalTemplate_Print_Footer")
+    </div>
+
+
+
+
+
+    <div class="new static-page">
+        @Html.Partial("SubmittalTemplate_Print_Header")
+
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="4">Outdoor Unit Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                @Html.Partial("SubmittalTemplate_Outdoor_UnitDetails", Model.GetSystemOutdoorUnit)
+            </tbody>
+        </table>
+
+        @{
+            ViewBag.UnitTypeLabel = "Outdoor Unit";
+        }
+
+        @Html.Partial("ProductDimensionalDrawing", Model.GetSystemOutdoorUnit)
+
+        @Html.Partial("SubmittalTemplate_Print_Footer")
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+  
+    
+   
+   
+

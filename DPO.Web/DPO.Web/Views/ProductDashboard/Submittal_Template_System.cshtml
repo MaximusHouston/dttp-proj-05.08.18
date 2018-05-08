@@ -1,0 +1,16 @@
+﻿@model ProductModel
+@{
+    Layout = null;
+    @*@Styles.Render("~/Content/css/pdf-base");*@
+}
+<div class="row row-nomargin">
+    <div class="list-header-grey">Performance</div>
+    @Html.Partial("ProductPartial/Submittal_Template_System_Performance")
+</div>
+
+<div class="row row-nomargin">
+    <div class="list-header-grey">System Unit Details</div>
+    @Html.Partial("ProductPartial/Submittal_Template_System_UnitDetails")
+</div>
+
+

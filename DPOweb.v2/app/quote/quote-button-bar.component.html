@@ -1,0 +1,116 @@
+﻿<div class="row no-gutters btn-bar">
+    <div class="col pull-right hidden-xs">
+        <!--<a href="/v2/#/orderForm/{{quote.projectId}}/{{quote.quoteId}}/new" *ngIf="quote.orderOptions.canSubmitOrder" class="btn btn-primary">SUBMIT ORDER</a>-->
+        <!--<a (click)="openOrderForm()" *ngIf="quote.orderOptions.canSubmitOrder" class="btn btn-primary">SUBMIT ORDER</a>-->
+        <a (click)="openOrderForm()" *ngIf="quote.orderOptions.canSubmitOrder" class="btn btn-primary">SUBMIT ORDER</a>
+        <button *ngIf="quote.quoteOptions.canSetActive" class="btn btn-primary" (click)="setQuoteActive()">SET AS ACTIVE QUOTE</button>
+        <!--<a href="/Projectdashboard/QuoteEdit?projectId={{quote.projectId}}&quoteId={{quote.quoteId}}" *ngIf="quote.quoteOptions.canEditQuote" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> EDIT QUOTE</a>-->
+        <a href="/v2/#/quoteEdit/{{quote.projectId}}/{{quote.quoteId}}" *ngIf="quote.quoteOptions.canEditQuote" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> EDIT QUOTE</a>
+        <button *ngIf="quote.quoteOptions.canDeleteQuote" class="btn btn-default" (click)="deleteQuote()"><span class="glyphicon glyphicon-trash"></span> DELETE QUOTE</button>
+        <button *ngIf="quote.quoteOptions.canUnDeleteQuote" class="btn btn-default" (click)="undeleteQuote()"><span class="glyphicon glyphicon-trash"></span> UNDELETE QUOTE</button>
+        <!--<a href="/Projectdashboard/DiscountRequest?projectId={{quote.projectId}}&quoteId={{quote.quoteId}}" *ngIf="quote.quoteOptions.canRequestDiscount" class="btn btn-default"><img src="/Images/request.png" width="17" height="17" /> REQUEST DISCOUNT</a>-->
+        <a (click)="requestDiscount()" *ngIf="quote.quoteOptions.canRequestDiscount" class="btn btn-default"><img src="/Images/request.png" width="17" height="17" /> REQUEST DISCOUNT</a>
+        <a href="/v2/#/discountRequest/0/{{quote.projectId}}/{{quote.quoteId}}" *ngIf="quote.quoteOptions.canRequestDiscount" class="btn btn-primary"><img src="/Images/request.png" width="17" height="17" /> REQUEST DISCOUNT</a>
+        <!--<a href="/Projectdashboard/CommissionRequest?projectId={{quote.projectId}}&quoteId={{quote.quoteId}}&commissionRequestId={{quote.commissionRequestId}}" *ngIf="quote.quoteOptions.canRequestCommission" class="btn btn-default"><img src="/Images/request.png" width="17" height="17" /> REQUEST COMMISSION</a>-->
+        <a (click)="requestCommission()" *ngIf="quote.quoteOptions.canRequestCommission" class="btn btn-default"><img src="/Images/request.png" width="17" height="17" /> REQUEST COMMISSION</a>
+        <button *ngIf="user.showPrices" class="btn btn-default" data-toggle="modal" data-target="#quotePrintModal"><span class="glyphicon glyphicon-print"></span> PRINT QUOTE</button>
+        <button *ngIf="user.showPrices" class="btn btn-default" data-toggle="modal" data-target="#quoteDownloadModal"><span class="glyphicon glyphicon-download-alt"></span> DOWNLOAD QUOTE</button>
+        <button *ngIf="!user.showPrices" class="btn btn-default" (click)="quotePrintNoPrices()"><span class="glyphicon glyphicon-print"></span> PRINT QUOTE</button>
+        <button *ngIf="!user.showPrices" class="btn btn-default" (click)="quoteDownloadNoPrices()"><span class="glyphicon glyphicon-download-alt"></span> DOWNLOAD QUOTE</button>
+        <!--<a href="/Projectdashboard/QuotePackage?projectId={{quote.projectId}}&quoteId={{quote.quoteId}}" class="btn btn-default"><img src="/Images/package-quote-icon.png" /> SUBMITTAL PACKAGE</a>-->
+        <a href="/v2/#/submittalPackage/{{quote.projectId}}/{{quote.quoteId}}" class="btn btn-default"><img src="/Images/package-quote-icon.png" /> SUBMITTAL PACKAGE</a>
+        <a href="/Projectdashboard/QuoteDuplicate?projectId={{quote.projectId}}&quoteId={{quote.quoteId}}" *ngIf="quote.quoteOptions.canDuplicate" class="btn btn-default"><span class="glyphicon glyphicon-duplicate"></span> DUPLICATE QUOTE</a>
+    </div>
+
+    <div class="col visible-xs">
+        <!--<a style="width:90%" href="/Projectdashboard/OrderForm?projectId={{quote.projectId}}&quoteId={{quote.quoteId}}" *ngIf="quote.orderOptions.canSubmitOrder" class="btn btn-primary btn-block">SUBMIT ORDER</a>-->
+        <a style="width:90%" (click)="openOrderForm()" *ngIf="quote.orderOptions.canSubmitOrder" class="btn btn-primary btn-block">SUBMIT ORDER</a>
+        <button style="width:90%" *ngIf="quote.quoteOptions.canSetActive" class="btn btn-primary btn-block" (click)="setQuoteActive()">SET AS ACTIVE QUOTE</button>
+        <!--<a style="width:90%" href="/Projectdashboard/QuoteEdit?projectId={{quote.projectId}}&quoteId={{quote.quoteId}}" *ngIf="quote.quoteOptions.canEditQuote" class="btn btn-default btn-block"><span class="glyphicon glyphicon-pencil"></span> EDIT QUOTE</a>-->
+        <a style="width:90%" href="/v2/#/quoteEdit/{{quote.projectId}}/{{quote.quoteId}}" *ngIf="quote.quoteOptions.canEditQuote" class="btn btn-default btn-block"><span class="glyphicon glyphicon-pencil"></span> EDIT QUOTE</a>
+        <button style="width:90%" *ngIf="quote.quoteOptions.canDeleteQuote" class="btn btn-default btn-block" (click)="deleteQuote()"><span class="glyphicon glyphicon-trash"></span> DELETE QUOTE</button>
+        <button style="width:90%" *ngIf="quote.quoteOptions.canUnDeleteQuote" class="btn btn-default btn-block" (click)="undeleteQuote()"><span class="glyphicon glyphicon-trash"></span> UNDELETE QUOTE</button>
+        <!--<a style="width:90%" href="/Projectdashboard/DiscountRequest?projectId={{quote.projectId}}&quoteId={{quote.quoteId}}" *ngIf="quote.quoteOptions.canRequestDiscount" class="btn btn-default btn-block"><img src="/Images/request.png" width="17" height="17" /> REQUEST DISCOUNT</a>-->
+        <a style="width:90%" (click)="requestDiscount()" *ngIf="quote.quoteOptions.canRequestDiscount" class="btn btn-default btn-block"><img src="/Images/request.png" width="17" height="17" /> REQUEST DISCOUNT</a>
+        <!--<a style="width:90%" href="/Projectdashboard/CommissionRequest?projectId={{quote.projectId}}&quoteId={{quote.quoteId}}&commissionRequestId={{quote.commissionRequestId}}" *ngIf="quote.quoteOptions.canRequestCommission" class="btn btn-default btn-block"><img src="/Images/request.png" width="17" height="17" /> REQUEST COMMISSION</a>-->
+        <a style="width:90%" (click)="requestCommission()" *ngIf="quote.quoteOptions.canRequestCommission" class="btn btn-default btn-block"><img src="/Images/request.png" width="17" height="17" /> REQUEST COMMISSION</a>
+        <button style="width:90%" *ngIf="user.showPrices" class="btn btn-default btn-block" data-toggle="modal" data-target="#quotePrintModal"><span class="glyphicon glyphicon-print"></span> PRINT QUOTE</button>
+        <button style="width:90%" *ngIf="user.showPrices" class="btn btn-default btn-block" data-toggle="modal" data-target="#quoteDownloadModal"><span class="glyphicon glyphicon-download-alt"></span> DOWNLOAD QUOTE</button>
+        <button style="width:90%" *ngIf="!user.showPrices" class="btn btn-default btn-block" (click)="quotePrintNoPrices()"><span class="glyphicon glyphicon-print"></span> PRINT QUOTE</button>
+        <button style="width:90%" *ngIf="!user.showPrices" class="btn btn-default btn-block" (click)="quoteDownloadNoPrices()"><span class="glyphicon glyphicon-download-alt"></span> DOWNLOAD QUOTE</button>
+        <!--<a style="width:90%" href="/Projectdashboard/QuotePackage?projectId={{quote.projectId}}&quoteId={{quote.quoteId}}" class="btn btn-default btn-block"><img src="/Images/package-quote-icon.png" /> SUBMITTAL PACKAGE</a>-->
+        <a style="width:90%" href="/v2/#/submittalPackage/{{quote.projectId}}/{{quote.quoteId}}" class="btn btn-default btn-block"><img src="/Images/package-quote-icon.png" /> SUBMITTAL PACKAGE</a>
+        <a style="width:90%" href="/Projectdashboard/QuoteDuplicate?projectId={{quote.projectId}}&quoteId={{quote.quoteId}}" *ngIf="quote.quoteOptions.canDuplicate" class="btn btn-default btn-block"><span class="glyphicon glyphicon-duplicate"></span> DUPLICATE QUOTE</a>
+    </div>
+    
+
+</div>
+
+<!--<img src="/Images/tags-icon.png" data-toggle="modal" data-target="modalTarget" />-->
+<div id="quotePrintModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">SHOW COST PRICING</h4>
+            </div>
+            <div class="modal-body">
+                <p>Should cost pricing be included in this print report?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="quotePrintNoPrices()">NO</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="quotePrintWithPrices()">YES</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="quoteDownloadModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">SHOW COST PRICING</h4>
+            </div>
+            <div class="modal-body">
+                <p>Should cost pricing be included in this download?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="quoteDownloadNoPrices()">NO</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="quoteDownloadWithPrices()">YES</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div *ngIf="quoteItems" id="inventoryCheckModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Inventory Check</h4>
+            </div>
+            <div class="modal-body">
+                <p>{{message}}</p>
+                <p *ngIf="!quoteItems.hasObsoleteAndUnavailableProduct" style="font-size:smaller; font-style:italic"><span style="color:red;">*</span> Product(s) may not be available while placing the order</p>
+            </div>
+            <div class="modal-footer">
+                
+                <button *ngIf="quoteItems.hasObsoleteAndUnavailableProduct" type="button" class="btn btn-default" data-dismiss="modal">Revise</button>
+
+                <button *ngIf="!quoteItems.hasObsoleteAndUnavailableProduct" type="button" class="btn btn-default" data-dismiss="modal">Revise</button>
+                <a *ngIf="!quoteItems.hasObsoleteAndUnavailableProduct"
+                   class="btn btn-primary" data-dismiss="modal" (click)="redirect()">Continue</a>
+                <!--<a  *ngIf="!quoteItems.hasObsoleteAndUnavailableProduct" 
+                    href="{{actionUrl}}"
+                    class="btn btn-primary" data-dismiss="modal">Continue</a>-->
+            </div>
+        </div>
+
+    </div>
+</div>

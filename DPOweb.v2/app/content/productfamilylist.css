@@ -1,0 +1,107 @@
+﻿/* width for search bars in product pages*/
+.search-bar input[type="text"]{
+    width: 242px;
+}
+
+div.productSearch {
+    margin:20px 0px 10px 0px;
+}
+
+
+/*product family tab*/
+/*active*/
+.navbar-default .navbar-nav.productFamilyTab li.active a{
+    background-color:#ffffff;
+    color:#00a1e4;
+    font-weight:bold;
+}
+
+
+/* product listing */
+.product-listing-outer{
+    /*margin: 0 auto;
+    max-width: 1280px;*/
+    padding:10px 25px 0px 25px;
+    overflow: hidden;
+}
+
+ul.product-family-listing-inner {
+    list-style-type:none;
+    padding:0px;
+}
+
+.product-listing-inner li{
+    width: 20%;
+    float: left;
+    border: 10px solid #fff;
+}
+
+.product-listing-inner li a{
+    padding: 0;
+    text-decoration: none;
+}
+
+.product-listing-inner li img{
+    width: 100%;
+    max-width: 100%;
+    display:block;
+    border: 1px solid #017FCC;
+}
+.product-listing-inner li span{
+    color: #fff;
+    padding: 8px;
+    text-align: center;
+    display: block;
+    height: 60px;
+    background-color: #017FCC;
+}
+
+/* product family listing*/
+.product-family-listing-outer{
+    padding:0px 26px 0px 14px;
+    overflow: hidden;
+}
+.product-family-listing-inner li{
+    max-width: 210px;
+    float: left;
+    margin-bottom: 20px;
+    border-left: 1em solid #fff;
+    -webkit-transition: .25s all ease;
+    -moz-transition: .25s all ease;
+    -o-transition: .25s all ease;
+    transition: .25s all ease;
+}
+
+.product-family-listing-inner li:hover img{
+    opacity: 0.6;
+    -webkit-transition: .25s opacity ease;
+    -moz-transition: .25s opacity ease;
+    -o-transition: .25s opacity ease;
+    transition: .25s opacity ease;
+}
+
+.product-family-listing-inner li img{
+    display: block;
+    /*max-width: 100%;*/
+    opacity: 1;
+   -webkit-transition: .25s opacity ease;
+    -moz-transition: .25s opacity ease;
+    -o-transition: .25s opacity ease;
+    transition: .25s opacity ease;
+}
+.product-family-listing-inner li a{ text-decoration: none; border:none; outline: none; display:block;}
+.product-family-listing-inner li div.fam-description{padding: 12px 18px 30px 10px; background-color: #017FCC; position: relative;
+                                                     /*height: 70px;*/
+}
+.product-family-listing-inner li div *{color: #fff;}
+.product-family-listing-inner li div h4{font-family: "museo-sans", sans-serif; font-weight:bold; padding-bottom: 0; min-height: 48px;
+                                        /*overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 100%;*/ word-wrap: normal;
+}
+.product-family-listing-inner li div p{margin: 0; font-size: 0.75em;}
+.product-family-listing-inner li div span{
+    display: block;
+    padding-right: 18px; background: url(/Images/view-range-chevron.png) right center no-repeat;
+    position: absolute;
+    right: 15px;
+    bottom: 10px;
+}

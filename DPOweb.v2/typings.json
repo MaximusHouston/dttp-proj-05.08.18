@@ -1,0 +1,12 @@
+{
+  "globalDependencies": {
+    "bootbox": "registry:dt/bootbox#4.4.0+20160326162245",
+    "core-js": "registry:dt/core-js#0.0.0+20160602141332",
+    "jasmine": "registry:dt/jasmine#2.2.0+20160621224255",
+    "jquery": "registry:dt/jquery#1.10.0+20160704162008",
+    "kendo-ui": "registry:dt/kendo-ui#2016.1.314+20160620193355",
+    "node": "registry:dt/node#6.0.0+20160621231320",
+    "selenium-webdriver": "registry:dt/selenium-webdriver#2.44.0+20160317120654",
+    "toastr": "registry:dt/toastr#2.1.1+20160510010435"
+  }
+}

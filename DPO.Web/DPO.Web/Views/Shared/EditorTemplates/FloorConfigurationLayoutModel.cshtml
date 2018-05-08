@@ -1,0 +1,5 @@
+﻿@model FloorConfigurationLayoutModel
+<tr data-layout-id="@Model.id">
+    <td>@Model.name</td>
+    @Html.EditorFor(m => m.node)
+</tr>

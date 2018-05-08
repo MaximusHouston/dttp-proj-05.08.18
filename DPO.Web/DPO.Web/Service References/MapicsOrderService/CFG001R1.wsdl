@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:tns="http://cfg001r.wsbeans.iseries/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" name="CFG001R" targetNamespace="http://cfg001r.wsbeans.iseries/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xs:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://cfg001r.wsbeans.iseries/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="cfg001r" type="tns:cfg001r" />
+      <xs:element name="cfg001rResponse" type="tns:cfg001rResponse" />
+      <xs:element name="cfg001r_XML" type="tns:cfg001r_XML" />
+      <xs:element name="cfg001r_XMLResponse" type="tns:cfg001r_XMLResponse" />
+      <xs:complexType name="cfg001r">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" nillable="true" type="tns:cfg001RInput" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="cfg001RInput">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="_INORDERREQ" nillable="true" type="tns:inorderreq" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="inorderreq">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="_Length" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="_String" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="cfg001rResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" nillable="true" type="tns:cfg001RResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="cfg001RResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="_INORDERREQ" nillable="true" type="tns:inorderreq" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="cfg001r_XML">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" nillable="true" type="tns:cfg001RInput" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="cfg001r_XMLResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </types>
+  <message name="cfg001r_XMLResponse">
+    <part name="parameters" element="tns:cfg001r_XMLResponse" />
+  </message>
+  <message name="cfg001r">
+    <part name="parameters" element="tns:cfg001r" />
+  </message>
+  <message name="cfg001rResponse">
+    <part name="parameters" element="tns:cfg001rResponse" />
+  </message>
+  <message name="cfg001r_XML">
+    <part name="parameters" element="tns:cfg001r_XML" />
+  </message>
+  <portType name="CFG001RServices">
+    <operation name="cfg001r">
+      <input wsam:Action="http://cfg001r.wsbeans.iseries/CFG001RServices/cfg001rRequest" message="tns:cfg001r" />
+      <output wsam:Action="http://cfg001r.wsbeans.iseries/CFG001RServices/cfg001rResponse" message="tns:cfg001rResponse" />
+    </operation>
+    <operation name="cfg001r_XML">
+      <input wsam:Action="http://cfg001r.wsbeans.iseries/CFG001RServices/cfg001r_XMLRequest" message="tns:cfg001r_XML" />
+      <output wsam:Action="http://cfg001r.wsbeans.iseries/CFG001RServices/cfg001r_XMLResponse" message="tns:cfg001r_XMLResponse" />
+    </operation>
+  </portType>
+  <binding name="CFG001RServicesPortBinding" type="tns:CFG001RServices">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="cfg001r">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="cfg001r_XML">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="CFG001R">
+    <port name="CFG001RServicesPort" binding="tns:CFG001RServicesPortBinding">
+      <soap:address location="http://testdev.goodmanmfg.com:10094/web/services/CFG001RService/CFG001R" />
+    </port>
+  </service>
+</definitions>

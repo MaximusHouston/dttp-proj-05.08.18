@@ -1,0 +1,35 @@
+﻿<div class="col-sm-8">
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-sm-1" style="display: table-cell; vertical-align: middle;">
+                {{ vm.newNote.timestamp | date: 'MM/dd/yyyy' }}
+            </div>
+            <div class="col-sm-6" style="vertical-align: middle;">
+                <select class="form-control" ng-options="s.name for s in vm.projectPipelineNoteTypes"
+                        ng-model="vm.newNote.projectPipelineNoteType">
+                    <option>Loading...</option>
+                </select>
+            </div>
+            <div class="col-sm-1" style="vertical-align: middle;">
+                <button type="button" class="btn btn-default pull-right" ng-click="vm.saveNote()">Add</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-8">
+                <textarea class="form-control" rows="3" ng-model="vm.newNote.note"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-repeat="note in vm.notes">
+        <div class="col-sm-8">
+            <hr class="blue" />
+            <div>
+                {{ note.projectPipelineNoteType.name}} at {{ note.timestamp | date: 'MM/dd/yyyy' }}
+                by {{ note.ownerName }}
+            </div>
+            <div>
+                <p>{{ note.note }}</p>
+            </div>
+        </div>
+    </div>
+</div>

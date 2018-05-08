@@ -1,0 +1,16 @@
+﻿
+<crmbinet-toggle class="crmbinet-toggle">
+    <header crmbinet-topnavbar class="topnavbar-wrapper"></header>
+
+    <div data-ng-class="{'aside-collapsed' : tg.toggle()}" class="aside">
+        <div class="aside-inner">
+            <nav role="navigation" class="sidebar">
+                <crmbinet-sidebar class="list-unstyled"></crmbinet-sidebar>
+            </nav>
+        </div>
+    </div>
+
+    <section data-ng-class="{'aside-collapsed' : tg.toggle()}" class="">
+        <div class="content-wrapper" ui-view=""></div>
+    </section>
+</crmbinet-toggle>

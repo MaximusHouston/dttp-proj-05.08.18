@@ -1,0 +1,36 @@
+﻿@model DPO.Common.SendEmailModel
+@{
+    var model = Model as SendEmailModel;
+}
+@if (Model.RenderTextVersion)
+{
+    Layout = null;
+
+    <text>Your recent registration for Daikin City Project Office has not been processed due to one of the following:
+        <br />
+        <br />1. The use of generic email (gmail, hotmail, etc.) for registration and your business contact information.
+        <br />2. Missing details related to your Daikin Manufacturer Representative or Distributor.
+        <br />
+        <br />Please provide the additional information to the Daikin City team, to complete registration.
+    </text>
+}
+else
+{
+    Layout = "~/Views/Shared/EmailTemplate.cshtml";
+
+        <table>
+            <tr>
+                <td style="padding-left: 28px; padding-top: 20px; font-family: Helvetica, Arial, sans-serif; ">
+                    Your recent registration for Daikin City Project Office has not been processed due to one of the following:
+                    <br />
+                    <br />
+                    1. The use of generic email (gmail, hotmail, etc.) for registration and your business contact information.
+                    <br />
+                    2. Missing details related to your Daikin Manufacturer Representative or Distributor.
+                    <br />
+                    <br />Please provide the additional information to the Daikin City team, to complete registration.
+
+                </td>
+            </tr>
+        </table>
+}

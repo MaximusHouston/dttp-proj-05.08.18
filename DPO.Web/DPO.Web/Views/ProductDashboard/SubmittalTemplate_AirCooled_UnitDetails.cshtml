@@ -1,0 +1,154 @@
+﻿@model ProductModel
+@{
+    var specs = Model.Specifications;
+}
+<tr>
+    <td>Power Supply (V/Hz/Ph):</td>
+    <td>@specs.GetString("PowerVoltage") / @specs.GetString("PowerFrequency") / @specs.GetString("PowerPhase")</td>
+    <td>Compressor Stage:</td>
+    <td>@specs.GetString("CompressorStages")</td>
+</tr>
+<tr>
+    <td>Power Supply Connections:</td>
+    <td>@specs.GetString("InterConnectingWires")</td>
+    <td>Capacity Control Range (%):</td>
+    <td>@specs.GetDecimal("CapacityControlRangeMin", "N0") - @specs.GetDecimal("CapacityControlRangeMax", "N0")</td>
+</tr>
+<tr>
+    <td>Min. Circuit Amps MCA (A):</td>
+    <td>
+        @specs.GetString("MinCircuitAmps")
+    </td>
+    <td>Capacity Index Limit:</td>
+    <td>@specs.GetDecimal("CapacityIndexLimitMin", "N1") - @specs.GetDecimal("CapacityIndexLimitMax", "N1")</td>
+</tr>
+<tr>
+    <td>Max Overcurrent Protection (MOP) (A):</td>
+    <td>
+        @specs.GetString("MaxOvercurrentProtection")
+    </td>
+    @{
+        var airFlowLabels = new List<string>
+        {
+            "HH","H","M","L","SL"
+        };
+
+        var airFlowHigh = "";
+
+        if (specs.GetString("AirFlowRateHighText") != null)
+        {
+            airFlowHigh = specs.GetString("AirFlowRateHighText");
+        }
+        else if (specs.GetString("AirFlowRateHighCooling") != null)
+        {
+            airFlowHigh = specs.GetString("AirFlowRateHighCooling");
+        }
+        else if (specs.GetDecimal("AirFlowRateHighHeating", "N0") != null)
+        {
+            airFlowHigh = specs.GetDecimal("AirFlowRateHighHeating", "N0");
+        }
+
+
+        var airFlowRates = new List<string>{
+            specs.GetDecimal("AirFlowRateSuperHighCooling", "N0") != null? specs.GetDecimal("AirFlowRateSuperHighCooling", "N0"): specs.GetDecimal("AirFlowRateSuperHighHeating", "N0"),
+            airFlowHigh,
+            specs.GetDecimal("AirFlowRateMediumCooling", "N0") != null? specs.GetDecimal("AirFlowRateMediumCooling", "N0"): specs.GetDecimal("AirFlowRateMediumHeating", "N0"),
+            specs.GetDecimal("AirFlowRateLowCooling", "N0") != null? specs.GetDecimal("AirFlowRateLowCooling", "N0"): specs.GetDecimal("AirFlowRateLowHeating", "N0"),
+            specs.GetDecimal("AirFlowRateSuperLowCooling", "N0") != null? specs.GetDecimal("AirFlowRateSuperLowCooling", "N0"): specs.GetDecimal("AirFlowRateSuperLowHeating", "N0"),
+        };
+
+        var airFlowLabelsCombined = new List<string>();
+        var airFlowRatesCombined = new List<string>();
+
+        for (var i = 0; i < airFlowRates.Count; i++)
+        {
+            if (airFlowRates[i] != null)
+            {
+                airFlowRatesCombined.Add(airFlowRates[i]);
+                airFlowLabelsCombined.Add(airFlowLabels[i]);
+            }
+        }
+    }
+
+    <td>Airflow Rate (@string.Join("/", airFlowLabelsCombined)) (CFM):</td>
+    <td>@string.Join("/", airFlowRatesCombined)</td>
+</tr>
+<tr>
+    <td>Max Starting Current MSC(A):</td>
+    <td>
+        @((specs.GetString("MaxStartingCurrentText") != null) ? specs.GetString("MaxStartingCurrentText") : specs.GetDecimal("MaxStartingCurrent", "N2"))
+    </td>
+    <td>Gas Pipe Connection (inch):</td>
+    <td>@specs.GetString("PipeSizeGas")</td>
+</tr>
+<tr>
+    <td>Rated Load Amps RLA(A):</td>
+    <td>
+        @specs.GetString("RatedLoadAmps")
+    </td>
+    <td>Liquid Pipe Connection (inch):</td>
+    <td>@specs.GetString("PipeSizeLiquid")</td>
+</tr>
+<tr>
+    <td>Dimensions (Height) (in):</td>
+    <td>@specs.GetString("DimensionsUnitHeight")</td>
+
+    <td>H/L Pressure Connection (inch)</td>
+    <td>@specs.GetString("PipeSizeHPLP")</td>
+</tr>
+<tr>
+    <td>Dimensions (Width) (in):</td>
+    <td>@specs.GetString("DimensionsUnitWidth")</td>
+    <td>H/L Equalizing Connection (inch)</td>
+    <td>@specs.GetString("PipeSizeHLEqualizing")</td>
+</tr>
+<tr>
+    <td>Dimensions (Depth) (in):</td>
+    <td>@specs.GetString("DimensionsUnitDepth")</td>
+    @{
+        var soundPressureLabels = new List<string>
+        {
+            "H","M","L","SL"
+        };
+
+        var soundPressureRates = new List<string>{
+            specs.GetDecimal("SoundPressureHighCooling", "N0") != null? specs.GetDecimal("SoundPressureHighCooling", "N0"): specs.GetDecimal("SoundPressureHighHeating", "N0"),
+            specs.GetDecimal("SoundPressureMediumCooling", "N0") != null? specs.GetDecimal("SoundPressureMediumCooling", "N0"): specs.GetDecimal("SoundPressureMediumHeating", "N0"),
+            specs.GetDecimal("SoundPressureLowCooling", "N0") != null? specs.GetDecimal("SoundPressureLowCooling", "N0"): specs.GetDecimal("SoundPressureLowHeating", "N0"),
+            specs.GetDecimal("SoundPressureSuperLowCooling", "N0") != null? specs.GetDecimal("SoundPressureSuperLowCooling", "N0"): specs.GetDecimal("SoundPressureSuperLowHeating", "N0")
+        };
+
+        var soundPressureLabelsCombined = new List<string>();
+        var soundPressureRatesCombined = new List<string>();
+
+        for (var i = 0; i < soundPressureRates.Count; i++)
+        {
+            if (soundPressureRates[i] != null)
+            {
+                soundPressureRatesCombined.Add(soundPressureRates[i]);
+                soundPressureLabelsCombined.Add(soundPressureLabels[i]);
+            }
+        }
+    }
+
+    <td>Sound Pressure (@string.Join("/", soundPressureLabelsCombined)) (dBA):</td>
+    <td>@string.Join("/", soundPressureRatesCombined)</td>
+
+</tr>
+<tr>
+    <td>Net Weight (lb):</td>
+    <td>
+        @specs.GetString("WeightUnit")
+    </td>
+    <td>Sound Power Level (dBA):</td>
+    <td>@specs.GetString("SoundPower")</td>
+</tr>
+@if (specs.GetDecimal("MaxIndoorUnits", "N0") != null)
+{
+    <tr>
+        <td></td>
+        <td></td>
+        <td>Max. No. of Indoor Units:</td>
+        <td>@specs.GetDecimal("MaxIndoorUnits", "N0")</td>
+    </tr>
+}

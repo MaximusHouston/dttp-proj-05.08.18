@@ -1,0 +1,22 @@
+﻿@model QuoteItemModel
+@{
+    var id ="QtyContainer" + Model.ProductId.ToString();
+}
+           
+<div class="product-qty-picker">
+    <p class="c-align">Quantity</p>
+    <div class="numeric-stepper c-align" id="@id">
+        @Html.NumericStepperFor(0, new { @class = "c-align" })
+       
+    </div>
+    <div class="c-align">
+        <a href="#" 
+           sc-__requestverificationtoken="$('input[name=__RequestVerificationToken]').val()" 
+           sc-ajaxpost="@Url.Action("ProductAddToQuote", "ProductDashboard")" 
+           sc-quantity="$('#@id .numeric-stepper input').val()" 
+           sc-quoteid="$('#ActiveQuoteId').val()" 
+           sc-productid="@Model.ProductId" class="submit-btn h-slim">Add</a>
+
+    </div>
+</div>
+

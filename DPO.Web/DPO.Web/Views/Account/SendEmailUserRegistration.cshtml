@@ -1,0 +1,42 @@
+﻿@model DPO.Common.SendEmailModel
+@{
+    var model = Model as SendEmailModel;
+}
+@if (Model.RenderTextVersion)
+{
+    Layout = null;
+    <text>A new user has been registered. Link here @Url.Action("ApprovalRequests","UserDashboard", null, Request.Url.Scheme)</text>
+    <text>User Name: @Model.UserFirstName @Model.UserLastName</text>
+    <text>Business Name: @Model.BusinessName</text>
+    <text>Business Type: @Model.BusinessTypeDescription</text>
+}
+else
+{
+    Layout = "~/Views/Shared/EmailTemplate.cshtml";
+
+    <table>
+        <tr>
+            <td style="padding-left: 28px; padding-top: 20px; font-family: Helvetica, Arial, sans-serif; ">A new user has been registered.</td>
+        </tr>
+        <tr>
+            <td style="padding-left: 28px; padding-top: 15px; font-family: Helvetica, Arial, sans-serif; ">User Name: @Model.UserFirstName @Model.UserLastName</td>
+        </tr>
+        <tr>
+            <td style="padding-left: 28px; padding-top: 15px; font-family: Helvetica, Arial, sans-serif; ">Business Name: @Model.BusinessName</td>
+        </tr>
+        <tr>
+            <td style="padding-left: 28px; padding-top: 15px; font-family: Helvetica, Arial, sans-serif; ">Business Type: @Model.BusinessTypeDescription</td>
+        </tr>
+        <tr>
+            <td style="padding-left: 28px; padding-top: 20px; font-family: Helvetica, Arial, sans-serif; ">
+                <table>
+                    <tr>
+                        <td style="padding: 10px 20px 10px 20px; background-color: #21aee9; border: 1px solid #007FCC; font-weight: bold; line-height: 150%; ">
+                            <a href="@Url.Action("ApprovalRequests","UserDashboard", null, Request.Url.Scheme)" target="_blank" style="color: #fff; text-decoration:none;">Click here to view approval requests</a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+}

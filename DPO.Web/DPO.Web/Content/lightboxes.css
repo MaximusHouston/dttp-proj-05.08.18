@@ -1,0 +1,52 @@
+﻿.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(/Images/lightboxmask.png);
+    background-repeat: repeat;
+}
+
+.lightbox-full-screen {
+    position: fixed;
+    top: 0;
+    padding-top: 58px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    background-repeat: repeat;
+    z-index: 1000;
+}
+
+.lightbox * {
+    box-sizing: border-box;
+}
+
+.lightbox .modal {
+    position: relative;
+    top: 200px;
+    background-color: #fff;
+    padding-left: 30px;
+    padding-right: 30px;
+    width: 66%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding-bottom: 20px;
+}
+
+    .lightbox .modal .row {
+        width: 100%;
+    }
+
+    .lightbox .modal .modal-col1 {
+        float: left;
+        width: 5%;
+    }
+
+    .lightbox .modal .modal-col6 {
+        float: left;
+        width: 45%;
+        margin-left: 18px;
+    }

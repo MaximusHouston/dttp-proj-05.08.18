@@ -1,0 +1,37 @@
+import { CollectionService } from '../common/collection.service';
+import { CollectionItemComponent } from '../common/collection-item.component';
+import { ConfigurationService } from '../common/configuration.service';
+import { AxisLine, AxisTicks, BaseUnit, GridLines, PlotBand } from '../common/property-types';
+import { YAxisCrosshair, YAxisLabels, YAxisNotes, YAxisTitle, YAxis } from '../common/property-types';
+/**
+ * @hidden
+ */
+export declare abstract class YAxisItemComponentGenerated extends CollectionItemComponent implements YAxis {
+    protected configurationService: ConfigurationService;
+    protected collectionService: CollectionService;
+    axisCrossingValue: any | any[];
+    background: string;
+    baseUnit: BaseUnit;
+    color: string;
+    line: AxisLine;
+    majorGridLines: GridLines;
+    majorTicks: AxisTicks;
+    majorUnit: number;
+    max: any;
+    min: any;
+    minorGridLines: GridLines;
+    minorTicks: AxisTicks;
+    minorUnit: number;
+    name: string;
+    narrowRange: boolean;
+    pane: string;
+    plotBands: PlotBand[];
+    reverse: boolean;
+    type: 'numeric' | 'log' | 'date';
+    visible: boolean;
+    crosshair: YAxisCrosshair;
+    labels: YAxisLabels;
+    notes: YAxisNotes;
+    title: YAxisTitle;
+    constructor(configurationService: ConfigurationService, collectionService: CollectionService);
+}

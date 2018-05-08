@@ -1,0 +1,354 @@
+﻿@using MvcCheckBoxList.Model;
+
+@model BusinessModel
+
+@{
+    ViewBag.Title = ResourceUI.BusinessEdit;
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/checkboxhelpers", "~/bundles/scripts/confirmmodal")
+}
+
+@Html.Partial("ConfirmModal")
+@Html.Partial("BusinessLogoUploadModal")
+
+@Html.Partial("_UserdashboardTabsPartial")
+
+@if (user.BusinessLogoUrl != null)
+{
+    <img src="@(user.BusinessLogoUrl)" class="pull-right" style="max-height: 50px; position: relative; top: 15px; right: 30px;" />
+}
+<ul class="breadcrumbs">
+    <li><a href="@Url.Action("Businesses")">@ResourceUI.AllBusinesses</a></li>
+    @if (Model.BusinessId == null)
+    {
+        <li>@ResourceUI.BusinessAddNew</li>
+    }
+    else
+    {
+        <li>@ResourceUI.BusinessEdit</li>
+    }
+
+</ul>
+
+@using (Html.BeginForm("BusinessEdit", "Userdashboard", FormMethod.Post, new { @id = "BusinessEditForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.PageMessages()
+    @Html.HiddenFor(m => m.BusinessId);
+    @Html.HiddenFor(m => m.Enabled);
+    @Html.HiddenFor(m => m.ParentBusinessId);
+    <div class="section t-flush">
+        <div class="item-strap">
+            <div class="itemname">
+                @if (Model.BusinessId != null)
+                {
+                    <h1>@ResourceUI.BusinessEdit</h1>
+                }
+                else
+                {
+                    <h1>@ResourceUI.BusinessAddNew</h1>
+                }
+            </div>
+            <div class="btn-bar">
+                <a href="#" id="showBusinessLogoUploadModal" class="btn">@ResourceUI.UploadLogo</a>
+
+                @if (Model.Enabled == true && Model.BusinessId != null)
+                {
+                    <a href="#" class="btn" data-confirm="DisableBusiness" data-sc-ajaxpost="@Url.Action("BusinessDisable", "Userdashboard", new { BusinessId = Model.BusinessId })">@ResourceUI.BusinessDisable</a>
+                }
+                else if (Model.BusinessId != null)
+                {
+                    <a href="#" class="btn" data-confirm="EnableBusiness" data-sc-ajaxpost="@Url.Action("BusinessEnable", "Userdashboard", new { BusinessId = Model.BusinessId })">@ResourceUI.BusinessEnable</a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <ul class="sub-tab-bar">
+        <li class="active-tab" data-view="businessDetails">
+            <span>@ResourceUI.BusinessDetails</span>
+        </li>
+        <li data-view="businessPermissions">
+            <span>@ResourceUI.DefaultAccess</span>
+        </li>
+    </ul>
+
+        <div id="businessDetails" class="sub-tab-view">
+            <div class="section form">
+                <p class="mandatory" style="top: 0; right: 20px;">@ResourceUI.FieldsMarkedWithAStar <span>*</span> @ResourceUI.AreMandatory</p>
+                <div class="row">
+                    <div class="r-col1">&nbsp;</div>
+                    <div class="r-col4 details-list">
+                        <h5>@ResourceUI.BusinessDetails</h5>
+                        @Html.LabelFor(m => m.BusinessName, "Business Name", new { @class = "required" })
+                        @Html.TextBoxFor(m => m.BusinessName, new { @class = "full" })
+                        @Html.KeyMessages(m => m.BusinessName)
+                        @*Business Type*@
+                        @if (Model.CurrentUser.UserTypeId >= UserTypeEnum.DaikinEmployee)
+                        {
+                            @Html.LabelFor(m => m.BusinessTypeId, ResourceUI.BusinessType)
+                            @Html.DropDownBusinessTypeListFor(m => m.BusinessTypeId, Model.BusinessTypes)
+                            @Html.KeyMessages(m => m.BusinessTypeId)
+                        }
+                        @if (Model.BusinessId != null)
+                        {
+                            @Html.LabelFor(m => m.AccountId, @ResourceUI.AccountID)
+                            @Html.TextBoxFor(m => m.AccountId, new { @class = "threequarters" })
+                            @Html.KeyMessages(m => m.AccountId)
+                        }
+                        @if (Model.BusinessId != null)
+                        {
+                            @Html.LabelFor(m => m.DaikinCityId, @ResourceUI.DaikinCityId)
+                            @Html.TextBoxFor(m => m.DaikinCityId, new { @class = "threequarters", @readonly = true })
+                            @Html.KeyMessages(m => m.DaikinCityId)
+                        }
+
+                        @*@if (Model.ParentBusinessId != 0 && Model.ParentBusinessId != null)
+                            {
+                                @Html.LabelFor(m => m.ParentBusinessName, "Parent Business")
+                                <div style="margin:10px 0px 10px 0px;">
+                                    <input id="parentBusinessAutoComplete" style="width: 100%;" />
+                                </div>
+                            }*@
+
+
+                        @*@Html.LabelFor(m => m.ParentBusinessName, "Parent Business")
+                        <div style="margin:10px 0px 10px 0px;">
+                            <input id="parentBusinessAutoComplete" style="width: 100%;" />
+                        </div>*@
+
+                        @if (Model.CurrentUser.UserTypeId == UserTypeEnum.DaikinSuperUser)
+                        {
+                            @Html.LabelFor(m => m.ParentBusinessName, "Parent Business")
+                            <div style="margin:10px 0px 10px 0px;">
+                                <input id="parentBusinessAutoComplete" style="width: 100%;" />
+                            </div>
+                        }
+
+                        @if (Model.BusinessId != null && Model.CurrentUser.UserTypeId >= UserTypeEnum.DaikinEmployee)
+                        {
+                            @Html.LabelFor(m => m.ShowPricing, "Show Prices")
+                            @Html.CheckBoxFor(m => m.ShowPricing)
+                            @Html.KeyMessages(m => m.ShowPricing)
+                        }
+
+                        <div class="business-types-display">
+                            @if (Model.IsDaikinBranch.GetValueOrDefault())
+                            {
+                                @Html.LabelFor(m => m.IsDaikinBranch, @ResourceUI.DaikinBranch, new { @class = "business-type-labels" })
+                            }
+
+                            @if (Model.IsVRVPro.GetValueOrDefault())
+                            {
+                                @Html.LabelFor(m => m.IsVRVPro, @ResourceUI.VRVPro, new { @class = "business-type-labels" })
+                            }
+
+                            @if (Model.IsDaikinComfortPro.GetValueOrDefault())
+                            {
+                                @Html.LabelFor(m => m.IsDaikinComfortPro, @ResourceUI.DaikinComfortPro, new { @class = "business-type-labels" })
+                            }
+                        </div>
+                    </div>
+                    <div class="r-col1">&nbsp;</div>
+                    <div class="r-col4">
+                        <h5>&nbsp;</h5>
+                        @*Email*@
+                        @Html.LabelFor(m => m.Address.CountryCode, ResourceUI.Country)
+                        @Html.DropDownCountryListFor(m => m.Address.CountryCode, m => m.Address.StateId, Model.Address.Countries)
+                        @Html.KeyMessages(m => m.Address.CountryCode)
+                        @*Address line 1*@
+                        @Html.LabelFor(m => m.Address.AddressLine1, ResourceUI.AddressLine1)
+                        @Html.TextBoxFor(m => m.Address.AddressLine1, new { @class = "full" })
+                        @Html.KeyMessages(m => m.Address.AddressLine1)
+                        @*Address line 2*@
+                        @Html.LabelFor(m => m.Address.AddressLine2, ResourceUI.AddressLine2)
+                        @Html.TextBoxFor(m => m.Address.AddressLine2, new { @class = "full" })
+                        @Html.KeyMessages(m => m.Address.AddressLine2)
+                        @*City*@
+                        @Html.LabelFor(m => m.Address.Location, ResourceUI.Location)
+                        @Html.TextBoxFor(m => m.Address.Location, new { @class = "full" })
+                        @Html.KeyMessages(m => m.Address.Location)
+                        @*State*@
+                        @Html.LabelFor(m => m.Address.StateId, ResourceUI.State)
+                        @Html.DropDownRegionListFor(m => m.Address.StateId, Model.Address.States)
+                        @Html.KeyMessages(m => m.Address.StateId)
+                        @*Zip Code*@
+                        @Html.LabelFor(m => m.Address.PostalCode, ResourceUI.ZipCode)
+                        @Html.TextBoxFor(m => m.Address.PostalCode, new { @class = "half upcase" })
+                        @Html.KeyMessages(m => m.Address.PostalCode)
+                        @*Office phone number*@
+                        @Html.LabelFor(m => m.Contact.OfficeNumber, ResourceUI.OfficePhoneNumber)
+                        @Html.TextBoxFor(m => m.Contact.OfficeNumber, new { @class = "half" })
+                        @Html.KeyMessages(m => m.Contact.OfficeNumber)
+                        @*Web address*@
+                        @Html.LabelFor(m => m.Contact.WebAddress, ResourceUI.WebAddress)
+                        @Html.TextBoxFor(m => m.Contact.WebAddress, new { @class = "full", autocomplete = "off" })
+                        @Html.KeyMessages(m => m.Contact.WebAddress)
+                    </div>
+                    <div class="r-col2">&nbsp;</div>
+                    <div class="row-end">&nbsp;</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="businessPermissions" class="sub-tab-view" style="display: none;">
+            <div class="section form">
+                <div class="row">
+                    <div class="r-col1">&nbsp;</div>
+                    <div class="r-col7 details-list">
+                        <h5>@ResourceUI.CityAreas</h5>
+                        @*<div class="chkbox-hlpr-select-all">
+                                <input type="checkbox" /><label>@ResourceUI.AllAreas</label>
+                            </div>*@
+                        <div class="chkbox-hlpr">
+                            @Html.CheckBoxListFor(m => m.CityAreas.PostedIds, m => m.CityAreas.List, e => e.Id, e => e.Name, m => m.CityAreas.Selected, Position.Vertical)
+                        </div>
+                    </div>
+                    <div class="r-col4">&nbsp;</div>
+                    <div class="row-end">&nbsp;</div>
+                </div>
+            </div>
+            <br />
+            <div class="section form">
+                <div class="row">
+                    <div class="r-col1">&nbsp;</div>
+                    <div class="r-col7 details-list">
+                        <h5>@ResourceUI.ProductFamilies</h5>
+                        @*<div class="chkbox-hlpr-select-all">
+                                <input type="checkbox" /><label>@ResourceUI.AllFamilies</label>
+                            </div>*@
+                        <div class="chkbox-hlpr">
+                            @Html.CheckBoxListFor(m => m.ProductFamilies.PostedIds, m => m.ProductFamilies.List, e => e.Id, e => e.Name, m => m.ProductFamilies.Selected, Position.Vertical)
+                        </div>
+                    </div>
+                    <div class="r-col4">&nbsp;</div>
+                    <div class="row-end">&nbsp;</div>
+                </div>
+            </div>
+            <br />
+            <div class="section form">
+                <div class="row">
+                    <div class="r-col1">&nbsp;</div>
+                    <div class="r-col7 details-list">
+                        <h5>@ResourceUI.Brands</h5>
+                        @*<div class="chkbox-hlpr-select-all">
+                                <input type="checkbox" /><label>@ResourceUI.AllBrands</label>
+                            </div>*@
+                        <div class="chkbox-hlpr">
+                            @Html.CheckBoxListFor(m => m.Brands.PostedIds, m => m.Brands.List, e => e.Id, e => e.Name, m => m.Brands.Selected, Position.Vertical)
+                        </div>
+                    </div>
+                    <div class="r-col4">&nbsp;</div>
+                    <div class="row-end">&nbsp;</div>
+                </div>
+            </div>
+            <br />
+            <div class="section form">
+                <div class="row">
+                    <div class="r-col1">&nbsp;</div>
+                    <div class="r-col7 details-list">
+                        <h5>@ResourceUI.AppsAndTools</h5>
+                        @*<div class="chkbox-hlpr-select-all">
+                                <input type="checkbox" /><label>@ResourceUI.AllAppsAndTools</label>
+                            </div>*@
+                        <div class="chkbox-hlpr">
+                            @Html.CheckBoxListFor(m => m.Tools.PostedIds, m => m.Tools.List, e => e.Id, e => e.Name, m => m.Tools.Selected, Position.Vertical)
+                        </div>
+                    </div>
+                    <div class="r-col4">&nbsp;</div>
+                    <div class="row-end">&nbsp;</div>
+                </div>
+            </div>
+        </div>
+        <div class="section action c-align">
+            <button type="button" class="btn" onclick="window.location = document.referrer">@ResourceUI.Cancel</button>
+            <a href="#" sc-ajaxpost="@Url.Action("BusinessEdit")" class="submit-btn">@((Model.BusinessId != null) ? ResourceUI.SaveChanges : ResourceUI.Create)</a>
+            @Html.Partial("_LastEditedPartial")
+        </div>
+}
+
+<script>
+    $(function () {
+        var subTabs = $('.sub-tab-bar li');
+        var subViews = $('.sub-tab-view');
+
+        subTabs.click(function () {
+            subViews.hide();
+            subTabs.removeClass('active-tab');
+
+            var viewToShow = $(this).attr('data-view');
+            $('#' + viewToShow).show();
+
+            $(this).addClass('active-tab');
+        });
+
+        checkBoxHelper.createListsOfCheckboxes().enableSelectAllOnCheckboxLists();
+
+        //delay user disable until after confirmation
+        $('[data-confirm="DisableBusiness"]').on('click', function (e) {
+            confirmModal.showConfirmMsg('@ResourceUI.BusinessDisable', '@ResourceUI.BusinessDisableConfirm', PostAfterConfirm(this, '#BusinessEditForm'));
+        });
+        $('[data-confirm="EnableBusiness"]').on('click', function (e) {
+            confirmModal.showConfirmMsg('@ResourceUI.BusinessEnable', '@ResourceUI.BusinessEnableConfirm', PostAfterConfirm(this, '#BusinessEditForm'));
+        });
+
+        $('#showBusinessLogoUploadModal').on('click', function (e) {
+            $('#business_logo_upload_modal').fadeIn(200);
+        });
+    });
+
+    //Parent Business AutoComplete Dropdown
+    $(document).ready(function () {
+
+        var distributorsAndReps;
+
+        var parentBusinessName = @Html.Raw(Json.Encode(Model.ParentBusinessName));
+
+        @*var businessId = @Html.Raw(Json.Encode(Model.BusinessId));*@
+
+        var businessName = @Html.Raw(Json.Encode(Model.BusinessName));
+
+        $.get("/api/AccountApi/GetDistributorsAndReps?businessName="+businessName, function (data, status) {
+            if (data.isok) {
+                distributorsAndReps = data.model;
+                $("#parentBusinessAutoComplete").kendoAutoComplete({
+                    value: parentBusinessName,
+                    dataSource: distributorsAndReps,
+                    dataTextField: "businessName",
+                    dataValueField: "businessId",
+                    filter: "startswith",
+                    minLength: 2,
+                    optionLabel: "Enter at least 2 characters",
+                    //change: function (e) {
+                    //    var value = this.value();
+                    //    debugger
+                    //},
+                    select: function (e) {
+                        var item = e.item;
+                        var selectedText = item.text();
+                        selectBusiness(selectedText, this.dataSource.data());
+                    }
+                });
+            }
+
+        });
+
+        function selectBusiness(selectedBusinessName, businessesList) {
+            for(var i = 0; i < businessesList.length; i++){
+                if(businessesList[i].businessName == selectedBusinessName){
+                    $("#ParentBusinessId").val(businessesList[i].businessId);
+                }
+            }
+        }
+
+    });
+
+
+</script>

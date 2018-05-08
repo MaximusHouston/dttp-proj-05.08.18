@@ -1,0 +1,67 @@
+﻿@media print {
+/* header and footer sections */
+#printheader{ display: table-header-group; }
+#printfooter{ display: table-footer-group;}
+#printfooter td{padding-top: 0.5in;}
+
+/* classes to fix inconsistencies between browser printing implementations */
+.header-print, .header-print *{padding-left: 0 !important; margin-left: 0 !important;}
+.break-print{page-break-after:always;}
+.nofloat-print{float:none !important; width: 100% !important; max-width: 100% !important;}
+.hide-print{display:none;}
+
+/* hide navigation, reformat tables*/
+#header{display: none;}
+.tbl-holder.scroll-x{
+    overflow: visible;
+}
+
+body{
+    background-color: transparent !important;
+}
+
+#content{
+    background-color: transparent !important;
+}
+
+#content > table{
+    table-layout:fixed;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+}
+
+#content .tbl{
+    page-break-inside:auto;
+}
+
+#content .tbl tr{
+    height: auto;
+}
+
+#content .tbl tr td, #content .tbl tr th{
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+#printheader p{
+    padding-bottom: 15px;
+}
+
+}
+
+
+/* specific rules*/
+@media screen {
+/* hide navigation etc.*/
+#header{display: none;}
+#printfooter { display: none; }
+.header-print p{margin-left: 27px;}
+
+#content > table{
+    table-layout:fixed;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+}
+}

@@ -1,0 +1,137 @@
+﻿@model WidgetContainerModel
+
+@{
+    ViewBag.Title = ResourceUI.ProjectOverview;
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+    var modelJson = Model.ToJsonString(false);
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tabbars", "~/Content/css/tablestyles",
+                "~/Content/css/adminstyles", "~/Content/css/projectoverview", "~/Content/css/lightboxes",
+                "~/Content/themes/base/css")
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/scripts/tablehelpers", @*"~/bundles/scripts/projectoverview",*@
+                        "~/bundles/jqueryui", "~/bundles/d3", "~/bundles/scripts/overview-widgets")
+}
+
+@if (user.GroupId == null || user.GroupId == 0)
+{
+    <h1>You have not been assigned to a user group</h1>
+
+    <div class="section">
+        <div class="row">
+            <div class="col11">
+                <p>Access to Projects will be enabled once you are assigned a group. Please contact your business super user or Daikin Representative for assistance.</p>
+            </div>
+            <div class="row-end">&nbsp;</div>
+        </div>
+    </div>
+}
+else
+{
+    @Html.Partial("_ProjectTabsPartial")
+
+    using (Html.BeginForm("Overview", "Projectdashboard", FormMethod.Post, new { id = "OverviewForm" }))
+    {
+        <div class="project-overview-top">
+            <div class="section">
+                <div class="tbl-opts">
+                    <div class="tbl-filters">
+                        <button type="button" class="display-btn" id="advanced-filter-toggle">
+                            Filters
+                            <img src="/Images/btn-dropdown-arrow-down-icon.png">
+                        </button>
+                    </div>
+                    <div class="clear-fix">&nbsp;</div>
+                    <ul class="tbl-selects" style="display:none;">
+                        <li>
+                            <label>@ResourceUI.User</label>
+                            @Html.DropDownSearchFilterFor(m => m.UserId, Model.UsersInGroup, new { @style = "width:200px;" })
+                        </li>
+                        <li>
+                            <label>
+                                @ResourceUI.BusinessName
+                            </label>
+                            @Html.DropDownSearchFilterFor(m => m.BusinessId, Model.BusinessesInGroup, new { @style = "width:200px;" })
+                        </li>
+                        <li>
+                            <label>
+                                @ResourceUI.ProjectStatus
+                            </label>
+                            @Html.DropDownSearchFilterFor(m => m.ProjectStatusTypeId, Model.ProjectStatusTypes, new { @style = "width:120px;" })
+                        </li>
+                        <li>
+                            <label>
+                                @ResourceUI.ProjectOpenStatus
+                            </label>
+                            @Html.DropDownSearchFilterFor(m => m.ProjectOpenStatusTypeId, Model.ProjectOpenStatusTypes, new { @style = "width:120px;" })
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.Year, @ResourceUI.FinancialYear)
+                            @Html.DropDownFinancialYearsFor(m => m.Year, Model.FinancialYears, new { @style = "width:190px;" })
+                        </li>
+                        <li style="margin-left: 10px;">
+                            <button type="button" class="context-btn" id="reset-filters">Reset Filters</button>
+                            <input type="submit" class="submit context-btn" style="margin-left: 5px;" value="Set Filters" />
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="project-overview-outer">
+            <ul class="project-overview-inner">
+                <li class="newitem" id="addNewTile" style="display:none;">
+                    <img src="~/Images/new-project-overview-item.png" />
+                </li>
+            </ul>
+        </div>
+
+        <ul style="display:none;" id="tileTemplates">
+            @foreach (var templateType in Model.AvailableWidgetTypes)
+            {
+                @Html.Action("OverviewTemplate", "Overview", new { widget = templateType });
+            }
+        </ul>
+    }
+
+    <script>
+        //show filters if user hasn't visited this page before / left them open last time
+        $(function () {
+
+            var model = @Html.Raw(modelJson);
+
+            var overviewController = new Overview.ProjectOverview(model);
+
+            function toggleFilters() {
+                var filtersAreShowing = $('.tbl-selects').is(':visible').toString();
+                var imgSrc = "/Images/btn-dropdown-arrow-" + ((filtersAreShowing === 'true') ? 'up-icon.png' : 'down-icon.png');
+                $('#advanced-filter-toggle img').attr('src', imgSrc);
+
+                if (Modernizr.localstorage) {
+                    window.localStorage.setItem('dpo_#projects_filter_visible', filtersAreShowing);
+                }
+            }
+
+            $('#reset-filters').on('click', function (e) {
+                location.replace("@Url.Action("Overview","ProjectDashboard")");
+            });
+
+            $('#advanced-filter-toggle').on('click', function () {
+                $('.tbl-selects').slideToggle('fast', toggleFilters);
+            })
+
+            if (Modernizr.localstorage) {
+                var shouldShowFilters = window.localStorage.getItem('dpo_#projects_filter_visible');
+
+                if (shouldShowFilters === null || shouldShowFilters === 'true') {
+                    $('.tbl-selects').show();
+                }
+            }
+        });
+    </script>
+}

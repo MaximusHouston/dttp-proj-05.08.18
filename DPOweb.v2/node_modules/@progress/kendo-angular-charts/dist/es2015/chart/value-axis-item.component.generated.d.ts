@@ -1,0 +1,36 @@
+import { CollectionService } from '../common/collection.service';
+import { CollectionItemComponent } from '../common/collection-item.component';
+import { ConfigurationService } from '../common/configuration.service';
+import { AxisLine, AxisTicks, GridLines, PlotBand } from '../common/property-types';
+import { ValueAxisCrosshair, ValueAxisLabels, ValueAxisNotes, ValueAxisTitle, ValueAxis } from '../common/property-types';
+/**
+ * @hidden
+ */
+export declare abstract class ValueAxisItemComponentGenerated extends CollectionItemComponent implements ValueAxis {
+    protected configurationService: ConfigurationService;
+    protected collectionService: CollectionService;
+    axisCrossingValue: any | any[];
+    background: string;
+    color: string;
+    line: AxisLine;
+    majorGridLines: GridLines;
+    majorTicks: AxisTicks;
+    majorUnit: number;
+    max: any;
+    min: any;
+    minorGridLines: GridLines;
+    minorTicks: AxisTicks;
+    minorUnit: number;
+    name: string;
+    narrowRange: boolean;
+    pane: string;
+    plotBands: PlotBand[];
+    reverse: boolean;
+    type: 'numeric' | 'log';
+    visible: boolean;
+    crosshair: ValueAxisCrosshair;
+    labels: ValueAxisLabels;
+    notes: ValueAxisNotes;
+    title: ValueAxisTitle;
+    constructor(configurationService: ConfigurationService, collectionService: CollectionService);
+}

@@ -1,0 +1,107 @@
+﻿<div class="row">
+    <div class="r-col1 hide-print">&nbsp;</div>
+    <div class="r-col4 details-list">
+        <ul>
+            <li>
+                <p class="detail-name">Dealer/Contractor Name: </p>
+                <p ng-show="projectVM.dealerContractorName">{{projectVM.dealerContractorName}}</p>
+                <p ng-show="!projectVM.dealerContractorName" style="word-wrap: break-word; color:lightgray; font-style:italic;">(please fill in Dealer/Contractor Name)</p>
+                <validation-message ng-if="submitAttempted" key="projectVM.dealerContractorName"></validation-message>
+            </li>
+            <li>
+                <p class="detail-name">Business Name: </p>
+                <p ng-show="projectVM.customerName">{{projectVM.customerName}}</p>
+                <p ng-show="!projectVM.customerName" style="word-wrap: break-word; color:lightgray; font-style:italic;">(please fill in Business Name)</p>
+                <validation-message ng-if="submitAttempted" key="projectVM.customerName"></validation-message>
+                <!--@if (Model.Project.CustomerName == null)
+                {
+                <p style="word-wrap: break-word; color:lightgray; font-style:italic;">(please fill in Business Name)</p>
+                }
+                else
+                {
+                <p>@Model.Project.CustomerName</p>
+                }-->
+
+            </li>
+            <li>
+                <p class="detail-name">Country:</p>
+                <p ng-show="projectVM.customerAddress.countryCode">{{projectVM.customerAddress.countryCode}}</p>
+                <p ng-show="!projectVM.customerAddress.countryCode" style="word-wrap: break-word; color:lightgray; font-style:italic;">(please fill in Country)</p>
+                <validation-message ng-if="submitAttempted" key="projectVM.customerAddress.countryCode"></validation-message>
+                <!--@if (Model.Project.CustomerAddress.CountryCode == null)
+                {
+                <p style="word-wrap: break-word; color:lightgray; font-style:italic;">(please fill in Country Code)</p>
+                }
+                else
+                {
+                <p>@Model.Project.CustomerAddress.CountryCode</p>
+                }-->
+
+            </li>
+            <li>
+                <p class="detail-name">Address Line 1:</p>
+                <p ng-show="projectVM.customerAddress.addressLine1">{{projectVM.customerAddress.addressLine1}}</p>
+                <p ng-show="!projectVM.customerAddress.addressLine1" style="word-wrap: break-word; color:lightgray; font-style:italic;">(please fill in Address Line 1)</p>
+                <validation-message ng-if="submitAttempted" key="projectVM.customerAddress.addressLine1"></validation-message>
+             
+
+            </li>
+            <li>
+                <p class="detail-name">Address Line 2:</p>
+                <p>{{projectVM.customerAddress.addressLine2}}</p>
+            </li>
+        </ul>
+    </div>
+
+    <div class="r-col1 hide-print">&nbsp;</div>
+    <div class="r-col4 details-list">
+        <ul>
+            <li>
+                <p class="detail-name">Location:</p>
+                <p ng-show="projectVM.customerAddress.location">{{projectVM.customerAddress.location}}</p>
+                <p ng-show="!projectVM.customerAddress.location" style="word-wrap: break-word; color:lightgray; font-style:italic;">(please fill in Location)</p>
+                <validation-message ng-if="submitAttempted" key="projectVM.customerAddress.location"></validation-message>
+            </li>
+            <li>
+                <p class="detail-name">State:</p>
+                <!--@{
+                var CustomerAddressState = Model.Project.CustomerAddress.States.Items
+                .Where(s => s.Value == Model.Project.CustomerAddress.StateId.ToString())
+                .Select(s => s.Text).FirstOrDefault();
+                }-->
+                <enum ng-show="projectVM.customerAddress.stateId" ng-if="projectVMLoaded" url="/api/Common/GetStates" keyid="{{projectVM.customerAddress.stateId}}"></enum>
+                <p ng-show="!projectVM.customerAddress.stateId" style="word-wrap: break-word; color:lightgray; font-style:italic;">(please fill in State)</p>
+                <validation-message ng-if="submitAttempted" key="projectVM.customerAddress.stateId"></validation-message>
+                
+            </li>
+            <li>
+                <p class="detail-name">Zip Code:</p>
+                <p ng-show="projectVM.customerAddress.postalCode">{{projectVM.customerAddress.postalCode}}</p>
+                <p ng-show="!projectVM.customerAddress.postalCode" style="word-wrap: break-word; color:lightgray; font-style:italic;">(please fill in Zip Code)</p>
+                <validation-message ng-if="submitAttempted" key="projectVM.customerAddress.postalCode"></validation-message>
+            </li>
+        </ul>
+    </div>
+
+    <div class="r-col1 hide-print">&nbsp;</div>
+    <div class="r-col1 details-list">
+        <!--<a href="/ProjectDashboard/ProjectEdit?projectId={{OrderVM.projectIdStr}}" id="btn_Edit_CustomerLocation" ng-click="DealerContractorEdit()">Edit</a>-->
+        <a ng-show="OrderVM.orderIdStr==0" href="#" id="btn_Edit_CustomerLocation" ng-click="DealerContractorEdit()">Edit</a>
+
+        <!--@if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved &&
+        Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Rejected &&
+        Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Pending &&
+        Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Deleted)
+        {
+        <a href="@Url.Action(" projectedit", new { projectid=Model.ProjectId, quoteid=Model.QuoteId, commissionrequestid=Model.CommissionRequestId })" id="btn_Edit_CustomerLocation">Edit</a>
+        }-->
+    </div>
+
+    <div kendo-window="DealerContractorEditWindow" k-title="'Dealer/Contractor'"
+         k-width="1200" k-modal="true" k-visible="false"
+         k-content="{ url: '/ProjectDashboard/ProjectEditDealerContractor?projectId={{OrderVM.projectIdStr}}' }">
+
+    </div>
+    <div class="row-end">&nbsp;</div>
+
+</div>

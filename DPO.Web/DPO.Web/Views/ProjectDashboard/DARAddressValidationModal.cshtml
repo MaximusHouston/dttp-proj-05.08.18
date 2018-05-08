@@ -1,0 +1,88 @@
+﻿<div class="modal" id="dar_address_validation_modal" style="display:none;">
+    <div style="margin-top: 25px; max-height: 600px;">
+        <img src="~/Images/modal-close-btn.png" class="close-btn" />
+
+        <h1></h1>
+        <p></p>
+
+        <div id="dar_address_errors" style="max-height: 380px; overflow-y: auto; padding-bottom: 20px;">
+            @* populated via ajax *@
+        </div>
+        <br/>
+        <br/>
+        <a href="#" class="btn cancel-btn">@ResourceUI.Cancel</a>
+        <a href="@Url.Action("ProjectEdit", "Projectdashboard", new { projectId = Model.ProjectId })" class="submit-btn">@ResourceUI.ProjectEditDetails</a>
+    </div>
+</div>
+<script>
+    @*$(function ()
+    {
+        initValidateAddressBeforeAction({
+            selector: '#requestDiscountBtn',
+            heading: "@ResourceUI.DiscountAuthorizationRequest",
+            subheading: 'Before submitting a discount request, please complete the following Project Details:'
+        });
+    });*@
+
+    function initValidateAddressBeforeAction(config)
+    {
+        var btn = $(config.selector);
+        if(btn.length)
+        {
+            btn.on('click', function (e)
+            {
+                e.preventDefault();
+
+                $.get("@Url.Action("ProjectAddressValidation", "ProjectDashboard", new { ProjectId = Model.ProjectId })", function (response)
+                {
+                    var addressStatus = JSON.parse(response);
+
+                    if(addressStatus.isvalid == true)
+                    {
+                        window.location = btn.attr('href');
+                        return;
+                    }
+
+                    var addressErrors = addressStatus.errors;
+
+                    if (config.specificaddresses)
+                    {
+                        addressErrors = addressErrors.filter(function (address)
+                        {
+                            return config.specificaddresses.indexOf(address.name) > -1;
+                        });
+
+                        if(addressErrors.length === 0)
+                        {
+                            window.location = btn.attr('href');
+                            return;
+                        }
+                    }
+
+                    var frag = "";
+
+                    for (var i = 0; i < addressErrors.length; i++)
+                    {
+                        var thisAddress = addressErrors[i];
+
+                        frag += ("<p>" + thisAddress.name + "</p><ul>");
+
+                        for (var k = 0; k < thisAddress.errors.length; k++) {
+                            frag += ('<li style="color:red;">' + thisAddress.errors[k] + "</li>");
+                        }
+
+                        frag += "</ul>";
+                    }
+
+                    var $modal = $('#dar_address_validation_modal');
+                    $modal.find('h1').text(config.heading);
+                    $modal.find('p').text(config.subheading);
+                    $('#dar_address_errors').empty().append(frag);
+                    $modal.fadeIn(200);
+                });
+            });
+        }
+    }
+</script>
+
+

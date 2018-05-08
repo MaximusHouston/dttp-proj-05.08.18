@@ -1,0 +1,16 @@
+﻿<h1>{{product.name}}</h1>
+
+<div class="scrollmenu" id="productDetailsTabs">
+    <ul class="sub-tab-bar">
+        <li id="product-overview" class="active-tab"> <a> OVERVIEW </a> </li>
+        <li id="product-accessories"> <a> RELATED ACCESSORIES </a> </li>
+        <li id="product-specs"> <a> TECHNICAL SPECIFICATIONS </a> </li>
+    </ul>
+
+</div>
+
+<div id="productOverview" class="sub-tab-view">
+    <product-overview [product]="product" [userBasket]="userBasket"></product-overview>
+</div>
+<div id="productRelatedAccessories" class="sub-tab-view" style="display:none;"></div>
+<div id="productSpecs" class="sub-tab-view" style="display:none;"></div>

@@ -1,0 +1,101 @@
+﻿@model HomeScreenModel
+@{
+    ViewBag.Title = "Daikin City Content Management";
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/confirmmodal", "~/bundles/scripts/ckeditor", "~/bundles/scripts/ckeditor-adapter")
+}
+
+@Html.Partial("_CityCMSTabsPartial")
+
+    <div class="section t-flush b-flush">
+        <div class="item-strap btm-bdr">
+            <div class="itemname">
+                <h1>Home Screen</h1>
+            </div>
+            <div class="btn-bar">
+                <input type="button" value="Reset Changes" class="btn" style="visibility:hidden;">
+            </div>
+        </div>
+    </div>
+    <br/>
+@using(Html.BeginForm())
+{
+    <div class="section form">
+        <div class="row">
+            <div class="r-col5 details-list" style="padding-right: 50px;">
+                <h4>Home screen text</h4>
+                <label>Title</label>
+                @Html.TextBoxFor(m => m.title, new { @class="full"})
+                @Html.ValidationMessageFor(m => m.title)
+                <br />
+                <br />
+                <label>Body Text</label>
+                @Html.TextAreaFor(m => m.bodytext, new { rows = "8", @class="full" })
+                @Html.ValidationMessageFor(m => m.bodytext)
+                <br />
+                <br />
+                <label>Privacy Policy</label>
+                @Html.TextAreaFor(m => m.privacypolicy, new { rows = "10", @id="privacy-policy", @class = "full" })
+                @Html.ValidationMessageFor(m => m.privacypolicy)
+            </div>
+            <div class="r-col7">
+                <h4>Billboard items</h4>
+                <table class="tbl">
+                    <thead>
+                        <tr>
+                            <th style="width: 40px;">Enabled</th>
+                            <th style="width: 200px;">Item image</th>
+                            <th>Link URL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (var i = 0; i < Model.BillboardItems.poster.Count; i++ )
+                        {
+                            <tr style="background-color: #fff;">
+                                <td class="c-align">
+                                    @Html.HiddenFor(p => p.BillboardItems.poster[i].id)
+                                    @Html.HiddenFor(p => p.BillboardItems.poster[i].image)
+
+                                    @Html.CheckBoxFor(p => p.BillboardItems.poster[i].enabled, new { @class="cb-switch" })
+                                    <label for="BillboardItems_poster_@{@i}__enabled" class="cb-switch-label"></label>
+                                </td>
+                                <td style="padding-top: 10px;">
+                                    <img src="/daikincityweb/images/@Model.BillboardItems.poster[i].image" style="max-width: 100%;" />
+                                    <a href="@Url.Action("HomeScreenBillboardImageUpload", new { billboardId = Model.BillboardItems.poster[i].id})"class="context-btn submit" style="display:block; width: 100%; text-align: center;">Upload new image</a>
+                                </td>
+                                <td>
+                                    @Html.TextAreaFor(p => p.BillboardItems.poster[i].url, new { style="width: 100%; display: block; height: 97px;" })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="row-end">&nbsp;</div>
+        </div>
+    </div>
+
+    <div class="section action c-align">
+        <button type="button" class="btn" onclick="location.replace('@Url.Action("HomeScreen","CityCms")')">Cancel</button>
+        <input type="submit" value="Save" class="submit-btn">
+    </div>
+}
+
+<script>
+    $(function () {
+        $('#privacy-policy').ckeditor(function()
+        {
+            if($("#privacy-policy").hasClass("input-validation-error"))
+            {
+                $("#cke_privacy-policy").addClass("ckeditor-error");
+            }
+        });
+    });
+</script>

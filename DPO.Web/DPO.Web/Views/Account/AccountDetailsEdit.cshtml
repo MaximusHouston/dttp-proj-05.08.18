@@ -1,0 +1,103 @@
+﻿@using MvcCheckBoxList.Model;
+
+@model DPO.Common.UserModel
+
+@{
+    ViewBag.Title = ResourceUI.YourAccountDetails;
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/checkboxhelpers")
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken();
+    @Html.Concurrency();
+    @Html.HiddenFor(m => m.UserId);
+    @Html.HiddenFor(m => m.Approved);
+    @Html.HiddenFor(m => m.Enabled);
+    @Html.HiddenFor(m => m.Address.AddressId);
+    @Html.HiddenFor(m => m.Contact.ContactId);
+    @Html.PageMessages()
+    <div class="section t-flush">
+        <div class="item-strap">
+            <div class="itemname">
+                <h1>@ResourceUI.YourAccountDetails</h1>
+            </div>
+            <div class="btn-bar">
+               <a class="btn" href="@Url.Action("RequestNewPassword","Account",new { UserEmail = Model.Email})">@ResourceUI.ResetPassword</a>
+            </div>
+        </div>
+    </div>
+
+    <ul class="sub-tab-bar">
+        <li class="active-tab" data-view="personalDetails">
+            <span>@ResourceUI.YourDetails</span>
+        </li><li data-view="userAccess">
+            <span>@ResourceUI.YourAccessLevels</span>
+        </li><li data-view="userPermissions">
+            <span>@ResourceUI.YourPermissions</span>
+        </li>
+    </ul>
+
+    <div id="personalDetails" class="sub-tab-view">
+        @Html.Partial("_UserPersonalDetailsPartial", Model)
+        <br />
+        @Html.Partial("_UserBusinessDetailsPartial",Model)
+    </div>
+    
+    @Html.Partial("UserPermissions", Model);
+
+    <div class="section action c-align">
+        <button type="button" class="btn" onclick="window.location = document.referrer">@ResourceUI.Cancel</button>
+        <a href="#" sc-ajaxpost="@Url.Action("AccountDetailsEdit")" class="submit-btn">@ResourceUI.SaveChanges</a>
+        @Html.Partial("_LastEditedPartial")
+    </div>
+}
+
+<script src="~/Scripts/jquery.pwstrength.min.js"></script>
+<script>
+    $(function () {
+        var subTabs = $('.sub-tab-bar li');
+        var subViews = $('.sub-tab-view');
+
+        subTabs.click(function () {
+            subViews.hide();
+            subTabs.removeClass('active-tab');
+
+            var viewToShow = $(this).attr('data-view');
+            $('#' + viewToShow).show();
+
+            $(this).addClass('active-tab');
+        });
+
+        var companyAddressFields = $('#companyAddress');
+
+        function toggleCompanyAddressFields()
+        {
+            if ($(this).is(':checked'))
+            {
+                companyAddressFields.find('input,select').attr('disabled', true);
+                companyAddressFields.find('label').addClass('disabled');
+            }
+            else
+            {
+                companyAddressFields.find('input,select').removeAttr('disabled');
+                companyAddressFields.find('label').removeClass('disabled');
+            }
+        }
+
+        toggleCompanyAddressFields.apply(document.getElementById('UseBusinessAddress'));
+        $('#UseBusinessAddress').on('change', toggleCompanyAddressFields);
+
+        $('#Password').pwstrength();
+
+        checkBoxHelper.createListsOfCheckboxes();
+    });
+
+</script>

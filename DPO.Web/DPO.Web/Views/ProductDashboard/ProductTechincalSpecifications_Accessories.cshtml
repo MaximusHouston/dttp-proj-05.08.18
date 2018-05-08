@@ -1,0 +1,184 @@
+﻿@model ProductModel
+@{
+    var specs = Model.Specifications;
+}
+
+    <tr>
+        <td>
+            Capacity Index Limit - Max
+        </td>
+        <td>@specs.GetDecimal("CapacityIndexLimitMax", "N2")</td>
+        <td>
+            Capacity Index Limit - Min
+        </td>
+        <td>@specs.GetDecimal("CapacityIndexLimitMin", "N2")</td>
+    </tr>
+  
+    <tr>
+        <td>
+            Cooling Capacity Rated
+        </td>
+        <td>@specs.GetDecimal("CoolingCapacityRated", "N2")</td>
+        <td>
+            Cooling Input Power
+        </td>
+        <td>@specs.GetDecimal("CoolingInputPower", "N2")</td>
+    </tr>
+
+<tr>
+    <td>
+        Cooling Operation Range StdMax
+    </td>
+    <td>@specs.GetDecimal("CoolingOperationRangeStdMax", "N2")</td>
+    <td>
+        Cooling Operation Range StdMin
+    </td>
+    <td>@specs.GetDecimal("CoolingOperationRangeStdMin", "N2")</td>
+</tr>
+    
+   
+    <tr>
+        <td>
+            Dimensions - Depth
+        </td>
+        <td>@specs.GetString("DimensionsUnitDepth")</td>
+        <td>
+            Dimensions - Height
+        </td>
+        <td>@specs.GetString("DimensionsUnitHeight")</td>
+    </tr>
+    
+    <tr>
+        <td>
+            Dimensions - Width
+        </td>
+        <td>@specs.GetString("DimensionsUnitWidth")</td>
+        <td>
+            Fuse Size
+        </td>
+        <td>@specs.GetDecimal("FuseSize", "N2")</td>
+    </tr>
+    <tr>
+       
+        <td>
+            HL Pressure Line
+        </td>
+        <td>@specs.GetString("PipeSizeHPLP")</td>
+        <td>
+            Heating Input Power
+        </td>
+        <td>@specs.GetDecimal("HeatingInputPower", "N2")</td>
+    </tr>
+    
+    <tr>
+       
+        <td>
+            Heating Operation Range Std Max
+        </td>
+        <td>@specs.GetDecimal("HeatingOperationRangeStdMax", "N2")</td>
+        <td>
+            Heating Operation Range Std Min
+        </td>
+        <td>@specs.GetDecimal("HeatingOperationRangeStdMin", "N2")</td>
+    </tr>
+   
+    <tr>
+       
+        <td>
+            InERP
+        </td>
+        <td>@specs.GetString("InERP")</td>
+        <td>
+            Inter Connecting Wires
+        </td>
+        <td>@specs.GetString("InterConnectingWires")</td>
+    </tr>
+   
+    <tr>
+       
+
+        <td>
+            Max Connection Ports
+        </td>
+        <td>@specs.GetDecimal("NumberOfConnectionPorts", "N2")</td>
+        <td>
+            Max External Static Pressure
+        </td>
+        <td>@specs.GetString("ExternalStaticPressureMax")</td>
+</tr>
+  
+    <tr>
+      
+        <td>
+            Max Indoor Units
+        </td>
+        <td>@specs.GetDecimal("MaxIndoorUnits", "N2")</td>
+        <td>
+            Min Circuit Amps
+        </td>
+        <td>
+            @specs.GetString("MinCircuitAmps")
+
+        </td>
+    </tr>
+   
+    <tr>
+      
+        <td>
+            Pipe Size - Gas
+        </td>
+        <td>@specs.GetString("PipeSizeGas")</td>
+        <td>
+            PipeSize - Liquid
+        </td>
+        <td>@specs.GetString("PipeSizeLiquid")</td>
+    </tr>
+    <tr>
+       
+        <td>
+            Power Frequency
+        </td>
+        <td>@specs.GetDecimal("PowerFrequency", "N2")</td>
+        <td>
+            Power Phase
+        </td>
+        <td>@specs.GetDecimal("PowerPhase", "N2")</td>
+    </tr>
+   
+    <tr>
+       
+        <td>
+            Power Voltage
+        </td>
+        <td>@specs.GetString("PowerVoltage")</td>
+        @*<td>
+            Product Class Name
+        </td>
+        <td>@specs.GetString("ProductClassName")</td>*@
+    </tr>
+  
+    <tr>
+       
+        <td>
+            Rated External Static Pressure
+        </td>
+        <td>@specs.GetString("ExternalStaticPressureRated")</td>
+        <td>
+            Refrigerant Type
+        </td>
+        <td>@specs.GetString("RefrigerantType")</td>
+    </tr>
+   
+    <tr>
+       
+        <td>
+            Weight - Net
+        </td>
+        <td>
+            @specs.GetString("WeightUnit")
+        </td>
+
+        <td></td>
+        <td></td>
+    </tr>
+  

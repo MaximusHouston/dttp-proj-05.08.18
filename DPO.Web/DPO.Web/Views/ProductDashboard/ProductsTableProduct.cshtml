@@ -1,0 +1,51 @@
+﻿@model ProductListModel
+@{
+    ProductModel product = Model.Product;
+    ProductSpecificationsModel specs = product.Specifications;
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+    var activeQuote = ViewData["ActiveQuoteId"] as long?;
+
+    string image = product.Image.HasImage ? product.Image.URL : product.SubProducts.Count > 0 && product.SubProducts[0].Image.HasImage ? product.SubProducts[0].Image.URL : "/Images/NoImage.png";
+}
+
+<tr>
+    <td><a style="padding:0;" href="@Url.Action("Product", new { ProductId = product.ProductId })"><img src="@image" style="width:32px;height:auto;" />@product.Name</a></td>
+    <td>@product.ProductNumber</td>
+    <td class="product-icons">
+        <a href="@Url.Action("Product", new { ProductId = product.ProductId })#technicalSpecification"><img src="~/Images/TechDetailLInkIcon_blue.png" /></a>
+        <a href="@Url.Action("Product", new { ProductId = product.ProductId })#productOverview"><img src="~/Images/RelatedDocumentsLinkIcon_Blue.png" /></a>
+        <a href="@Url.Action("Product", new { ProductId = product.ProductId })#productRelatedAccessories"><img src="~/Images/RelatedAccessoriesLinkIcon_Blue.png" /></a>
+    </td>
+
+    @if (user.ShowPrices)
+    {
+        <td><strong>@Html.DisplayFor(p => product.Price)</strong></td>
+    }
+
+    @if (product.ProductFamilyId == (int)ProductFamilyEnum.VRV
+                    && product.ProductModelTypeId == ProductModelTypeEnum.Outdoor)
+    {
+
+        <td class="c-align">@specs.GetDecimal("EERNonDucted", "N2")</td>
+        <td class="c-align">@specs.GetDecimal("IEERNonDucted", "N2")</td>
+        <td class="c-align">@specs.GetDecimal("COP47NonDucted", "N2")</td>
+        <td class="c-align">@specs.GetDecimal("COP17NonDucted", "N2")</td>
+    }
+    else if (product.ProductFamilyId == (int)ProductFamilyEnum.Accessories
+                         || ((product.ProductFamilyId == (int)ProductFamilyEnum.VRV
+                                 || product.ProductFamilyId == (int)ProductFamilyEnum.MultiSplit)
+                             && product.ProductModelTypeId == ProductModelTypeEnum.Indoor)
+                        )
+    {
+        @*Nothing should be displayed*@
+    }
+    else
+    {
+        <td class="c-align">@specs.GetDecimal("SEERNonDucted", "N2")</td>
+        <td class="c-align">@specs.GetDecimal("EERNonDucted", "N2")</td>
+        <td class="c-align">@specs.GetDecimal("HSPFNonDucted", "N2")</td>
+        <td class="c-align">@specs.GetDecimal("COP47NonDucted", "N2")</td>
+    }
+</tr>
+
+

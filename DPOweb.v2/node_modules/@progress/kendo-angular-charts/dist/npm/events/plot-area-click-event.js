@@ -1,0 +1,24 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var base_event_1 = require("./base-event");
+/**
+ * Arguments for the `plotAreaClick` event.
+ */
+var PlotAreaClickEvent = /** @class */ (function (_super) {
+    tslib_1.__extends(PlotAreaClickEvent, _super);
+    /**
+     * @hidden
+     */
+    function PlotAreaClickEvent(e, sender) {
+        var _this = _super.call(this, sender) || this;
+        _this.category = e.category;
+        _this.originalEvent = e.originalEvent;
+        _this.value = e.value;
+        _this.x = e.x;
+        _this.y = e.y;
+        return _this;
+    }
+    return PlotAreaClickEvent;
+}(base_event_1.BaseEvent));
+exports.PlotAreaClickEvent = PlotAreaClickEvent;

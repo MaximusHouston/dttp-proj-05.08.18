@@ -1,0 +1,46 @@
+﻿<link rel="stylesheet" href="/v2/app/content/adminstyles.css" />
+<link rel="stylesheet" href="/v2/app/content/kendo/kendo.default.min.css" />
+
+<project-tabs [user]="user"></project-tabs>
+<div id="main-container" class='container-fluid'>
+    <div class="main-content">
+        <div class="tab-header">
+            <h3 class="tool-page-header">TOOLS</h3>
+        </div>
+        <div *ngIf="tools.length> 0">
+            <ul class="tool-list" *ngFor="let tool of tools">
+                <li class="section form dark" >
+                    <div class="row">
+                        <div class="col-md-2">
+                            <a href="/document/Tools/{{tool.filename}}">
+                                <img class="tool-image" src="app/images/tools_icon.png" />
+                            </a>
+                        </div>
+                        <div class="col-md-10">
+                            <h4 class="tool-name">{{tool.name}}</h4>
+                            <div class="tool-description">{{tool.description}}</div>
+                            <br />
+                            <div class="tool-anchortag">
+                                <span *ngIf="tool.clickable == true">
+                                    <a style="padding:0;" href="{{tool.accessUrl}}"> Click here to access</a> 
+                                </span>
+                                <span *ngIf="tool.downloadable == true">
+                                    <a style="padding:0;" href="/document/Tools/{{tool.filename}}">Click here to download</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+

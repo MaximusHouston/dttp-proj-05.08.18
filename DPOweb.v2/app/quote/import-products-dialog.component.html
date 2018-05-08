@@ -1,0 +1,38 @@
+﻿<!--desktop-->
+<button id="importProductsBtn" *ngIf="quote.quoteOptions.canAddProducts" class="btn btn-primary hidden-xs" data-toggle="modal" data-target="#importProductsPopup"><span class="k-icon k-i-file-add"></span> IMPORT PRODUCTS</button>
+<!--phone-->
+<button style="width:90%; margin-top:5px;" id="importProductsBtn" *ngIf="quote.quoteOptions.canAddProducts" class="btn btn-primary btn-block visible-xs" data-toggle="modal" data-target="#importProductsPopup"><span class="k-icon k-i-file-add"></span> IMPORT PRODUCTS</button>
+
+<div id="importProductsPopup" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">IMPORT ITEMS:</h4>
+            </div>
+            <div class="modal-body">
+                <p>Import product lists generated in any of our suites of software.</p>
+                <p>Select Product List:</p>
+                <p style="font-style:italic; color:gray;">(only .csv or .xml file are allowed)</p>
+                <kendo-upload 
+                              [autoUpload]="false"
+                              [saveUrl]="importUrl"
+                              [multiple]="false"
+                              [(ngModel)]="importFiles"
+                              (select)="selectEventHandler($event)"
+                              (upload)="uploadEventHandler($event)"
+                              [withCredentials]="true"
+                              (success)="successEventHandler($event)"
+                              (error)="errorEventHandler($event)" >
+                </kendo-upload>
+               
+            </div>
+            <!--<div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="cancel()">Cancel</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="import()">Import</button>
+            </div>-->
+        </div>
+
+    </div>
+</div>

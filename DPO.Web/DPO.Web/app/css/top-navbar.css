@@ -1,0 +1,20 @@
+﻿.topnavbar {
+    position: relative;
+    -webkit-backface-visibility: hidden;
+    /* fixes chrome jump */
+    margin-bottom: 0;
+    border-radius: 0;
+    background-color: #fff;
+    z-index: 1050;
+    border: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+    .topnavbar .navbar-header {
+        width: 220px;
+    }
+
+
+
+
+

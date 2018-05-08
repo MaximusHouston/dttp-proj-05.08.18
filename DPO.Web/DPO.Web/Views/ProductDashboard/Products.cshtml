@@ -1,0 +1,666 @@
+﻿@model ProductsModel
+@{
+    ViewBag.Title = ResourceUI.Products;
+    ViewBag.searchBarPlaceholderText = Model.ProductFamilyName + " " + ResourceUI.Products;
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+
+    bool showAccessoryFilters = Model.ProductFamilyName == "VRV" || Model.ProductFamilyName == "Multi-Split" || Model.ProductFamilyName == "Altherma";
+
+    bool showProductFilters = Model.ProductFamilyName != "Accessories" && Model.ProductFamilyName != "Other";
+
+    bool showInstallationTypes = Model.ProductFamilyName == "Unitary Split" || Model.ProductFamilyName == "Unitary Package" || Model.ProductFamilyName == "Commercial Split";
+
+    //var activeQuote = ViewData["ActiveQuoteId"] as long?;
+
+    long? activeQuote = 0;
+
+    if (ViewData["BasketQuoteId"] != null)
+    {
+        activeQuote = ViewData["BasketQuoteId"] as long?;
+    }
+    else
+    {
+        activeQuote = user.BasketQuoteId;
+    }
+
+
+}
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles", "~/Content/css/productlisting", "~/Content/css/nouislider")
+}
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/numericstepperhelpers", "~/bundles/scripts/productpages", "~/bundles/scripts/nouislider")
+}
+
+@Html.Partial("ProductItemCount")
+@Html.Partial("ProductFamilyTabs", Model.ProductFamilyTabs)
+<div style="position: relative; top: 15px;">
+    @Html.PageMessages()
+</div>
+<ul class="breadcrumbs">
+    <li><a href="@Url.Action("ProductFamilies")">Products</a></li>
+    @if (Model.Products.Count > 0)
+    {
+        <li>@Model.ProductFamilyName</li>
+    }
+</ul>
+@using (Html.BeginForm("Products", "Productdashboard", FormMethod.Get, new { @id = "Products" }))
+{
+    @Html.HiddenFor(m => m.FormSubmittedPreviously)
+    @Html.HiddenFor(m => m.ProductModelTypeId)
+    @Html.HiddenFor(m => m.UnitInstallationTypeId)
+    @Html.HiddenFor(m => m.ViewOption, new { Id = "ViewOption" })
+
+    if (Session["BastketQuoteId"] != null)
+    {
+        Session["BasketQuoteId"] = null;
+    }
+
+    Session["BasketQuoteId"] = activeQuote;
+
+    <div class="section b-flush t-flush">
+        <div class="item-strap">
+            <div class="itemname">
+                <h1>@Model.ProductFamilyName</h1>
+            </div>
+            <div class="btn-bar">
+                @Html.Partial("_SearchBarPartial")
+            </div>
+        </div>
+    </div>
+
+    if (showAccessoryFilters == true)
+    {
+        <ul class="sub-tab-bar model-type">
+            <li class="@((Model.ProductModelTypeId == ProductModelTypeEnum.Indoor) ? "active-tab" : "")">
+                <a id="model-type-indoor">
+                    Indoor
+                </a>
+            </li>
+            <li class="@((Model.ProductModelTypeId == ProductModelTypeEnum.Outdoor) ? "active-tab" : "")">
+                <a id="model-type-outdoor">
+                    Outdoor
+                </a>
+            </li>
+            <li class="@((!Model.ProductModelTypeId.HasValue) ? "active-tab" : "")">
+                <a id="model-type-all">
+                    All
+                </a>
+            </li>
+        </ul>
+    }
+
+    if (showInstallationTypes == true)
+    {
+        <ul class="sub-tab-bar">
+                @foreach (var tab in Model.UnitInstallationTypeTabs)
+                {
+                    <li class="@((tab.IsActive)?"active-tab" : "")">
+                        <a href="@Url.Action("Products", "ProductDashboard", new { UnitInstallationTypeId = tab.Id, FormSubmittedPreviously = Model.FormSubmittedPreviously })">@tab.Description</a>
+                    </li>
+                }
+                <li class="@((!Model.UnitInstallationTypeId.HasValue) ? "active-tab" : "")">
+                    <a href="@Url.Action("Products", "ProductDashboard", new { ProductFamilyId = Model.ProductFamilyId, FormSubmittedPreviously = Model.FormSubmittedPreviously })">All</a>
+                </li>
+        </ul>
+    }
+    <div class="product-filters" style="height: auto; min-height: 60px; position: relative;">
+        <div class="tbl-filters">
+            <button type="button" class="display-btn" style="position: absolute; top: 10px; right: 10px; margin: 0; z-index: 2;">
+                @ResourceUI.Display
+                <img src="~/Images/btn-dropdown-arrow-down-icon.png" />
+            </button>
+            <ul class="tbl-column-opts" style="right: 10px; display:none;">
+                <li>
+                    <strong>Row Amount:</strong>
+                </li>
+                <li>
+                    @foreach (var amount in Model.PageSizes)
+                    {
+                        if (amount == user.DisplaySettingsPageSize)
+                        {
+                            @Html.RadioButtonFor(m => m.PageSize, amount, new { @checked = "checked" })
+                        }
+                        else
+                        {
+                            @Html.RadioButtonFor(m => m.PageSize, amount)
+                        }<label>@amount</label>
+                    }
+                </li>
+            </ul>
+        </div>
+        @if (showProductFilters)
+        {
+            <button type="button" class="display-btn" id="product-filter-toggle" style="position: absolute; top: 10px; right: 105px; margin: 0; z-index: 2;">
+                Filters
+                <img src="/Images/btn-dropdown-arrow-up-icon.png">
+            </button>
+        }
+
+        <div class="view-options">
+            @{
+                List<ProductsModel.ProductViewOption> viewOptions = Enum.GetValues(typeof(ProductsModel.ProductViewOption)).Cast<ProductsModel.ProductViewOption>().ToList();
+            }
+
+            @foreach (ProductsModel.ProductViewOption vOption in viewOptions)
+            {
+                string selected = Model.ViewOption == vOption ? "selected" : "";
+                <button onclick="setViewOption('@vOption')" class="display-btn display-view-@(vOption.ToString().ToLower()) @(selected)"></button>
+            }
+        </div>
+
+        <div class="type-opts">
+            @if (showAccessoryFilters == true)
+            {
+                <div>
+                    <label>@Model.TotalRecords @((Model.TotalRecords == 1) ? ResourceUI.Product : ResourceUI.Products)</label>
+                    <label>-&nbsp;&nbsp;&nbsp;Sort by</label>
+                    @Html.DropDownProductSortByFor(m => m.SortColumn, Model.DropDownSortBy, new { @style = "width:140px;" })
+                    <label>&nbsp;&nbsp;</label>
+                </div>
+            }
+            else
+            {
+                <label>@Model.TotalRecords @((Model.TotalRecords == 1) ? ResourceUI.Product : ResourceUI.Products)</label>
+                <label>-&nbsp;&nbsp;&nbsp;Sort by</label>
+                @Html.DropDownProductSortByFor(m => m.SortColumn, Model.DropDownSortBy, new { @style = "width:140px;" })
+
+            }
+
+            <ul class="tbl-selects" style="padding-left: 0; padding-top: 0px;">
+
+                @if (Model.ProductFamilyId == (int)ProductFamilyEnum.VRV
+                           && (Model.ProductModelTypeId == ProductModelTypeEnum.Outdoor
+                                || Model.ProductModelTypeId == null))
+                {
+                    <li>
+                        <!-- Outdoor Only - Heat Exhanger Type -->
+                        @Html.LabelFor(m => m.HeatExchangerTypeId, "Heat Source")
+                        @Html.DropDownListFor(m => m.HeatExchangerTypeId, Model.DropDownHeatExchangerType, "Choose...", "N/A", new { @style = "width:140px;" })
+
+                    </li>
+                }
+                @if (((Model.ProductFamilyId == (int)ProductFamilyEnum.VRV
+                        && Model.ProductModelTypeId == ProductModelTypeEnum.Outdoor)
+                            || Model.ProductFamilyId == (int)ProductFamilyEnum.MultiSplit
+                            || Model.ProductFamilyId == (int)ProductFamilyEnum.MiniSplit
+                            || Model.ProductFamilyId == (int)ProductFamilyEnum.SkyAir)
+                          )
+                {
+                    <li>
+                        <!-- Outdoor Only - Unit Installation Type-->
+                        @Html.LabelFor(m => m.UnitInstallationTypeId, "Unit Type")
+                        @Html.DropDownListFor(m => m.UnitInstallationTypeId, Model.DropDownUnitInstallationType, "Choose...", "N/A", new { @style = "width:140px;" })
+                    </li>
+                }
+                <li>
+                    <!-- Unit Category -->
+                    @if (Model.ProductFamilyId == (int)ProductFamilyEnum.VRV
+                        && Model.ProductModelTypeId == ProductModelTypeEnum.Outdoor)
+                    {
+                        @Html.LabelFor(m => m.ProductCategoryId, "Unit Series")
+                    }
+                    else
+                    {
+                        @Html.LabelFor(m => m.ProductCategoryId, "Unit Style")
+                    }
+                    @Html.DropDownProductCategoriesFor(m => m.ProductCategoryId, Model.DropDownProductCategory, "Choose...", "N/A", new { @style = "width:140px;" })
+                </li>
+
+                <!-- Capacity Dropdown is hidden when show All under Unitary Split || Unitary Package || Commercial split -->
+                @*@if (Model.UnitInstallationTypeId != UnitInstallationTypeEnum.AirHandler && Model.UnitInstallationTypeId != UnitInstallationTypeEnum.EvaporatorCoil && Model.UnitInstallationTypeId != UnitInstallationTypeEnum.GasFurnace
+                    && ((Model.ProductFamilyId == (int)ProductFamilyEnum.UnitarySplit || Model.ProductFamilyId == (int)ProductFamilyEnum.UnitaryPackage || Model.ProductFamilyId == (int)ProductFamilyEnum.CommercialSplit) && Model.UnitInstallationTypeId != null))*@
+                @if ( (Model.UnitInstallationTypeId != UnitInstallationTypeEnum.AirHandler && Model.UnitInstallationTypeId != UnitInstallationTypeEnum.EvaporatorCoil && Model.UnitInstallationTypeId != UnitInstallationTypeEnum.GasFurnace)
+                      || ((Model.ProductFamilyId == (int)ProductFamilyEnum.UnitarySplit || Model.ProductFamilyId == (int)ProductFamilyEnum.UnitaryPackage || Model.ProductFamilyId == (int)ProductFamilyEnum.CommercialSplit)
+                            && Model.UnitInstallationTypeId != null && Model.UnitInstallationTypeId != UnitInstallationTypeEnum.AirHandler && Model.UnitInstallationTypeId != UnitInstallationTypeEnum.EvaporatorCoil && Model.UnitInstallationTypeId != UnitInstallationTypeEnum.GasFurnace)
+                    )
+                {
+                    <li title="Cooling Capacity Rated">
+                        <!-- Cooling Capacity (Rated) -->
+                        @Html.LabelFor(m => m.CoolingCapacityRatedValue, "Capacity")
+                        @Html.DropDownListFor(m => m.CoolingCapacityRatedValue, Model.DropDownCoolingCapacityRated, "Choose...", "N/A", new { @style = "width:140px;" })
+                    </li>
+                }
+
+                @if ((Model.ProductFamilyId == (int)ProductFamilyEnum.UnitarySplit && (Model.UnitInstallationTypeId == UnitInstallationTypeEnum.AirHandler || Model.UnitInstallationTypeId == UnitInstallationTypeEnum.EvaporatorCoil))
+                        || (Model.ProductFamilyId == (int)ProductFamilyEnum.CommercialSplit && Model.UnitInstallationTypeId == UnitInstallationTypeEnum.AirHandler)
+                    )
+                {
+                    <li title="Cooling Capacity Nominal">
+                        <!-- Cooling Capacity (Nominal) -->
+                        @Html.LabelFor(m => m.CoolingCapacityNominalValue, "Capacity")
+                        @Html.DropDownListFor(m => m.CoolingCapacityNominalValue, Model.DropDownCoolingCapacityNominal, "Choose...", "N/A", new { @style = "width:140px;" })
+                    </li>
+                }
+
+                <!-- Only show for Unitary Split - Gas Furnace-->
+                @if (Model.ProductFamilyId == (int)ProductFamilyEnum.UnitarySplit && (Model.UnitInstallationTypeId == UnitInstallationTypeEnum.GasFurnace))
+                {
+                    <li title="Heating Capacity Rated">
+                        <!-- Heating Capacity (Rated) -->
+                        @Html.LabelFor(m => m.HeatingCapacityRatedValue, "Capacity")
+                        @Html.DropDownListFor(m => m.HeatingCapacityRatedValue, Model.DropDownHeatingCapacityRated, "Choose...", "N/A", new { @style = "width:140px;" })
+                    </li>
+                }
+
+                @if (Model.ProductFamilyId != (int?)ProductFamilyEnum.UnitarySplit && Model.ProductFamilyId != (int?)ProductFamilyEnum.UnitaryPackage)
+                {
+                    <li>
+                        <!-- Power Supply -->
+                        @Html.LabelFor(m => m.PowerVoltageId, "Power Supply")
+                        @Html.DropDownProductPowerVoltagesFor(m => m.PowerVoltageId, Model.DropDownPowerVoltage, "Choose...", "N/A", new { @style = "width:140px;" })
+                    </li>
+                }
+
+                @if ((Model.ProductFamilyId == (int?)ProductFamilyEnum.UnitarySplit && (Model.UnitInstallationTypeId == UnitInstallationTypeEnum.HeatPump || Model.UnitInstallationTypeId == UnitInstallationTypeEnum.AirConditioner || Model.UnitInstallationTypeId == null))
+                      || (Model.ProductFamilyId == (int?)ProductFamilyEnum.UnitaryPackage)
+                      || (Model.ProductFamilyId == (int?)ProductFamilyEnum.CommercialSplit && (Model.UnitInstallationTypeId != UnitInstallationTypeEnum.AirHandler))
+                    )
+                {
+                    <!--Compressor Type-->
+                    @Html.LabelFor(m => m.CompressorTypeId, "Compressor Type")
+                    @Html.DropDownProductCompressorTypeFor(m => m.CompressorTypeId, Model.DropDownCompressorType, "Choose...", "N/A", new { @style = "width:140px;" })
+                }
+
+                @if ((Model.ProductFamilyId == (int?)ProductFamilyEnum.UnitarySplit && (Model.UnitInstallationTypeId == UnitInstallationTypeEnum.GasFurnace || Model.UnitInstallationTypeId == null))
+                      || (Model.ProductFamilyId == (int?)ProductFamilyEnum.UnitaryPackage && (Model.UnitInstallationTypeId == UnitInstallationTypeEnum.PackageDF || Model.UnitInstallationTypeId == UnitInstallationTypeEnum.PackageGE))
+                    )
+                {
+                    <!--Gas Valve Type-->
+                    @Html.LabelFor(m => m.GasValveTypeId, "Gas Valve Type")
+                    @Html.DropDownFor(m => m.GasValveTypeId, Model.DropDownGasVavleType, "Choose...", "N/A", new { @style = "width:140px;" })
+
+                }
+
+                @if ((Model.ProductFamilyId == (int?)ProductFamilyEnum.UnitarySplit && (Model.UnitInstallationTypeId == UnitInstallationTypeEnum.GasFurnace || Model.UnitInstallationTypeId == null))
+                       || Model.ProductFamilyId == (int?)ProductFamilyEnum.UnitaryPackage
+                    )
+                {
+                     <!--Motor Type-->
+                    @Html.LabelFor(m => m.MotorTypeId, "Motor Type")
+                    @Html.DropDownFor(m => m.MotorTypeId, Model.DropDownMotorType, "Choose...", "N/A", new { @style = "width:140px;" })
+                }
+
+                @if (Model.ProductFamilyId == (int?)ProductFamilyEnum.UnitarySplit && (Model.UnitInstallationTypeId == UnitInstallationTypeEnum.GasFurnace || Model.UnitInstallationTypeId == null))
+                {
+                     <!--Installation Configuration Type-->
+                    @Html.LabelFor(m => m.InstallationConfigurationTypeId, "Installation Configuration Type")
+                    @Html.DropDownFor(m => m.InstallationConfigurationTypeId, Model.DropDownInstallationConfigurationType, "Choose...", "N/A", new { @style = "width:140px;" })
+                }
+
+                @if ((Model.ProductFamilyId == (int?)ProductFamilyEnum.UnitarySplit && (Model.UnitInstallationTypeId == UnitInstallationTypeEnum.AirHandler || Model.UnitInstallationTypeId == UnitInstallationTypeEnum.GasFurnace))
+                        || (Model.ProductFamilyId == (int?)ProductFamilyEnum.UnitaryPackage && (Model.UnitInstallationTypeId != null))
+                        || (Model.ProductFamilyId == (int?)ProductFamilyEnum.CommercialSplit && (Model.UnitInstallationTypeId == UnitInstallationTypeEnum.AirHandler))
+                    )
+                {
+                     <!--Air Flow Rate High-->
+                    @Html.LabelFor(m => m.AirFlowRateHighValue, "Air Flow Rate High")
+                    @Html.DropDownFor(m => m.AirFlowRateHighValue, Model.DropDownAirFlowRateHigh, "Choose...", "N/A", new { @style = "width:140px;" })
+                }
+
+                <li>
+                    <button class="context-btn" id="reset_filters_button">Reset Filters</button>
+                </li>
+            </ul>
+
+
+
+            @if (showProductFilters)
+                {
+                <div id="products_filters" style="position:relative; display:none; background-color: #E5F2FA; padding: 5px 10px 10px 10px;">
+                    @*<ul class="tbl-selects" style="padding-left: 0; padding-top: 0px;">
+
+                            <li>
+                                <button type="button" class="context-btn" id="reset_filters_button">Reset Filters</button>
+                                <input type="submit" class="submit context-btn" style="margin-left: 5px;" value="Set Filters">
+                            </li>
+                        </ul>*@
+                    <ul class="tbl-selects products-sliders" style="padding-left: 0; padding-top: 14px;">
+                        @*<li>
+                                <label>Rated Cooling Capacity (Btu/hr)</label>
+                                <div id="RCCSlider"></div>
+
+                                @Html.HiddenFor(m => m.CoolingCapacityRatedMin)
+                                @Html.HiddenFor(m => m.CoolingCapacityRatedMax)
+                            </li>
+                            <li>
+                                <label>Rated Heating Capacity (Btu/hr)</label>
+                                <div id="RHCSlider"></div>
+
+                                @Html.HiddenFor(m => m.HeatingCapacityRatedMin)
+                                @Html.HiddenFor(m => m.HeatingCapacityRatedMax)
+                            </li>*@
+
+                        @if (Model.ProductModelTypeId != ProductModelTypeEnum.Indoor)
+                        {
+                            if (Model.ProductFamilyName == "Mini-Split" || Model.ProductFamilyName == "Multi-Split" || Model.ProductFamilyName == "Sky-Air")
+                            {
+                                <li>
+                                    <label>SEER (Non-Ducted)</label>
+                                    <div id="SEERSlider"></div>
+                                    @Html.HiddenFor(m => m.SEERNonductedMin)
+                                    @Html.HiddenFor(m => m.SEERNonductedMax)
+                                </li>
+                            }
+                            if (Model.ProductFamilyName == "VRV")
+                            {
+                                <li>
+                                    <label>IEER (Non-Ducted)</label>
+                                    <div id="IEERSlider"></div>
+                                    @Html.HiddenFor(m => m.IEERNonDuctedMin)
+                                    @Html.HiddenFor(m => m.IEERNonDuctedMax)
+                                </li>
+                            }
+                            <li>
+                                <label>EER (Non-Ducted)</label>
+                                <div id="EERSlider"></div>
+                                @Html.HiddenFor(m => m.EERNonductedMin)
+                                @Html.HiddenFor(m => m.EERNonductedMax)
+                            </li>
+                            if (Model.ProductFamilyName != "Altherma")
+                            {
+                                <li>
+                                    <label>HSPF (Non-Ducted)</label>
+                                    <div id="HSPFSlider"></div>
+                                    @Html.HiddenFor(m => m.HSPFNonductedMin)
+                                    @Html.HiddenFor(m => m.HSPFNonductedMax)
+                                </li>
+                            }
+                            <li>
+                                <label>COP47 (Non-Ducted)</label>
+                                <div id="COPSlider"></div>
+                                @Html.HiddenFor(m => m.COP47NonductedMin)
+                                @Html.HiddenFor(m => m.COP47NonductedMax)
+                            </li>
+                            <li>
+                                <input type="submit" class="submit context-btn" value="Set Filters" />
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+    </div>
+                }
+
+<div class="form-group">
+    <div class="section t-flush product-list products">
+        @using (Html.BeginForm("ProductsAddToQuote", "ProductDashboard", FormMethod.Post))
+        {
+            @Html.Partial("Products" + Model.ViewOption.ToString() + "View", Model)
+            @Html.AntiForgeryToken()
+        }
+
+    </div>
+</div>
+
+<div class="pager">@Html.Pager(Model)</div>
+
+<script>
+
+    function setViewOption(id)
+    {
+        document.querySelector("#ViewOption").value = id;
+        document.querySelector("#Products").submit();
+    }
+
+    function ClearDropDown(id) {
+        id = "#" + id;
+
+        if ($(id + " option").length <= 1) {
+            $(id).append($('<option value="">Choose...</option>'));
+        }
+        $(id).val("");
+    }
+
+    function ClearSlider(id)
+    {
+        id = '#' + id;
+        var thisSlider = $(id);
+
+        if (thisSlider.length <= 0)
+        {
+            return;
+        }
+
+        thisSlider.val([-99999999, 99999999]);
+
+        var sliderVals = thisSlider.val();
+        thisSlider.parent().find('input[name$="Min"]').val("");
+        thisSlider.parent().find('input[name$="Max"]').val("");
+    }
+
+    function ClearForm(keepFilter) {
+        debugger
+        ClearDropDown('HeatExchangerTypeId');
+        ClearDropDown('UnitInstallationTypeId');
+        ClearDropDown('ProductCategoryId');
+        ClearDropDown('CoolingCapacityRatedValue');
+        ClearDropDown('PowerVoltageId');
+        ClearDropDown('CompressorTypeId');
+        ClearDropDown('MotorTypeId');
+        ClearDropDown('GasValveTypeId');
+        ClearDropDown('InstallationConfigurationTypeId');
+        ClearSlider('SEERSlider');
+        ClearSlider('IEERSlider');
+        ClearSlider('EERSlider');
+        ClearSlider('HSPFSlider');
+        ClearSlider('COPSlider');
+        ClearSlider('RCCSlider');
+        ClearSlider('RHCSlider');
+        //$("#Filter").val("");
+        if (!keepFilter) {
+            $('[name="Filter"]').val("");
+        }
+    }
+
+    $('#mybtn').on('click', function () {
+        var url = $(this).data('url');
+        var form = $(this).closest('form');
+        form.prop('action', url);
+        form.submit();
+
+    })
+
+    $(function () {
+        // Clear all other filters
+        $('#Filter').keypress(function (e) {
+            ClearForm(true);
+        });
+
+        $('#model-type-indoor').on('click', function (e) {
+
+            $('#ProductModelTypeId').val(@((int)ProductModelTypeEnum.Indoor));
+            ClearForm();
+            $('#Products').submit();
+        });
+
+        $('#model-type-outdoor').on('click', function (e) {
+
+            $('#ProductModelTypeId').val(@((int)ProductModelTypeEnum.Outdoor));
+            ClearForm();
+            $('#Products').submit();
+        });
+
+        $('#model-type-all').on('click', function (e) {
+            $('#ProductModelTypeId').val("");
+            ClearForm();
+            $('#Products').submit();
+        });
+
+        $('#CoolingCapacityRatedValue').on('change', function (e) {
+            debugger
+            var model  = @Html.Raw(Json.Encode(Model));
+            $('#Products').submit();
+        });
+
+        $('#UnitInstallationTypeId').on('change', function (e) {
+            $('#Products').submit();
+        });
+
+        $('#ProductCategoryId').on('change', function (e) {
+            $('#Products').submit();
+        });
+
+        $('#HeatExchangerTypeId').on('change', function (e) {
+            $('#Products').submit();
+        });
+
+        $('#PowerVoltageId').on('change', function (e) {
+            $('#Products').submit();
+        });
+
+        $('#CompressorTypeId').on('change', function (e) {
+            $('#Products').submit();
+        });
+
+        $('#GasValveTypeId').on('change', function (e) {
+            $('#Products').submit();
+        });
+
+        $('#MotorTypeId').on('change', function (e) {
+            $('#Products').submit();
+        });
+
+        $('#InstallationConfigurationTypeId').on('change', function (e) {
+            $('#Products').submit();
+        });
+
+        $('#CoolingCapacityNominalValue').on('change', function (e) {
+            $('#Products').submit();
+        });
+
+        $('#HeatingCapacityRatedValue').on('change', function (e) {
+            $('#Products').submit();
+        });
+
+        $('#AirFlowRateHighValue').on('change', function (e) {
+            $('#Products').submit();
+        });
+
+        $('#SortColumn').on('change', function (e) {
+            $('#Products').submit();
+        });
+
+        $('#reset_filters_button').on('click', function (e) {
+            ClearForm();
+            $('#Products').submit();
+        });
+
+        $('#product-filter-toggle').on('click', function () {
+            $('#products_filters').slideToggle(function () {
+
+                if (Modernizr.localstorage) {
+                    localStorage.setItem("dpo_#productlist_filter_visible", $('#products_filters').is(':visible'));
+                }
+
+                filterButtonImageToggle();
+            });
+
+        });
+
+        function filterButtonImageToggle() {
+            var filtersAreShowing = $('#products_filters').is(':visible').toString();
+            var imgSrc = "/Images/btn-dropdown-arrow-" + ((filtersAreShowing === 'true') ? 'up-icon.png' : 'down-icon.png');
+            $('#product-filter-toggle img').attr('src', imgSrc);
+        }
+
+        //sliders
+        var Link = $.noUiSlider.Link;
+        var customToolTip = new Link({
+            target: '-tooltip-<div class="productfilter-tooltip"></div>',
+            method: function (value) {
+
+                $(this).html(
+                    '<span>' + value + '</span>'
+                );
+            }
+        });
+
+        var customToolTipUnder = new Link({
+            target: '-tooltip-<div class="productfilter-tooltip under"></div>',
+            method: function (value) {
+
+                $(this).html(
+                    '<span>' + value + '</span>'
+                );
+            }
+        });
+
+        function updateSliderInputs(e) {
+            var thisSlider = $(e.target);
+            var sliderVals = thisSlider.val();
+
+            var val1 = sliderVals[0];
+            var val2 = sliderVals[1];
+
+            var data = thisSlider.data();
+            var clearForm = false;
+
+            if (data != null)
+            {
+                if (val1 == null || val1 <= data.range.min)
+                {
+                    val1 = "";
+                }
+
+                if (val2 == null || val2 >= data.range.max)
+                {
+                    val2 = "";
+                }
+            }
+
+            thisSlider.parent().find('input[name$="Min"]').val(val1);
+            thisSlider.parent().find('input[name$="Max"]').val(val2);
+        }
+
+        function parseHiddenVal(input, defaultVal) {
+            var hiddenInputValue = $('#' + input).val();
+            return (hiddenInputValue.length > 0) ? hiddenInputValue : defaultVal;
+        }
+
+        function BuildSlider(id, minElId, maxElId, min, max) {
+            if ($('#' + id).length > 0) {
+                var options = {
+                    start: [parseHiddenVal(minElId, min), parseHiddenVal(maxElId, max)],
+                    step: 0.5,
+                    range: {
+                        'min': Number(min),
+                        'max': Number(max)
+                    },
+                    serialization: {
+                        lower: [customToolTipUnder],
+                        upper: [customToolTip]
+                    }
+                };
+
+                $('#' + id).data(options);
+                $('#' + id).noUiSlider(options).on('change', updateSliderInputs);
+            }
+        }
+
+        BuildSlider('SEERSlider', "SEERNonductedMin", "SEERNonductedMax", 0, 40);
+        BuildSlider('IEERSlider', "IEERNonDuctedMin", "IEERNonDuctedMax", 0, 40);
+        BuildSlider('EERSlider', "EERNonductedMin", "EERNonductedMax", 0, 20);
+        BuildSlider('HSPFSlider', "HSPFNonductedMin", "HSPFNonductedMax", 0, 20);
+        BuildSlider('COPSlider', "COP47NonductedMin", "COP47NonductedMax", 0, 10);
+        BuildSlider('RCCSlider', "CoolingCapacityRatedMin", "CoolingCapacityRatedMax", 0, 500000);
+        BuildSlider('RHCSlider', "HeatingCapacityRatedMin", "HeatingCapacityRatedMax", 0, 500000);
+
+        if (Modernizr.localstorage && $('#products_filters').length > 0) {
+            var filterPref = localStorage.getItem("dpo_#productlist_filter_visible");
+
+            if (typeof filterPref !== "undefined" && filterPref !== null) {
+                if (filterPref === "true") {
+                    $('#products_filters').show();
+                }
+            }
+            else {
+                localStorage.setItem("dpo_#productlist_filter_visible", true);
+                $('#products_filters').show();
+            }
+
+            filterButtonImageToggle();
+        }
+    });
+</script>

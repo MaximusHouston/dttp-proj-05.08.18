@@ -1,0 +1,37 @@
+﻿@model ProjectModel
+
+<div class="row">
+    <div class="r-col1 hide-print">&nbsp;</div>
+    <div class="r-col4 details-list">
+        <ul>
+            <li>
+                <p class="detail-name">@ResourceUI.ProjectLeadStatus:</p>
+                <p>@Html.DisplayFor(m => m.ProjectLeadStatusTypeDescription)</p>
+            </li>
+            <li>
+                <p class="detail-name">@ResourceUI.OrderNumber:</p>
+                <p>@Html.DisplayFor(i => i.ERPFirstOrderNumber)</p>
+            </li>
+            <li>
+                <p class="detail-name">@ResourceUI.OrderDate:</p>
+                <p>@Html.DisplayFor(i => i.ERPFirstOrderDate)</p>
+            </li>
+
+        </ul>
+    </div>
+    <div class="r-col1 hide-print">&nbsp;</div>
+    <div class="r-col4 details-list">
+        <ul>
+            <li>
+                <p class="detail-name">@ResourceUI.OrderPONumber:</p>
+                <p>@Html.DisplayFor(i => i.ERPFirstPONumber)</p>
+            </li>
+            <li>
+                <p class="detail-name">@ResourceUI.OrderComments:</p>
+                <p>@Html.DisplayFor(i => i.ERPFirstOrderComment)</p>
+            </li>
+        </ul>
+    </div>
+    <div class="r-col2 hide-print">&nbsp;</div>
+    <div class="row-end">&nbsp;</div>
+</div>

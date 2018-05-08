@@ -1,0 +1,485 @@
+﻿@model CommissionRequestModel
+@{
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+    ViewBag.Title = ResourceUI.CommissionAuthorizationRequest;
+    
+}
+
+@{
+    var viewOnly = (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.NewRecord);
+}
+
+<div class="section form">
+    <p class="mandatory" style="top: 0; right: 20px;">@ResourceUI.FieldsMarkedWithAStar <span>*</span> @ResourceUI.AreMandatory</p>
+
+    <a href="@Url.Action("ProjectEdit", new { ProjectId = Model.ProjectId })">Edit</a>
+
+    <div class="row">
+        <div class="r-col1">&nbsp;</div>
+        <div class="r-col4 details-list">
+            <h5>DEALER/CONTRACTOR INFORMATION</h5>
+
+            @if (viewOnly && !Model.IsCommissionCalculation)
+            {
+                @Html.LabelFor(m => m.Project.CustomerName, ResourceUI.CustomerName)
+                @Html.DisplayFor(m => m.Project.CustomerName, new { @class = "full" })
+                <br />
+                <br />
+                @Html.LabelFor(m => m.RepPhoneNumber, ResourceUI.Contact)
+                @Html.DisplayFor(m => m.RepPhoneNumber, new { @class = "full", autocomplete = "off" })
+            }
+            else
+            {
+                @Html.LabelFor(m => m.Project.CustomerName, ResourceUI.CustomerName, new { @class = "required" })
+                @Html.EditorFor(m => m.Project.CustomerName, new { @class = "full" })
+                @Html.KeyMessages(m => m.Project.CustomerName)
+
+                @Html.LabelFor(m => m.RepPhoneNumber, ResourceUI.Contact, new { @class = "required" })
+                @Html.EditorFor(m => m.RepPhoneNumber, new { @class = "full", autocomplete = "off" })
+                @Html.KeyMessages(m => m.RepPhoneNumber)
+            }
+
+        </div>
+        <div class="r-col1">&nbsp;</div>
+        <div class="r-col4 details-list">
+            <h5>&nbsp;</h5>
+
+            @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+            {
+                if (viewOnly && !Model.IsCommissionCalculation)
+                {
+                    @Html.LabelFor(m => m.RepEmail, ResourceUI.EmailAddress)
+                    @Html.DisplayFor(m => m.RepEmail)
+                    <br />
+                    <br />
+                    @Html.LabelFor(m => m.RepFaxNumber, ResourceUI.FaxNumber)
+                    @Html.DisplayFor(m => m.RepFaxNumber, new { @class = "full" })
+
+                }
+                else
+                {
+                    if (user != null && user.HasAccess(SystemAccessEnum.EditUser) && user.UserId != Model.CurrentUser.UserId)
+                    {
+
+                        @Html.LabelFor(m => m.RepEmail, ResourceUI.EmailAddress, new { @class = "required" })
+                        @Html.EditorFor(m => m.RepEmail)
+                        @Html.KeyMessages(m => m.RepEmail)
+                    }
+                    else
+                    {
+
+                        @Html.LabelFor(m => m.RepEmail, ResourceUI.EmailAddress, new { @class = "required" })
+                        @Html.EditorFor(m => m.RepEmail, new { @class = "full", autocomplete = "off", placeholder = "Enter your business Email" })
+                        @Html.KeyMessages(m => m.RepEmail)
+                    }
+
+                    @Html.LabelFor(m => m.RepFaxNumber, ResourceUI.FaxNumber)
+                    @Html.EditorFor(m => m.RepFaxNumber, new { @class = "full", autocomplete = "off" })
+                }
+            }
+
+        </div>
+        <div class="r-col2">&nbsp;</div>
+        <div class="row-end">&nbsp;</div>
+        @*<div class="section form">
+
+            <div class="row">*@
+        <div class="r-col1">&nbsp;</div>
+        <div class="r-col4 details-list">
+
+            @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+            {
+                if (viewOnly && !Model.IsCommissionCalculation)
+                {
+                    @Html.LabelFor(m => m.Project.CustomerAddress.AddressLine1)
+                    @Html.DisplayFor(m => m.Project.CustomerAddress.AddressLine1, new { @class = "full" })
+                    <br />
+                    <br />
+                    @Html.LabelFor(m => m.Project.CustomerAddress.Location)
+                    @Html.DisplayFor(m => m.Project.CustomerAddress.Location, new { @class = "full" })
+
+                }
+                else
+                {
+                    @Html.LabelFor(m => m.Project.CustomerAddress.AddressLine1, new { @class = "required" })
+                    @Html.EditorFor(m => m.Project.CustomerAddress.AddressLine1, new { @class = "full" })
+                    @Html.KeyMessages(m => m.Project.CustomerAddress.AddressLine1)
+
+                    @Html.LabelFor(m => m.Project.CustomerAddress.Location, new { @class = "required" })
+                    @Html.EditorFor(m => m.Project.CustomerAddress.Location, new { @class = "full" })
+                    @Html.KeyMessages(m => m.Project.CustomerAddress.Location)
+                }
+            }
+
+        </div>
+        <div class="r-col1">&nbsp;</div>
+        <div class="r-col4 details-list">
+            <h5>&nbsp;</h5>
+            @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+            {
+                if (viewOnly && !Model.IsCommissionCalculation)
+                {
+                    @Html.LabelFor(m => m.Project.CustomerAddress.StateId, ResourceUI.Region)
+
+                    var repState = Model.Project.CustomerAddress.States.Items
+                                   .Where(s => s.Value == Model.Project.CustomerAddress.StateId.ToString())
+                                   .Select(s => s.Text).FirstOrDefault();
+                                <p>@repState</p>
+                                <br />
+
+                                @Html.LabelFor(m => m.Project.CustomerAddress.PostalCode, ResourceUI.ZipCode)
+                                @Html.DisplayFor(m => m.Project.CustomerAddress.PostalCode, new { @class = "half upcase" })
+                }
+                else
+                {
+
+
+                    @Html.LabelFor(m => m.Project.CustomerAddress.CountryCode, ResourceUI.Country)
+                    @Html.DropDownCountryListFor(m => m.Project.CustomerAddress.CountryCode, m => m.Project.CustomerAddress.StateId, Model.Project.CustomerAddress.Countries)
+                    @Html.KeyMessages(m => m.Project.CustomerAddress.CountryCode)
+
+                    @Html.LabelFor(m => m.Project.CustomerAddress.StateId, ResourceUI.Region, new { @class = "required" })
+                    @Html.DropDownRegionListFor(m => m.Project.CustomerAddress.StateId, Model.Project.CustomerAddress.States)
+                    @Html.KeyMessages(m => m.Project.CustomerAddress.StateId)
+
+                    @Html.LabelFor(m => m.Project.CustomerAddress.PostalCode, ResourceUI.ZipCode, new { @class = "required" })
+                    @Html.EditorFor(m => m.Project.CustomerAddress.PostalCode, new { @class = "half upcase" })
+                    @Html.KeyMessages(m => m.Project.CustomerAddress.PostalCode)
+                }
+            }
+        </div>
+        <div class="r-col2">&nbsp;</div>
+        <div class="row-end">&nbsp;</div>
+    </div>
+</div>
+@*</div>
+    </div>*@
+<br />
+@*<div class="section form">
+        <p class="mandatory" style="top: 0; right: 20px;">@ResourceUI.FieldsMarkedWithAStar <span>*</span> @ResourceUI.AreMandatory</p>
+        <div class="row">
+            <div class="r-col1">&nbsp;</div>
+            <div class="r-col4 details-list">
+                <h5>REPRESENTATIVE ADDRESS</h5>
+
+                @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+                {
+                    if (viewOnly && !Model.IsCommissionCalculation)
+                    {
+                        @Html.LabelFor(m => m.Project.CustomerAddress.AddressLine1)
+                        @Html.DisplayFor(m => m.Project.CustomerAddress.AddressLine1, new { @class = "full" })
+                        <br />
+                        <br />
+                        @Html.LabelFor(m => m.Project.CustomerAddress.Location)
+                        @Html.DisplayFor(m => m.Project.CustomerAddress.Location, new { @class = "full" })
+
+                    }
+                    else
+                    {
+                        @Html.LabelFor(m => m.Project.CustomerAddress.AddressLine1, new { @class = "required" })
+                        @Html.EditorFor(m => m.Project.CustomerAddress.AddressLine1, new { @class = "full" })
+                        @Html.KeyMessages(m => m.Project.CustomerAddress.AddressLine1)
+
+                        @Html.LabelFor(m => m.Project.CustomerAddress.Location, new { @class = "required" })
+                        @Html.EditorFor(m => m.Project.CustomerAddress.Location, new { @class = "full" })
+                        @Html.KeyMessages(m => m.Project.CustomerAddress.Location)
+                    }
+                }
+
+            </div>
+            <div class="r-col1">&nbsp;</div>
+            <div class="r-col4 details-list">
+                <h5>&nbsp;</h5>
+                @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+                {
+                    if (viewOnly && !Model.IsCommissionCalculation)
+                    {
+                        @Html.LabelFor(m => m.Project.CustomerAddress.StateId, ResourceUI.Region)
+
+                        var repState = Model.Project.CustomerAddress.States.Items
+                                       .Where(s => s.Value == Model.Project.CustomerAddress.StateId.ToString())
+                                       .Select(s => s.Text).FirstOrDefault();
+                                    <p>@repState</p>
+                                    <br />
+
+                                    @Html.LabelFor(m => m.Project.CustomerAddress.PostalCode, ResourceUI.ZipCode)
+                                    @Html.DisplayFor(m => m.Project.CustomerAddress.PostalCode, new { @class = "half upcase" })
+                    }
+                    else
+                    {
+                        @Html.LabelFor(m => m.Project.CustomerAddress.StateId, ResourceUI.Region, new { @class = "required" })
+                        @Html.DropDownRegionListFor(m => m.Project.CustomerAddress.StateId, Model.Project.CustomerAddress.States)
+                        @Html.KeyMessages(m => m.Project.CustomerAddress.StateId)
+
+                        @Html.LabelFor(m => m.Project.CustomerAddress.PostalCode, ResourceUI.ZipCode, new { @class = "required" })
+                        @Html.EditorFor(m => m.Project.CustomerAddress.PostalCode, new { @class = "half upcase" })
+                        @Html.KeyMessages(m => m.Project.CustomerAddress.PostalCode)
+                    }
+                }
+            </div>
+            <div class="r-col2">&nbsp;</div>
+            <div class="row-end">&nbsp;</div>
+        </div>
+    </div>*@
+<br />
+<div class="section form">
+    <p class="mandatory" style="top: 0; right: 20px;">@ResourceUI.FieldsMarkedWithAStar <span>*</span> @ResourceUI.AreMandatory</p>
+    <div class="row">
+        <div class="r-col1">&nbsp;</div>
+        <div class="r-col4 details-list">
+            <h5>SALESPERSON INFORMATION</h5>
+            @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+            {
+                if (viewOnly && !Model.IsCommissionCalculation)
+                {
+                    @Html.LabelFor(m => m.Project.SellerName, ResourceUI.BusinessName)
+                    @Html.DisplayFor(m => m.Project.SellerName, new { @class = "full" })
+                    <br />
+                    <br />
+                    @Html.LabelFor(m => m.SellerPhoneNumber, ResourceUI.MobilePhoneNumber)
+                    @Html.DisplayFor(m => m.SellerPhoneNumber, new { @class = "full", autocomplete = "off" })
+                }
+                else
+                {
+                    @Html.LabelFor(m => m.Project.SellerName, ResourceUI.BusinessName, new { @class = "required" })
+                    @Html.EditorFor(m => m.Project.SellerName, new { @class = "full" })
+                    @Html.KeyMessages(m => m.Project.SellerName)
+
+                    @Html.LabelFor(m => m.SellerPhoneNumber, ResourceUI.MobilePhoneNumber, new { @class = "required" })
+                    @Html.EditorFor(m => m.SellerPhoneNumber, new { @class = "full", autocomplete = "off" })
+                    @Html.KeyMessages(m => m.SellerPhoneNumber)
+                }
+            }
+        </div>
+        <div class="r-col1">&nbsp;</div>
+        <div class="r-col4 details-list">
+            <h5>&nbsp;</h5>
+            @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+            {
+                if (viewOnly && !Model.IsCommissionCalculation)
+                {
+                    @Html.LabelFor(m => m.SellerEmail, ResourceUI.EmailAddress)
+                    @Html.DisplayFor(m => m.SellerEmail, new { @class = "full" })
+                    <br />
+                    @Html.LabelFor(m => m.SellerFaxNumber, ResourceUI.FaxNumber)
+                    @Html.DisplayFor(m => m.SellerFaxNumber, new { @class = "full" })
+                }
+                else
+                {
+                    @Html.LabelFor(m => m.SellerEmail, ResourceUI.EmailAddress)
+                    @Html.EditorFor(m => m.SellerEmail, new { @class = "full" })
+                    @Html.KeyMessages(m => m.SellerEmail)
+
+                    @Html.LabelFor(m => m.SellerFaxNumber, ResourceUI.FaxNumber)
+                    @Html.EditorFor(m => m.SellerFaxNumber, new { @class = "full", autocomplete = "off" })
+                    @Html.KeyMessages(m => m.SellerFaxNumber)
+                }
+            }
+        </div>
+        <div class="r-col2">&nbsp;</div>
+        <div class="row-end">&nbsp;</div>
+    </div>
+</div>
+<br />
+<div class="section form">
+    <p class="mandatory" style="top: 0; right: 20px;">@ResourceUI.FieldsMarkedWithAStar <span>*</span> @ResourceUI.AreMandatory</p>
+    <div class="row">
+        <div class="r-col1">&nbsp;</div>
+        <div class="r-col4 details-list">
+            <h5>GENERAL JOB OVERVIEW INFORMATION</h5>
+            @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+            {
+                if (viewOnly && !Model.IsCommissionCalculation)
+                {
+                    @Html.LabelFor(m => m.Project.Name, ResourceUI.ProjectName)
+                    @Html.DisplayFor(m => m.Project.Name)
+                    <br />
+                    <br />
+                    @Html.LabelFor(m => m.Project.ShipToAddress.AddressLine1, ResourceUI.Address)
+                    @Html.DisplayFor(m => m.Project.ShipToAddress.AddressLine1)
+                    <br />
+                    <br />
+                    @Html.LabelFor(m => m.Project.ShipToAddress.Location, ResourceUI.Location)
+                    @Html.DisplayFor(m => m.Project.ShipToAddress.Location)
+                    <br />
+                    <br />
+                    @Html.LabelFor(m => m.Project.ShipToAddress.StateId, ResourceUI.Region)
+                    var shipToAddressState = Model.Project.ShipToAddress.States.Items
+                                             .Where(s => s.Value == Model.Project.ShipToAddress.StateId.ToString())
+                                             .Select(s => s.Text).FirstOrDefault();
+                                            <p>@shipToAddressState</p>
+                                            <br />
+                                            <br />
+                                            @Html.LabelFor(m => m.Project.ShipToAddress.PostalCode, ResourceUI.ZipCode)
+                                            @Html.DisplayFor(m => m.Project.ShipToAddress.PostalCode)
+                                            <br />
+                                            <br />
+                                            @Html.LabelFor(m => m.Project.EngineerName, ResourceUI.EngineerName)
+                                            @Html.DisplayFor(m => m.Project.EngineerName, new { @class = "full" })
+                                            <br />
+                                            <br />
+                                            @Html.LabelFor(m => m.BrandSpecifiedTypeId, ResourceUI.Brands)
+
+                    var brandSpecifiedType = Model.BrandSpecifiedTypes.Items
+                                             .Where(b => b.Value == Model.BrandSpecifiedTypeId.ToString())
+                                             .Select(b => b.Text).FirstOrDefault();
+                                            <p>@brandSpecifiedType</p>
+                                            <br />
+
+                                            @Html.LabelFor(m => m.DaikinEquipmentAtAdvantageTypeId, ResourceUI.DaikinEquipmentFeaturePerformance)
+
+                    var EquipmentAdvantageType = Model.DaikinEquipmentAtAdvantageTypes.Items
+                                                 .Where(e => e.Value == Model.DaikinEquipmentAtAdvantageTypeId.ToString())
+                                                 .Select(e => e.Text).FirstOrDefault();
+                                                <p>@EquipmentAdvantageType</p>
+
+                }
+                else
+                {
+                    @Html.LabelFor(m => m.Project.Name, ResourceUI.ProjectName)
+                    @Html.EditorFor(m => m.Project.Name)
+                    @Html.KeyMessages(m => m.Project.Name)
+
+                    @Html.LabelFor(m => m.Project.ShipToAddress.AddressLine1, ResourceUI.Address)
+                    @Html.EditorFor(m => m.Project.ShipToAddress.AddressLine1)
+                    @Html.KeyMessages(m => m.Project.ShipToAddress.AddressLine1)
+
+                    @Html.LabelFor(m => m.Project.ShipToAddress.Location, ResourceUI.Location)
+                    @Html.EditorFor(m => m.Project.ShipToAddress.Location)
+                    @Html.KeyMessages(m => m.Project.ShipToAddress.Location)
+
+                    @Html.LabelFor(m => m.Project.ShipToAddress.StateId, ResourceUI.Region)
+                    @Html.DropDownRegionListFor(m => m.Project.ShipToAddress.StateId, Model.Project.ShipToAddress.States)
+                    @Html.KeyMessages(m => m.Project.ShipToAddress.States)
+
+                    @Html.LabelFor(m => m.Project.ShipToAddress.PostalCode, ResourceUI.ZipCode)
+                    @Html.EditorFor(m => m.Project.ShipToAddress.PostalCode)
+                    @Html.KeyMessages(m => m.Project.ShipToAddress.PostalCode)
+
+                    @Html.LabelFor(m => m.Project.EngineerName, ResourceUI.EngineerName)
+                    @Html.EditorFor(m => m.Project.EngineerName, new { @class = "full" })
+                    @Html.KeyMessages(m => m.Project.EngineerName)
+
+                    @Html.LabelFor(m => m.BrandSpecifiedTypeId, ResourceUI.Brands)
+                    @Html.DropDownBusinessListFor(m => m.BrandSpecifiedTypeId, Model.BrandSpecifiedTypes)
+                    @Html.KeyMessages(m => m.BrandSpecifiedTypeId)
+
+                    @Html.LabelFor(m => m.DaikinEquipmentAtAdvantageTypeId, ResourceUI.DaikinEquipmentFeaturePerformance)
+                    @Html.DropDownBusinessListFor(m => m.DaikinEquipmentAtAdvantageTypeId, Model.DaikinEquipmentAtAdvantageTypes)
+                    @Html.KeyMessages(m => m.DaikinEquipmentAtAdvantageTypeId)
+                }
+            }
+        </div>
+        <div class="r-col1">&nbsp;</div>
+        <div class="r-col4 details-list">
+            <h5>&nbsp;</h5>
+            @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+            {
+                if (viewOnly && !Model.IsCommissionCalculation)
+                {
+
+                    @Html.LabelFor(m => m.Project.ProjectTypeId, ResourceUI.ProjectType)
+                    var projectType = Model.Project.ProjectTypes.Items
+                                      .Where(p => p.Value == Model.Project.ProjectTypeId.ToString())
+                                      .Select(p => p.Text).FirstOrDefault();
+                                    <p>@projectType</p>
+                                    <br />
+
+                                    @Html.LabelFor(m => m.Project.VerticalMarketTypeId, ResourceUI.VerticalMarket)
+                    var verticalMarketType = Model.Project.VerticalMarketTypes.Items
+                                             .Where(vm => vm.Value == Model.Project.VerticalMarketTypeId.ToString())
+                                             .Select(vm => vm.Text).FirstOrDefault();
+                                            <p>@verticalMarketType</p>
+                                            <br />
+
+                                            @Html.LabelFor(m => m.CustomerTypeId, ResourceUI.CustomerType)
+                    var customerType = Model.CustomerTypes.Items
+                                       .Where(c => c.Value == Model.CustomerTypeId.ToString())
+                                       .Select(c => c.Text).FirstOrDefault();
+                                    <p>@customerType</p>
+                                    <br />
+
+                                    @Html.LabelFor(m => m.Project.ConstructionTypeId, ResourceUI.ProjectConstructionType)
+                    var constructionType = Model.Project.ConstructionTypes.Items
+                                           .Where(ct => ct.Value == Model.Project.ConstructionTypeId.ToString())
+                                           .Select(ct => ct.Text).FirstOrDefault();
+                                        <p>@constructionType</p>
+                                        <br />
+
+                                        @Html.LabelFor(m => m.FundingTypeId, ResourceUI.FundingType)
+                    var fundingType = Model.FundingTypes.Items
+                                      .Where(ft => ft.Value == Model.FundingTypeId.ToString())
+                                      .Select(ft => ft.Text).FirstOrDefault();
+                                    <p>@fundingType</p>
+                                    <br />
+
+                                    @Html.LabelFor(m => m.Project.EstimatedDelivery, ResourceUI.EstimatedDelivery)
+                                    @Html.DisplayFor(m => m.Project.EstimatedDelivery, new { @class = "half" })
+                                    <br />
+                                    <br />
+                                    @Html.LabelFor(m => m.ProbabilityOfCloseTypeId, ResourceUI.ProbabilityOfClose)
+                    var closedType = Model.ProbabilityOfCloseTypes.Items
+                                     .Where(pct => pct.Value == Model.ProbabilityOfCloseTypeId.ToString())
+                                     .Select(pct => pct.Text).FirstOrDefault();
+                                    <p>@closedType</p>
+                                    <br />
+
+                                    @Html.LabelFor(m => m.Project.ProjectStatusTypeId, ResourceUI.ProjectStatus)
+                    var projectStatusType = Model.Project.ProjectStatusTypes.Items
+                                            .Where(pst => pst.Value == Model.Project.ProjectStatusTypeId.ToString())
+                                            .Select(pst => pst.Text).FirstOrDefault();
+                                            <p>@projectStatusType</p>
+                                            <br />
+
+                                            @Html.LabelFor(m => m.WinLossConditionTypeId, ResourceUI.WinLossCondition)
+                    var winLossType = Model.WinLossConditionTypes.Items
+                                        .Where(wlt => wlt.Value == Model.WinLossConditionTypeId.ToString())
+                                        .Select(wlt => wlt.Text).FirstOrDefault();
+                                        <p>@winLossType</p>
+                }
+                else
+                {
+                    @Html.LabelFor(m => m.Project.ProjectTypeId, ResourceUI.ProjectType, new { @class = "required" })
+                    @Html.DropDownProjectTypeListFor(m => m.Project.ProjectTypeId, Model.Project.ProjectTypes)
+                    @Html.KeyMessages(m => m.Project.ProjectTypeId)
+
+                    @Html.LabelFor(m => m.Project.VerticalMarketTypeId, ResourceUI.VerticalMarket, new { @class = "required" })
+                    @Html.DropDownVerticalMarketTypeListFor(m => m.Project.VerticalMarketTypeId, Model.Project.VerticalMarketTypes)
+                    @Html.KeyMessages(m => m.Project.VerticalMarketTypes)
+
+                    @Html.LabelFor(m => m.CustomerTypeId, ResourceUI.CustomerType, new { @class = "required" })
+                    @Html.DropDownCustomerTypes(m => m.CustomerTypeId, Model.CustomerTypes)
+                    @Html.KeyMessages(m => m.CustomerTypeId)
+
+                    @Html.LabelFor(m => m.Project.ConstructionTypeId, ResourceUI.ProjectConstructionType, new { @class = "required" })
+                    @Html.DropDownConstructionTypeListFor(m => m.Project.ConstructionTypeId, Model.Project.ConstructionTypes)
+                    @Html.KeyMessages(m => m.Project.ConstructionTypes)
+
+                    @Html.LabelFor(m => m.FundingTypeId, ResourceUI.FundingType, new { @class = "required" })
+                    @Html.DropDownFundingTypes(m => m.FundingTypeId, Model.FundingTypes)
+                    @Html.KeyMessages(m => m.FundingTypeId)
+
+                    @Html.LabelFor(m => m.Project.EstimatedDelivery, ResourceUI.EstimatedDelivery, new { @class = "required" })
+                    @Html.EditorFor(m => m.Project.EstimatedDelivery, new { @class = "half" })
+                    @Html.KeyMessages(m => m.Project.EstimatedDelivery)
+
+                    @Html.LabelFor(m => m.ProbabilityOfCloseTypeId, ResourceUI.ProbabilityOfClose, new { @class = "required" })
+                    @Html.DropDownBusinessListFor(m => m.ProbabilityOfCloseTypeId, Model.ProbabilityOfCloseTypes)
+                    @Html.KeyMessages(m => m.ProbabilityOfCloseTypeId)
+
+                    @Html.LabelFor(m => m.Project.ProjectStatusTypeId, ResourceUI.ProjectStatus, new { @class = "required" })
+                    @Html.DropDownProjectStatusTypeListFor(m => m.Project.ProjectStatusTypeId, Model.Project.ProjectStatusTypes)
+                    @Html.KeyMessages(m => m.Project.ProjectStatusTypeId)
+
+                    @Html.LabelFor(m => m.WinLossConditionTypeId, ResourceUI.WinLossCondition)
+                    @Html.DropDownWinLossTypeListFor(m => m.WinLossConditionTypeId, Model.WinLossConditionTypes)
+                    @Html.KeyMessages(m => m.WinLossConditionTypeId)
+                }
+            }
+
+        </div>
+        <div class="r-col2">&nbsp;</div>
+        <div class="row-end">&nbsp;</div>
+    </div>
+</div>
+<br />

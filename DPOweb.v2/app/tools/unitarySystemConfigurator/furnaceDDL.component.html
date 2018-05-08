@@ -1,0 +1,6 @@
+﻿<kendo-dropdownlist [data]="furnaceList" [textField]="'text'" [valueField]="'value'" [defaultItem]="defaultItem" (valueChange)="PSCFunarceChange($event)">
+    <template kendoDropDownListItemTemplate let-dataItem>
+        <p *ngIf="dataItem.value == null"><span style="font-weight:bold">{{ dataItem.text }} </span></p>
+        <p *ngIf="dataItem.value != null"><span style="font-weight:bold">{{ dataItem.text }} </span> <br /> Fit:{{ dataItem.fit }} - AFUE: {{dataItem.afue}}</p>
+    </template>
+</kendo-dropdownlist>

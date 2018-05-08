@@ -1,0 +1,44 @@
+﻿@model ProductModel
+<a style="padding:0; text-decoration:none;" href="@Url.Action("Product", new { ProductId = Model.ProductId })">
+    @{
+        List<DocumentModel> images = new List<DocumentModel>();
+    }
+
+    @if (Model.Image.HasImage == true)
+    {
+        images.Add(Model.Image);
+    }
+
+    @if (Model.SubProducts != null)
+    {
+        foreach (var sub in Model.SubProducts)
+        {
+            if (sub.Image.HasImage == true)
+            {
+                images.Add(sub.Image);
+            }
+        }
+    }
+
+    @if (images.Count == 0)
+    {
+        <img src="/Images/NoImage.png" />
+    }
+    else
+    {
+        for (var i = 0; i < images.Count; i++)
+        {
+            <img id="@(Model.ProductId + "_img_" + i)" src="@images[i].URL" onerror="this.onerror = null; this.src = '/Images/NoImage.png'" style=@((i == 0) ? "" : "display:none;") />
+        }
+    }
+
+</a>
+@if (images.Count > 1)
+{
+    <div class="product-img-btns">
+        @for (int j = 0; j < images.Count; j++)
+        {
+            <button data-img-id="@(Model.ProductId + "_img_" + j)" class=@((j == 0) ? "active" : "")></button>
+        }
+    </div>
+}

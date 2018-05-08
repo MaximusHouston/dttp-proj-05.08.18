@@ -1,0 +1,16 @@
+﻿<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="iSeries"
+  DTS:DTSID="{CC0294F2-D9AC-430F-83E9-BB5F7CD85663}"
+  DTS:CreationName="OLEDB">
+  <DTS:PropertyExpression
+    DTS:Name="ConnectionString">@[$Project::ISeries_ConnectionString]</DTS:PropertyExpression>
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectionString="Data Source=TESTDEV.GOODMANMFG.COM;User ID=EBUSID;Provider=IBMDASQL.DataSource.1;Force Translate=37;Library List=GMLIBDATAT,AMFLIBT,GMLIBCORET;Naming Convention=1;Client User ID=DCTYDB;Client Program ID=SSIS;">
+      <DTS:Password
+        DTS:Name="Password"
+        Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAATJBCZoSFnUq5rzgxgx50JgAAAAACAAAAAAADZgAAwAAAABAAAAAEDg9d+KF+Ih98BoTnxA27AAAAAASAAACgAAAAEAAAAPyMbjpuFfll9X/sB+G6FSx4AAAAZ/9bYV9BS8zuKUBOJHZKeBbXa6qCs9Eg0gnzSQXcb/EuJkkKQW3SQneIXV0R7msbIdGAWmcMtaJ579+1Jb2+LTCMR5nXJ3ZZZRFuwaIn3L1UwMwpQmB8BCTC4Fxw6S9QDV96Tqj7p7XNnzHGTzKIYha1ORDilVuPFAAAAHjesNV8fX3Qd+jIdxeC17Mm8grJ</DTS:Password>
+    </DTS:ConnectionManager>
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

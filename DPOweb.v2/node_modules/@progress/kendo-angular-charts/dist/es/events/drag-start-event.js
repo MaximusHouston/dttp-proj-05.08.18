@@ -1,0 +1,19 @@
+import * as tslib_1 from "tslib";
+import { PreventableEvent } from './preventable-event';
+/**
+ * Arguments for the `dragStart` event.
+ */
+var DragStartEvent = /** @class */ (function (_super) {
+    tslib_1.__extends(DragStartEvent, _super);
+    /**
+     * @hidden
+     */
+    function DragStartEvent(e, sender) {
+        var _this = _super.call(this, sender) || this;
+        _this.axisRanges = e.axisRanges;
+        _this.originalEvent = e.originalEvent;
+        return _this;
+    }
+    return DragStartEvent;
+}(PreventableEvent));
+export { DragStartEvent };

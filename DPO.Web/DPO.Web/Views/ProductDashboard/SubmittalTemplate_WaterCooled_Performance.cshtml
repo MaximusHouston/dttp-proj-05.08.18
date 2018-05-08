@@ -1,0 +1,81 @@
+﻿@model ProductModel
+@{
+    var specs = Model.Specifications;
+}
+
+        <tr>
+            <td>Outdoor Unit Model No.</td>
+            <td>@Model.ProductNumber</td>
+            <td>Outdoor Unit Name:</td>
+            <td>@Model.Name</td>
+        </tr>
+        <tr>
+            <td>Type: </td>
+            <td>@specs.GetString("FunctionCategory")</td>
+
+            <td>Unit Combination:</td>
+            <td style="white-space: normal; word-wrap: break-word;">
+                @Model.UnitCombination
+            </td>
+        </tr>
+        <tr>
+            <td>Rated Cooling Capacity (Btu/hr):</td>
+            <td>@specs.GetDecimal("CoolingCapacityRated", "N0")</td>
+
+
+            <td>Rated Cooling Conditions:</td>
+            <td>
+                Indoor (&deg;F DB/WB): @specs.GetDecimal("RatedCoolingConditionRoomDB", "N0") / @specs.GetDecimal("RatedCoolingConditionRoomWB", "N0")
+                <br />
+                Ambient (&deg;F DB/WB): @specs.GetDecimal("RatedCoolingConditionAmbientDB", "N0") / @specs.GetDecimal("RatedCoolingConditionAmbientWB", "N0")
+            </td>
+        </tr>
+        <tr>
+            <td>Nom Cooling Capacity (Btu/hr):</td>
+            <td>@specs.GetDecimal("CoolingCapacityNominal", "N0")</td>
+
+            <td>Rated Heating Conditions:</td>
+            <td>
+                Indoor (&deg;F DB/WB): @specs.GetDecimal("RatedHeatingConditionRoomDB", "N0") / @specs.GetDecimal("RatedHeatingConditionRoomWB", "N0")
+                <br />
+                Ambient (&deg;F DB/WB): @specs.GetDecimal("RatedHeatingConditionAmbientDB", "N0") / @specs.GetDecimal("RatedHeatingConditionAmbientWB", "N0")
+            </td>
+        </tr>
+        <tr>
+            <td>Cooling Input Power (kW):</td>
+            <td>@specs.GetDecimal("CoolingInputPower", "N2")</td>
+
+            <td>Rated Piping Length(ft):</td>
+            <td>@specs.GetDecimal("RatedPipingLength", "N0")</td>
+        </tr>
+        <tr>
+            <td>Rated Heating Capacity (Btu/hr):</td>
+            <td>@specs.GetDecimal("HeatingCapacityRated", "N0")</td>
+
+            <td>Rated Height Difference (ft):</td>
+            <td>@specs.GetDecimal("RatedHeightDifference", "N2")</td>
+        </tr>
+
+        <tr>
+            <td>Heating Input Power (kW):</td>
+            <td>@specs.GetDecimal("HeatingInputPower", "N2")</td>
+
+            <td>IEER (Non-Ducted/Ducted):</td>
+            <td>@specs.GetDecimal("IEERNonDucted", "N2") / @specs.GetDecimal("IEERDucted", "N2")</td>
+        </tr>
+
+        <tr>
+            <td>Nom Heating Capacity (Btu/hr):</td>
+            <td>@specs.GetDecimal("HeatingCapacityNominal", "N0")</td>
+
+            <td>Heating COP 17F (Non-Ducted/Ducted):</td>
+            <td>@specs.GetDecimal("COP17NonDucted", "N1") / @specs.GetDecimal("COP17Ducted", "N1")</td>
+        </tr>
+ 
+        <tr>
+            <td></td>
+            <td></td>
+
+            <td>Heating COP (Non-Ducted/Ducted):</td>
+            <td>@specs.GetDecimal("COP47NonDucted", "N1") / @specs.GetDecimal("COP47Ducted", "N1")</td>
+        </tr>

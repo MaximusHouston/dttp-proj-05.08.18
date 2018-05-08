@@ -1,0 +1,50 @@
+﻿<link rel="stylesheet" href="/v2/app/content/kendo/kendo.common.min.css" />
+<link rel="stylesheet" href="/v2/app/content/kendo/kendo.default.min.css" />
+<link rel="stylesheet" href="/v2/app/content/kendo/kendo.default.mobile.min.css" />
+
+<link rel="stylesheet" href="/v2/app/content/kendoGridJQuery.css" />
+
+
+<div id="projectGridButtonBar" class="row">
+    <div class="col col-xs-12 col-sm-4 col-md-4 col-lg-4" style="margin-bottom:10px">
+        <div class="row">
+            <input type="text" class="k-input k-textbox" id="projectSearchBox" name="projectSearchFilter" placeholder=" Search" title="Search by project Id, project name, project owner name, business name." />
+            <button id="projectSearchBtn"><span class="k-icon k-i-search"></span></button>
+        </div>
+    </div>
+
+    <div class="col col-xs-12 col-sm-8 col-md-8 col-lg-8">
+        <button class="btn btn-default pull-right" (click)="openExportProjectsWindow()" style="margin-left:10px"><span class="k-icon k-i-excel"></span> <span class="hidden-xs">Export To Excel</span></button>
+        <button class="btn btn-default pull-right" (click)="clearFilters()" style="margin-left:10px"> <span class="k-icon k-i-funnel-clear"></span> <span class="hidden-xs">Clear Filters</span></button>
+        <!--<a id="newProjectBtn" *ngIf="canEditProject" href="/Projectdashboard/ProjectEdit" class="btn btn-primary pull-right" style="margin-left:10px"><span class="k-icon k-i-plus"></span> <span class="hidden-xs">New Project</span></a>-->
+        <a id="newProjectBtn" *ngIf="canEditProject" href="/v2/#/projectCreate" class="btn btn-primary pull-right" style="margin-left:10px"><span class="k-icon k-i-plus"></span> <span class="hidden-xs">New Project</span></a>
+        <button class="btn btn-default pull-right" *ngIf="deleteProjects.length>0" (click)="openDeleteProjectsWindow()" style="margin-left:10px"> <span class="k-font-icon k-i-trash"></span> <span class="hidden-xs">Delete Projects</span></button>
+        <span class="pull-right hidden-xs" *ngIf="canUnDeleteProject"><input type="checkbox" [(ngModel)]="showDeletedProjects" style="margin-left:10px" /> Show deleted projects</span>
+
+    </div>
+
+</div>
+
+
+<div class="row" style="margin-bottom:10px">
+</div>
+
+<!--<div id="testdiv">Hello</div>-->
+
+<div id="project-grid" class="kendogrid row"></div>
+
+<ul id="actionMenu"></ul>
+
+
+<div id="transferProjectWindow" style="display:none">
+    <transferProject-popup [selectedProjectId]="selectedProjectId" (closeWindow)="CloseTransferProjectPopup($event)"></transferProject-popup>
+</div>
+<div id="deleteProjectsWindow" style="display:none">
+    <deleteProjects-popup [deleteProjects]="deleteProjects" (clearDeleteProjectsArray)="emptyDeleteProjectsArray($event)"></deleteProjects-popup>
+</div>
+
+<div id="exportProjectsWindow" style="display:none">
+    <exportProjects-popup [showDeletedProjects]="showDeletedProjects"></exportProjects-popup>
+</div>
+
+

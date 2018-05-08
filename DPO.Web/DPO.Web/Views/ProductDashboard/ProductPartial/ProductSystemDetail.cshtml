@@ -1,0 +1,265 @@
+﻿@model ProductModel
+@{
+    var activeQuote = ViewData["ActiveQuoteId"] as long?;
+    bool shouldShowAccessories = Model.Accessories.Count > 0 || (Model.IsSystem && (Model.GetSystemIndoorUnit.Accessories.Count > 0 || Model.GetSystemOutdoorUnit.Accessories.Count == 0));
+}
+<ul class="sub-tab-bar" style="margin-top: 20px;">
+    <li class="active-tab" id="productOverviewTab">
+        <a href="#productOverview">Overview</a>
+    </li>
+    @if (shouldShowAccessories)
+    {
+        <li id="productRelatedAccessoriesTab">
+            <a href="#productRelatedAccessories">Related Accessories</a>
+        </li>
+    }
+    <li id="technicalSpecificationTab">
+        <a href="#technicalSpecification">Technical Specifications</a>
+    </li>
+</ul>
+
+<div id="productOverview" class="sub-tab-view" style="display:none;">
+    <div class="section t-flush">
+        <div class=" product-list">
+            <div class="row">
+                <form>
+                   @Html.Partial("ItemQuantityBox", new QuoteItemModel { ProductId = Model.ProductId, QuoteId = activeQuote })
+                </form>
+                <div class="product-details" style="width: 245px;">
+                    <div class="product-image lrg pull-left">
+                        @Html.Partial("ProductImages", Model)
+                    </div>
+                    <div class="clearfix">&nbsp;</div>
+                </div>
+                <div class="product-ratings" style="margin-left: 255px;">
+                    <p>
+                        <span class="as-lnk">
+                            Model No.:
+                        </span>
+                        <span class="pull-right">
+                            @Model.ProductNumber
+                        </span>
+                    </p>
+                    <p>
+                        <span class="as-lnk">
+                            Model Type:
+                        </span>
+                        <span class="pull-right">
+                            @Model.ProductModelTypeDescription
+                        </span>
+                    </p>
+                    @if (Model.CurrentUser.ShowPrices)
+                    {
+                        <p>
+                            <span class="as-lnk">
+                                Price:
+                            </span>
+                            <span class="pull-right">
+                                @String.Format("{0:C}", Model.Price)
+                            </span>
+                        </p>
+                    }
+                    @if (Model.Specifications.GetDecimal("CoolingCapacityRated", "N2") != null)
+                    {
+                        <p>
+                            <span class="as-lnk">
+                                Rated Cooling Capacity:
+                            </span>
+                            <span class="pull-right">
+                                @Model.Specifications.GetDecimal("CoolingCapacityRated", "N2")
+                            </span>
+                        </p>
+                    }
+                    @if (Model.Specifications.GetDecimal("HeatingCapacityRated", "N2") != null)
+                    {
+                        <p>
+                            <span class="as-lnk">
+                                Rated Heating Capacity:
+                            </span>
+                            <span class="pull-right">
+                                @Model.Specifications.GetDecimal("HeatingCapacityRated", "N2")
+                            </span>
+                        </p>
+                    }
+                    @Html.Partial("ProductSpecificationBars", Model)
+                </div>
+                <div class="row-end">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+    <div class="section t-flush">
+        <div class="row">
+            <div class="r-col6" style="padding-right: 30px;">
+                <table class="tbl grey"><thead><tr><th colspan="2">Related Documents</th></tr></thead></table>
+                <div style="overflow-y: auto; max-height: 500px;">
+                    @Html.Partial("ProductPartial/ProductDocumentListSmall")
+                </div>
+            </div>
+            <div class="r-col6">
+                <table class="tbl grey"><thead><tr><th colspan="2">Indoor Unit Related Accessories</th></tr></thead></table>
+                <div style="overflow-y: auto; max-height: 240px;">
+                    @Html.Partial("ProductPartial/ProductAccessoryListSmall", Model.GetSystemIndoorUnit.Accessories)
+                </div>
+                <br />
+                <table class="tbl grey"><thead><tr><th colspan="2">Outdoor Unit Related Accessories</th></tr></thead></table>
+                <div style="overflow-y: auto; max-height: 240px;">
+                    @Html.Partial("ProductPartial/ProductAccessoryListSmall", Model.GetSystemOutdoorUnit.Accessories)
+                </div>
+                @if (Model.GetSystemIndoorUnit.Accessories.Count > 0 || Model.GetSystemOutdoorUnit.Accessories.Count > 0)
+                {
+                    <button type="button" class="context-btn" id="viewAllAccessoriesBtn">View all accessories</button>
+                }
+            </div>
+            <div class="row-end">&nbsp;</div>
+        </div>
+    </div>
+</div>
+<div id="productRelatedAccessories" class="sub-tab-view" style="display:none;">
+    <div class="product-filters" id="accessoryFilters">
+        <div class="type-opts pull-left">
+            <label>Showing:&nbsp;</label>
+            <input type="radio" name="accessory-filter-type" value="all" checked />
+            <label>All</label>
+            <input type="radio" name="accessory-filter-type" value="indoor" />
+            <label>Indoor</label>
+            <input type="radio" name="accessory-filter-type" value="outdoor" />
+            <label>Outdoor</label>
+        </div>
+        <div class="sort-opts pull-right">
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        <div class="section product-list">
+            <div id="indoorAccessories">
+                @foreach (var indoorItem in Model.GetSystemIndoorUnit.Accessories)
+                {
+                    @Html.Partial("ProductPartial/ProductAccessoryListLarge", indoorItem);
+                }
+            </div>
+            <div id="outdoorAccessories">
+                @foreach (var outdoorItem in Model.GetSystemOutdoorUnit.Accessories)
+                {
+                    @Html.Partial("ProductPartial/ProductAccessoryListLarge", outdoorItem);
+                }
+            </div>
+        </div>
+    }
+</div>
+<div id="technicalSpecification" class="sub-tab-view" style="display:none;">
+    <div class="section">
+        <table class="tbl grey"><thead><tr><th>Technical Specifications</th></tr></thead></table>
+        <div style="overflow-y: auto;">
+            <table class="tbl">
+                <tbody>
+                    @if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.Controllers || Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.RTU || Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.Packaged)
+                    {
+                        @Html.Partial("ProductTechnicalSpecifications", Model.Specifications)
+                    }
+                    else if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.Accessories)
+                    {
+                        @Html.Partial("ProductTechincalSpecifications_Accessories", Model)
+                    }
+                    else if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.Other)
+                    {
+                        @Html.Partial("ProductTechincalSpecifications_Other", Model)
+                    }
+                    else if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.SystemHP)
+                    {
+                        @Html.Partial("ProductTechnicalSpecifications_SystemHP", Model)
+                    }
+                    else if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.SystemCooling)
+                    {
+                        @Html.Partial("ProductTechnicalSpecifications_SystemCooling", Model)
+                    }
+                    else if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.AlthermaIndoor)
+                    {
+                        @Html.Partial("ProductTechnicalSpecifications_AlthermaIndoor", Model)
+                    }
+                    else if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.AlthermaOutdoor)
+                    {
+                        @Html.Partial("ProductTechnicalSpecifications_AlthermaOutdoor", Model)
+                    }
+                    else if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.AlthermaTank)
+                    {
+                        @Html.Partial("ProductTechnicalSpecifications_AlthermaTank", Model)
+                    }
+                    else if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.MultiSplitIndoor || Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.VRVIndoor)
+                    {
+                        @Html.Partial("SubmittalTemplate_Indoor_Performance", Model)
+                        @Html.Partial("SubmittalTemplate_Indoor_UnitDetails", Model)
+                    }
+                    else if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.MultiSplitOutdoor)
+                    {
+                        @Html.Partial("SubmittalTemplate_Outdoor_Performance", Model)
+                        @Html.Partial("SubmittalTemplate_Outdoor_UnitDetails", Model)
+                    }
+                    else if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.VRVIIIAirCooled)
+                    {
+                        @Html.Partial("SubmittalTemplate_AirCooled_Performance", Model)
+                        @Html.Partial("SubmittalTemplate_AirCooled_UnitDetails", Model)
+                    }
+                    else if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.VRVIIIWaterCooled)
+                    {
+                        @Html.Partial("SubmittalTemplate_WaterCooled_Performance", Model)
+                        @Html.Partial("SubmittalTemplate_WaterCooled_UnitDetails", Model)
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    (function()
+    {
+        function setTab(tab)
+        {
+            $(".sub-tab-bar li").each(function (tab)
+            {
+                $(this).removeClass("active-tab");
+            });
+            $("#" + tab + "Tab").addClass("active-tab");
+
+            $(".sub-tab-view").hide();
+            $("#" + tab).show();
+        }
+
+        function onHashChanged()
+        {
+            var tab = window.location.hash.substring(1);
+            if (tab.length == 0) tab = "productOverview";
+
+            setTab(tab);
+        }
+
+        window.addEventListener("hashchange", onHashChanged);
+        onHashChanged();
+
+
+        if ($('#accessoryFilters').length)
+        {
+            $('input[name="accessory-filter-type"]').on('change', function ()
+            {
+                $('#indoorAccessories, #outdoorAccessories').hide();
+
+                switch ($(this).val())
+                {
+                    case "indoor":
+                        $('#indoorAccessories').show();
+                        break;
+                    case "outdoor":
+                        $('#outdoorAccessories').show();
+                        break;
+                    default:
+                        $('#indoorAccessories, #outdoorAccessories').show();
+                }
+            });
+        }
+
+        $('#viewAllAccessoriesBtn').on('click', function ()
+        {
+            window.location.hash = "productRelatedAccessories";
+        });
+    })();
+</script>

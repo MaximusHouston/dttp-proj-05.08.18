@@ -1,0 +1,82 @@
+﻿@model List<BuildingFloorModel> 
+@{
+    ViewBag.Title = "Daikin City Content Management";
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers")
+}
+
+@Html.Partial("_CityCMSTabsPartial")
+
+    <div class="section t-flush b-flush">
+        <div class="item-strap btm-bdr">
+            <div class="itemname">
+                <h1>Functional Buildings</h1>
+            </div>
+            <div class="btn-bar">
+                <input type="button" value="Reset Changes" class="btn" style="visibility:hidden;">
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="section form">
+
+        @foreach (var f in Model)
+        {
+            <h4>@f.buildingName</h4>
+
+            <table class="tbl">
+                <thead>
+                    <tr>
+                        <th>Floor name</th>
+                        <th style="width: 100px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background-color: #fff;">
+                        <td>@f.name</td>
+                        <td>
+                            @Html.ActionLink("Edit Floor", "FunctionalBuilding", new { floorid = f.id })
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <br />
+            <br />
+        }
+    </div>
+
+
+<script>
+    $(function ()
+    {
+        $('#functional_buildings_list').on('change', function (e)
+        {
+            $('#links [data-building-id]').hide();
+            $('[data-building-id="' + $('#functional_buildings_list').val() + '"]').show();
+        });
+
+        function checkLinkEnabledState()
+        {
+            if ($(this).is(':checked')) {
+                $(this).parents('.details-list').find('input, textarea').not('input[type="checkbox"]').removeClass('disabled');
+            }
+            else{
+                $(this).parents('.details-list').find('input, textarea').not('input[type="checkbox"]').addClass('disabled');
+            }
+        }
+
+        $('.cb-switch').each(function () {
+            checkLinkEnabledState.call(this);
+        });
+
+        $('.cb-switch').on('change', checkLinkEnabledState);
+    });
+</script>

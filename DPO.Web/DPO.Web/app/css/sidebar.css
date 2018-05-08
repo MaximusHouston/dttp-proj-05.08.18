@@ -1,0 +1,63 @@
+﻿.sidebar {
+    height: 100%;
+    padding-bottom: 20px;
+    position: relative;
+    padding-left: 0;
+    overflow-x: hidden;
+}
+
+    .sidebar ul {
+        padding: 0;
+        margin-left: 0;
+    }
+
+        .sidebar ul li a {
+            padding: 15px 0 0 10px;
+            display: block;
+            text-decoration: none;
+            cursor: pointer;
+            -webkit-transition: all .2s linear;
+            -moz-transition: all .2s linear;
+            -o-transition: all .2s linear;
+            transition: all .2s linear;
+        }
+
+            .sidebar ul li a em {
+                margin-right: 10px;
+            }
+
+
+            .sidebar ul li a:hover {
+                color: #ff0000;
+                letter-spacing: .035em;
+                -webkit-transition: all .25s linear;
+                -moz-transition: all .25s linear;
+                -o-transition: all .25s linear;
+                transition: all .25s linear;
+            }
+
+            .sidebar ul li a:focus {
+                color: #ff0000;
+            }
+
+        .sidebar ul .submenu li > a {
+            padding: 15px 0 0 40px;
+        }
+
+.aside.aside-collapsed-add, .aside.aside-collapsed-remove,
+.crmbinet-toggle section.aside-collapsed-add, section.aside-collapsed-remove {
+    -webkit-transition: margin-left 1s linear;
+    -moz-transition: margin-left 1s linear;
+    -o-transition: margin-left 1s linear;
+    transition: margin-left 1s linear;
+}
+
+.aside.aside-collapsed-add-active,
+.aside.aside-collapsed {
+    margin-left: -220px;
+}
+
+section.aside-collapsed-add-active,
+.crmbinet-toggle section.aside-collapsed {
+    margin-left: 0;
+}

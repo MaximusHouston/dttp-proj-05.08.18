@@ -1,0 +1,34 @@
+﻿<kendo-grid *ngIf="optionItems" [data]="optionItems">
+
+    <kendo-grid-column media="(max-width: 450px)" title="Components">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <dl>
+                <dt>Product Option</dt>
+                <dd>{{ dataItem.optionProductNumber }}</dd>
+                <dt>Description</dt>
+                <dd>{{ dataItem.optionProductName }}</dd>
+                <dt>Quantity</dt>
+                <dd>{{ dataItem.requiredQuantity*unitQuantity }}</dd>
+                <dt>List Price</dt>
+                <dd>{{ dataItem.listPrice | currency:'USD':'$':'1.2-2' }}</dd>
+                <dt>Type</dt>
+                <dd>{{ dataItem.lineItemOptionTypeDescription }}</dd>
+            </dl>
+        </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column media="(min-width: 450px)" field="optionProductNumber" title="Product Option" width="200">
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" field="optionProductName" title="Description">
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" title="Quantity">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            {{dataItem.requiredQuantity*unitQuantity}}
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" field="listPrice" title="List Price Each" format="{0:c}">
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" field="lineItemOptionTypeDescription" title="Type">
+    </kendo-grid-column>
+    
+</kendo-grid>

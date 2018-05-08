@@ -1,0 +1,17 @@
+﻿@model WidgetContainerModel
+<li data-templateid="@Model.Widget.TemplateId" data-widgettype="Overview.OverviewWidget" data-renderer="Overview.AlertElementRenderer">
+    <div class="widget-body">
+        @Html.Partial("OverviewWidgetTitle")
+        @Html.Partial("OverviewWidgetSettings")
+        @Html.Partial("OverviewWidgetErrorScreen")
+        <div class="contentbox withfooter project-alerts" style="overflow-y: auto; max-width: 100%; margin: 0 auto;">
+            @Html.Partial("OverviewWidgetErrorScreen")
+            <p class="no-data" style="display:none;">No project alerts</p>
+        </div>
+        <div class="contentbox-footer">
+            @*<a href="@Url.Action("Projects", "Projectdashboard", new { OnlyAlertedProjects = true, ExpirationDays = 15 })">view all project alerts</a>*@
+            <a href="/v2/#/projects?alert=true&amp;expirationDays=15">view all project alerts</a>
+
+        </div>
+    </div>
+</li>

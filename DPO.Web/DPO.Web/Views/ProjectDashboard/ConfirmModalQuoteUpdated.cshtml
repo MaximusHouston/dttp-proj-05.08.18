@@ -1,0 +1,14 @@
+﻿@model QuoteModel
+<div class="modal confirm" id="confirm_modal_quote_updated">
+    <div style="top: 20%;">
+        <a href="@Url.Action("Quote", "ProjectDashboard", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })">
+            <img src="~/Images/modal-close-btn.png" class="f-close-btn" />
+        </a>
+        <h1>Quote Created</h1>
+        <p>Quote has been created. You can now add or import products to the quote, or close the window to view the new quote.</p>
+        @*<a href="@Url.Action("ProductFamilies", "Productdashboard", new { quoteId = Model.QuoteId })" class=" submit-btn" >@ResourceUI.ProductsAdd</a>*@
+        <a href="/api/Product/Products?quoteId=@Model.QuoteId" class=" submit-btn">@ResourceUI.ProductsAdd</a>
+        <a href="@Url.Action("Quote", "Projectdashboard", new { ProjectId = Model.ProjectId, quoteId = Model.QuoteId, ShowImportProductPopup = true })" class=" submit-btn" style="margin-left: 10px;">@ResourceUI.ProductsImport</a>
+    </div>
+</div>
+

@@ -1,0 +1,30 @@
+﻿<!--desktop-->
+<button id="selectProductsBtn" *ngIf="quote.quoteOptions.canAddProducts" class="btn btn-primary hidden-xs" data-toggle="modal" data-target="#selectProductsPopup"><span class="k-icon k-i-file-add"></span> SELECT PRODUCTS</button>
+<!--phone-->
+<button style="width:90%; margin-top:5px;" id="selectProductsBtn" *ngIf="quote.quoteOptions.canAddProducts" class="btn btn-primary btn-block visible-xs" data-toggle="modal" data-target="#selectProductsPopup"><span class="k-icon k-i-file-add"></span> SELECT PRODUCTS</button>
+
+<div id="selectProductsPopup" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">TOOLS:</h4>
+            </div>
+            <div class="modal-body">
+                <kendo-dropdownlist 
+                    [data]="toolList" 
+                    [textField]="'text'" 
+                    [valueField]="'value'"
+                    [defaultItem]="defaultItem"
+                    [(ngModel)]="selectedTool" 
+                    [popupSettings]="{ width: 250 }">
+                </kendo-dropdownlist>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="openTool()">Open</button>
+            </div>
+        </div>
+
+    </div>
+</div>

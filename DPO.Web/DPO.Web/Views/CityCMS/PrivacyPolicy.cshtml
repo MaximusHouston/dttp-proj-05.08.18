@@ -1,0 +1,21 @@
+﻿@model string
+@{
+    ViewBag.Title = "Contact";
+}
+
+@section Page_Styles {
+  @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles", "~/Content/themes/base/css")
+}
+
+<a href="javascript:top.window.close();" style="position: absolute; right: 50px; top: 20px; cursor: pointer; z-index: 999;">
+    <img src="~/Images/modal-close-btn.png" />
+</a>
+
+<div class="section b-flush">
+    <img src="~/Images/daikin-logo.png" style="position: relative; left: -18px;" />
+</div>
+<div class="section t-flush">
+    @Html.Raw(Model)
+</div>
+ 
+<br /> 

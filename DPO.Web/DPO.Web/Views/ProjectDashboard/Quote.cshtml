@@ -1,0 +1,209 @@
+﻿@model QuoteModel
+@{
+    ViewBag.Title = ResourceUI.QuoteDetails;
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+}
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/importitemsmodal")
+}
+<div ng-controller="quoteController">
+    @using System.Web.Configuration
+
+
+    @Html.Partial("DARAddressValidationModal")
+    <div id="import_items_modal_container">
+        @Html.Partial("ImportItemsModal", Model)
+    </div>
+    @Html.Partial("QuoteConfirmExportTypeModal")
+    @Html.Partial("_ProjectTabsPartial")
+    <ul class="breadcrumbs">
+        <li><a href="/v2/#/projects">@ResourceUI.Projects</a></li>
+        <li><a href="@Url.Action("Project", new { ProjectId = Model.ProjectId })">@Model.Project.Name</a></li>
+        <li>@Model.Title</li>
+    </ul>
+    @using (Html.BeginForm("Quote", "Projectdashboard", FormMethod.Post, new { id = "QuoteForm" }))
+    {
+        // Key post data
+        @Html.AntiForgeryToken()
+        @Html.Concurrency()
+        @Html.HiddenFor(m => m.ProjectId)
+        @Html.HiddenFor(m => m.QuoteId)
+
+        @Html.PageMessages()
+
+        <div class="section t-flush">
+            <div class="item-strap">
+                <div class="itemname full">
+                    <h1>@Model.Title</h1>
+                </div>
+                @Html.Partial("QuoteButtonBar")
+            </div>
+        </div>
+        <ul class="sub-tab-bar">
+            <li class="active-tab">
+                @Html.ActionLink(ResourceUI.Overview, "Quote", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })
+            </li>
+            <li>
+                @Html.ActionLink(ResourceUI.Products, "QuoteItems", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })
+            </li>
+
+            @if (user.ShowPrices)
+            {
+                if (user.HasAccess(SystemAccessEnum.RequestDiscounts) || user.HasAccess(SystemAccessEnum.ViewDiscountRequest))
+                {
+                    if (Model.HasDAR )
+                    {
+                        <li>
+                            @Html.ActionLink(ResourceUI.RequestedDiscounts, "QuoteDiscountRequests", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })
+                        </li>
+                    }
+                }
+                
+                if (user.HasAccess(SystemAccessEnum.RequestCommission) || user.HasAccess(SystemAccessEnum.ViewRequestedCommission))
+                {
+                    if (Model.HasCOM)
+                    {
+                        <li>
+                            @Html.ActionLink(ResourceUI.RequestedCommission, "QuoteCommissionRequests", new { projectId = Model.ProjectId, QuoteId = Model.QuoteId, CommissionRequestId = Model.CommissionRequestId })
+                        </li>
+                    }
+                }
+                
+                if (user.HasAccess(SystemAccessEnum.ViewOrder) || user.HasAccess(SystemAccessEnum.SubmitOrder))
+                {
+                  
+                    <li id="quote_order_tab" style="visibility:hidden;">
+                        @Html.ActionLink(ResourceUI.Order, "OrderInQuote", new { DiscountRequestId = Model.DiscountRequestId, ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })
+                    </li>
+                }
+            }
+
+        </ul>
+
+        @Html.Partial("ActiveQuoteInfoBar", Model)
+
+        @*if (user.ShowPrices)
+        {
+            if (Model.ShowCommissionConvertPopup)
+            {
+                if (!Model.IsCommission)
+                {
+                    if (
+                       user.HasAccess(SystemAccessEnum.RequestCommission) ||
+                       user.HasAccess(SystemAccessEnum.ApprovedRequestCommission) ||
+                       user.HasAccess(SystemAccessEnum.ViewRequestedCommission)
+                      )
+                    {
+                        if (!Model.ActiveQuoteSummary.HasDAR &&
+                            Model.ActiveQuoteSummary.OrderStatusTypeId == (byte)OrderStatusTypeEnum.NewRecord ||
+                            Model.ActiveQuoteSummary.OrderStatusTypeId == (byte)OrderStatusTypeEnum.Canceled)
+                        {
+                            @Html.Partial("ConfirmModalCommissionConvert", Model.ActiveQuoteSummary);
+                        }
+                    }
+                }
+            }
+        }*@
+
+        <div class="section">
+            <div class="row sub-heading">
+                <h4>@ResourceUI.ProductsInThisQuote</h4>
+                <div class="pull-right">
+                    <a href="@Url.Action("QuoteItems", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId, CommissionRequestId = Model.CommissionRequestId })" class="context-btn">
+                        <img src="~/Images/all-quotes-icon.png" />
+                        @ResourceUI.ProductsViewAll
+                    </a>
+                    @if (user.HasAccess(SystemAccessEnum.EditProject)
+                                    && Model.IsTransferred == false
+                                    && !Model.HasDAR
+                                    && !Model.HasCOM
+                                    && Model.OrderStatusTypeId != (int)OrderStatusTypeEnum.Submitted
+                                    && Model.OrderStatusTypeId != (int)OrderStatusTypeEnum.AwaitingCSR
+                                    && Model.OrderStatusTypeId != (int)OrderStatusTypeEnum.InProcess)
+                    {
+                        if (Model.AwaitingCommissionRequest != true)
+                        {
+                           
+
+                            <a class="context-btn submit" href="/api/Product/Products?quoteId=@Model.QuoteId">
+                                <img src="~/Images/new-project-icon.png" />
+                                @ResourceUI.ProductsAdd
+                            </a>
+
+                          
+
+                            if (user.HasAccessTool(ToolAccessEnum.UnitaryMatchupTool))
+                            {
+                                @Html.Partial("AddProductsFromTools");
+                            }
+
+                            <a class="context-btn submit" href="#" id="import_items_btn">
+                                <img src="~/Images/new-project-icon.png" />
+                                @ResourceUI.ProductsImport
+                            </a>
+                        }
+                    }
+                </div>
+
+                <div class="row-end">&nbsp;</div>
+            </div>
+            <div class="active-quote-bar">
+                <div class="pull-left">
+                    <img src="~/Images/added-items-list-icon.png" style="top:2.5em;" />
+                    <span>@Model.ItemCount @ResourceUI.ProductAmount</span>
+                    <a href="@Url.Action("QuoteItems", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })">@ResourceUI.ItemsViewAllInList</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="row sub-heading">
+                @if (user.HasAccess(SystemAccessEnum.EditProject)
+                    && Model.Deleted == false
+                    && Model.IsTransferred == false
+                    && !Model.HasDAR
+                    && Model.ProjectStatusTypeId != (byte)ProjectStatusTypeEnum.Inactive &&
+                   Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.AwaitingCSR &&
+                   Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Submitted)
+                {
+                    if (Model.ActiveQuoteSummary.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved &&
+                   Model.ActiveQuoteSummary.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Deleted &&
+                   Model.ActiveQuoteSummary.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Pending &&
+                   Model.ActiveQuoteSummary.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Rejected
+                  )
+                    {
+                        <a href="@Url.Action("QuoteEdit", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })" class="context-btn h-slim pull-right">
+                            <img src="~/Images/context-btn-edit-icon.png" />
+                            @ResourceUI.QuoteEdit
+                        </a>
+                    }
+                }
+
+                <h4>@ResourceUI.Details</h4>
+                <div class="row-end">&nbsp;</div>
+            </div>
+            @Html.Partial("QuoteDetails", Model)
+        </div>
+
+    }
+</div>
+
+
+<script type="text/javascript">
+    @*$(window).load(function() {
+        window.location.href = "/v2/#/quote/" + @Model.QuoteId.ToString();
+    });*@
+
+ 
+
+    function QuoteViewModel() {
+        var self = this;
+        self.projectId = @Html.Raw(Json.Encode(Model.ProjectIdStr));
+        self.projectIdStr =  @Html.Raw(Json.Encode(Model.ProjectIdStr));
+        self.quoteId = @Html.Raw(Json.Encode(Model.QuoteIdStr));
+        self.quoteIdStr = @Html.Raw(Json.Encode(Model.QuoteIdStr));
+    }
+</script>

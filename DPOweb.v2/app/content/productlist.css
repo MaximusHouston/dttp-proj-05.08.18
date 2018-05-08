@@ -1,0 +1,461 @@
+﻿/*TODO: Hacking Kendo grid to fix horizontal scroll bar size*/
+#product-table-view.k-grid .k-grid-container {
+    overflow:visible;
+}
+
+
+#userBasket #userBasketInnerDiv {
+    background-color: #cff0ff;
+    padding: 10px 25px 10px 25px;
+}
+
+#productFamilyTabs {
+    padding: 0px;
+}
+
+
+
+.product-list-view .k-grid .k-grid-header, .product-grid-view .k-grid .k-grid-header {
+    display: none;
+}
+
+
+/*Product grid row layout*/
+@media screen and (min-width: 1350px) {
+    .product-list-view .k-grid table tbody tr {
+        width: 50%;
+        float: left;
+        background-color: #fff;
+    }
+
+        .product-list-view .k-grid table tbody tr td {
+            /*width: inherit;*/
+            width: 889px;
+        }
+
+    .product-grid-view .k-grid table tbody tr {
+        width: 25%;
+        float: left;
+        background-color: #fff;
+    }
+
+        .product-grid-view .k-grid table tbody tr td {
+            width: 25%;
+            padding: 0px;
+        }
+}
+
+/*fix extra space on kendo grid*/
+/*#product-list-view, #product-grid-view {
+    border-width: 0px;
+}*/
+
+/*@media screen and (min-width: 1350px) {
+    .product-list-view .k-grid table tbody tr .product-image{
+        width: 15%;
+        float:left;
+    
+    }
+
+    .product-list-view .k-grid table tbody tr .product-info{
+        width: 30%;
+        float:left;
+    }
+
+     .product-list-view .k-grid table tbody tr .product-specs{
+        width: 40%;
+        float:left;
+    }
+
+      .product-list-view .k-grid table tbody tr .product-qty{
+        width: 15%;
+        float:left;
+    }
+}*/
+
+
+
+div.seerRatingBar, div.ieerRatingBar, div.eerRatingBar, div.hspfRatingBar, div.cop47RatingBar, div.scheRatingBar,
+div.seerRatingBarDucted, div.ieerRatingBarDucted, div.eerRatingBarDucted, div.hspfRatingBarDucted, div.cop47RatingBarDucted, div.afueRatingBar {
+    height: 4px;
+    width: auto;
+    display: block;
+}
+
+
+    div.seerRatingBar .k-state-selected, div.seerRatingBarDucted .k-state-selected {
+        /*background-color: #16a8af;
+    border-color: #16a8af;*/
+        background: #40c8f4; /* Old browsers */
+        background: -moz-linear-gradient(left, #40c8f4 0%, #007fcc 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, right top, color-stop(0%,#40c8f4), color-stop(100%,#007fcc)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(left, #40c8f4 0%,#007fcc 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(left, #40c8f4 0%,#007fcc 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(left, #40c8f4 0%,#007fcc 100%); /* IE10+ */
+        background: linear-gradient(to right, #40c8f4 0%,#007fcc 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#40c8f4', endColorstr='#007fcc',GradientType=1 );
+        border-color: #40c8f4;
+    }
+
+    div.ieerRatingBar .k-state-selected, div.ieerRatingBarDucted .k-state-selected {
+        /*background-color: #16a8af;
+    border-color: #16a8af;*/
+        background: #40c8f4; /* Old browsers */
+        background: -moz-linear-gradient(left, #40c8f4 0%, #007fcc 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, right top, color-stop(0%,#40c8f4), color-stop(100%,#007fcc)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(left, #40c8f4 0%,#007fcc 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(left, #40c8f4 0%,#007fcc 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(left, #40c8f4 0%,#007fcc 100%); /* IE10+ */
+        background: linear-gradient(to right, #40c8f4 0%,#007fcc 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#40c8f4', endColorstr='#007fcc',GradientType=1 );
+        border-color: #40c8f4;
+    }
+    
+    div.scheRatingBar .k-state-selected {
+        /*background-color: #16a8af;
+    border-color: #16a8af;*/
+        background: #40c8f4; /* Old browsers */
+        background: -moz-linear-gradient(left, #1eed85 0%, #00b27c 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, right top, color-stop(0%,#1eed85), color-stop(100%,#00b27c)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(left, #1eed85 0%,#00b27c 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(left, #1eed85 0%,#00b27c 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(left, #1eed85 0%,#00b27c 100%); /* IE10+ */
+        background: linear-gradient(to right, #1eed85 0%,#00b27c 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1eed85', endColorstr='#00b27c',GradientType=1 );
+        border-color: #1eed85;
+    }
+
+
+    div.eerRatingBar .k-state-selected, div.eerRatingBarDucted .k-state-selected {
+        /*background-color: #109fce;
+    border-color: #109fce;*/
+        background: #40c8f4; /* Old browsers */
+        background: -moz-linear-gradient(left, #40c8f4 0%, #007fcc 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, right top, color-stop(0%,#40c8f4), color-stop(100%,#007fcc)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(left, #40c8f4 0%,#007fcc 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(left, #40c8f4 0%,#007fcc 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(left, #40c8f4 0%,#007fcc 100%); /* IE10+ */
+        background: linear-gradient(to right, #40c8f4 0%,#007fcc 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#40c8f4', endColorstr='#007fcc',GradientType=1 );
+        border-color: #40c8f4;
+    }
+
+    div.hspfRatingBar .k-state-selected, div.hspfRatingBarDucted .k-state-selected {
+        /*background-color: #6306ce;
+    border-color: #6306ce;*/
+        background: #d70353; /* Old browsers */
+        background: -moz-linear-gradient(left, #d70353 0%, #8d019a 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, right top, color-stop(0%,#d70353), color-stop(100%,#8d019a)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(left, #d70353 0%,#8d019a 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(left, #d70353 0%,#8d019a 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(left, #d70353 0%,#8d019a 100%); /* IE10+ */
+        background: linear-gradient(to right, #d70353 0%,#8d019a 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d70353', endColorstr='#8d019a',GradientType=1 ); /* IE6-9 */
+        border-color: #d70353;
+    }
+
+    div.cop47RatingBar .k-state-selected, div.cop47RatingBarDucted .k-state-selected {
+        /*background-color: #6306ce;
+    border-color: #6306ce;*/
+        background: #d70353; /* Old browsers */
+        background: -moz-linear-gradient(left, #d70353 0%, #8d019a 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, right top, color-stop(0%,#d70353), color-stop(100%,#8d019a)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(left, #d70353 0%,#8d019a 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(left, #d70353 0%,#8d019a 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(left, #d70353 0%,#8d019a 100%); /* IE10+ */
+        background: linear-gradient(to right, #d70353 0%,#8d019a 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d70353', endColorstr='#8d019a',GradientType=1 ); /* IE6-9 */
+        border-color: #d70353;
+    }
+
+    div.afueRatingBar .k-state-selected{
+        /*background-color: #6306ce;
+    border-color: #6306ce;*/
+        background: #d70353; /* Old browsers */
+        background: -moz-linear-gradient(left, #d70353 0%, #8d019a 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, right top, color-stop(0%,#d70353), color-stop(100%,#8d019a)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(left, #d70353 0%,#8d019a 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(left, #d70353 0%,#8d019a 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(left, #d70353 0%,#8d019a 100%); /* IE10+ */
+        background: linear-gradient(to right, #d70353 0%,#8d019a 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d70353', endColorstr='#8d019a',GradientType=1 ); /* IE6-9 */
+        border-color: #d70353;
+    }
+
+
+
+.product-details .product-name {
+    word-wrap: break-word;
+    font-weight: bold;
+    font-family: "museo-sans", sans-serif;
+    white-space: normal;
+    height: auto;
+}
+
+/*center image*/
+.sub-product-img {
+    display: block;
+    margin: auto;
+    object-fit:contain;
+}
+
+.no-image {
+    width:145px;
+    height:100px;
+}
+
+
+.product-img-btn {
+    background-color: #DBDBDB;
+    border-radius: 50%;
+    border: 0;
+    outline: 0;
+    display: inline-block;
+    width: 1px;
+    height: 10px;
+    cursor: pointer;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+    .product-img-btn.active {
+        background-color: #61656F;
+        cursor: default;
+    }
+
+
+/*product row border*/
+#product-list-view table tbody tr {
+    padding: 20px 0px !important;
+    border-bottom: 2px solid #A7D7EE;
+    height: 150px;
+}
+
+
+/*.row.product-details{
+    border-bottom: 2px solid #A7D7EE;
+}*/
+
+/*hr.product-row-line {
+    border-width:2px;
+    border-color: #A7D7EE;
+}*/
+
+.product-grid-view .product-details {
+    margin-right: 10px;
+}
+
+
+
+
+
+
+
+/*.view-options*/
+/*.view-options {
+    position: absolute;
+    right: 220px;
+    top: 10px;
+    z-index: 1;
+}*/
+
+.view-options button:first-child, .view-options button:last-child {
+    width: 39px;
+}
+
+.view-options button {
+    padding: 0;
+    margin: 0;
+    width: 40px;
+    border: none;
+    float: left;
+}
+
+    .view-options button.display-view-list {
+        background-image: url(/Images/display-view-list.png);
+    }
+
+    .view-options button.display-view-table {
+        background-image: url(/Images/display-view-table.png);
+    }
+
+    .view-options button.display-view-grid {
+        background-image: url(/Images/display-view-grid.png);
+    }
+
+    .view-options button.selected, .view-options button:hover {
+        background-position: 0 -30px;
+    }
+
+/* display button and context button shared styles*/
+.display-btn, .context-btn, .custom-btn {
+    height: 30px;
+    line-height: 18px;
+    display: inline-block;
+    color: #4d545d;
+    cursor: pointer;
+    border: 1px solid #b8b8b8;
+}
+
+/* context menu button */
+.context-btn {
+    padding: 0 10px 2px 6px;
+    margin: 8px 0 9px 0;
+    font-family: "museo-sans", sans-serif;
+    font-weight: 700;
+    line-height: 30px;
+}
+
+    .context-btn img {
+        padding-right: 6px;
+        position: relative;
+        top: 2px;
+    }
+
+
+
+
+#productSearchBox {
+    width: 250px;
+}
+
+
+
+
+.sort-filter-container {
+    background-color: #effaff;
+    padding: 10px;
+}
+
+.sortby-container {
+    margin: 5px;
+}
+
+    .sortby-container label {
+        font-weight: normal;
+        font-size: 11.7px;
+    }
+
+.filters-container {
+    background-color: #e5f2fa;
+    padding: 5px;
+}
+
+    .filters-container label {
+        font-weight: normal;
+        font-size: 11.7px;
+    }
+
+
+
+    .filters-container ul {
+        list-style-type: none;
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .filters-container li {
+        display: inline-block;
+    }
+
+
+.product-filters span.k-dropdown-wrap, .product-sort span.k-dropdown-wrap {
+    width: 175px;
+}
+
+
+/*Fix bootstrap inside kendo grid widget*/
+
+/* reset everything to the default box model */
+
+*, :before, :after {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+/* set a border-box model only to elements that need it */
+
+
+.form-control,
+.container,
+.container-fluid,
+.row,
+.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1,
+.col-xs-2, .col-sm-2, .col-md-2, .col-lg-2,
+.col-xs-3, .col-sm-3, .col-md-3, .col-lg-3,
+.col-xs-4, .col-sm-4, .col-md-4, .col-lg-4,
+.col-xs-5, .col-sm-5, .col-md-5, .col-lg-5,
+.col-xs-6, .col-sm-6, .col-md-6, .col-lg-6,
+.col-xs-7, .col-sm-7, .col-md-7, .col-lg-7,
+.col-xs-8, .col-sm-8, .col-md-8, .col-lg-8,
+.col-xs-9, .col-sm-9, .col-md-9, .col-lg-9,
+.col-xs-10, .col-sm-10, .col-md-10, .col-lg-10,
+.col-xs-11, .col-sm-11, .col-md-11, .col-lg-11,
+.col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+
+/*Table*/
+.tbl.grey thead tr th {
+    background-color: #616771;
+    border-color: #616771;
+}
+
+/*accessory-list-view layout*/
+@media screen and (min-width: 1350px) {
+    .accessory-list-view div.accessory-list-row {
+        width: 50%;
+        float: left;
+        background-color: #fff;
+    }
+}
+
+.accessory-list-view div.accessory-list-row {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+
+/*.product-filters span.k-dropdown-wrap, .product-sort span.k-dropdown-wrap {
+    width: 175px;
+}*/
+
+/*fixed kendo grid pager at bottom of page*/ 
+/*#product-list-view .k-grid-pager, #product-grid-view .k-grid-pager{
+    bottom:0;
+    position: fixed;
+    width: auto;
+    z-index: 1;
+}*/
+
+/*fixed kendo grid pager on top of page*/ 
+.fixed-pager{
+    top: 0;
+    position: fixed;
+    width: auto;
+    z-index: 1;
+}
+
+#scrollUpBtn {
+    bottom: 10px;
+    position: fixed;
+    left:50%;
+    z-index: 1;
+    opacity: 0.8;
+}
+
+/*.product-image:hover {
+    position:relative;
+    top:0px;
+    left:0px;
+    width:100px !important;
+    height:auto;
+    display:block;
+    z-index:999;
+}*/
+
+

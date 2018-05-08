@@ -1,0 +1,95 @@
+﻿@model CommunicationsCentreModel
+@{
+    ViewBag.Title = "Daikin City Content Management";
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/confirmmodal")
+}
+
+@Html.Partial("_CityCMSTabsPartial")
+
+    <div class="section b-flush t-flush">
+        <div class="item-strap btm-bdr">
+            <div class="itemname">
+                <h1>Communications Center</h1>
+            </div>
+            <div class="btn-bar">
+                <a class="btn submit" href="@Url.Action("ContactUsFormEdit")"><img src="/Images/context-btn-edit-icon.png">Edit Contact Us Form</a>
+            </div>
+        </div>
+    </div>
+
+@using(Html.BeginForm())
+{
+    <div class="section form">
+        <div class="row">
+            <div class="r-col12">
+                <h4>Video Links</h4>
+                <table class="tbl">
+                    <thead>
+                        <tr>
+                            <th style="width: 200px;">Thumbnail</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody style="background-color: #fff;">
+                        @for (var i = 0; i < Model.videos.video.Count; i++)
+                        {
+                            <tr>
+                                <td style="padding-top: 10px; min-width: 174px;">
+                                    @{
+                                        string thumb = Model.videos.video[i].thumb;
+                                        string thumbSrc = thumb.Contains("http") ? thumb : "/daikincityweb/images/buildings/communications-center/" + thumb;
+                                    }
+                                    <img id="thumb_@Model.videos.video[i].id" src="@thumbSrc" style="width: 174px; display: block; margin: 0 auto;" />
+                                    <a href="@Url.Action("CommunicationsCenterUploadImage", new { videoid = Model.videos.video[i].id })" class="context-btn submit" style="display:block; width: 100%; text-align: center;">Upload New Image</a>
+                                </td>
+                                <td>
+                                    @Html.HiddenFor(m => m.videos.video[i].id)
+                                    @Html.HiddenFor(m => m.videos.video[i].thumb, new { @id = "hidden_thumb_" + @Model.videos.video[i].id })
+                                    <label>Title</label>
+                                    @Html.TextBoxFor(m => m.videos.video[i].title)
+                                    <br />
+                                    <br />
+                                    <label>Link URL</label><div id="error_@Model.videos.video[i].id"></div>
+                                    @Html.TextBoxFor(m => m.videos.video[i].url, new { @id = "link_" + @Model.videos.video[i].id, @class = "link-url" })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="row-end">&nbsp;</div>
+        </div>
+    </div>
+
+    <div class="section action c-align">
+        <input type="submit" value="Save Changes" class="submit-btn">
+    </div>
+}
+
+<script>
+    $(function()
+    {
+        $(".link-url").on("change", function()
+        {
+            var id = $(this).attr("id").substr(5);
+            var url = $(this).val();
+            if (url.match(/^[A-Za-z0-9-_]{11}$/) != null)
+            {
+                var thumb = "http://img.youtube.com/vi/" + url + "/mqdefault.jpg";
+                $('<img src="' + thumb + '"/>').load(function ()
+                {
+                    $("#thumb_" + id).attr("src", thumb);
+                    $("#hidden_thumb_" + id).val(thumb);
+                });
+            }
+        })
+    })
+</script>

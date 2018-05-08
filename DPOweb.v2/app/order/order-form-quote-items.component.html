@@ -1,0 +1,51 @@
+﻿<kendo-grid *ngIf="quoteItems" [data]="quoteItems">
+    <kendo-grid-column media="(max-width: 450px)" title="Order submitted">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <dl>
+                <dt>Product Number</dt>
+                <dd>{{dataItem.productNumber}}</dd>
+                <dt>Description</dt>
+                <dd>{{dataItem.description}}</dd>
+                <dt>Qty</dt>
+                <dd>{{dataItem.quantity}}</dd>
+                <dt>List Price</dt>
+                <dd>{{dataItem.listPrice | currency:'USD':true:'1.2-2'}}</dd>
+                <dt>Net Price</dt>
+                <dd>{{dataItem.netPrice | currency:'USD':true:'1.2-2'}}</dd>
+                <dt>Ext. Net Price</dt>
+                <dd>{{dataItem.netPrice * dataItem.quantity | currency:'USD':true:'1.2-2'}}</dd>
+                <dt>Ext. List Price</dt>
+                <dd>{{dataItem.netPrice * dataItem.quantity | currency:'USD':true:'1.2-2'}}</dd>
+            </dl>
+        </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column media="(min-width: 450px)" field="productNumber" title="Product Number" width="300">
+    </kendo-grid-column>
+
+    <kendo-grid-column media="(min-width: 450px)" field="description" title="Description">
+    </kendo-grid-column>
+
+    <kendo-grid-column media="(min-width: 450px)" field="quantity" title="Qty" width="70">
+    </kendo-grid-column>
+
+    <kendo-grid-column media="(min-width: 450px)" field="listPrice" title="List Price" format="{0:c}" width="140">
+    </kendo-grid-column>
+
+    <kendo-grid-column media="(min-width: 450px)" field="netPrice" title="Net Price" format="{0:c}" width="140">
+    </kendo-grid-column>
+
+    <kendo-grid-column media="(min-width: 450px)" title="Ext. List Price" width="140">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            {{dataItem.listPrice * dataItem.quantity | currency:'USD':true:'1.2-2'}}
+        </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column media="(min-width: 450px)" title="Ext. Net Price" width="140">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            {{dataItem.netPrice * dataItem.quantity | currency:'USD':true:'1.2-2'}}
+        </ng-template>
+    </kendo-grid-column>
+
+
+</kendo-grid>

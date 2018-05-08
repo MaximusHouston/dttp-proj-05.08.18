@@ -1,0 +1,59 @@
+﻿@model DPO.Common.CommissionRequestSendEmailModel
+@using System.Text
+
+@{
+    DateTime projectDate = (DateTime)Model.commissionRequest.Project.ProjectDate;
+    DateTime now = DateTime.Now;
+    projectDate = projectDate.Add(new TimeSpan(now.Hour, now.Minute, now.Second));
+
+    string projectId = Model.commissionRequest.ProjectId.ToString();
+
+    if (!Model.RenderTextVersion)
+    {
+        projectId = Html.ActionLink(Model.commissionRequest.ProjectId.ToString(), "Project", "ProjectDashboard",
+                Request.Url.Scheme, Request.Url.Host, String.Empty, new { ProjectId = Model.commissionRequest.ProjectId }, null).ToHtmlString();
+    }
+
+    var totalList = Model.commissionRequest.Quote.TotalList ?? 0M;
+    var totalNet = Model.commissionRequest.Quote.TotalNet ?? 0M;
+    var commissionPercent = Model.commissionRequest.RequestedCommissionPercentage / 100;
+    var commissionAmount = totalNet - (totalNet * commissionPercent);
+
+    string emailMessage = string.Format(@"
+    A commission request for Project '{0}' and quote '{1}' has been submitted by {2} of {3}.<br /><br />
+    Project Date: {4}<br />
+    List Price: ${5}<br />
+    Requested Purchase Order Amount: ${6}<br />
+    Seller multiplier requested: {7}<br />
+    Commission percent requested: {8}%<br />
+    Project Reference: {9}",
+            Model.commissionRequest.Project.Name,
+            Model.commissionRequest.Quote.Title,
+            Model.commissionRequest.ProjectOwner,
+            Model.commissionRequest.BusinessName,
+            projectDate,
+            string.Format("{0:#,0.00}",Model.commissionRequest.Quote.TotalList),
+            //string.Format("{0:#,0.00}", commissionAmount),
+            string.Format("{0:#,0.00}",(Model.commissionRequest.TotalRevised > 0 ) ? Model.commissionRequest.TotalRevised : commissionAmount),
+            Model.commissionRequest.RequestedMultiplier,
+            string.Format("{0:#,0.00}", Model.commissionRequest.RequestedCommissionPercentage),
+            projectId);
+}
+
+@if (Model.RenderTextVersion)
+{
+    Layout = null;
+    @emailMessage.Replace("<br />", String.Empty)
+}
+else
+{
+    Layout = "~/Views/Shared/EmailTemplate.cshtml";
+
+    <table>
+        <tr>
+            <td style="padding-left: 28px; padding-top: 20px; font-family: Helvetica, Arial, sans-serif; ">
+                @Html.Raw(emailMessage)
+            </td>
+        </tr>
+    </table>
+}

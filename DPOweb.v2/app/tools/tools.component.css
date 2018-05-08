@@ -1,0 +1,70 @@
+﻿.tool-page-header {
+    margin-left: 0;
+    font-family: "museo-sans",sans-serif;
+    font-weight: 900;
+    /*white-space: nowrap;*/
+    /*text-overflow: ellipsis;
+    overflow: hidden;*/
+    padding-bottom: 0;
+    font-size: 27px;
+    color: #00a1e4;
+    margin: 15px;
+}
+
+.tool-list {
+    list-style: none;
+    padding-bottom: 5px;
+    -webkit-margin-after: 10px;
+    -webkit-margin-before: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-margin-start: 0px;
+    -webkit-padding-start: 0px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.section.form.dark {
+    background-color: #def5ff;
+    margin-right: 0px;
+}
+
+.col-md-2 {
+    width:10%;
+}
+
+.tool-image {
+    padding-left:25px;
+    padding-top: 20px;
+}
+
+.tool-name {
+    color: #00a1e4;
+    margin: 0;
+    padding: 15px 0 15px 0;
+    text-transform: uppercase;
+    font-family: "museo-sans",sans-serif;
+    font-size: 22px;
+}
+
+.tool-description {
+    font-size: 15px;
+    color: #2e3641;
+    line-height: 22.05px;
+    font-family: "museo-sans",sans-serif;
+}
+
+.tool-anchortag {
+    padding-bottom: 20px;
+    font-family: "museo-sans", sans-serif;
+    font-size: 15px;
+    line-height: 22.05px;
+}
+
+a {
+    color: #00a1e4;
+    text-decoration: underline;
+}
+
+a:focus, a:hover {
+    color: #00a1e4;
+    text-decoration: underline;
+}

@@ -1,0 +1,11 @@
+﻿/*.crmbinet-fadeInUp.ng-enter {
+  -webkit-animation: fadeInUp 0.5s;
+  -o-animation: fadeInUp 0.5s;
+  animation: fadeInUp 0.5s;
+}
+.crmbinet-fadeInUp.ng-leave {
+  -webkit-animation: fadeOutDown 0.5s;
+  -o-animation: fadeOutDown 0.5s;
+  animation: fadeOutDown 0.5s;
+}*/
+

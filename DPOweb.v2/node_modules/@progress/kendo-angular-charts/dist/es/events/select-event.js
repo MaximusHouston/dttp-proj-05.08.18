@@ -1,0 +1,20 @@
+import * as tslib_1 from "tslib";
+import { PreventableEvent } from './preventable-event';
+/**
+ * Arguments for the `select` event.
+ */
+var SelectEvent = /** @class */ (function (_super) {
+    tslib_1.__extends(SelectEvent, _super);
+    /**
+     * @hidden
+     */
+    function SelectEvent(e, sender) {
+        var _this = _super.call(this, sender) || this;
+        _this.axis = e.axis;
+        _this.from = e.from;
+        _this.to = e.to;
+        return _this;
+    }
+    return SelectEvent;
+}(PreventableEvent));
+export { SelectEvent };

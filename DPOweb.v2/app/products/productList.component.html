@@ -1,0 +1,345 @@
+﻿<!--<style>
+    .k-grid-pager {
+        top: 0;
+        position: fixed;
+        width: auto;
+        z-index: 1;
+    }
+</style>-->
+
+<div class="sort-filter-container">
+    <div class="sortby-container product-sort">
+        <span>
+            <label>Sort by</label>
+            <!--<kendo-dropdownlist [data]="sortByDDLValues"
+                            [textField]="'text'" [valueField]="'value'" [(ngModel)]="productSortBy"
+                            (selectionChange)="sortProductsBy($event)"></kendo-dropdownlist>-->
+            <input id="sortProductDLL" />
+        </span>
+
+        <span class="view-options pull-right">
+            
+
+            <span style="float:left; padding-right: 10px;">
+                <label>Product status</label>
+                <kendo-dropdownlist [data]="productStatusOptions"
+                                    [textField]="'text'" [valueField]="'valueDecimal'"
+                                    (selectionChange)="productFilterByDecimalValue($event, 'productStatusTypeId')"
+                                    [valuePrimitive]="true"
+                                    [(ngModel)]="selectedProductStatus">
+                </kendo-dropdownlist>
+            </span>
+
+            <span style="float:left; padding-right: 10px;">
+                <label>Inventory Status</label>
+                <kendo-dropdownlist [data]="inventoryStatusOptions"
+                                    [textField]="'text'" [valueField]="'valueDecimal'"
+                                    (selectionChange)="productFilterByDecimalValue($event, 'inventoryStatusId')"
+                                    [valuePrimitive]="true"
+                                    [(ngModel)]="selectedInventoryStatus">
+                </kendo-dropdownlist>
+            </span>
+
+            <span class="hidden-xs">
+                <button class="display-btn display-view-table selected" (click)="setViewOption(1)" title="Table view"></button>
+                <button class="display-btn display-view-list" (click)="setViewOption(0)" title="List view"></button>
+                <button class="display-btn display-view-grid" (click)="setViewOption(2)" title="Grid view"></button>
+            </span>
+
+
+            <!--<kendo-dropdownlist [data]="listItems"
+                                [textField]="'text'" [valueField]="'value'"
+                                [(ngModel)]="selectedItem">
+            </kendo-dropdownlist>-->
+        </span>
+    </div>
+
+
+
+    <div class="filters-container product-filters">
+        <ul>
+            <!--Family (Sub Family)-->
+            <li *ngIf="(productFamilyId == enums.ProductFamilyEnum.MiniSplit
+                        || productFamilyId == enums.ProductFamilyEnum.MultiSplit
+                        || productFamilyId == enums.ProductFamilyEnum.UnitarySplitSystem
+                        || productFamilyId == enums.ProductFamilyEnum.UnitaryPackagedSystem
+                        || productFamilyId == enums.ProductFamilyEnum.LightCommercialSplitSystem
+                        || productFamilyId == enums.ProductFamilyEnum.LightCommercialPackagedSystem
+                        || productFamilyId == enums.ProductFamilyEnum.SkyAir
+                        || productFamilyId == enums.ProductFamilyEnum.VRV) ">
+
+                <label>Sub Family</label>
+                <kendo-dropdownlist [data]="productSubFamilyDDLValues"
+                                    [defaultItem]="defaultItem" [textField]="'text'" [valueField]="'value'" [(value)]="productSubFamilySelectedValue"
+                                    (selectionChange)="productFilter($event, 'productSubFamilyId')"
+                                    [popupSettings]="{ width: 370 }"></kendo-dropdownlist>
+
+            </li>
+
+            <!--Unit Type (Function Category)-->
+            <li *ngIf="(productFamilyId == enums.ProductFamilyEnum.MiniSplit
+                        || (productFamilyId == enums.ProductFamilyEnum.MultiSplit && (productModelTypeId == this.enums.ProductModelTypeEnum.Outdoor || productModelTypeId == this.enums.ProductModelTypeEnum.All))
+                        || productFamilyId == enums.ProductFamilyEnum.SkyAir
+                        || (productFamilyId == enums.ProductFamilyEnum.VRV && productModelTypeId == enums.ProductModelTypeEnum.Outdoor)   ) ">
+                <label>Unit Type</label>
+                <kendo-dropdownlist [data]="productFunctionCategoryDDLValues"
+                                    [defaultItem]="defaultItem" [textField]="'text'" [valueField]="'value'" [(value)]="productFunctionCategorySelectedValue"
+                                    (selectionChange)="productFilter($event,'productFunctionCategoryId')"></kendo-dropdownlist>
+
+            </li>
+
+            <!--TODO: to be renamed-->
+            <!--Unit Style (Unit Installation Type)-->
+            <li *ngIf="(productFamilyId == enums.ProductFamilyEnum.MiniSplit
+                        || ((productFamilyId == enums.ProductFamilyEnum.AlthermaSplit || productFamilyId == enums.ProductFamilyEnum.AlthermaMonobloc) && productModelTypeId == enums.ProductModelTypeEnum.Outdoor)
+                        || (productFamilyId == enums.ProductFamilyEnum.MultiSplit && (productModelTypeId == enums.ProductModelTypeEnum.Indoor || productModelTypeId == enums.ProductModelTypeEnum.All))
+                        || productFamilyId == enums.ProductFamilyEnum.SkyAir
+                        || (productFamilyId == enums.ProductFamilyEnum.VRV && productModelTypeId == enums.ProductModelTypeEnum.Indoor)   ) ">
+                <label>Unit Style</label>
+                <kendo-dropdownlist [data]="unitInstallationTypeDDLValues"
+                                    [defaultItem]="defaultItem" [textField]="'text'" [valueField]="'value'" [(value)]="unitInstallationTypeSelectedValue"
+                                    (selectionChange)="productFilter($event,'unitInstallationTypeId')"></kendo-dropdownlist>
+                <!--<input id="unitInstallationTypeDDL" />-->
+            </li>
+
+
+
+            <!--Power Supply (Power Voltage)-->
+            <li *ngIf="(productFamilyId == enums.ProductFamilyEnum.MiniSplit
+                        || productFamilyId == enums.ProductFamilyEnum.AlthermaSplit
+                        || productFamilyId == enums.ProductFamilyEnum.AlthermaMonobloc
+                        || productFamilyId == enums.ProductFamilyEnum.MultiSplit
+                        || productFamilyId == enums.ProductFamilyEnum.SkyAir
+                        || productFamilyId == enums.ProductFamilyEnum.VRV
+                        || productFamilyId == enums.ProductFamilyEnum.Accessories) ">
+
+                <label>Power Supply </label>
+                <kendo-dropdownlist [data]="productPowerVoltageDDLValues"
+                                    [defaultItem]="defaultItem" [textField]="'text'" [valueField]="'value'" [(value)]="productPowerVoltageSelectedValue"
+                                    (selectionChange)="productFilter($event, 'productPowerVoltageTypeId')"></kendo-dropdownlist>
+
+            </li>
+
+
+            <!--Capacity (Tonnage)-->
+            <li *ngIf="( (productFamilyId == enums.ProductFamilyEnum.UnitarySplitSystem && productClassPIMId != enums.ProductClassPIMEnum.GasFurnace)
+                         || (productFamilyId == enums.ProductFamilyEnum.UnitaryPackagedSystem && productClassPIMId != enums.ProductClassPIMEnum.GasFurnace )
+                         || (productFamilyId == enums.ProductFamilyEnum.LightCommercialSplitSystem && productClassPIMId != enums.ProductClassPIMEnum.GasFurnace )
+                         || (productFamilyId == enums.ProductFamilyEnum.LightCommercialPackagedSystem && productClassPIMId != enums.ProductClassPIMEnum.GasFurnace ) )
+                        && productClassPIMId != enums.ProductClassPIMEnum.All ">
+
+                <label>Capacity</label>
+                <kendo-dropdownlist [data]="tonnageDDLValues"
+                                    [defaultItem]="defaultItem" [textField]="'text'" [valueField]="'value'" [(value)]="tonnageSelectedValue"
+                                    (selectionChange)="productFilter($event, 'tonnage')" title="Tonnage"></kendo-dropdownlist>
+
+            </li>
+
+            <!--Capacity (Cooling Capacity Nominal)-->
+            <!--<li *ngIf="(productFamilyId == enums.ProductFamilyEnum.UnitarySplitSystem && productClassPIMId == enums.ProductClassPIMEnum.Coil)
+                       || (productFamilyId == enums.ProductFamilyEnum.UnitarySplitSystem && productClassPIMId == enums.ProductClassPIMEnum.AirHandler) ">
+
+                <label>Capacity</label>
+                <kendo-dropdownlist [data]="coolingCapacityNominalDDLValues"
+                                    [defaultItem]="defaultItem" [textField]="'text'" [valueField]="'value'" [(value)]="coolingCapacityNominalSelectedValue"
+                                    (selectionChange)="productFilter($event, 'coolingCapacityNominal')" title="Cooling Capacity Nominal"></kendo-dropdownlist>
+
+            </li>-->
+            <!--Capacity (Heating Capacity Rated)-->
+            <li *ngIf="(productFamilyId == enums.ProductFamilyEnum.UnitarySplitSystem && productClassPIMId == enums.ProductClassPIMEnum.GasFurnace)
+                        || (productFamilyId == enums.ProductFamilyEnum.LightCommercialPackagedSystem && productClassPIMId == enums.ProductClassPIMEnum.GasFurnace)">
+
+                <label>Capacity</label>
+                <kendo-dropdownlist [data]="heatingCapacityRatedDDLValues"
+                                    [defaultItem]="defaultItem" [textField]="'text'" [valueField]="'value'" [(value)]="heatingCapacityRatedSelectedValue"
+                                    (selectionChange)="productFilter($event, 'heatingCapacityRated')" title="Heating Capacity Rated"></kendo-dropdownlist>
+
+            </li>
+
+            <!--Compressor Type (Compressor Stage)-->
+            <li *ngIf="( (productFamilyId == enums.ProductFamilyEnum.UnitarySplitSystem && (productClassPIMId == enums.ProductClassPIMEnum.SplitAC || productClassPIMId == enums.ProductClassPIMEnum.SplitHP || productClassPIMId == enums.ProductClassPIMEnum.All))
+                        || (productFamilyId == enums.ProductFamilyEnum.LightCommercialSplitSystem && (productClassPIMId == enums.ProductClassPIMEnum.SplitAC || productClassPIMId == enums.ProductClassPIMEnum.SplitHP || productClassPIMId == enums.ProductClassPIMEnum.All))
+                        || productFamilyId == enums.ProductFamilyEnum.UnitaryPackagedSystem
+                        || productFamilyId == enums.ProductFamilyEnum.LightCommercialPackagedSystem) ">
+
+                <label>Compressor Stage</label>
+                <kendo-dropdownlist [data]="productCompressorTypeDDLValues"
+                                    [defaultItem]="defaultItem" [textField]="'text'" [valueField]="'value'" [(value)]="productCompressorTypeSelectedValue"
+                                    (selectionChange)="productFilter($event, 'productCompressorTypeId')"></kendo-dropdownlist>
+
+            </li>
+
+            <!--Air Flow Rate High Cooling-->
+            <li *ngIf="( (productFamilyId == enums.ProductFamilyEnum.UnitarySplitSystem && productClassPIMId == enums.ProductClassPIMEnum.AirHandler)
+                        || (productFamilyId == enums.ProductFamilyEnum.LightCommercialSplitSystem && productClassPIMId == enums.ProductClassPIMEnum.AirHandler)
+                        || productFamilyId == enums.ProductFamilyEnum.UnitaryPackagedSystem
+                        || productFamilyId == enums.ProductFamilyEnum.LightCommercialPackagedSystem) ">
+
+                <label>Air Flow Rate High Cooling</label>
+                <kendo-dropdownlist [data]="airFlowRateHighCoolingDDLValues"
+                                    [defaultItem]="defaultItem" [textField]="'text'" [valueField]="'value'" [(value)]="airFlowRateHighCoolingSelectedValue"
+                                    (selectionChange)="productFilter($event, 'airFlowRateHighCooling')"></kendo-dropdownlist>
+
+            </li>
+
+            <!--Air Flow Rate High Heating-->
+            <li *ngIf="(productFamilyId == enums.ProductFamilyEnum.UnitarySplitSystem && productClassPIMId == enums.ProductClassPIMEnum.GasFurnace)
+                        || (productFamilyId == enums.ProductFamilyEnum.LightCommercialSplitSystem && productClassPIMId == enums.ProductClassPIMEnum.GasFurnace)">
+
+                <label>Air Flow Rate High Heating</label>
+                <kendo-dropdownlist [data]="airFlowRateHighHeatingDDLValues"
+                                    [defaultItem]="defaultItem" [textField]="'text'" [valueField]="'value'" [(value)]="airFlowRateHighHeatingSelectedValue"
+                                    (selectionChange)="productFilter($event, 'airFlowRateHighHeating')"></kendo-dropdownlist>
+
+            </li>
+
+            <!--Gas Valve Type-->
+            <li *ngIf="( (productFamilyId == enums.ProductFamilyEnum.UnitarySplitSystem && (productClassPIMId == enums.ProductClassPIMEnum.GasFurnace || productClassPIMId == enums.ProductClassPIMEnum.All))
+                        || (productFamilyId == enums.ProductFamilyEnum.UnitaryPackagedSystem && (productClassPIMId == enums.ProductClassPIMEnum.PackagedGED))
+                        || (productFamilyId == enums.ProductFamilyEnum.LightCommercialSplitSystem && (productClassPIMId == enums.ProductClassPIMEnum.GasFurnace || productClassPIMId == enums.ProductClassPIMEnum.All))
+                        || (productFamilyId == enums.ProductFamilyEnum.LightCommercialPackagedSystem && (productClassPIMId == enums.ProductClassPIMEnum.PackagedGED)) ) ">
+
+                <label>Gas Valve Type</label>
+                <kendo-dropdownlist [data]="productGasValveTypeDDLValues"
+                                    [defaultItem]="defaultItem" [textField]="'text'" [valueField]="'value'" [(value)]="productGasValveTypeSelectedValue"
+                                    (selectionChange)="productFilter($event, 'productGasValveTypeId')"></kendo-dropdownlist>
+
+            </li>
+
+            <!--Motor Type-->
+            <li *ngIf="( (productFamilyId == enums.ProductFamilyEnum.UnitarySplitSystem && (productClassPIMId == enums.ProductClassPIMEnum.GasFurnace || productClassPIMId == enums.ProductClassPIMEnum.All))
+                        || (productFamilyId == enums.ProductFamilyEnum.LightCommercialSplitSystem && (productClassPIMId == enums.ProductClassPIMEnum.GasFurnace || productClassPIMId == enums.ProductClassPIMEnum.All))
+                        || productFamilyId == enums.ProductFamilyEnum.UnitaryPackagedSystem
+                        || productFamilyId == enums.ProductFamilyEnum.LightCommercialPackagedSystem) ">
+
+                <label>Motor Type</label>
+                <kendo-dropdownlist [data]="productMotorSpeedTypeDDLValues"
+                                    [defaultItem]="defaultItem" [textField]="'text'" [valueField]="'value'" [(value)]="productMotorSpeedTypeSelectedValue"
+                                    (selectionChange)="productFilter($event, 'productMotorSpeedTypeId')"></kendo-dropdownlist>
+
+            </li>
+
+            <!--Installation Configutation Type-->
+            <li *ngIf="(productFamilyId == enums.ProductFamilyEnum.UnitarySplitSystem && (productClassPIMId == enums.ProductClassPIMEnum.GasFurnace || productClassPIMId == enums.ProductClassPIMEnum.All))
+                        || (productFamilyId == enums.ProductFamilyEnum.LightCommercialSplitSystem && (productClassPIMId == enums.ProductClassPIMEnum.GasFurnace || productClassPIMId == enums.ProductClassPIMEnum.All))">
+
+                <label>Installation Configutation Type</label>
+                <kendo-dropdownlist [data]="productInstallationConfigurationTypeDDLValues"
+                                    [defaultItem]="defaultItem" [textField]="'text'" [valueField]="'value'" [(value)]="productInstallationConfigurationTypeSelectedValue"
+                                    (selectionChange)="productFilter($event, 'productInstallationConfigurationTypeId')"></kendo-dropdownlist>
+
+            </li>
+
+            <!--Heat Exchanger Type-->
+            <li *ngIf="(productFamilyId == enums.ProductFamilyEnum.VRV && (productModelTypeId == enums.ProductModelTypeEnum.Outdoor || productModelTypeId == this.enums.ProductModelTypeEnum.All) )">
+                <label>Heat Exchanger Type</label>
+                <kendo-dropdownlist [data]="productHeatExchangerTypeDDLValues"
+                                    [defaultItem]="defaultItem" [textField]="'text'" [valueField]="'value'" [(value)]="productHeatExchangerTypeSelectedValue"
+                                    (selectionChange)="productFilter($event,'productHeatExchangerTypeId')"></kendo-dropdownlist>
+
+            </li>
+
+
+            <!--Unit Type (Accessory Type)-->
+            <li *ngIf="productTypeId == enums.ProductTypeEnum.Accessory">
+                <label>Unit Type</label>
+                <kendo-dropdownlist [data]="productAccessoryDDLValues"
+                                    [defaultItem]="defaultItem" [textField]="'text'" [valueField]="'value'" [(value)]="productAccessorySelectedValue"
+                                    (selectionChange)="productFilter($event,'productAccessoryTypeId')"></kendo-dropdownlist>
+
+            </li>
+
+
+
+
+            <!--<kendo-dropdownlist [data]="productCategoryDDLValues"
+                           [defaultItem]="defaultItem" [textField]="'text'" [valueField]="'value'" [(value)]="productCategorySelectedValue"
+                           (selectionChange)="productFilter($event,'productCategoryId')"></kendo-dropdownlist>-->
+            <!--<kendo-dropdownlist [data]="coolingCapacityRatedDDLValues"
+               [defaultItem]="defaultItem" [textField]="'text'" [valueField]="'value'" [(value)]="coolingCapacityRatedSelectedValue"
+               (selectionChange)="productFilter($event,'coolingCapacityRated')"></kendo-dropdownlist>-->
+
+
+
+            <li>
+                <button class="btn btn-primary" (click)="clearFilters()" style="margin-left: 10px;">RESET</button>
+            </li>
+
+
+
+        </ul>
+
+    </div>
+
+</div>
+
+<!--product-table-view-->
+<div *ngIf="viewOption == 1 &&  gridData" class="product-table-view hidden-xs">
+    <product-details-tableView [user]="user"
+                               [productFamilyId]="productFamilyId" [productModelTypeId]="productModelTypeId"
+                               [unitInstallationTypeId]="unitInstallationTypeId" [productClassPIMId]="productClassPIMId"
+                               [(gridViewData)]="gridViewData" [skip]="skip" [pageSize]="pageSize"
+                               [basketQuoteId]="basketQuoteId"
+                               (viewProductDetailsEvent)="viewProductDetails($event)"
+                               (pageChangeEvt)="pageChange($event)">
+
+    </product-details-tableView>
+
+</div>
+
+<!--product-list-view-->
+<div *ngIf="viewOption == 0" class="product-list-view hidden-xs">
+    <kendo-grid id="product-list-view" *ngIf="gridData" [data]="gridViewData"
+                [skip]="skip" [pageSize]="pageSize" [pageable]="true" (pageChange)="pageChange($event)">
+
+        <kendo-grid-column field="product.name">
+            <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                <product-details-listView [user]="user"
+                                          [(product)]="dataItem.product"
+                                          [basketQuoteId]="basketQuoteId"
+                                          (viewProductDetailsEvent)="viewProductDetails($event)">
+                </product-details-listView>
+            </ng-template>
+        </kendo-grid-column>
+
+    </kendo-grid>
+</div>
+
+
+
+<!--product-grid-view-->
+<div *ngIf="viewOption == 2" class="product-grid-view hidden-xs">
+    <kendo-grid id="product-grid-view" *ngIf="gridData" [data]="gridViewData" [skip]="skip" [pageSize]="pageSize" [pageable]="true" (pageChange)="pageChange($event)">
+
+        <kendo-grid-column>
+            <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                <product-details-gridView [user]="user"
+                                          [(product)]="dataItem.product"
+                                          [basketQuoteId]="basketQuoteId"
+                                          (viewProductDetailsEvent)="viewProductDetails($event)">
+                </product-details-gridView>
+            </ng-template>
+        </kendo-grid-column>
+    </kendo-grid>
+</div>
+
+
+<!--Mobile-->
+<div class="product-grid-view visible-xs">
+    <kendo-grid id="product-grid-view" *ngIf="gridData" [data]="gridViewData" [skip]="skip" [pageSize]="pageSize" [pageable]="true" (pageChange)="pageChange($event)">
+
+        <kendo-grid-column>
+            <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                <product-details-gridView [(product)]="dataItem.product"
+                                          [basketQuoteId]="basketQuoteId"
+                                          (viewProductDetailsEvent)="viewProductDetails($event)">
+                </product-details-gridView>
+            </ng-template>
+        </kendo-grid-column>
+    </kendo-grid>
+</div>
+
+<div id="scrollUpBtn" class="text-center" style="display:none">
+    <button class="btn btn-primary" style="width:25px;" (click)="scrollUp()"><span class="glyphicon glyphicon-arrow-up"></span></button>
+</div>
+

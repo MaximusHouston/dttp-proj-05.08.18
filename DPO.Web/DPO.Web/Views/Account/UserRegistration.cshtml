@@ -1,0 +1,102 @@
+﻿@model DPO.Common.UserModel
+@{
+    ViewBag.Title = ResourceUI.Register;
+}
+
+@section Page_Styles {
+@Styles.Render("~/Content/css/978", "~/Content/css/register", "~/Content/css/passwordforms", "~/Content/css/adminstyles")
+}
+
+<div class="section t-flush b-flush">
+    <div class="item-strap">
+        <div class="itemname">
+            <h1>@ResourceUI.Register</h1>
+        </div>
+    </div>
+</div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.PageMessages()
+        
+        @Html.Partial("_UserPersonalDetailsPartial")
+        <br/>
+        @Html.Partial("_UserBusinessDetailsPartial", Model)
+        
+        <div class="section action c-align">
+            <input type="button" value="@ResourceUI.Cancel" class="btn" onclick="location.href='@Url.Action("Login")'" />
+            <a href="" sc-ajaxpost="@Url.Action("UserRegistration")" class="submit-btn">@ResourceUI.Register</a>
+        </div>
+    }
+
+<script src="~/Scripts/jquery.pwstrength.min.js"></script>
+<script>
+
+ $(function()
+ {
+     $('#Password').pwstrength();
+
+     var businessTypeSelect = $('#Business_BusinessTypeId');
+     var useBusinessAddress = $('#UseBusinessAddress');
+     var businessAccountId = $('#Business_AccountId');
+
+     function checkCompanyAddressFields()
+     {
+         var shouldDisable = useBusinessAddress.is(':checked') && businessAccountId.val().length > 0;
+
+         $('#businessAddressHolder').find('input,select').attr('disabled', shouldDisable);
+
+         (shouldDisable) ? $('#businessAddressHolder').find('label').addClass('disabled') : $('#businessAddressHolder').find('label').removeClass('disabled');
+     }
+
+     checkCompanyAddressFields();
+         
+     useBusinessAddress.on('change',checkCompanyAddressFields);
+     businessAccountId.on('keyup',function(e)
+     {
+         businessTypeSelect.attr('disabled',$(this).val().length > 0);
+         checkCompanyAddressFields();
+     });
+
+     $('#getBusinessDetails').on('click',function(e)
+     {
+         var accountIdToFind = $('#Business_AccountId').val().toUpperCase();
+         $('#invalidAccountId').hide();
+
+         if (accountIdToFind.length > 0)
+         {
+             $.post("@Url.Action("BusinessAddressLookup", "UserDashboard")", { accountId: accountIdToFind }, function (result)
+             {
+                 $('#businessAddressHolder').empty().append(result);
+
+                 var emptyFields = [];
+                 var totalRequiredFields = 0;
+
+                 $('#businessAddressHolder input, #businessAddressHolder select').each(function ()
+                 {
+                     if ($(this).prev().hasClass('required'))
+                     {
+                         totalRequiredFields++;
+
+                         if (!$(this).val() || $(this).val().length == 0)
+                         {
+                             emptyFields.push(this);
+                         }
+
+                     }
+                 });
+
+                 if (emptyFields.length === totalRequiredFields)
+                 {
+                     $('#invalidAccountId').show();
+                 }
+
+                 checkCompanyAddressFields();
+
+             });
+         }
+
+     });
+ });
+ </script>

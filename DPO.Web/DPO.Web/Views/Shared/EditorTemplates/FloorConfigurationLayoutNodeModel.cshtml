@@ -1,0 +1,21 @@
+﻿@model FloorConfigurationLayoutNodeModel
+@if (Model != null)
+{
+    <td>
+        @if (Model.systemMappings != null)
+        {
+            @Html.DropDownListFor(m => m.id, new SelectList(Model.systemMappings, "id", "name", Model.id), new { @style = "width: 100%;" })
+        }
+        @if( Model.parentNodeId != null)
+        {
+            <select>
+                <option>A1</option>
+            </select>
+        }
+    </td>
+    if (Model.node != null)
+    {
+        @Html.EditorFor(m => m.node)
+    }
+
+}

@@ -1,0 +1,21 @@
+import { ConfigurationService } from '../../common/configuration.service';
+import { SettingsComponent } from '../../common/settings.component';
+import { Border, Margin, Padding } from '../../common/property-types';
+import { SeriesLabelsFrom } from '../../common/property-types';
+/**
+ * @hidden
+ */
+export declare abstract class SeriesLabelsFromComponentGenerated extends SettingsComponent implements SeriesLabelsFrom {
+    configurationService: ConfigurationService;
+    background: string;
+    border: Border;
+    color: string;
+    content: (e: any) => string;
+    font: string;
+    format: string;
+    margin: Margin | number;
+    padding: Padding | number;
+    position: 'center' | 'insideBase' | 'insideEnd' | 'outsideEnd';
+    visible: boolean;
+    constructor(configurationService: ConfigurationService);
+}

@@ -1,0 +1,40 @@
+﻿
+<div class="row no-gutters">
+    <div class="form-group col-md-3 col-xs-12">
+        <label class="control-label required">Pipeline Status</label>
+        <select class="form-control" [attr.disabled]="canEditPipelineData? null : 'disabled'" [(ngModel)]="project.projectLeadStatusTypeId" >
+            <option [value]="null" selected disabled>Select ...</option>
+            <option *ngFor="let item of project.projectLeadStatusTypes.items" [attr.disabled]="item.disabled == true? 'disabled': null" [value]="item.value">{{item.text}}</option>
+        </select>
+        
+    </div>
+
+</div>
+
+<div class="row no-gutters">
+    <div class="form-group col-md-3 col-xs-12">
+        <label class="control-label">Order Number</label>
+        <input type="text" [disabled]="true" class="form-control" #eRPFirstOrderNumber="ngModel" name="eRPFirstOrderNumber" [(ngModel)]="project.eRPFirstOrderNumber">
+    </div>
+</div>
+
+<div class="row no-gutters">
+    <div class="form-group col-md-3 col-xs-12">
+        <label class="control-label">Order Date</label>
+        <input type="text" [disabled]="true" class="form-control" #eRPFirstOrderDate="ngModel" name="eRPFirstOrderDate" [(ngModel)]="project.eRPFirstOrderDate">
+    </div>
+</div>
+
+<div class="row no-gutters">
+    <div class="form-group col-md-3 col-xs-12">
+        <label class="control-label">Order PO Number</label>
+        <input type="text" [disabled]="true" class="form-control" #eRPFirstPONumber="ngModel" name="eRPFirstPONumber" [(ngModel)]="project.eRPFirstPONumber">
+    </div>
+</div>
+
+<div class="row no-gutters">
+    <div class="form-group col-md-6 col-xs-12">
+        <label class="control-label">Order Comments</label>
+        <textarea [disabled]="true" class="form-control" #eRPFirstOrderComment="ngModel" name="eRPFirstOrderComment" [(ngModel)]="project.eRPFirstOrderComment"></textarea>
+    </div>
+</div>

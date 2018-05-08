@@ -1,0 +1,125 @@
+﻿@model ProductModel
+@{
+    var specs = Model.Specifications;
+}
+    <tr>
+        <td>
+            Air Flow Rate - High
+        </td>
+        @if (specs.GetString("AirFlowRateHighText") != null)
+        {
+            @specs.GetString("AirFlowRateHighText")
+        }
+        @if (@specs.GetString("AirFlowRateHighCooling") != null)
+        {
+            @specs.GetString("AirFlowRateHighCooling")
+        }
+        else
+        {
+            @specs.GetDecimal("AirFlowRateHighHeating", "N2")
+        }
+        <td>
+            Cooling Capacity Rated
+        </td>
+        <td>@specs.GetDecimal("CoolingCapacityRated", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            Cooling Capacity Sensible
+        </td>
+        <td>@specs.GetDecimal("CoolingCapacitySensible", "N2")</td>
+        <td>
+            Dimensions - Depth
+        </td>
+        <td>@specs.GetString("DimensionsUnitDepth")</td>
+    </tr>
+    <tr>
+        <td>
+            Dimensions - Height
+        </td>
+        <td>@specs.GetString("DimensionsUnitHeight")</td>
+        <td>
+            Dimensions - Width
+        </td>
+        <td>@specs.GetString("DimensionsUnitWidth")</td>
+    </tr>
+    <tr>
+        <td>
+            Heating Capacity Rated
+        </td>
+        <td>@specs.GetDecimal("HeatingCapacityRated", "N2")</td>
+        <td>
+            InERP
+        </td>
+        <td>@specs.GetString("InERP")</td>
+    </tr>
+    <tr>
+        <td>
+            Inter Connecting Wires
+        </td>
+        <td>@specs.GetString("InterConnectingWires")</td>
+        <td>
+            Max Starting Current
+        </td>
+        <td>
+            @((specs.GetString("MaxStartingCurrentText") != null) ? specs.GetString("MaxStartingCurrentText") : specs.GetDecimal("MaxStartingCurrent", "N2"))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Min Circuit Amps
+        </td>
+        <td>
+            @if (specs.GetString("MinCircuitAmps") != null)
+            {
+                @specs.GetString("MinCircuitAmps")
+            }
+        </td>
+        <td>
+            Nominal Water Flow Rate - Cooling
+        </td>
+        <td>@specs.GetDecimal("NomWaterFlowRateCooling", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            Nominal Water Flow Rate - Heating
+        </td>
+        <td>@specs.GetDecimal("NomWaterFlowRateHeating", "N2")</td>
+        <td>
+            Power Frequency
+        </td>
+        <td>@specs.GetDecimal("PowerFrequency", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            Power Phase
+        </td>
+        <td>@specs.GetDecimal("PowerPhase", "N2")</td>
+        <td>
+            Power Voltage
+        </td>
+        <td>@specs.GetString("PowerVoltage")</td>
+    </tr>
+    <tr>
+        <td>
+            Unit Installation Type
+        </td>
+        <td>@Model.ProductCategoryName</td>
+
+        <td>
+            Refrigerant Type
+        </td>
+        <td>@specs.GetString("RefrigerantType")</td>
+    </tr>
+   
+    <tr>
+        <td>
+            Weight - Net
+        </td>
+        <td>
+             @specs.GetString("WeightUnit")
+        </td>
+
+        <td></td>
+        <td></td>
+    </tr>

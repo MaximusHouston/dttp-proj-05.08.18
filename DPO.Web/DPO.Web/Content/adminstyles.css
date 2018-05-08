@@ -1,0 +1,323 @@
+﻿/* admin title bar*/
+.admin-strap{
+    background-color: #CFE6F6;
+    height: 100px;
+}
+
+.admin-strap .username{
+    float: left;
+    background-color: #E5F2FA;
+    height: 100px;
+    padding-right: 30px;
+    padding-left: 20px;
+    padding-top: 20px;
+    min-width: 250px;
+    max-width: 70%;
+}
+
+.admin-strap .username h1,
+.admin-strap.username h6{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.admin-strap .username h1{
+    margin:0;
+    padding: 0;
+    text-transform: none;
+}
+
+.admin-strap .username h6{
+    margin: 0;
+    color: inherit;
+    text-transform: none;
+    font-weight: normal;
+}
+
+.admin-strap .btn-bar{
+    float:right;
+    margin-left:0;
+    margin-right: 15px;
+}
+
+/* project/product/quote name bar */
+.item-strap{
+    overflow:hidden;
+    text-transform: uppercase;
+    position: relative;
+}
+
+.item-strap.btm-bdr{
+    border-bottom: 1px solid #EAEBED;
+}
+
+.item-strap .itemname{
+    float: left;
+    padding-top: 10px;
+    max-width: 100%;
+}
+
+.item-strap .itemname h1{
+    margin-left: 0;
+    font-family: "museo-sans", sans-serif;
+    font-weight: 900;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding-bottom: 0;
+}
+
+.item-strap .btn-bar{
+    float:right;
+    margin-left:0;
+    margin-right: 0px;
+    margin-bottom: 20px;
+    margin-top: 26px;
+}
+
+.item-strap .btn-bar a, .item-strap .btn-bar button{
+    margin-bottom: 4px;
+}
+
+
+
+/* admin checkbox lists*/
+.chkbox-hlpr input,
+.chkbox-hlpr-select-all input,.chkbox-hlpr-select-all label{
+    display: inline;
+}
+
+.chkbox-hlpr input{
+    float: left;
+}
+
+.chkbox-hlpr label{
+    margin-left: 30px;
+    margin-right: 20px;
+}
+
+.chkbox-hlpr-select-all{
+    margin-bottom: 24px;
+}
+
+.chkbox-hlpr li{
+    margin-bottom: 16px;
+    float:left;
+    width: 33%;
+    position: relative;
+}
+
+.chkbox-hlpr li.fake-separator{
+   width: 100%; margin-bottom: 0; padding-top: 80px;
+}
+
+.chkbox-hlpr li.fake-separator:before{
+    content: '';
+    position: absolute;
+    left: -30px;
+    right: -30px;
+    top:30px;
+    height: 1.5em;
+    background-color: #fff;
+}
+
+
+/* admin details list*/
+.details-list p{
+    display: inline-block;
+    width: 49%;
+    vertical-align: text-top;
+    margin-top: 0;
+}
+
+.details-list p.detail-name,
+.details-descript p.detail-name{color: #00A1E3;}
+.details-list p.full{width: 100%; max-width: 100%;}
+
+/* quote details*/
+.quote-details, .details-list.bbg{
+    background-color: #E5F2FA;
+}
+.quote-details input, .quote-details textarea,
+.quote-details select, .details-descript textarea, .details-list textarea{
+    width: 100%;
+    max-width: 100%;
+}
+
+.quote-details input.half, .details-list input.half,
+.details-list select.half{
+    width: 48%;
+    max-width: 48%;
+    display:inline-block;
+}
+
+.quote-details input.full, .details-list input.full,
+.details-list select.full {
+    width: 98%;
+    max-width: 98%;
+}
+
+.quote-details input.threequarters, .details-list input.threequarters,
+.details-list select.threequarters{
+    width: 75%;
+    max-width: 75%;
+}
+
+.quote-details textarea, .details-list textarea{
+    line-height: 18px;
+    margin: 10px 0 9px 0;
+    padding: 2px 2px 2px 8px;
+    border: 1px solid #b8b8b8;
+    box-shadow: inset 0px 1px 2px #e0e0df;
+    background-color: #fcfcfc;
+    min-height: 100px;
+}
+
+select.input-validation-error,
+.details-list textarea.input-validation-error,
+input.input-validation-error
+{
+    border: 1px solid #e80c4d;
+}
+
+.quote-details > div{
+    padding: 20px;
+}
+
+/* active quote bar*/
+.active-quote-bar{
+    background-color: #E5F2FA;
+    padding: 20px;
+    overflow: hidden;
+    position: relative;
+}
+.active-quote-bar .pull-left{ max-width: 40%;}
+.active-quote-bar p{ color: #00A1E4; }
+.active-quote-bar table{margin-top: 0;}
+.active-quote-bar table td{ padding: 6px 20px 6px 20px;}
+.active-quote-bar .pull-left img + *{
+    margin-left: 40px;
+    margin-right: 10px; 
+}
+.active-quote-bar .pull-left a, .active-quote-bar span{ display: inline-block; font-size: 15px; line-height: 50px; vertical-align: middle;}
+.active-quote-bar .pull-left a{
+white-space: nowrap;
+text-overflow: ellipsis;
+overflow: hidden;
+max-width: 100%;
+}
+.active-quote-bar .pull-left img{ position: absolute;}
+/* jquery ui datepicker*/
+input + .ui-datepicker-trigger{
+    position: relative;
+    top: 7px;
+    padding-left: 8px;
+    cursor: pointer;
+}
+
+/* breadcrumbs */
+.breadcrumbs{
+    display: block;
+    padding: 30px 30px 0px 30px;
+}
+
+.breadcrumbs li{
+    display: inline;
+    line-height: 25px;
+}
+
+.breadcrumbs li a{
+    background-image: url(/Images/breadcrumb-chevron-icon.png);
+    background-repeat: no-repeat;
+    background-position: right center;
+    padding-right: 26px;
+}
+
+/* numeric stepper component */
+.numeric-stepper{}
+.numeric-stepper input{
+    width: 55px;
+    text-align: center;
+}
+.numeric-stepper button{
+    width: 31px;
+}
+
+.numeric-stepper input, .numeric-stepper button{
+    vertical-align: middle;
+    height: 29px;
+
+}
+
+/* styled check box */
+.cb-switch{
+    display: none;
+    /* show checkbox if IE8*/
+    display: inline-block\9;
+    margin-top: 20px\9;
+}
+
+input.cb-switch ~ .cb-switch-label{
+    display: inline-block;
+    background-image: url(/Images/switch-off.png);
+    background-repeat: no-repeat;
+    width: 70px;
+    height: 39px;
+    cursor: pointer;
+    /* hide if IE8*/
+    display: none\9;
+}
+
+input[type="checkbox"]:checked.cb-switch ~ .cb-switch-label{
+    background-image: url(/Images/switch-on.png);
+}
+
+p.mandatory{
+    text-transform:none; font-size: 10px; position:absolute; margin-bottom: 5px;
+}
+
+p.mandatory span{
+    color: #00A1E4;
+}
+
+#Business_AccountId{
+    display: inline-block;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+#quanity_change_indicator{
+    display: none;
+    overflow: hidden;
+    /* Charles Teel - Old Code - To be removed after 04/01/2016 */
+    /*position: absolute;
+    top: 112px;
+    left: 30px;
+    right: 30px;*/
+}
+
+#quanity_change_indicator.open{
+    display: block;
+}
+
+#quanity_change_indicator.scrolling{
+    position: fixed;
+    top:0;
+    left: 0;
+    right: 0;
+}
+
+#quanity_change_indicator > div{
+    padding:0px 20px;
+    background-color: #CFF0FF;
+}
+
+.business-types-display {
+    padding-top: 35px;
+}
+
+.business-type-labels {
+    margin: 5px;
+    font-weight: bold
+}

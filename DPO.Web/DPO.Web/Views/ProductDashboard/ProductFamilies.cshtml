@@ -1,0 +1,68 @@
+﻿@using DPO.Common;
+@model ProductFamiliesModel
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles", "~/Content/css/productlisting")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/numericstepperhelpers", "~/bundles/scripts/productpages")
+}
+
+@{
+    ViewBag.title = ResourceUI.ProductFamilies;
+    ViewBag.searchBarPlaceholderText = ResourceUI.AllProducts;
+}
+
+@Html.Partial("ProductItemCount")
+@Html.Partial("ProductFamilyTabs",Model.ProductFamilyTabs)
+
+
+@using (Html.BeginForm("Products", "Productdashboard", FormMethod.Get ))
+{
+<div class="section t-flush b-flush">
+    <div class="item-strap">
+        <div class="itemname">
+            <h1>Our Product Ranges</h1>
+        </div>
+        <div class="btn-bar">
+          @Html.Partial("_SearchBarPartial")
+        </div>
+    </div>
+</div>
+}
+
+<div class="product-family-listing-outer">
+    <ul class="product-family-listing-inner">
+        @foreach(var item in Model.Items)
+        {
+            <li>
+                <a href="@Url.Action("Products", new { ProductFamilyId = item.Id })">
+                    <img src="@Url.RouteUrl("image",new { Type = (int)ImageTypeEnum.ProductFamily , Id = item.Id })" 
+                         onerror="this.onerror = null; this.src = '/Images/product-family-noimage.png'" 
+                         style="height: 170px; width: 190px;" />
+                    <div class="fam-description">
+                        <h4 style="font-size: 1.4em;  width: 140px;">@item.Name</h4>
+                        <span>View Range</span>
+                    </div>
+                </a>
+            </li>
+
+        }
+    </ul>
+</div>
+
+<script>
+    $(function () {
+        var tallest = 0;
+        $('.fam-description h4').each(function ()
+        {
+            if($(this).height() > tallest)
+            {
+                tallest = $(this).height();
+            }
+        });
+
+        $('.fam-description h4').height(tallest + "px");
+    });
+</script>

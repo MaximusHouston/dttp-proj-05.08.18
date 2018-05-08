@@ -1,0 +1,115 @@
+﻿@model ProductListModel
+@{
+    ProductModel product = Model.Product;
+    ProductSpecificationsModel specs = product.Specifications;
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+    var activeQuote = ViewData["ActiveQuoteId"] as long?;
+}
+
+<div class="products-grid-view">
+    <table class="tbl">
+        <thead>
+            <tr>
+                <th colspan="2"><a style="padding:0;" href="@Url.Action("Product", new { ProductId = product.ProductId })">@product.Name</a></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div class="product-image pull-left product-details">
+                        @Html.Partial("ProductImages", product)
+                    </div>
+                </td>
+                <td>
+                    <div class="product-details">
+                        <p class="as-lnk">Model No.:</p>
+                        <p>@product.ProductNumber</p>
+                        @if (user.ShowPrices)
+                        {
+                            <p class="as-lnk">Price:</p>
+                            <p>@Html.DisplayFor(p => product.Price)</p>
+                        }
+                    </div>
+                    <div class="product-icons">
+                        <a href="@Url.Action("Product", new { ProductId = product.ProductId })#technicalSpecification" alt="Tech Specs"><img src="~/Images/TechDetailLInkIcon_blue.png" /></a>
+                        <a href="@Url.Action("Product", new { ProductId = product.ProductId })#productOverview" alt="Overview"><img src="~/Images/RelatedDocumentsLinkIcon_Blue.png" /></a>
+                        <a href="@Url.Action("Product", new { ProductId = product.ProductId })#productRelatedAccessories" alt="Related Accessories"><img src="~/Images/RelatedAccessoriesLinkIcon_Blue.png" /></a>
+                    </div>
+                </td>
+            </tr>
+            @if (product.ProductFamilyId == (int)ProductFamilyEnum.VRV
+                    && product.ProductModelTypeId == ProductModelTypeEnum.Outdoor)
+            {
+                <tr>
+                    <td>EER<br />(Non Ducted)</td>
+                    <td>@specs.GetDecimal("EERNonDucted", "N2")</td>
+                </tr>
+                <tr>
+                    <td>IEER<br />(Non Ducted)</td>
+                    <td>@specs.GetDecimal("IEERNonDucted", "N2")</td>
+                </tr>
+                <tr>
+                    <td>COP47<br />(Non Ducted)</td>
+                    <td>@specs.GetDecimal("COP47NonDucted", "N2")</td>
+                </tr>
+                <tr>
+                    <td>COP17<br />(Non Ducted)</td>
+                    <td>@specs.GetDecimal("COP17NonDucted", "N2")</td>
+                </tr>
+            }
+            else if (product.ProductFamilyId == (int)ProductFamilyEnum.Accessories
+                || ((product.ProductFamilyId == (int)ProductFamilyEnum.VRV
+                        || product.ProductFamilyId == (int)ProductFamilyEnum.MultiSplit)
+                    && product.ProductModelTypeId == ProductModelTypeEnum.Indoor)
+                  )
+            {
+                @*Nothing should be displayed*@
+
+            }
+            else if (product.ProductFamilyId == (int)ProductFamilyEnum.UnitarySplit
+                      || product.ProductFamilyId == (int)ProductFamilyEnum.UnitaryPackage
+                      || product.ProductFamilyId == (int)ProductFamilyEnum.CommercialSplit)
+            {
+                <tr>
+                    <td>SEER<br />(Ducted)</td>
+                    <td>@specs.GetDecimal("SEERDucted", "N2")</td>
+                </tr>
+                <tr>
+                    <td>EER<br />(Ducted)</td>
+                    <td>@specs.GetDecimal("EERDucted", "N2")</td>
+                </tr>
+                <tr>
+                    <td>HSPF<br />(Ducted)</td>
+                    <td>@specs.GetDecimal("HSPFDucted", "N2")</td>
+                </tr>
+                <tr>
+                    <td>COP47<br />(Ducted)</td>
+                    <td>@specs.GetDecimal("COP47Ducted", "N2")</td>
+                </tr>
+
+            }
+            else
+            {
+                <tr>
+                    <td>SEER<br />(Non Ducted)</td>
+                    <td>@specs.GetDecimal("SEERNonDucted", "N2")</td>
+                </tr>
+                <tr>
+                    <td>EER<br />(Non Ducted)</td>
+                    <td>@specs.GetDecimal("EERNonDucted", "N2")</td>
+                </tr>
+                <tr>
+                    <td>HSPF<br />(Non Ducted)</td>
+                    <td>@specs.GetDecimal("HSPFNonDucted", "N2")</td>
+                </tr>
+                <tr>
+                    <td>COP47<br />(Non Ducted)</td>
+                    <td>@specs.GetDecimal("COP47NonDucted", "N2")</td>
+                </tr>
+            }
+
+           
+
+        </tbody>
+    </table>
+</div>

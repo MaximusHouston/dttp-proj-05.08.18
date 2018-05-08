@@ -1,0 +1,164 @@
+﻿@model QuoteItemsModel
+
+
+@{
+    ViewBag.Title = "Order In Quote";
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+    Model.WithCostPrice = true;
+}
+
+@section Page_Styles
+{
+    @Styles.Render("~/Content/css/978", "~/Content/css/tabbars", "~/Content/css/adminstyles",
+    "~/Content/css/tablestyles", "~/Content/css/RequestDiscountForm", "~/Content/themes/base/css")
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/confirmmodal", "~/bundles/jqueryui",
+        "~/bundles/scripts/numericstepperhelpers")
+
+    @Scripts.Render("~/bundles/scripts/projectdashboard/discountrequest")
+
+    <script>
+        var DATE_FORMAT = "@ResourceUI.DateFormat";
+
+    </script>
+}
+
+@{
+    var viewOnly = false;
+
+    if (Model.ActiveQuoteSummary.OrderId != 0)
+    {
+        viewOnly = true;
+    }
+    else
+    {
+        viewOnly = false;
+    }
+
+}
+
+@Html.HiddenFor(m => m.OrderId)
+@Html.HiddenFor(m => m.ProjectId)
+@Html.HiddenFor(m => m.QuoteId)
+@Html.HiddenFor(m => m.DiscountRequestId)
+
+<div id="import_items_modal_container">
+        @Html.Partial("ImportItemsModal", Model)
+    </div>
+
+    @Html.Partial("ConfirmModal")
+    @Html.Partial("DARAddressValidationModal")
+    @Html.Partial("QuoteItemsTagEditModal")
+    @Html.Partial("QuoteConfirmExportTypeModal")
+    @Html.Partial("_ProjectTabsPartial")
+
+
+
+@if (viewOnly == true)
+{
+    @Html.Partial("OrderConfirmExportModal")
+}
+    
+    <ul class="breadcrumbs">
+          <li><a href="/v2/#/projects">@ResourceUI.Projects</a></li>
+        <li><a href="@Url.Action("Project", new { ProjectId = Model.ProjectId })">@Model.ProjectName</a></li>
+        <li><a href="@Url.Action("Quote", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })">@Model.Title</a></li>
+        <li>Order</li>
+    </ul>
+
+    <div class="section t-flush">
+        <div class="item-strap">
+            <div class="itemname full">
+                <h1>@Model.Title</h1>
+            </div>
+            @Html.Partial("QuoteButtonBar")
+        </div>
+    </div>
+    <ul class="sub-tab-bar">
+    <li>
+        @Html.ActionLink(ResourceUI.Overview, "Quote", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })
+    </li>
+    <li>
+        @Html.ActionLink(ResourceUI.Products, "QuoteItems", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })
+    </li>
+    @if ((user.ShowPrices && user.HasAccess(SystemAccessEnum.RequestDiscounts)) || user.HasAccess(SystemAccessEnum.ViewDiscountRequest))
+    {
+        if (Model.HasDAR)
+        {
+            <li>
+                @Html.ActionLink(ResourceUI.RequestedDiscounts, "QuoteDiscountRequests", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })
+            </li>
+        }
+    }
+    @if (user.HasAccess(SystemAccessEnum.RequestCommission) || user.HasAccess(SystemAccessEnum.ViewRequestedCommission))
+    {
+        if (Model.HasCOM)
+        {
+            <li>
+                @Html.ActionLink(ResourceUI.RequestedCommission, "QuoteCommissionRequests", new { projectId = Model.ProjectId, QuoteId = Model.QuoteId })
+            </li>
+        }
+    }
+    @if (user.HasAccess(SystemAccessEnum.ViewOrder) || user.HasAccess(SystemAccessEnum.SubmitOrder))
+    {
+        if(Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.NewRecord)
+        { 
+         <li class="active-tab">
+            @*@Html.ActionLink(ResourceUI.Order, "OrderInQuote", new { DiscountRequestId = Model.DiscountRequestId, ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })*@
+             <a href="#">@ResourceUI.Order</a>
+         </li>
+        }
+    }
+</ul>
+
+
+
+    <!--Active Quote Info Bar -->
+
+    @Html.Partial("ActiveQuoteInfoBar", Model)
+
+<div class="section b-flush" ng-controller="orderInQuoteController">
+    <header>
+        <h4>@ResourceUI.OrderSubmitted</h4>
+    </header>
+    <div kendo-grid k-options="ordersGridOptions" id="ordersGrid">
+
+    </div>
+
+</div>
+
+<div class="btn-bar" style="display:none;">
+    <a href="#" id="order_request_print_modal_trigger" class="btn-primary" target="_blank">Print Order</a>
+</div>
+
+<script>
+
+    function QuoteItemsViewModel() {
+        var self = this;
+        self.projectId = @Html.Raw(Json.Encode(Model.ProjectIdStr));
+        self.projectIdStr =  @Html.Raw(Json.Encode(Model.ProjectIdStr));
+
+        self.quoteId = @Html.Raw(Json.Encode(Model.QuoteIdStr));
+        self.quoteIdStr = @Html.Raw(Json.Encode(Model.QuoteIdStr));
+    }
+
+
+    function performAjax(OrderId, ProjectId, QuoteId) {
+        $.ajax({
+            url: '@Url.Action("OrderPrint","Document", new {Id = @Model.ActiveQuoteSummary.OrderId, projectId= @Model.ActiveQuoteSummary.ProjectId, quoteId = @Model.ActiveQuoteSummary.QuoteId} )'
+        });
+    }
+
+    function triggerAction()
+    {
+        $('#order_request_print_modal_trigger')[0].click();
+    }
+</script>
+
+
+
+
+

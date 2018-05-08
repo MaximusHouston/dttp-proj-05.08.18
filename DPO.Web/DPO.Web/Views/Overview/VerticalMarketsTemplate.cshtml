@@ -1,0 +1,12 @@
+﻿@model WidgetContainerModel
+<li data-templateid="@Model.Widget.TemplateId" data-widgettype="Overview.GraphOverviewWidget" data-renderer="Overview.VerticalBarGraphRenderer">
+    <div class="widget-body">
+        @Html.Partial("OverviewWidgetTitle")
+        @Html.Partial("OverviewWidgetSettings")
+        @Html.Partial("OverviewWidgetErrorScreen")
+        <div class="contentbox project-types" style="overflow-y: auto; max-width: 100%;">
+            <p class="no-data c-align" style="display:none;">No Vertical Markets</p>
+            @* data populated on client side *@
+        </div>
+    </div>
+</li>

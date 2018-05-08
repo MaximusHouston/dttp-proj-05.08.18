@@ -1,0 +1,354 @@
+﻿@model UserModel
+@{
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+<div class="section form" id="divBusinessDetail">
+    <div class="row">
+        <div class="r-col1">&nbsp;</div>
+        <div class="r-col4 details-list">
+            <h5>@ResourceUI.BusinessDetails</h5>
+            @if (Model.IsRegistering)
+            {
+                <div style="padding-bottom: 10px;">
+                    @Html.LabelFor(m => m.Business.BusinessTypeId, ResourceUI.BusinessType)
+                    @Html.DropDownBusinessTypeListFor(m => m.Business.BusinessTypeId, Model.Business.BusinessTypes)
+                </div>
+                <div id="newOrExistingBusinessOptions" style="padding-bottom: 10px">
+                    <label>@ResourceUI.DoYouHaveADaikinAccount</label>
+                    @Html.RadioButtonFor(m => m.ExistingBusiness, ExistingBusinessEnum.Existing)
+                    @Html.Label("Yes")
+                    @Html.RadioButtonFor(m => m.ExistingBusiness, ExistingBusinessEnum.New)
+                    @Html.Label("No")
+                </div>
+                <div id="newBusinessOptions">
+                    @Html.LabelFor(m => m.Business.BusinessName, ResourceUI.BusinessName, new { @class = "required" })
+                    @Html.TextBoxFor(m => m.Business.BusinessName, new { @class = "full", autocomplete = "off" })
+                    @*@Html.DisplayFor(m => m.Business.BusinessName)*@
+                    @Html.KeyMessages(m => m.Business.BusinessName)
+                </div>
+                <div id="existingBusinessOptions">
+                    @*Account ID*@
+                    @Html.LabelFor(m => m.Business.AccountId, ResourceUI.AccountID)
+                    @Html.TextBoxFor(m => m.Business.AccountId, new { @class = "threequarters", autocomplete = "off" })
+                    <button class="search-btn" type="button" id="getBusinessDetails"><img src="~/Images/search-btn-icon.png" /></button>
+                    @Html.KeyMessages(m => m.Business.AccountId)
+                    <span id="invalidAccountId" class="input-validation-error" style="display:none;">@ResourceUI.AccountIdDoesNotExist</span>
+                </div>
+            }
+
+            @if (!Model.IsRegistering)
+            {
+                if ((Model.CurrentUser.UserId != Model.UserId && Model.CurrentUser.UserTypeId > Model.UserTypeId) ||
+                    (user.HasAccess(SystemAccessEnum.AdminAccessRights) && Model.CurrentUser.UserTypeId >= Model.UserTypeId))
+                {
+                    @*Company name (dropdown list)*@
+                    @Html.LabelFor(m => m.Business.BusinessId, ResourceUI.BusinessName, new { @class = "required" })
+                    @Html.DropDownBusinessListFor(m => m.Business.BusinessId, Model.Businesses)
+                }
+                else
+                {
+                    @Html.HiddenFor(m => m.Business.BusinessId);
+                }
+            }
+
+
+            @*Use Business Address*@
+            <label class="label-checkbox" id="useBusinessAddressToggle">@Html.CheckBoxFor(m => m.UseBusinessAddress, new { @class = "checkbox" }) @ResourceUI.UseBusinessAddress</label>
+            @if (!Model.IsRegistering)
+            {
+                <p>@ResourceUI.AccountID :</p>
+                <p>@Html.DisplayFor(m => m.Business.AccountId)</p>
+                <br />
+                <p>@ResourceUI.BusinessType :</p>
+                <p>@Html.DisplayFor(m => m.Business.BusinessTypeDescription)</p>
+
+                if (Model.CurrentUser.UserTypeId == UserTypeEnum.DaikinSuperUser)
+                {
+                    <p>Parent Business:</p>
+                    @Html.HiddenFor(m => m.Business.ParentBusinessId);
+                    <input id="parentBusinessAutoComplete" style="width: 100%;" />
+                }
+
+                @*<p>Parent Business:</p>
+                @Html.HiddenFor(m => m.Business.ParentBusinessId);
+                <input id="parentBusinessAutoComplete" style="width: 100%;" />*@
+
+            }
+
+
+        </div>
+        <div class="r-col1">&nbsp;</div>
+        <div class="r-col4 details-list">
+            <h5 id="businessAddressSectionTitle">&nbsp;</h5>
+            <div id="businessAddressHolder">
+                @Html.Partial("_AddressContactPartial", Model)
+            </div>
+        </div>
+        <div class="r-col2">&nbsp;</div>
+        <div class="row-end">&nbsp;</div>
+    </div>
+</div>
+
+@* New Business Create*@
+
+<div class="section form" id="divNewBusiness" style="display:none;">
+    <div class="row">
+        <div class="r-col1">&nbsp;</div>
+        <div class="r-col4 details-list">
+            <h5>@ResourceUI.BusinessDetails</h5>
+            @if (!Model.IsRegistering)
+            {
+                if ((Model.CurrentUser.UserId != Model.UserId && Model.CurrentUser.UserTypeId > Model.UserTypeId) ||
+                    (user.HasAccess(SystemAccessEnum.AdminAccessRights) && Model.CurrentUser.UserTypeId >= Model.UserTypeId))
+                {
+
+                    @Html.LabelFor(m => m.Business.BusinessName, ResourceUI.BusinessName, new { @class = "required" })
+                    @Html.TextBoxFor(m => m.Business.BusinessName)
+                    @Html.KeyMessages(m => m.Business.BusinessName)
+                }
+                else
+                {
+                    @Html.HiddenFor(m => m.Business.BusinessId);
+                }
+            }
+            @*Use Business Address*@
+        </div>
+        <div class="r-col1">&nbsp;</div>
+        <div style="margin-left:90px;">
+            <h5 id="businessAddressSectionTitle">&nbsp;</h5>
+            @*Country*@
+            <div>
+                @if (!Model.IsRegistering)
+                {
+                    if ((Model.CurrentUser.UserId != Model.UserId && Model.CurrentUser.UserTypeId > Model.UserTypeId) ||
+                        (user.HasAccess(SystemAccessEnum.AdminAccessRights) && Model.CurrentUser.UserTypeId >= Model.UserTypeId))
+                    {
+
+                        @Html.LabelFor(m => m.Business.BusinessName, ResourceUI.BusinessName, new { @class = "required" })
+                        @Html.TextBoxFor(m => m.Business.BusinessName)
+                        @Html.KeyMessages(m => m.Business.BusinessName)
+                    }
+                    else
+                    {
+                        @Html.HiddenFor(m => m.Business.BusinessId);
+                    }
+                }
+                @Html.LabelFor(m => m.Business.Address.CountryCode, ResourceUI.Country, new { @class = "required" })
+                @Html.DropDownCountryListFor(m => m.Business.Address.CountryCode, m => m.Address.StateId, Model.Address.Countries)
+                @Html.KeyMessages(m => m.Business.Address.CountryCode)
+                @*@Html.HiddenFor(m => m.Address.CountryCode )*@
+            </div>
+
+            <div>
+                <div style="float:left; padding-right:80px;">
+                    @*Address line 1*@
+                    @Html.LabelFor(m => m.Business.Address.AddressLine1, ResourceUI.AddressLine1, new { @class = "required" })
+                    @Html.TextBoxFor(m => m.Business.Address.AddressLine1, new { @class = "full", id = "BusAddressLine1" })
+                    @Html.KeyMessages(m => m.Business.Address.AddressLine1)
+                    @*@Html.HiddenFor(m => m.Address.AddressLine1)*@
+                </div>
+                <div>
+                    @*Address line 2*@
+                    @Html.LabelFor(m => m.Business.Address.AddressLine2, ResourceUI.AddressLine2)
+                    @Html.TextBoxFor(m => m.Business.Address.AddressLine2, new { @class = "full", id = "BusAddressLine2" })
+                    @Html.KeyMessages(m => m.Business.Address.AddressLine2)
+                    @*@Html.HiddenFor(m => m.Address.AddressLine2)*@
+                </div>
+            </div>
+
+            <div>
+                <div style="float: left; padding-right: 80px;">
+                    @*City*@
+                    @Html.LabelFor(m => m.Business.Address.Location, ResourceUI.Location, new { @class = "required" })
+                    @Html.TextBoxFor(m => m.Business.Address.Location, new { @class = "full", id = "BusAddressLocation" })
+                    @Html.KeyMessages(m => m.Business.Address.Location)
+                    @*@Html.HiddenFor(m => m.Address.Location)*@
+                </div>
+                <div>
+                    @*State*@
+                    @Html.LabelFor(m => m.Business.Address.StateId, ResourceUI.State, new { @class = "required" })
+                    @Html.DropDownRegionListFor(m => m.Business.Address.StateId, Model.Address.States, new { id = "BusAddressState" })
+                    @Html.KeyMessages(m => m.Business.Address.StateId)
+                    @*@Html.HiddenFor(m => m.Address.StateId)*@
+                </div>
+            </div>
+            <div>
+                <div style="float: left; padding-right: 80px;">
+                    @*Zip Code*@
+                    @Html.LabelFor(m => m.Business.Address.PostalCode, ResourceUI.ZipCode, new { @class = "required" })
+                    @Html.TextBoxFor(m => m.Business.Address.PostalCode, new { @class = "half upcase", id = "BusAddressZip" })
+                    @Html.KeyMessages(m => m.Business.Address.PostalCode)
+                    @*@Html.HiddenFor(m => m.Address.PostalCode)*@
+                </div>
+                <div>
+                    @Html.LabelFor(m => m.Business.Contact.OfficeNumber, ResourceUI.OfficePhoneNumber)
+                    @Html.TextBoxFor(m => m.Business.Contact.OfficeNumber, new { @class = "half", id = "BusOfficeNumber" })
+                    @Html.KeyMessages(m => m.Business.Contact.OfficeNumber)
+                    @*@Html.HiddenFor(m => m.Contact.OfficeNumber)*@
+                </div>
+            </div>
+
+            <div>
+                @*Web address*@
+                @Html.LabelFor(m => m.Business.Contact.WebAddress, ResourceUI.WebAddress)
+                @Html.TextBoxFor(m => m.Business.Contact.WebAddress, new { @class = "full", autocomplete = "off", id = "BusWebAddress" })
+                @Html.KeyMessages(m => m.Business.Contact.WebAddress)
+                @*@Html.HiddenFor(m => m.Contact.WebAddress)*@
+            </div>
+
+        </div>
+        <div class="r-col2">&nbsp;</div>
+        <div class="row-end">&nbsp;</div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        if ("@Model.IsRegistering".toLowerCase() === "true") {
+            var businessTypeDropDown = $('#@Html.IdFor(m => m.Business.BusinessTypeId)');
+            var newBusinessOptions = $('#newBusinessOptions');
+            var existingBusiness = $('#newOrExistingBusinessOptions input');
+            var existingBusinessOptions = $('#existingBusinessOptions,#useBusinessAddressToggle');
+            var newOrExistingBusinessOptions = $('#newOrExistingBusinessOptions');
+            var businessAddressSectionTitle = $('#businessAddressSectionTitle');
+
+            function checkExistingBusiness(event, clearPrevious) {
+                var val = $("input[name='@Html.IdFor(m => m.ExistingBusiness)']:checked").val();
+                hideAllBusinessOptions(val != null);
+
+                if (val != null) {
+                    if (val == "New") {
+                        showNewBusiness();
+
+                        if (clearPrevious) {
+                            $('#Business_BusinessName').val('');
+                        }
+                    } else if (val == "Existing") {
+                        showExistingBusiness();
+
+                        if (clearPrevious) {
+                            $('#Business_AccountId').val('');
+                        }
+                    }
+                }
+
+            }
+
+            function hideAllBusinessOptions(showNewOrExisting) {
+                if (!showNewOrExisting) {
+                    newOrExistingBusinessOptions.hide();
+                }
+
+                existingBusinessOptions.hide();
+                existingBusinessOptions.find('input, select').attr('disabled', true);
+
+                newBusinessOptions.hide();
+                newBusinessOptions.find('input').attr('disabled', true);
+            }
+
+            function showExistingBusiness() {
+                existingBusinessOptions.show();
+                existingBusinessOptions.find('input, select').removeAttr('disabled');
+
+                businessAddressSectionTitle.text("@ResourceUI.UserAddressDetails");
+            }
+
+            function showNewOrExistingOption() {
+                newOrExistingBusinessOptions.show();
+            }
+
+            function showNewBusiness() {
+                newBusinessOptions.show();
+                newBusinessOptions.find('input').removeAttr('disabled');
+                businessAddressSectionTitle.text("@ResourceUI.BusinessAddress");
+            }
+
+            function checkBusinessTypeDropDown(element) {
+                var requirementLevel = $('option:selected', element).data("requirementlevel");
+                hideAllBusinessOptions(false);
+
+                if (requirementLevel != null) {
+                    requirementLevel = parseInt(requirementLevel);
+
+                    if (requirementLevel <= 1) // Required
+                    {
+                        // If existing business is required then make sure the existing property is checked.
+                        $("input[name='@Html.IdFor(m => m.ExistingBusiness)'][value='Existing']").prop('checked', true);
+                        showExistingBusiness();
+                        return;
+                    } else { // Recommended/Optional/None
+                        showNewOrExistingOption();
+                        return;
+                    }
+                }
+            }
+
+            businessTypeDropDown.on('change', function () {
+                hideAllBusinessOptions();
+                existingBusiness.prop('checked', false);
+                checkBusinessTypeDropDown(this);
+            });
+
+            existingBusiness.on('change', function (event) {
+                checkExistingBusiness(event, true);
+            });
+
+            // Initialize
+            checkBusinessTypeDropDown(businessTypeDropDown);
+            checkExistingBusiness(event, false);
+        }
+    });
+
+    //$(document).ready(function ()
+    //{
+    //    $('#Business_BusinessName').val('');
+    //    $('#BusAddressLine1').val('');
+    //    $('#BusAddressLine2').val('');
+    //    $('#BusAddressLocation').val('');
+    //    $('#BusAddressZip').val('');
+    //    $('#BusWebAddress').val('');
+    //    $('#BusAddressState').val('');
+    //    $('#BusOfficeNumber').val('');
+    //});
+
+    //Parent Business AutoComplete Dropdown
+    $(document).ready(function () {
+
+        var distributorsAndReps;
+
+        var parentBusinessName = @Html.Raw(Json.Encode(Model.Business.ParentBusinessName));
+
+        var businessName = @Html.Raw(Json.Encode(Model.Business.BusinessName));
+
+        $.get("/api/AccountApi/GetDistributorsAndReps?businessName="+businessName, function (data, status) {
+            if (data.isok) {
+                distributorsAndReps = data.model;
+                $("#parentBusinessAutoComplete").kendoAutoComplete({
+                    value: parentBusinessName,
+                    dataSource: distributorsAndReps,
+                    dataTextField: "businessName",
+                    dataValueField: "businessId",
+                    filter: "startswith",
+                    minLength: 2,
+                    optionLabel: "Enter at least 2 characters",
+                    select: function (e) {
+                        var item = e.item;
+                        var selectedText = item.text();
+                        selectBusiness(selectedText, this.dataSource.data());
+                    }
+                });
+            }
+
+        });
+
+        function selectBusiness(selectedBusinessName, businessesList) {
+            for(var i = 0; i < businessesList.length; i++){
+                if(businessesList[i].businessName == selectedBusinessName){
+                    $("#Business_ParentBusinessId").val(businessesList[i].businessId);
+                }
+            }
+        }
+
+    });
+
+</script>

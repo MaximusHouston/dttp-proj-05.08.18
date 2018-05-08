@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="63552f5c-47f4-44eb-b233-c18ea21eb4e1" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>false</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://crmtestisv.goodmanmfg.com/Services/DPOServices/CrmService.svc " Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="CrmService.wsdl" MetadataType="Wsdl" ID="a93b7db8-6895-4a41-9991-b0ab6e6ea6c1" SourceId="1" SourceUrl="https://crmtestisv.goodmanmfg.com/Services/DPOServices/CrmService.svc?wsdl" />
+    <MetadataFile FileName="CrmService.disco" MetadataType="Disco" ID="f20a44cf-8031-42ec-8ec0-f188e693da6d" SourceId="1" SourceUrl="https://crmtestisv.goodmanmfg.com/Services/DPOServices/CrmService.svc?disco" />
+    <MetadataFile FileName="CrmService.xsd" MetadataType="Schema" ID="51e9c78f-6158-4dc1-b044-411f946c8f66" SourceId="1" SourceUrl="https://crmtestisv.goodmanmfg.com/Services/DPOServices/CrmService.svc?xsd=xsd4" />
+    <MetadataFile FileName="CrmService1.xsd" MetadataType="Schema" ID="d4ec25c3-d28c-4666-b79a-bc36fe9ccbde" SourceId="1" SourceUrl="https://crmtestisv.goodmanmfg.com/Services/DPOServices/CrmService.svc?xsd=xsd0" />
+    <MetadataFile FileName="CrmService2.xsd" MetadataType="Schema" ID="91209ba7-ee0d-4d0c-a7ec-ba200753ef76" SourceId="1" SourceUrl="https://crmtestisv.goodmanmfg.com/Services/DPOServices/CrmService.svc?xsd=xsd1" />
+    <MetadataFile FileName="CrmService3.xsd" MetadataType="Schema" ID="55d710d2-5104-4853-acbb-09c182ffff57" SourceId="1" SourceUrl="https://crmtestisv.goodmanmfg.com/Services/DPOServices/CrmService.svc?xsd=xsd2" />
+    <MetadataFile FileName="CrmService4.xsd" MetadataType="Schema" ID="d5f880fe-5944-4098-97b0-9c12cfb187dd" SourceId="1" SourceUrl="https://crmtestisv.goodmanmfg.com/Services/DPOServices/CrmService.svc?xsd=xsd3" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

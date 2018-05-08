@@ -1,0 +1,1913 @@
+﻿@model CommissionRequestModel
+@{
+    ViewBag.Title = ResourceUI.CommissionAuthorizationRequest;
+
+    var project = Model.Project;
+
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+
+    var result = user.HasAccess(SystemAccessEnum.ApprovedRequestCommission);
+
+    <input id="userAccess" value="@result" type="hidden" />
+}
+
+@section Page_Styles
+{
+    @Styles.Render("~/Content/css/978", "~/Content/css/tabbars", "~/Content/css/adminstyles",
+    "~/Content/css/tablestyles", "~/Content/css/RequestDiscountForm", "~/Content/themes/base/css")
+}
+
+@{
+    var viewOnly = false;
+
+    if(Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.NewRecord)
+    {
+        viewOnly = false;
+    }
+    else if (Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Pending
+      && user.HasAccess(SystemAccessEnum.ApprovedRequestCommission))
+    {
+        viewOnly = false;
+    }
+    else
+    {
+        viewOnly = true;
+    }
+
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/confirmmodal", "~/bundles/jqueryui",
+        "~/bundles/scripts/numericstepperhelpers")
+
+    @Scripts.Render("~/bundles/scripts/projectdashboard/commissionrequest")
+
+    <script>
+        var DATE_FORMAT = "@ResourceUI.DateFormat";
+        var cr = new ProjectDashboard.CommissionRequest(@viewOnly.ToString().ToLower(), numericStepperHelpers, confirmModal, window.scService);
+    </script>
+}
+
+@Html.Partial("ConfirmModal")
+@Html.Partial("_ProjectTabsPartial")
+
+@if (viewOnly == true)
+{
+    @Html.Partial("CommissionConfirmExportTypeModel")
+}
+
+<ul class="breadcrumbs">
+    <li><a href="/v2/#/projects">@ResourceUI.Projects</a></li>
+    <li><a href="@Url.Action("Project", new { projectid=project.ProjectId })">@project.Name</a></li>
+    @*<li><a href="@Url.Action("Quote", new { projectid=project.ProjectId, quoteid=Model.QuoteId })">@Model.Quote.Title</a></li>*@
+    <li><a href="/v2/#/quote/@Model.QuoteId/existingRecord">@Model.Quote.Title</a></li>
+    <li>@ResourceUI.CommissionAuthorizationRequest (CR)</li>
+</ul>
+@Html.PageMessages()
+<div class="section b-flush t-flush">
+    <div class="item-strap">
+        <div class="itemname">
+            <h1>@ResourceUI.CommissionAuthorizationRequest</h1>
+            @switch ((CommissionRequestStatusTypeEnum)Model.CommissionRequestStatusTypeId)
+            {
+                case CommissionRequestStatusTypeEnum.Pending:
+                    <h2 class="itemname">Status: Pending</h2>
+                    break;
+                case CommissionRequestStatusTypeEnum.Rejected:
+                <h2 class="itemname">Status: Rejected</h2>
+                    break;
+                case CommissionRequestStatusTypeEnum.Approved:
+                <h2 class="itemname">Status: Approved</h2>
+                    break;
+                case CommissionRequestStatusTypeEnum.Deleted:
+                <h2 class="itemname">Status: Deleted</h2>
+                    break;
+                default:
+                <h2 class="itemname">New request</h2>
+                    break;
+            }
+        </div>
+
+        @if (viewOnly == true)
+        {
+
+            <div class="btn-bar">
+                <a href="#" id="commission_request_print_modal_trigger" class="btn" target="_blank">Print Commission Request</a>
+                <a href="#" id="commission_request_download_modal_trigger" class="btn" target="_blank">Export Commission Request</a>
+
+                @if (user.HasAccess(SystemAccessEnum.ApprovedRequestCommission))
+                {
+                    if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Rejected)
+                    {
+                        <a href="#" data-sc-post="@Url.Action("CommissionRequestReject", new { commissionrequestid=Model.CommissionRequestId })" class="btn reject_commission_btn">Reject Commission Request</a>
+                    }
+                    if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved)
+                    {
+                        <a href="#" data-sc-post="@Url.Action("CommissionRequestApprove",
+               new { commissionrequestid=Model.CommissionRequestId })"
+                           class="btn approve_commission_btn" id="btnApproveCommissionRequest">Approve Request</a>
+                    }
+                }
+                else if (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission))
+                {
+                    if (Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Pending)
+                    {
+                        <a href="#" data-sc-post="@Url.Action("CommissionRequestDelete", new { CommissionRequestId = Model.CommissionRequestId })" class="btn h-slim delete_commission_btn">Delete Commission Request</a>
+                    }
+                }
+            </div>
+
+        }
+    </div>
+
+</div>
+
+
+<div id="COM">
+    @using (Html.BeginForm("CommissionRequest", "Projectdashboard", FormMethod.Post, new { enctype = "multipart/form-data", id = "CommissionRequestForm", autocomplete = "off" }))
+    {
+        @Html.Concurrency()
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.CommissionRequestId)
+        @Html.HiddenFor(m => m.ProjectId)
+        @Html.HiddenFor(m => m.QuoteId)
+        @Html.HiddenFor(m => m.CommissionRequestStatusTypeId)
+        @Html.HiddenFor(m => m.RequestedCommissionTotal)
+
+        //Used Javascript calculations
+        if (user.ShowPrices)
+        {
+            @Html.Hidden("TotalFreight", Model.Quote.TotalFreight.ToString("0.00"), new { disabled = "true" })
+            @Html.Hidden("TotalList", Model.Quote.TotalList.HasValue ? Model.Quote.TotalList.Value.ToString("0.00") : "0.00", new { disabled = "true" })
+            @Html.Hidden("TotalSell", Model.Quote.TotalSell.HasValue ? Model.Quote.TotalSell.Value.ToString("0.00") : "0.00", new { disabled = "true" })
+            @Html.Hidden("TotalListVRV", Model.Quote.TotalListVRV.ToString("0.00"), new { disabled = "true" })
+            
+            
+            if (Model.Quote.TotalSellVRV != null)
+            {
+                @Html.Hidden("TotalSellVRV", Model.Quote.TotalSellVRV.Value.ToString("0.00"), new { disabled = "true" })
+            }
+            else
+            {
+                @Html.Hidden("TotalSellVRV", "0.00", new { disabled = "true" })
+            }
+
+            if (!string.IsNullOrEmpty( Model.Quote.TotalListSplit.ToString()))
+            {
+                @Html.Hidden("TotalListSplit", Model.Quote.TotalListSplit.ToString("0.00"), new { disabled = "true" })
+            }
+            else
+            {
+                @Html.Hidden("TotalListSplit", "0.00", new { disabled = "true" })
+            }
+
+            if (!string.IsNullOrEmpty(Model.Quote.TotalListLCPackage.ToString()))
+            {
+                @Html.Hidden("TotalListLCPackage", Model.Quote.TotalListLCPackage.ToString("0.00"), new { disabled = "true" })
+            }
+            else
+            {
+                @Html.Hidden("TotalListLCPackage", "0.00", new { disabled = "true" })
+            }
+
+            if (!string.IsNullOrEmpty(Model.Quote.TotalNetSplit.ToString()))
+            {
+                @Html.Hidden("TotalNetSplit", Model.Quote.TotalNetSplit.ToString("0.00"), new { disabled = "true" })
+            }
+            else
+            {
+                @Html.Hidden("TotalNetSplit", "0.00", new { disabled = "true" })
+            }
+
+            if (!string.IsNullOrEmpty(Model.Quote.TotalNetLCPackage.ToString()))
+            {
+                @Html.Hidden("TotalNetLCPackage", Model.Quote.TotalNetLCPackage.ToString("0.00"), new { disabled = "true" })
+            }
+            else
+            {
+                @Html.Hidden("TotalNetLCPackage", "0.00", new { disabled = "true" })
+            }
+
+            if (Model.Quote.TotalSellSplit.HasValue)
+            {
+                @Html.Hidden("TotalSellSplit", Model.Quote.TotalSellSplit.Value.ToString("0.00"), new { disabled = "true" })
+            }
+            else
+            {
+                @Html.Hidden("TotalSellSplit", "0.00", new { disabled = "true" })
+            }
+
+            if (!string.IsNullOrEmpty(Model.Quote.TotalNetUnitary.ToString()))
+            {
+                @Html.Hidden("TotalNetUnitary", Model.Quote.TotalNetUnitary.ToString("0.00"), new {  disabled = "true"})
+            }
+            else
+            {
+                @Html.Hidden("TotalNetUnitary", "0.00", new { disabled = "true" })
+            }
+
+            if (!string.IsNullOrEmpty(Model.Quote.TotalListUnitary.ToString()))
+            {
+                @Html.Hidden("TotalListUnitary", Model.Quote.TotalListUnitary.ToString("0.00"), new { disabled = "true" })
+            }
+            else
+            {
+                @Html.Hidden("TotalListUnitary", "0.00", new { disabled = "true" })
+            }
+
+            if (!string.IsNullOrEmpty(Model.Quote.TotalSellUnitary.ToString()))
+            {
+                @Html.Hidden("TotalSellUnitary", Model.Quote.TotalSellUnitary.Value.ToString("0.00"), new { disabled = "true" })
+            }
+            else
+            {
+                @Html.Hidden("TotalSellUnitary", "0.00", new { disabled = "true" })
+            }
+            if (!string.IsNullOrEmpty(Model.Quote.TotalSellLCPackage.ToString()))
+            {
+                @Html.Hidden("TotalSellLCPackage", Model.Quote.TotalSellLCPackage.Value.ToString("0.00"), new { disabled = "true" })
+            }
+            else
+            {
+                @Html.Hidden("TotalSellLCPackage", "0.00", new { disabled = "true" })
+            }
+
+        }
+
+        //add reject email send checkbox to DAR form if in view only mode
+        if (viewOnly == true)
+        {
+            @Html.Partial("RejectCommissionConfirmModal")
+        }
+
+        @Html.Partial("RepInformation")
+
+        <div class="section form">
+            <p class="mandatory" style="top: 0; right: 20px;">@ResourceUI.FieldsMarkedWithAStar <span>*</span> @ResourceUI.AreMandatory</p>
+            <div class="row">
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col10">
+                    <h3>project systems and competitive position of opportunity</h3>
+                    <hr class="blue" />
+                    <div class="row">
+                        <div class="r-col6">
+                            @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+                            {
+                                if (viewOnly)
+                                {
+
+                                    <label>Project System Basis Of Design</label>
+                                    var systemDesignType = Model.SystemBasisDesignTypes.Items
+                                    .Where(sdt => sdt.Value == Model.SystemBasisDesignTypeId.ToString())
+                                    .Select(sdt => sdt.Text).FirstOrDefault();
+                                    <p>@systemDesignType</p>
+                                }
+                                else if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Pending &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Deleted &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Rejected)
+                                {
+                                    <label class="required">Project System Basis Of Design</label>
+                                    @Html.DropDownBusinessListFor(m => m.SystemBasisDesignTypeId, Model.SystemBasisDesignTypes)
+                                    @Html.KeyMessages(m => m.SystemBasisDesignTypeId)
+                                }
+                                else
+                                {
+                                    <label>Project System Basis Of Design</label>
+                                    var systemDesignType = Model.SystemBasisDesignTypes.Items
+                                    .Where(sdt => sdt.Value == Model.SystemBasisDesignTypeId.ToString())
+                                    .Select(sdt => sdt.Text).FirstOrDefault();
+                                    <p>@systemDesignType</p>
+                                }
+                            }
+                            else if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved &&
+                            Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Pending &&
+                            Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Deleted &&
+                            Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Rejected)
+                            {
+                                <label class="required">Project System Basis Of Design</label>
+                                @Html.DropDownBusinessListFor(m => m.SystemBasisDesignTypeId, Model.SystemBasisDesignTypes)
+                                @Html.KeyMessages(m => m.SystemBasisDesignTypeId)
+                            }
+                            else
+                            {
+                                <label>Project System Basis Of Design</label>
+                                var systemDesignType = Model.SystemBasisDesignTypes.Items
+                                .Where(sdt => sdt.Value == Model.SystemBasisDesignTypeId.ToString())
+                                .Select(sdt => sdt.Text).FirstOrDefault();
+                                <p>@systemDesignType</p>
+                            }
+                        </div>
+                        <div class="r-col6">
+                            @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+                            {
+                                if (viewOnly)
+                                {
+                                    <label>Zone Strategy</label>
+                                    var zoneType = Model.ZoneStrategyTypes.Items
+                                    .Where(zt => zt.Value == Model.ZoneStrategyTypeId.ToString())
+                                    .Select(zt => zt.Text).FirstOrDefault();
+                                    <p>@zoneType</p>
+                                }
+                                else if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Pending &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Deleted &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Rejected)
+                                {
+                                    <label class="required">Zone Strategy</label>
+                                    @Html.DropDownBusinessListFor(m => m.ZoneStrategyTypeId, Model.ZoneStrategyTypes)
+                                    @Html.KeyMessages(m => m.ZoneStrategyTypeId)
+                                }
+                                else
+                                {
+
+                                    <label>Zone Strategy</label>
+                                    var zoneType = Model.ZoneStrategyTypes.Items
+                                    .Where(zt => zt.Value == Model.ZoneStrategyTypeId.ToString())
+                                    .Select(zt => zt.Text).FirstOrDefault();
+                                    <p>@zoneType</p>
+                                }
+                            }
+                        </div>
+                        <div class="row-end">&nbsp;</div>
+                    </div>
+                    <div class="row">
+                        <div class="r-col6">
+                            @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+                            {
+                                if (viewOnly & !Model.IsCommissionCalculation)
+                                {
+                                    <label>Select Brand Specified</label>
+                                    var brandType = Model.BrandSpecifiedTypes.Items
+                                    .Where(bt => bt.Value == Model.BrandApprovedTypeId.ToString())
+                                    .Select(bt => bt.Text).FirstOrDefault();
+                                    <p>@brandType</p>
+                                }
+                                else if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Pending &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Deleted &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Rejected)
+                                {
+                                    <label class="required">Select Brand Specified</label>
+                                    @Html.DropDownBusinessListFor(m => m.BrandApprovedTypeId, Model.BrandApprovedTypes)
+                                    @Html.KeyMessages(m => m.BrandApprovedTypeId)
+                                }
+                                else
+                                {
+                                    <label>Select Brand Specified</label>
+                                    var brandType = Model.BrandSpecifiedTypes.Items
+                                    .Where(bt => bt.Value == Model.BrandApprovedTypeId.ToString())
+                                    .Select(bt => bt.Text).FirstOrDefault();
+                                    <p>@brandType</p>
+                                }
+                            }
+                        </div>
+                        <div class="r-col6">
+                            @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+                            {
+                                if (viewOnly)
+                                {
+                                    <label>Select Approved Equals</label>
+                                    var brandSpecifiedType = Model.BrandSpecifiedTypes.Items
+                                    .Where(bst => bst.Value == Model.BrandSpecifiedTypeId.ToString())
+                                    .Select(bst => bst.Text).FirstOrDefault();
+                                    <p>@brandSpecifiedType</p>
+                                }
+                                else if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Pending &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Deleted &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Rejected)
+                                {
+                                    <label class="required">Select Approved Equals</label>
+                                    @Html.DropDownBusinessListFor(m => m.BrandSpecifiedTypeId, Model.BrandSpecifiedTypes)
+                                    @Html.KeyMessages(m => m.BrandSpecifiedTypeId)
+                                }
+                                else
+                                {
+                                    <label>Select Approved Equals</label>
+                                    var brandSpecifiedType = Model.BrandSpecifiedTypes.Items
+                                    .Where(bst => bst.Value == Model.BrandSpecifiedTypeId.ToString())
+                                    .Select(bst => bst.Text).FirstOrDefault();
+                                    <p>@brandSpecifiedType</p>
+                                }
+                            }
+                        </div>
+                        <div class="r-col6">
+                            @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+                            {
+                                if (viewOnly)
+                                {
+                                    var fundingType = Model.FundingTypes.Items
+                                    .Where(ft => ft.Value == Model.FundingTypeId.ToString())
+                                    .Select(ft => ft.Text).FirstOrDefault();
+                                    <p>@ResourceUI.FundingType</p>
+                                    <p>@fundingType</p>
+                                    <br />
+                                }
+                                else if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Pending &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Deleted &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Rejected)
+                                {
+                                    @Html.LabelFor(m => m.FundingTypeId, ResourceUI.FundingType, new { @class = "required" })
+                                    @Html.DropDownFundingTypes(m => m.FundingTypeId, Model.FundingTypes)
+                                    @Html.KeyMessages(m => m.FundingTypeId)
+                                }
+                                else
+                                {
+
+                                    var fundingType = Model.FundingTypes.Items
+                                    .Where(ft => ft.Value == Model.FundingTypeId.ToString())
+                                    .Select(ft => ft.Text).FirstOrDefault();
+                                    <p>@ResourceUI.FundingType</p>
+                                    <p>@fundingType</p>
+                                }
+                            }
+                        </div>
+
+                        @*<div class="r-col6">
+                                @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+                                {
+                                if (viewOnly)
+                                {
+                                var winLossType = Model.WinLossConditionTypes.Items
+                                .Where(wlt => wlt.Value == Model.WinLossConditionTypeId.ToString())
+                                .Select(wlt => wlt.Text).FirstOrDefault();
+                                <p>@ResourceUI.WinLossCondition</p>
+                                <p>@winLossType</p>
+                                }
+                                else if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Pending &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Deleted &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Rejected)
+                                {
+                                @Html.LabelFor(m => m.WinLossConditionTypeId, ResourceUI.WinLossCondition)
+                                @Html.DropDownWinLossTypeListFor(m => m.WinLossConditionTypeId, Model.WinLossConditionTypes)
+                                @Html.KeyMessages(m => m.WinLossConditionTypeId)
+                                }
+                                else
+                                {
+                                var winLossType = Model.WinLossConditionTypes.Items
+                                .Where(wlt => wlt.Value == Model.WinLossConditionTypeId.ToString())
+                                .Select(wlt => wlt.Text).FirstOrDefault();
+                                <p>@ResourceUI.WinLossCondition</p>
+                                <p>@winLossType</p>
+                                }
+                                }
+
+                            </div>*@
+
+                        <div class="row-end">&nbsp;</div>
+                    </div>
+
+                    <hr class="blue" />
+                    <div class="row" id="competitorPriceAvailableRow">
+                        <div class="r-col6">
+                            @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+                            {
+                                if (viewOnly && !Model.IsCommissionCalculation)
+                                {
+                                    <label>Is a copy of competitors price to customer available?</label>
+                                    @Html.DisplayFor(m => m.HasCompetitorPrice)
+                                }
+                                else if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Pending &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Deleted &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Rejected)
+                                {
+                                    <label>Is a copy of competitors price to customer available?</label>
+                                    @Html.CheckBoxButtonFor(m => m.HasCompetitorPrice)
+                                    <p class="checkboxstatusmsg"></p>
+                                }
+                                else
+                                {
+                                    <label>Is a copy of competitors price to customer available?</label>
+                                    @Html.DisplayFor(m => m.HasCompetitorPrice)
+                                }
+                            }
+                        </div>
+                        <div class="r-col6 disabled" id="competitorPriceAvailable">
+                            @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+                            {
+                                if (viewOnly & !Model.IsCommissionCalculation)
+                                {
+                                    @Html.LabelFor(m => m.CompetitorPrice, "Competitor Price")
+                                    @Html.DisplayFor(m => m.CompetitorPrice, new { @class = "full", placeholder = "$", disabled = "disabled" })
+                                }
+                                else if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Pending &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Deleted &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Rejected)
+                                {
+                                    @Html.LabelFor(m => m.CompetitorPrice, "Enter Competitor Price")
+                                    @Html.TextBoxFor(m => m.CompetitorPrice, new { @class = "full", placeholder = "$", disabled = "disabled" })
+                                    @Html.KeyMessages(m => m.CompetitorPrice)
+                                }
+                                else
+                                {
+                                    @Html.LabelFor(m => m.CompetitorPrice, "Enter Competitor Price")
+                                    @Html.TextBoxFor(m => m.CompetitorPrice, new { @class = "full", placeholder = "$", disabled = "disabled" })
+                                    @Html.KeyMessages(m => m.CompetitorPrice)
+                                }
+                            }
+
+                        </div>
+                        <div class="row-end">&nbsp;</div>
+                    </div>
+                    <hr class="blue" />
+                    <div class="row" id="copyOfCompQuoteRow">
+                        <div class="r-col6" style="padding-right: 10px;">
+                            @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+                            {
+                                if (viewOnly && !Model.IsCommissionCalculation)
+                                {
+                                    <label>Is a copy of competitors quote to customer available?</label>
+                                    @Html.DisplayFor(m => m.HasCompetitorQuote)
+                                }
+                                else if (!viewOnly &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Pending &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Deleted &&
+                                Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Rejected)
+                                {
+                                    <label>Is a copy of competitors quote to customer available?</label>
+                                    @Html.CheckBoxButtonFor(m => m.HasCompetitorQuote)
+                                    @Html.KeyMessages(m => m.HasCompetitorQuote)
+                                    <p class="checkboxstatusmsg"></p>
+                                }
+                                else
+                                {
+                                    <label>Is a copy of competitors quote to customer available?</label>
+                                    @Html.DisplayFor(m => m.HasCompetitorQuote)
+                                }
+                            }
+
+                        </div>
+                        <div class="r-col6 disabled" id="copyOfCompQuote">
+                            @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+                            {
+
+                                if (viewOnly && !Model.IsCommissionCalculation)
+                                {
+                                    if (Model.HasCompetitorQuote)
+                                    {
+                                        <label>Competitors quote attached</label>
+                                        <br />
+                                        <a href="/document/dar/@Model.QuoteId.ToString()/?filename=@Model.CompetitorQuoteFileName">@Model.CompetitorQuoteFileName</a>
+                                    }
+                                }
+                                else
+                                {
+                                    <label>Attach Copy Of Competitors Quote</label>
+                                    <br />
+                                    <input id="CompetitorQuoteFile" type="file" name="CompetitorQuoteFile">
+
+                                    <input id="CompetitorQuoteFileName" name="CompetitorQuoteFileName" type="hidden" value="@Model.CompetitorQuoteFileName">
+                                    <br />
+                                    @Html.KeyMessages(m => m.CompetitorQuoteFileName)
+                                }
+                            }
+                        </div>
+                        <div class="row-end">&nbsp;</div>
+                    </div>
+                    <hr class="blue" />
+                    <div class="row" id="attachLineByLineRow">
+                        <div class="r-col6 disabled" id="attachLineByLine">
+                            @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+                            {
+                                if (viewOnly && !Model.IsCommissionCalculation)
+                                {
+                                    if (Model.HasCompetitorQuote)
+                                    {
+                                        <label>Competitors line By line comparison file attached</label>
+                                        <br />
+
+                                        <a href="/document/dar/@Model.QuoteId.ToString()/?filename=@Model.CompetitorLineComparsionFileName">@Model.CompetitorLineComparsionFileName</a>
+                                    }
+                                }
+                            }
+                        </div>
+                        <div class="row-end">&nbsp;</div>
+                    </div>
+                   
+                    <div class="row" style="display:none">
+                        @if (user != null && (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission)))
+                        {
+                            if (viewOnly && !Model.IsCommissionCalculation)
+                            {
+                                <label>Is rep/distributor confident that competition offer is equal to this offer?</label>
+                                @Html.DisplayFor(m => m.IsConfidentCompetitorQuote)
+                            }
+                            else if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved &&
+                            Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Pending &&
+                            Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Deleted &&
+                            Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Rejected)
+                            {
+                                <label>Is rep/distributor confident that competition offer is equal to this offer?</label>
+                                @Html.CheckBoxButtonFor(m => m.IsConfidentCompetitorQuote)
+                                @Html.KeyMessages(m => m.IsConfidentCompetitorQuote)
+                                <p class="checkboxstatusmsg"></p>
+                            }
+                            if (!viewOnly && Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved &&
+                            Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Pending &&
+                            Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Deleted &&
+                            Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Rejected)
+                            {
+                                <label>Is rep/distributor confident that competition offer is equal to this offer?</label>
+                                @Html.CheckBoxButtonFor(m => m.IsConfidentCompetitorQuote)
+                                @Html.KeyMessages(m => m.IsConfidentCompetitorQuote)
+                                <p class="checkboxstatusmsg"></p>
+                            }
+                            else
+                            {
+                                <label>Is rep/distributor confident that competition offer is equal to this offer?</label>
+                                @Html.DisplayFor(m => m.IsConfidentCompetitorQuote)
+                            }
+                        }
+
+                        <div class="row-end">&nbsp;</div>
+                    </div>
+                </div>
+                <div class="r-col1">&nbsp;</div>
+                <div class="row-end">&nbsp;</div>
+            </div>
+        </div>
+        <br />
+        if (user.ShowPrices)
+        {
+            <div class="section form">
+                <div class="row">
+                    <div class="r-col1">&nbsp;</div>
+                    <div class="r-col10">
+                        <h3>rep/distributor and daikin information and costing for opportunity</h3>
+                        <div class="dactbl-heading">Total net price based on standard multiplier(s)</div>
+                        <table class="tbl dactbl">
+                            <tbody>
+                                <tr>
+                                    <td>Total Listed Value Of This Project Offering (VRV-GNA + RA-QA + Unitary + LC Package)</td>
+                                    <td></td>
+                                    <td class="blucell">
+                                        @Html.DisplayFor(m => Model.StandardTotals.TotalList) 
+                                       (
+                                          @Html.DisplayFor(m => Model.StandardTotals.TotalListVRV) + 
+                                          @Html.DisplayFor(m => Model.StandardTotals.TotalListSplit) +
+                                          @Html.DisplayFor(m => Model.StandardTotals.TotalListUnitary) +
+                                          @Html.DisplayFor(m => Model.StandardTotals.TotalListLCPackage) +
+                                       )
+                                    </td>
+                                </tr>
+                                @if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved &&
+                                     Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Pending &&
+                                     Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Rejected &&
+                                     Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Deleted)
+                                {
+
+                                    <tr>
+                                        <td>Start up / Commissioning costs</td>
+                                        <td></td>
+                                        <td class="blucell">
+                                          @Html.TextBox("StartUpCosts", Model.StartUpCosts.ToString("0.00"))
+                                        </td>
+                                        @Html.HiddenFor(m => m.StartUpCosts)
+                                    </tr>
+
+                                    <tr>
+                                        <td>Other Third party costs</td>
+                                        <td></td>
+                                        <td class="blucell">
+                                            @Html.TextBox("ThirdPartyEquipmentCosts", 
+                                                           Model.ThirdPartyEquipmentCosts.ToString("0.00"))
+                                        </td>
+                                        @Html.HiddenFor(m => m.ThirdPartyEquipmentCosts)
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td>Start up / Commissioning costs</td>
+                                        <td></td>
+                                        <td class="blucell">
+                                          @Html.TextBox("StartUpCosts", Model.StartUpCosts.ToString("0.00"), 
+                                                        new { @readonly = "readonly" })
+                                        </td>
+                                        @Html.HiddenFor(m => m.StartUpCosts)
+                                    </tr>
+
+                                    <tr>
+                                        <td>Other Third party costs</td>
+                                        <td></td>
+                                        <td class="blucell">
+                                            @Html.TextBox("ThirdPartyEquipmentCosts", 
+                                                           Model.ThirdPartyEquipmentCosts.ToString("0.00"), 
+                                                           new { @readonly = "readonly" })
+                                        </td>
+                                        @Html.HiddenFor(m => m.ThirdPartyEquipmentCosts)
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="r-col1">&nbsp;</div>
+                    <div class="row-end">&nbsp;</div>
+                </div>
+            </div>
+            <br />
+            <div id="CommissionCalculationSection">
+                <div class="section form">
+                    <div class="row">
+                        <div class="r-col1">&nbsp;</div>
+
+                        <div class="r-col10">
+                            <h3>Requested Sell Multiplier and Commission Calculation</h3>
+                            @if (user.HasAccess(SystemAccessEnum.ApprovedRequestCommission))
+                            {
+                                <div style="float:right;margin-right:-50px;">
+                                    <label style="float:left;">Manually Enter Commission:</label>
+                                    @Html.CheckBox("CommissionManuallyInput")
+                                </div>
+                            }
+
+                            <div class="dactbl-heading">Total net price based on requested commissions</div>
+                            <table class="tbl dactbl" style="margin-bottom: 80px;">
+                                <tbody>
+                                    <!-- #region VRV Type-->
+                                    @if (Model.Quote.TotalListVRV > 0)
+                                    {
+                                        <tr id="rowVRVDiscountAmount">
+                                            <td>
+
+                                                @if (viewOnly)
+                                                {
+
+                                                    if (user.HasAccess(SystemAccessEnum.ApprovedRequestCommission))
+                                                    {
+                                                        if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved)
+                                                        {
+                                                            <label class="required" id="lblApproveCommission">Multiplier approved for VRV - GNA in this opportunity?</label>
+
+                                                            @Html.NumericStepperFor((float)Model.RequestedMultiplierVRV, new { id = "RequestedMultiplierStepperVRV", data_decimal = 2, data_step = 1, @class = "js-alwaysactive" })
+                                                            @Html.KeyMessages(m => m.RequestedMultiplierVRV)
+                                                            @Html.HiddenFor(m => Model.RequestedMultiplierVRV)
+
+                                                            <div style="color:gray; font-style:italic" class="commissionMultiplierVRVRangeMessage">
+                                                                please enter the range between 0.20 and 1.5
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <label id="lblApproveCommission">Multiplier approved for VRV - GNA in this opportunity?</label>
+                                                            @(string.Format("{0}", Model.ApprovedMultiplierVRV.ToString("#.###")));
+
+                                                        }
+                                                    }
+                                                    if (!user.HasAccess(SystemAccessEnum.ApprovedRequestCommission))
+                                                    {
+                                                        if (Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Approved)
+                                                        {
+                                                            <label id="lblApproveCommission">approved sell multiplier for VRV and Accessories in this opportunity</label>
+                                                            @(string.Format("{0}", Model.ApprovedMultiplierVRV.ToString("#.###")));
+                                                        }
+                                                        else if (Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Pending ||
+                                                                 Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Deleted ||
+                                                                 Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Rejected
+                                                          )
+                                                        {
+                                                            <label id="lblApproveCommission">Requested sell multiplier for VRV and Accessories in this opportunity</label>
+                                                            @(string.Format("{0}", Model.RequestedMultiplierVRV.ToString("#.###")));
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <label class="required" id="lblApproveCommission">Enter sell multiplier for VRV and Accessories in this opportunity</label>
+
+                                                            @Html.NumericStepperFor((float)Model.RequestedMultiplierVRV, new { id = "RequestedMultiplierStepperVRV", data_decimal = 3, data_step = 0.001 })
+                                                            @Html.KeyMessages(m => m.RequestedMultiplierVRV)
+                                                            @Html.HiddenFor(m => m.RequestedMultiplierVRV)
+
+                                                            <div style="color:gray; font-style:italic" class="commissionMultiplierVRVRangeMessage">
+                                                                please enter the range between 0.20 and 1.5
+                                                            </div>
+                                                        }
+
+                                                    }
+
+                                                }
+                                                else
+                                                {
+                                                    <label class="required" id="lblApproveCommission">Enter sell multiplier for VRV and Accessories in this opportunity</label>
+
+                                                    @Html.NumericStepperFor((float)Model.RequestedMultiplierVRV, new { id = "RequestedMultiplierStepperVRV", data_decimal = 3, data_step = 0.001 })
+                                                    @Html.KeyMessages(m => m.RequestedMultiplierVRV)
+                                                    @Html.HiddenFor(m => m.RequestedMultiplierVRV)
+
+                                                    <div style="color:gray; font-style:italic" class="commissionMultiplierVRVRangeMessage">
+                                                        please enter the range between 0.20 and 1.5
+                                                    </div>
+                                                }
+                                            </td>
+
+
+
+                                            <td class="blucell inputs">
+
+                                                <label>@ResourceUI.TotalList</label>
+                                                <span id="DisplayTotalListVRV">
+                                                    @string.Format("{0:C}", Model.ApprovedTotalsCommission.TotalListVRV)
+                                                </span>
+                                                <label>&nbsp;</label>
+
+                                                <label>Purchase Order Amount</label>
+                                                <span id="DisplayTotalNetVRV">
+                                                    @string.Format("{0:C}", Model.TotalNetVRV)
+                                                </span>
+                                                @Html.HiddenFor(m => m.TotalNetVRV)
+                                                <label>&nbsp;</label>
+
+                                                <label>@ResourceUI.ApprovedCommissionPercent</label>
+
+                                                @if (user.HasAccess(SystemAccessEnum.ApprovedRequestCommission))
+                                                {
+                                                    if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved)
+                                                    {
+                                                        @Html.TextBoxFor(m => Model.RequestedCommissionPercentageVRV, new { @class = "commissionPercent", style = "width: 55px;" })
+                                                        <text>%</text>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.TextBoxFor(m => Model.ApprovedCommissionPercentageVRV, new { @class = "commissionPercent", style = "width: 55px;" })
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Approved)
+                                                    {
+                                                        @Html.TextBoxFor(m => Model.ApprovedCommissionPercentageVRV, new { @class = "commissionPercent", style = "width: 55px;", disabled = "disabled" })
+                                                        <text>%</text>
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.TextBoxFor(m => Model.RequestedCommissionPercentageVRV, new { @class = "commissionPercent", style = "width: 55px;", disabled = "disabled" })
+                                                        <text>%</text>
+                                                    }
+
+                                                }
+
+
+                                                @Html.HiddenFor(m => Model.RequestedCommissionPercentageVRV, new { id = "hidden_RequestedCommissionPercentageVRV" })
+
+                                                <label>@ResourceUI.CommissionAmount</label>
+                                                <span id="DisplayRequestedCommissionVRV">
+                                                    @*@string.Format("{0:C}", Model.RequestedCommissionVRV)*@
+                                                    @Html.DisplayFor(m => Model.RequestedCommissionVRV)
+                                                </span>
+                                                @Html.HiddenFor(m => m.RequestedCommissionVRV)
+                                                <label>&nbsp;</label>
+
+                                                <label>@ResourceUI.NetMaterialValueMultiplier</label>
+                                                <span id="DisplayRequestedNetMaterialMultiplierVRV">
+
+                                                    @string.Format("{0:N3}", Model.RequestedNetMaterialMultiplierVRV)
+
+                                                </span>
+                                                @Html.HiddenFor(m => m.RequestedNetMaterialMultiplierVRV)
+                                                <label>&nbsp;</label>
+
+                                                <label>@ResourceUI.NetMaterialValue</label>
+                                                <span id="DisplayRequestedNetMaterialValueVRV">
+                                                    @*@string.Format("{0:C}", Model.ApprovedTotalsCommission.NetMaterialValueVRV)*@
+                                                    @string.Format("{0:C}", Model.RequestedNetMaterialValueVRV)
+                                                    @*@Html.DisplayFor(Model.RequestedNetMaterialValueVRV)*@
+                                                </span>
+                                                @Html.HiddenFor(m => m.RequestedNetMaterialValueVRV)
+                                                <label>&nbsp;</label>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                    <!-- #endregion-->
+
+                                    <!-- #region Split Type-->
+                                    @if (Model.Quote.TotalListSplit > 0)
+                                    {
+                                        <tr id="rowSplitDiscountAmount">
+                                            <td>
+
+                                                @if (viewOnly)
+                                                {
+                                                    if (user.HasAccess(SystemAccessEnum.ApprovedRequestCommission))
+                                                    {
+                                                        if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved)
+                                                        {
+                                                            <label class="required" id="lblApproveCommission">Enter sell multiplier for Ductless in this opportunity?</label>
+
+                                                            @Html.NumericStepperFor((float)Model.RequestedMultiplierSplit, new { id = "RequestedMultiplierStepperSplit", data_decimal = 2, data_step = 0.001, @class = "js-alwaysactive" })
+                                                            @Html.KeyMessages(m => m.RequestedMultiplierSplit)
+                                                            @Html.HiddenFor(m => Model.RequestedMultiplierSplit)
+
+                                                            <label style="color:gray; font-style:italic" class="commissionMultiplierSplitRangeMessage">
+                                                                please enter the range between 0.35 and 1.5
+                                                            </label>
+                                                        }
+                                                        else
+                                                        {
+                                                            <label id="lblApproveCommission">Sell Multiplier approved for Ductless in this opportunity</label>
+                                                            @(string.Format("{0}", Model.ApprovedMultiplierSplit.ToString("#.###")));
+                                                        }
+
+                                                    }
+                                                    if (!user.HasAccess(SystemAccessEnum.ApprovedRequestCommission))
+                                                    {
+                                                        if (Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Approved)
+                                                        {
+                                                            <label id="lblApproveCommission">Approved sell multiplier for Split and Accessories in this opportunity</label>
+                                                            @(string.Format("{0}", Model.ApprovedMultiplierSplit.ToString("#.###")));
+                                                        }
+                                                        else if (Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Pending ||
+                                                                 Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Deleted ||
+                                                                 Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Rejected
+                                                      )
+                                                        {
+                                                            <label id="lblApproveCommission">Requested sell multiplier for Split and Accessories in this opportunity</label>
+                                                            @(string.Format("{0}", Model.RequestedMultiplierSplit.ToString("#.###")));
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <label class="required" id="lblApproveCommission">Enter sell multiplier for Ductless and Accessories in this opportunity</label>
+
+                                                            @Html.NumericStepperFor((float)Model.RequestedMultiplierSplit, new { id = "RequestedMultiplierStepperSplit", data_decimal = 3, data_step = 0.001 })
+                                                            @Html.KeyMessages(m => m.RequestedMultiplierSplit)
+                                                            @Html.HiddenFor(m => m.RequestedMultiplierSplit)
+
+                                                            <div style="color:gray; font-style:italic" class="commissionMultiplierSplitRangeMessage">
+                                                                please enter the range between 0.35 and 1.5
+                                                            </div>
+                                                        }
+
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <label class="required" id="lblApproveDiscount">Enter sell multiplier for Ductless in this opportunity?</label>
+                                                    @Html.NumericStepperFor((float)Model.RequestedMultiplierSplit, new { id = "RequestedMultiplierStepperSplit", data_decimal = 3, data_step = 0.001 })
+                                                    @Html.KeyMessages(m => m.RequestedMultiplierSplit)
+                                                    @Html.HiddenFor(m => Model.RequestedMultiplierSplit)
+
+                                                    <div style="color:gray; font-style:italic" class="commissionMultiplierSplitRangeMessage">
+                                                        please enter the range between 0.35 and 1.5
+                                                    </div>
+                                                }
+                                            </td>
+
+                                            <td class="blucell inputs">
+
+                                                <label>@ResourceUI.TotalList</label>
+                                                <span id="DisplayTotalListSplit">
+                                                    @string.Format("{0:C}", Model.ApprovedTotalsCommission.TotalListSplit)
+                                                </span>
+                                                <label>&nbsp;</label>
+
+                                                <label>Purchase Order Amount</label>
+                                                <span id="DisplayTotalNetSplit">
+                                                    @string.Format("{0:C}", Model.TotalNetSplit)
+                                                </span>
+                                                @Html.HiddenFor(m => m.TotalNetSplit)
+                                                <label>&nbsp;</label>
+
+                                                <label>@ResourceUI.ApprovedCommissionPercent</label>
+                                                @if (user.HasAccess(SystemAccessEnum.ApprovedRequestCommission))
+                                                {
+                                                    if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved)
+                                                    {
+                                                        @Html.TextBoxFor(m => Model.RequestedCommissionPercentageSplit, new { @class = "commissionPercent", style = "width: 55px;" })
+                                                        <text>%</text>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.TextBoxFor(m => Model.ApprovedCommissionPercentageSplit, new { @class = "commissionPercent", style = "width: 55px;" })
+                                                        <text>%</text>
+
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved)
+                                                    {
+                                                        @Html.TextBoxFor(m => Model.RequestedCommissionPercentageSplit, new { @class = "commissionPercent", style = "width: 55px;", disabled = "disabled" })
+                                                        <text>%</text>
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.TextBoxFor(m => Model.ApprovedCommissionPercentageSplit, new { @class = "commissionPercent", style = "width: 55px;", disabled = "disabled" })
+                                                        <text>%</text>
+                                                    }
+
+
+                                                }
+                                                @Html.HiddenFor(m => Model.RequestedCommissionPercentageSplit, new { id = "hidden_RequestedCommissionPercentageSplit" })
+
+                                                <label>@ResourceUI.CommissionAmount</label>
+                                                <span id="DisplayRequestedCommissionSplit">
+                                                    @*@string.Format("{0:C}", Model.RequestedCommissionSplit)*@
+                                                    @if (Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Approved)
+                                                    {
+                                                        @Html.DisplayFor(m => m.ApprovedCommissionSplit)
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.DisplayFor(m => m.RequestedCommissionSplit)
+                                                    }
+
+                                                </span>
+                                                @Html.HiddenFor(m => m.RequestedCommissionSplit)
+                                                <label>&nbsp;</label>
+
+                                                <label>@ResourceUI.NetMaterialValueMultiplier</label>
+                                                <span id="DisplayRequestedNetMaterialMultiplierSplit">
+
+                                                    @string.Format("{0:N3}", Model.RequestedNetMaterialMultiplierSplit)
+                                                </span>
+                                                @Html.HiddenFor(m => m.RequestedNetMaterialMultiplierSplit)
+                                                <label>&nbsp;</label>
+
+                                                <label>@ResourceUI.NetMaterialValue</label>
+                                                <span id="DisplayRequestedNetMaterialValueSplit">
+                                                    @string.Format("{0:C}", Model.RequestedNetMaterialValueSplit)
+                                                </span>
+                                                @Html.HiddenFor(m => m.RequestedNetMaterialValueSplit)
+                                                <label>&nbsp;</label>
+                                            </td>
+
+                                        </tr>
+                                    }
+                                    <!-- #endregion-->
+
+                                    <!-- #region Unitary Type-->
+                                    @if (Model.Quote.TotalListUnitary > 0)
+                                    {
+                                        <tr id="rowUnitaryDiscountAmount">
+                                            <td>
+
+                                                @if (viewOnly)
+                                                {
+                                                    if (user.HasAccess(SystemAccessEnum.ApprovedRequestCommission))
+                                                    {
+                                                        if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved)
+                                                        {
+                                                            <label class="required" id="lblApproveCommission">
+                                                             Enter sell multiplier for Unitary in this opportunity?
+                                                            </label>
+
+                                                            @Html.NumericStepperFor((float)Model.RequestedMultiplierUnitary,
+                                                                                    new { id = "RequestedMultiplierStepperUnitary",
+                                                                                    data_decimal = 2, data_step = 0.001, @class = "js-alwaysactive" })
+
+                                                            @Html.KeyMessages(m => m.RequestedMultiplierUnitary)
+                                                            @Html.HiddenFor(m => Model.RequestedMultiplierUnitary)
+
+                                                            <label style="color:gray; font-style:italic" class="commissionMultiplierUnitaryRangeMessage">
+                                                                please enter the range between 0.8 and 1.0
+                                                            </label>
+                                                        }
+                                                        else
+                                                        {
+                                                            <label id="lblApproveCommission">
+                                                              Sell Multiplier approved for Unitary in this opportunity
+                                                            </label>
+                                                            @(string.Format("{0}", Model.ApprovedMultiplierUnitary.ToString("#.###")));
+                                                        }
+                                                    }
+                                                    if (!user.HasAccess(SystemAccessEnum.ApprovedRequestCommission))
+                                                    {
+                                                        if (Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Approved)
+                                                        {
+                                                            <label id="lblApproveCommission">
+                                                             Approved sell multiplier for Unitary and Accessories in this opportunity
+                                                            </label>
+                                                            @(string.Format("{0}", Model.ApprovedMultiplierUnitary.ToString("#.###")));
+                                                        }
+                                                        else if (Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Pending ||
+                                                                 Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Deleted ||
+                                                                 Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Rejected
+                                                      )
+                                                        {
+                                                            <label id="lblApproveCommission">
+                                                             Requested sell multiplier for Unitary and Accessories in this opportunity
+                                                            </label>
+                                                            @(string.Format("{0}", Model.RequestedMultiplierUnitary.ToString("#.###")));
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <label class="required" id="lblApproveCommission">
+                                                             Enter sell multiplier for Unitary and Accessories in this opportunity
+                                                            </label>
+
+                                                            @Html.NumericStepperFor((float)Model.RequestedMultiplierUnitary,
+                                                                                    new { id = "RequestedMultiplierStepperUnitary",
+                                                                                    data_decimal = 3, data_step = 0.001 })
+
+                                                            @Html.KeyMessages(m => m.RequestedMultiplierUnitary)
+                                                            @Html.HiddenFor(m => m.RequestedMultiplierUnitary)
+
+                                                            <div style="color:gray; font-style:italic" class="commissionMultiplierUnitaryRangeMessage">
+                                                                please enter the range between 0.8 and 1.0
+                                                            </div>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <label class="required" id="lblApproveDiscount">
+                                                      Enter sell multiplier for Unitary in this opportunity?
+                                                    </label>
+                                                    @Html.NumericStepperFor((float)Model.RequestedMultiplierUnitary,
+                                                                            new { id = "RequestedMultiplierStepperUnitary",
+                                                                            data_decimal = 3, data_step = 0.001 })
+
+                                                    @Html.KeyMessages(m => m.RequestedMultiplierUnitary)
+                                                    @Html.HiddenFor(m => Model.RequestedMultiplierUnitary)
+
+                                                    <div style="color:gray; font-style:italic" class="commissionMultiplierUnitaryRangeMessage">
+                                                        please enter the range between 0.8 and 1.0
+                                                    </div>
+                                                }
+                                            </td>
+
+                                            <td class="blucell inputs">
+
+                                                <label>@ResourceUI.TotalList</label>
+                                                <span id="DisplayTotalListUnitary">
+                                                    @string.Format("{0:C}", Model.ApprovedTotalsCommission.TotalListUnitary)
+                                                </span>
+                                                <label>&nbsp;</label>
+
+                                                <label>Purchase Order Amount</label>
+                                                <span id="DisplayTotalNetUnitary">
+                                                    @string.Format("{0:C}", Model.TotalNetUnitary)
+                                                </span>
+                                                @Html.HiddenFor(m => m.TotalNetUnitary)
+                                                <label>&nbsp;</label>
+
+                                                <label>@ResourceUI.ApprovedCommissionPercent</label>
+                                                @if (user.HasAccess(SystemAccessEnum.ApprovedRequestCommission))
+                                                {
+                                                    if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved)
+                                                    {
+                                                        @Html.TextBoxFor(m => Model.RequestedCommissionPercentageUnitary, 
+                                                                         new { @class = "commissionPercent", style = "width: 55px;" })
+                                                        <text>%</text>
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.TextBoxFor(m => Model.ApprovedCommissionPercentageUnitary, 
+                                                                         new { @class = "commissionPercent", style = "width: 55px;" })
+                                                        <text>%</text>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved)
+                                                    {
+                                                        @Html.TextBoxFor(m => Model.RequestedCommissionPercentageUnitary,
+                                                                         new { @class = "commissionPercent",
+                                                                               style = "width: 55px;",
+                                                                               disabled = "disabled" })
+                                                        <text>%</text>
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.TextBoxFor(m => Model.ApprovedCommissionPercentageUnitary,
+                                                                         new { @class = "commissionPercent",
+                                                                               style = "width: 55px;",
+                                                                               disabled = "disabled" })
+                                                        <text>%</text>
+                                                    }
+
+
+                                                }
+                                                @Html.HiddenFor(m => Model.RequestedCommissionPercentageUnitary, 
+                                                                new { id = "hidden_RequestedCommissionPercentageUnitary" })
+
+                                                <label>@ResourceUI.CommissionAmount</label>
+                                                <span id="DisplayRequestedCommissionUnitary">
+                                                   
+                                                    @if (Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Approved)
+                                                    {
+                                                        @Html.DisplayFor(m => m.ApprovedCommissionUnitary)
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.DisplayFor(m => m.RequestedCommissionUnitary)
+                                                    }
+
+                                                </span>
+                                                @Html.HiddenFor(m => m.RequestedCommissionUnitary)
+                                                <label>&nbsp;</label>
+
+                                                <label>@ResourceUI.NetMaterialValueMultiplier</label>
+                                                <span id="DisplayRequestedNetMaterialMultiplierUnitary">
+
+                                                    @string.Format("{0:N3}", Model.RequestedNetMaterialMultiplierUnitary)
+                                                </span>
+                                                @Html.HiddenFor(m => m.RequestedNetMaterialMultiplierUnitary)
+                                                <label>&nbsp;</label>
+
+                                                <label>@ResourceUI.NetMaterialValue</label>
+                                                <span id="DisplayRequestedNetMaterialValueUnitary">
+                                                    @string.Format("{0:C}", Model.RequestedNetMaterialValueUnitary)
+                                                </span>
+                                                @Html.HiddenFor(m => m.RequestedNetMaterialValueUnitary)
+                                                <label>&nbsp;</label>
+                                            </td>
+                                        </tr>
+                                    }
+                                    <!-- #endregion-->
+
+                                    <!-- #Region LC-Package-->
+                                    @if (Model.Quote.TotalListLCPackage > 0)
+                                    {
+                                        <tr id="rowLCPackageDiscountAmount">
+                                            <td>
+
+                                                @if (viewOnly)
+                                                {
+                                                    if (user.HasAccess(SystemAccessEnum.ApprovedRequestCommission))
+                                                    {
+                                                        if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved)
+                                                        {
+                                                            <label class="required" id="lblApproveCommission">
+                                                                Enter sell multiplier for LC Package in this opportunity?
+                                                            </label>
+
+                                                            @Html.NumericStepperFor((float)Model.RequestedMultiplierLCPackage,
+                                                                                    new
+                                                                                    {
+                                                                                        id = "RequestedMultiplierStepperLCPackage",
+                                                                                        data_decimal = 2,
+                                                                                        data_step = 0.01,
+                                                                                        @class = "js-alwaysactive"
+                                                                                    })
+
+                                                            @Html.KeyMessages(m => m.RequestedMultiplierLCPackage)
+                                                            @Html.HiddenFor(m => Model.RequestedMultiplierLCPackage)
+
+                                                            <label style="color:gray; font-style:italic" class="commissionMultiplierLCPackageRangeMessage">
+                                                                please enter the range between 0.75 and 1.0
+                                                            </label>
+                                                        }
+                                                        else /*CommissionRequestStatus Approved*/
+                                                        {
+                                                            <label id="lblApproveCommission">
+                                                                Sell Multiplier approved for LCPackage in this opportunity
+                                                            </label>
+                                                            @(string.Format("{0}", Model.ApprovedMultiplierLCPackage.ToString("#.###")));
+                                                        }
+                                                    }
+                                                    if (!user.HasAccess(SystemAccessEnum.ApprovedRequestCommission))
+                                                    {
+                                                        if (Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Approved)
+                                                        {
+                                                            <label id="lblApproveCommission">
+                                                                Approved sell multiplier for LCPackage and Accessories in this opportunity
+                                                            </label>
+                                                            @(string.Format("{0}", Model.ApprovedMultiplierLCPackage.ToString("#.###")));
+                                                        }
+                                                        else if (Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Pending ||
+                                                                 Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Deleted ||
+                                                                 Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Rejected
+                                                        )
+                                                        {
+                                                            <label id="lblApproveCommission">
+                                                                Requested sell multiplier for LCPackage and Accessories in this opportunity
+                                                            </label>
+                                                            @(string.Format("{0}", Model.RequestedMultiplierLCPackage.ToString("#.###")));
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <label class="required" id="lblApproveCommission">
+                                                                Enter sell multiplier for LCPackage and Accessories in this opportunity
+                                                            </label>
+
+                                                            @Html.NumericStepperFor((float)Model.RequestedMultiplierLCPackage,
+                                                                                    new
+                                                                                    {
+                                                                                        id = "RequestedMultiplierStepperLCPackage",
+                                                                                        data_decimal = 2,
+                                                                                        data_step = 0.01
+                                                                                    })
+
+                                                            @Html.KeyMessages(m => m.RequestedMultiplierLCPackage)
+                                                            @Html.HiddenFor(m => m.RequestedMultiplierLCPackage)
+
+                                                            <div style="color:gray; font-style:italic" class="commissionMultiplierLCPackageRangeMessage">
+                                                                please enter the range between 0.75 and 1.0
+                                                            </div>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <label class="required" id="lblApproveDiscount">
+                                                        Enter sell multiplier for LCPackage in this opportunity?
+                                                    </label>
+                                                    @Html.NumericStepperFor((float)Model.RequestedMultiplierLCPackage,
+                                                                            new
+                                                                            {
+                                                                                id = "RequestedMultiplierStepperLCPackage",
+                                                                                data_decimal = 2,
+                                                                                data_step = 0.01  
+                                                                            })
+
+                                                    @Html.KeyMessages(m => m.RequestedMultiplierLCPackage)
+                                                    @Html.HiddenFor(m => Model.RequestedMultiplierLCPackage)
+
+                                                    <div style="color:gray; font-style:italic" class="commissionMultiplierLCPackageRangeMessage">
+                                                        please enter the range between 0.75 and 1.0
+                                                    </div>
+                                                }
+                                            </td>
+
+                                            <td class="blucell inputs">
+
+                                                <label>@ResourceUI.TotalList</label>
+                                                <span id="DisplayTotalListLCPackage">
+                                                    @string.Format("{0:C}", Model.ApprovedTotalsCommission.TotalListLCPackage)
+                                                </span>
+                                                <label>&nbsp;</label>
+
+                                                <label>Purchase Order Amount</label>
+                                                <span id="DisplayTotalNetLCPackage">
+                                                    @string.Format("{0:C}", Model.TotalNetLCPackage)
+                                                </span>
+                                                @Html.HiddenFor(m => m.TotalNetLCPackage)
+                                                <label>&nbsp;</label>
+
+                                                <label>@ResourceUI.ApprovedCommissionPercent</label>
+                                                @if (user.HasAccess(SystemAccessEnum.ApprovedRequestCommission))
+                                                {
+                                                    if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved)
+                                                    {
+                                                        @Html.TextBoxFor(m => Model.RequestedCommissionPercentageLCPackage,
+                                                                         new { @class = "commissionPercent", style = "width: 55px;" })
+                                                        <text>%</text>
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.TextBoxFor(m => Model.ApprovedCommissionPercentageLCPackage,
+                                                                         new { @class = "commissionPercent", style = "width: 55px;" })
+                                                        <text>%</text>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved)
+                                                    {
+                                                        @Html.TextBoxFor(m => Model.RequestedCommissionPercentageLCPackage,
+                                                                         new
+                                                                         {
+                                                                             @class = "commissionPercent",
+                                                                             style = "width: 55px;",
+                                                                             disabled = "disabled"
+                                                                         })
+                                                        <text>%</text>
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.TextBoxFor(m => Model.ApprovedCommissionPercentageLCPackage,
+                                                                         new
+                                                                         {
+                                                                             @class = "commissionPercent",
+                                                                             style = "width: 55px;",
+                                                                             disabled = "disabled"
+                                                                         })
+                                                        <text>%</text>
+                                                    }
+
+
+                                                }
+                                                @Html.HiddenFor(m => Model.RequestedCommissionPercentageLCPackage,
+                                                                new { id = "hidden_RequestedCommissionPercentageLCPackage" })
+
+                                                <label>@ResourceUI.CommissionAmount</label>
+                                                <span id="DisplayRequestedCommissionLCPackage">
+
+                                                    @if (Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Approved)
+                                                    {
+                                                        @Html.DisplayFor(m => m.ApprovedCommissionLCPackage)
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.DisplayFor(m => m.RequestedCommissionLCPackage)
+                                                    }
+
+                                                </span>
+                                                @Html.HiddenFor(m => m.RequestedCommissionLCPackage)
+                                                <label>&nbsp;</label>
+
+                                                <label>@ResourceUI.NetMaterialValueMultiplier</label>
+                                                <span id="DisplayRequestedNetMaterialMultiplierLCPackage">
+
+                                                    @string.Format("{0:N3}", Model.RequestedNetMaterialMultiplierLCPackage)
+                                                </span>
+                                                @Html.HiddenFor(m => m.RequestedNetMaterialMultiplierLCPackage)
+                                                <label>&nbsp;</label>
+
+                                                <label>@ResourceUI.NetMaterialValue</label>
+                                                <span id="DisplayRequestedNetMaterialValueLCPackage">
+                                                    @string.Format("{0:C}", Model.RequestedNetMaterialValueLCPackage)
+                                                </span>
+                                                @Html.HiddenFor(m => m.RequestedNetMaterialValueLCPackage)
+                                                <label>&nbsp;</label>
+                                            </td>
+                                        </tr>
+                                    }
+                                    <!-- #endregion-->
+
+                                    <!-- #region Total Commission-->
+                                    <tr>
+                                        <td>
+                                            <h4>Totals Commission</h4>
+                                            <br />
+                                            <label>@ResourceUI.TotalNetMultiplier</label>
+                                            <span id="DisplayRequestedMultiplier">
+                                                @if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved)
+                                                {
+                                                    @(string.Format("{0:N3}", Model.RequestedMultiplier))
+                                                }
+                                                else
+                                                {
+                                                    @(string.Format("{0:N3}", Model.ApprovedMultiplier))
+                                                }
+                                            </span>
+                                            @Html.HiddenFor(m => m.RequestedMultiplier)
+                                            <br />
+                                        </td>
+
+                                        <td class="blucell inputs">
+                                            <label>@ResourceUI.TotalList</label>
+                                            <span id="DisplayTotalList">
+                                                @string.Format("{0:C}", Model.Quote.TotalList)
+                                            </span>
+                                            @Html.HiddenFor(m => m.Quote.TotalList)
+                                            <label>&nbsp;</label>
+
+                                            <label>@ResourceUI.TotalNet</label>
+                                            <span id="DisplayTotalNet">
+                                                @string.Format("{0:C}", @Model.TotalNet)
+                                            </span>
+                                            @Html.HiddenFor(m => m.TotalNet)
+
+                                            <label>&nbsp;</label>
+
+                                            <label>@ResourceUI.ApprovedCommissionPercent</label>
+                                            <span id="DisplayRequestedCommissionPercentage">
+                                                @*@(string.Format("{0:#,0.000}", @Model.RequestedCommissionPercentage))*@
+                                                @if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved)
+                                                {
+                                                    @(string.Format("{0} {1}", @Model.RequestedCommissionPercentage.ToString("#.#"), " %"))
+                                                }
+                                                else
+                                                {
+                                                    @(string.Format("{0} {1}", @Model.ApprovedCommissionPercentage.ToString("#.#"), " %"))
+                                                }
+                                            </span>
+                                            @Html.HiddenFor(m => m.RequestedCommissionPercentage)
+                                            <label>&nbsp;</label>
+
+                                            <label>@ResourceUI.CommissionAmount</label>
+
+                                            @if (Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Approved)
+                                            {
+                                                <span id="DisplayRequestedCommissionTotal">
+                                                    @string.Format("{0:C}", Model.ApprovedCommissionTotal)
+                                                </span>
+                                                Html.HiddenFor(m => m.ApprovedCommissionTotal);
+                                            }
+                                            else
+                                            {
+                                                <span id="DisplayRequestedCommissionTotal">
+                                                    @string.Format("{0:C}", Model.RequestedCommissionTotal)
+                                                </span>
+                                                @Html.HiddenFor(m => m.RequestedCommissionTotal)
+
+                                            }
+
+                                            <label>&nbsp;</label>
+
+                                            <label>@ResourceUI.NetMaterialValueMultiplier</label>
+                                            <span id="DisplayRequestedNetMaterialValueMultiplier">
+
+                                                @Html.DisplayFor(m => m.RequestedNetMaterialValueMultiplier);
+
+                                            </span>
+                                            @Html.HiddenFor(m => m.RequestedNetMaterialValueMultiplier)
+
+                                            <label>&nbsp;</label>
+
+                                            <label>@ResourceUI.NetMaterialValue</label>
+                                            <span id="DisplayRequestedNetMaterialValue">
+
+                                                @(string.Format("{0:C}", Model.RequestedNetMaterialValue));
+
+                                            </span>
+                                            @Html.HiddenFor(m => m.RequestedNetMaterialValue)
+                                            <label>&nbsp;</label>
+
+                                        </td>
+                                    </tr>
+                                    <!-- #endregion-->
+
+                                    <!-- #region Total Revised-->
+                                    <tr class="totalrow">
+                                        <td>Total revised Rep/Dist selling price as a<br />result of Commission</td>
+                                        <td class="totalcell" style="background-color:lightgray;font-size:larger; font-weight:bold">
+                                            <span id="DisplayTotalRevised" class="totalcell">
+                                                @string.Format("{0:C}", Model.TotalRevised.ToString("#.##"))
+                                            </span>
+                                            @Html.HiddenFor(m => m.TotalRevised)
+                                        </td>
+                                    </tr>
+                                    <!-- #endregion-->
+
+                                </tbody>
+                            </table>
+
+                            <!-- #region Commission Notes-->
+                            @if (viewOnly == false && !user.HasAccess(SystemAccessEnum.ApprovedRequestCommission))
+                            {
+                                <div class="row">
+                                    <label class="required">Any further information or reason for commission request</label>
+                                    @if (viewOnly == false)
+                                    {
+                                        @Html.TextAreaFor(m => m.Notes)
+                                        @Html.KeyMessages(m => m.Notes)
+                                    }
+                                    else
+                                    {
+                                        <br />
+                                        @Html.DisplayTextFor(m => m.Notes);
+                                        @Html.HiddenFor(m => m.Notes);
+                                    }
+                                    <div class="row-end">&nbsp;</div>
+                                </div>
+                            }
+                            else
+                            {
+                                <label>Any further information or reason for commission request</label>
+                                @Html.DisplayTextFor(m => m.Notes);
+                                @Html.HiddenFor(m => m.Notes);
+                            }
+                            <!-- #endregion-->
+
+                        </div>
+                        <div class="r-col1">&nbsp;</div>
+                        <div class="row-end">&nbsp;</div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- #region View Only-->
+        if (viewOnly == true)
+        {
+            if (user.HasAccess(SystemAccessEnum.ApprovedRequestCommission) || Model.ResponseNotes != null)
+            {
+                <br />
+                <div class="section form">
+                    <div class="row" style="padding-top: 0;">
+                        <div class="r-col1">&nbsp;</div>
+                        <div class="r-col10">
+                            <div class="row ">
+                                <label>Response from approval team:</label>
+                                @if (user.HasAccess(SystemAccessEnum.ApprovedRequestCommission))
+                                {
+                                    @Html.TextAreaFor(m => m.ResponseNotes);
+                                    @Html.KeyMessages(m => m.ResponseNotes)
+                                }
+                                else
+                                {
+                                    <br />
+                                    @Html.DisplayTextFor(m => m.ResponseNotes);
+                                }
+                                <div class="row-end">&nbsp;</div>
+                            </div>
+                        </div>
+                        <div class="r-col1">&nbsp;</div>
+                        <div class="row-end">&nbsp;</div>
+                    </div>
+                </div>
+            }
+        }
+        <!-- #endregion-->
+
+        if (viewOnly == false && user.HasAccess(SystemAccessEnum.ApprovedRequestCommission))
+        {
+            <br />
+            <div class="section form">
+                <div class="row" style="padding-top: 0;">
+                    <div class="r-col1">&nbsp;</div>
+                    <div class="r-col10">
+                        <div class="row ">
+                            <label>Response from approval team:</label>
+                            @if (user.HasAccess(SystemAccessEnum.ApprovedRequestCommission))
+                            {
+                                @Html.TextAreaFor(m => m.ResponseNotes, new { rows = "6", cols = "20" });
+                                @Html.KeyMessages(m => m.ResponseNotes)
+                            }
+                            else
+                            {
+                                <br />
+                                @Html.DisplayTextFor(m => m.ResponseNotes);
+                            }
+                            <div class="row-end">&nbsp;</div>
+                        </div>
+                    </div>
+                    <div class="r-col1">&nbsp;</div>
+                    <div class="row-end">&nbsp;</div>
+                </div>
+            </div>
+        }
+
+        <br />
+
+        <!-- #region Emails-->
+        <div class="section form">
+            <div class="row" style="padding-top: 0;">
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col10">
+                    <div class="row ">
+
+                        <label>@ResourceUI.EnterDaikinCityUserEmailsYouWantToNotifyAboutThisRequest</label>
+                        @if (!viewOnly)
+                        {
+                            <label class="FontSmall" style="color: gray">@ResourceUI.PlaceCommasBetweenEachEmail</label>
+                            @Html.TextAreaFor(m => m.EmailsList)
+                            @Html.KeyMessages(m => m.EmailsList)
+                            @Html.HiddenFor(m => m.EmailsList)
+                            if (!Model.IsValidEmails)
+                            {
+                                <label class="FontSmall" style="color:red">
+                                    @ResourceUI.InvalidEmails
+                                </label>
+                            }
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(m => m.EmailsList)
+                            @Html.HiddenFor(m => m.EmailsList)
+                        }
+                        <div class="row-end">&nbsp;</div>
+                    </div>
+                </div>
+                <div class="r-col1">&nbsp;</div>
+                <div class="row-end">&nbsp;</div>
+            </div>
+        </div>
+        <!-- #endregion-->
+
+        <br />
+        <div class="section action c-align">
+
+            @if (!viewOnly &&
+          (Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.NewRecord ||
+            Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Deleted ||
+            Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Rejected
+          )
+        )
+            {
+                if (user.HasAccess(SystemAccessEnum.RequestCommission))
+                {
+                    @*<a href="#" class="btn" onclick="window.location = document.referrer">@ResourceUI.Cancel</a>*@
+                    <a href="/v2/#/quote/@Model.QuoteId/existingRecord" class="btn">@ResourceUI.Cancel</a>
+                    <input type="submit" id="test" class="btn" value="@ResourceUI.Submit" />
+                }
+            }
+            else
+            {
+                if (user.HasAccess(SystemAccessEnum.ApprovedRequestCommission))
+                {
+                    if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Rejected)
+                    {
+                        <a href="#" data-sc-post="@Url.Action("CommissionRequestReject", 
+                                                 new { CommissionRequestId=Model.CommissionRequestId })"
+                           class="btn reject_commission_btn">Reject Request</a>
+                    }
+                    if (Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved)
+                    {
+                        <a href="#" data-sc-post="@Url.Action("CommissionRequestApprove", 
+                                                 new { commissionrequestid=Model.CommissionRequestId })"
+                           class="btn approve_commission_btn" id="btnApproveRequest">Approve Request</a>
+                    }
+                }
+                else if (user.HasAccess(SystemAccessEnum.ViewRequestedCommission) || user.HasAccess(SystemAccessEnum.RequestCommission))
+                {
+                    if (Model.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Pending)
+                    {
+                        <a href="#" data-sc-post="@Url.Action("CommissionRequestDelete", 
+                                                 new { CommissionRequestId=Model.CommissionRequestId })" 
+                                                 class="btn h-slim delete_commission_btn">Delete Request</a>
+                    }
+                }
+            }
+        </div>
+    }
+</div>
+
+<script>
+    $(function () {
+        $('.cb-switch').on('change', changeCheckboxStatusMsg);
+
+        function changeCheckboxStatusMsg() {
+            var msgBox = $(this).parent().find('.checkboxstatusmsg');
+            if (msgBox.length) {
+                var isChecked = $(this).is(':checked');
+                msgBox.text((isChecked) ? '@ResourceUI.Yes' : '@ResourceUI.No');
+            }
+        }
+
+        $('.cb-switch').each(function () {
+            changeCheckboxStatusMsg.call(this);
+        });
+
+        var count = 0;
+        $('#btnApproveModification').click(function () {
+
+            count += 1;
+            if (count % 2 === 0) {
+                $('.minus').prop('disabled', true);
+                $('.plus').prop('disabled', true);
+                $('.numbers').prop('disabled', true);
+                $('.numbers').val('');
+                $(this).text("Approve Request Modification");
+            }
+            else {
+
+                $('.numbers').prop('disabled', false);
+                $('.plus').prop('disabled', false);
+                $('.minus').prop('disabled', false);
+                $('.numeric-stepper').prop('disabled', false);
+                $('#stepIncrease').prop('disabled', false);
+                $('#stepDerease').prop('disabled', false);
+                $('#RequestedCommission').prop('disabled', false);
+                $('#CommissionRequestStepper').prop('disabled', false);
+                $('#lblApproveCommission').text("Commisison being approved for this opportunity");
+                $(this).text("Cancel");
+            }
+        });
+
+        $('#CommissionManuallyInput').change(function () {
+
+            if ($('#CommissionManuallyInput').prop('checked')) {
+
+                $('#CommissionManuallyInput').val(true);
+                $('#RequestedCommissionPercentageVRV').removeAttr('disabled');
+                $('#RequestedCommissionPercentageSplit').removeAttr('disabled');
+                $('#RequestedCommissionPercentageUnitary').removeAttr('disabled');
+            }
+            else {
+                $('#CommissionManuallyInput').val(false);
+                $('#RequestedCommissionPercentageVRV').attr('disabled', 'disabled');
+                $('#RequestedCommissionPercentageSplit').attr('disabled', 'disabled');
+                $('#RequestedCommissionPercentageUnitary').attr('disabled', 'disabled');
+            }
+
+        });
+
+    });
+
+    $(document).ready(function(){
+
+        var result = $('#userAccess').val();
+
+        if(result == false)
+        {
+            $('#RequestedCommissionPercentageVRV').attr('disabled','disabled');
+            $('#RequestedCommissionPercentageSplit').attr('disabled','disabled');
+            $('#RequestedCommissionPercentageUnitary').attr('disabled','disabled');
+        }
+
+        $('#CommissionManuallyInput').val(false);
+
+        if($('#CommissionManuallyInput').length > 0)
+        {
+            if ($('#CommissionManuallyInput').prop('checked')) {
+
+                $('#RequestedCommissionPercentageVRV').removeAttr('disabled');
+                $('#RequestedCommissionPercentageSplit').removeAttr('disabled');
+                $('#RequestedCommissionPercentageUnitary').removeAttr('disabled');
+            }
+            else
+            {
+                $('#RequestedCommissionPercentageVRV').attr('disabled', 'disabled');
+                $('#RequestedCommissionPercentageSplit').attr('disabled', 'disabled');
+                $('#RequestedCommissionPercentageUnitary').attr('disabled', 'disabled');
+            }
+        }
+
+        $('#Notes').val("");
+        $('#ResponseNotes').val("");
+
+        function handler () {
+            me.confirmModal.showConfirmMsg(
+                'Submit commission request',
+                'Once the commission request is submitted if any editing of the quote takes place the commission request will be made invalid. Submit this commission request?',
+                function () {
+                    me.scService.DataScPostAfterConfirm($('#test'),
+                        me.$commissionRequestForm)
+                });
+        };
+
+        if ($('#RequestedMultiplierVRV').val() < 0.20 || $('#RequestedMultiplierVRV').val() > 1.5) {
+            $('#RequestedMultiplierStepperVRV').find('.numbers').css('border', '1px solid red');
+            $('.commissionMultiplierVRVRangeMessage').show();
+            $('#test').attr('disabled', 'disabled');
+            $('#test').addClass('disabled');
+            $('#test').prop('disabled', true);
+        }
+        else {
+            $('#RequestedMultiplierStepperVRV').find('.numbers').css('border', '');
+            $('.commissionMultiplierVRVRangeMessage').hide();
+            $('#test').removeAttr('disabled');
+            $('#test').removeClass('disabled');
+            $('#test').prop('disabled', false);
+        }
+
+        if ($('#RequestedMultiplierSplit').val() < 0.35 || $('#RequestedMultiplierSplit').val() > 1.5)
+        {
+            $('#RequestedMultiplierStepperSplit').find('.numbers').css('border', '1px solid red');
+            $('.commissionMultiplierSplitRangeMessage').show();
+            $('#test').attr('disabled', 'disabled');
+            $('#test').addClass('disabled');
+            $('#test').prop('disabled', true);
+        }
+        else 
+        {
+            $('#RequestedMultiplierStepperSplit').find('.numbers').css('border', '');
+            $('.commissionMultiplierSplitRangeMessage').hide();
+            $('#test').removeAttr('disabled');
+            $('#test').removeClass('disabled');
+            $('#test').prop('disabled', false);
+        }
+
+        if ($('#RequestedMultiplierUnitary').val() < 0.8 || $('#RequestedMultiplierUnitary').val() > 1.0) 
+        {
+            $('#RequestedMultiplierStepperUnitary').find('.numbers').css('border', '1px solid red');
+            $('.commissionMultiplierUnitaryRangeMessage').show();
+            $('#test').attr('disabled', 'disabled');
+            $('#test').addClass('disabled');
+            $('#test').prop('disabled', true);
+        }
+        else 
+        {
+            $('#RequestedMultiplierStepperUnitary').find('.numbers').css('border', '');
+            $('.commissionMultiplierUnitaryRangeMessage').hide();
+            $('#test').removeAttr('disabled');
+            $('#test').removeClass('disabled');
+            $('#test').prop('disabled', false);
+        }
+
+        if (@Model.TotalRevised == 0)
+        {
+            $('#DisplayTotalRevised').html("$" + @Model.TotalNet);
+        }
+        else
+        {
+            $('#DisplayTotalRevised').html("$" + @Model.TotalRevised);
+        }
+
+        $('#test').on('click', function(e)
+        {
+            e.preventDefault();
+
+            if ($('#RequestedMultiplierVRV').val() < 0.20 || $('#RequestedMultiplierVRV').val() > 1.5) 
+            {
+                $('#test').prop('disabled',true);
+            }
+            else {
+                $('#test').prop('disabled',false);
+            }
+            if ($('#RequestedMultiplierSplit').val() < 0.35 || $('#RequestedMultiplierSplit').val() > 1.5) 
+            {
+                $('#test').prop('disabled',true);
+            }
+            else {
+                $('#test').prop('disabled',false);
+            }
+            if ($('#RequestedMultiplierUnitary').val() < 0.8 || $('#RequestedMultiplierUnitary').val() > 1.0) 
+            {
+                $('#test').prop('disabled',true);
+            }
+            else 
+            {
+                $('#test').prop('disabled',false);
+            }
+        })
+    });
+
+</script>
+

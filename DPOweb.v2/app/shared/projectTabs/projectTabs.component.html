@@ -1,0 +1,21 @@
+﻿<nav id="projectTabs" class='navbar navbar-default'>
+    <div class='container-fluid navibar'>
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#tabsMenuBar">
+                <span class="glyphicon glyphicon-menu-down"></span>
+            </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="tabsMenuBar">
+            <ul id="nav-bar" class='nav navbar-nav tabsMenuBar'>
+                <li id="homeTab"> <a [routerLink]="['/home']"> HOME </a> </li>
+                <li id="projectsTab" *ngIf="canViewProject"> <a [routerLink]="['/projects']"> PROJECTS </a> </li>
+                <li id="toolsTab"> <a [routerLink]="['/tools']"> TOOLS </a> </li>
+                <li id="productsTab"> <a [routerLink]="['/products']" (click)="Products()"> BROWSE PRODUCTS </a> </li>
+                <li id="ordersTab"> <a href="/ProjectDashboard/Orders"> ORDERS </a> </li>
+                <li id="overviewTab"> <a href="/ProjectDashboard/OverView"> REPORTS </a> </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>

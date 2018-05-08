@@ -1,0 +1,14 @@
+﻿[
+  {
+    "outputFile": "node_modules/@progress/kendo-theme-default/scss/all.css",
+    "inputFile": "node_modules/@progress/kendo-theme-default/scss/all.scss"
+  },
+  {
+    "outputFile": "node_modules/@progress/kendo-theme-default/scss/all-09122017.css",
+    "inputFile": "node_modules/@progress/kendo-theme-default/scss/all-09122017.scss"
+  },
+  {
+    "outputFile": "node_modules/@progress/kendo-theme-bootstrap/scss/all.css",
+    "inputFile": "node_modules/@progress/kendo-theme-bootstrap/scss/all.scss"
+  }
+]

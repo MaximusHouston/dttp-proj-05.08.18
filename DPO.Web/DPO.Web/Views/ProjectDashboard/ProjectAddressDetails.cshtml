@@ -1,0 +1,81 @@
+﻿@model ProjectModel
+<div class="row">
+    <div class="r-col1">&nbsp;</div>
+    <div class="r-col2 details-descript">
+        <p class="detail-name">@ResourceUI.EngineerDetails:</p>
+        @if (!String.IsNullOrEmpty(Model.EngineerName))
+        {
+            <p>@Model.EngineerName</p>
+        }
+        <p>@Model.EngineerBusinessName</p>
+        <p>@Model.EngineerAddress.AddressLine1</p>
+        <p>@Model.EngineerAddress.AddressLine2</p>
+        <p>@Model.EngineerAddress.AddressLine3</p>
+        <p>@Model.EngineerAddress.Location</p>
+           @{
+               var engState = Model.EngineerAddress.States.Items
+                   .Where(s => s.Value ==  Model.EngineerAddress.StateId.ToString())
+                   .Select(s => s.Text).FirstOrDefault();
+               <p>@engState</p>   
+           }
+        <p>@Model.EngineerAddress.PostalCode</p>
+        <p>@Model.EngineerAddress.CountryCode</p>
+    </div>
+    <div class="r-col1">&nbsp;</div>
+    <div class="r-col2 details-descript">
+        <p class="detail-name">@ResourceUI.CustomerDetails:</p>
+        @if (!String.IsNullOrEmpty(Model.DealerContractorName))
+        {
+            <p>@Model.DealerContractorName</p>
+        }
+      
+        <p>@Model.CustomerName</p>
+        <p>@Model.CustomerAddress.AddressLine1</p>
+        <p>@Model.CustomerAddress.AddressLine2</p>
+        <p>@Model.CustomerAddress.AddressLine3</p>
+        <p>@Model.CustomerAddress.Location</p>
+        @{
+            var cusState = Model.CustomerAddress.States.Items
+                .Where(s => s.Value == Model.CustomerAddress.StateId.ToString())
+                .Select(s => s.Text).FirstOrDefault();
+                <p>@cusState</p>
+        }
+        <p>@Model.CustomerAddress.PostalCode</p>
+        <p>@Model.CustomerAddress.CountryCode</p>
+    </div>
+    <div class="r-col1">&nbsp;</div>
+    <div class="r-col2 details-descript">
+        <p class="detail-name">@ResourceUI.SellerAddress:</p>
+        <p>@Model.SellerName</p>
+        <p>@Model.SellerAddress.AddressLine1</p>
+        <p>@Model.SellerAddress.AddressLine2</p>
+        <p>@Model.SellerAddress.AddressLine3</p>
+        <p>@Model.SellerAddress.Location</p>
+        @{
+            var sellerState = Model.SellerAddress.States.Items
+                .Where(s => s.Value == Model.SellerAddress.StateId.ToString())
+                .Select(s => s.Text).FirstOrDefault();
+            <p>@sellerState</p>
+        }
+        <p>@Model.SellerAddress.PostalCode</p>
+        <p>@Model.SellerAddress.CountryCode</p>
+    </div>
+    <div class="r-col1">&nbsp;</div>
+    <div class="r-col2 details-descript">
+        <p class="detail-name">@ResourceUI.ProjectLocation:</p>
+        <p>@Model.ShipToName</p>
+        <p>@Model.ShipToAddress.AddressLine1</p>
+        <p>@Model.ShipToAddress.AddressLine2</p>
+        <p>@Model.ShipToAddress.AddressLine3</p>
+        <p>@Model.ShipToAddress.Location</p>
+        @{
+            var shipState = Model.ShipToAddress.States.Items
+                .Where(s => s.Value == Model.ShipToAddress.StateId.ToString())
+                .Select(s => s.Text).FirstOrDefault();
+                <p>@shipState</p>
+        }
+        <p>@Model.ShipToAddress.PostalCode</p>
+        <p>@Model.ShipToAddress.CountryCode</p>
+    </div>
+    <div class="row-end">&nbsp;</div>
+</div>

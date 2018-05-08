@@ -1,0 +1,56 @@
+﻿@{
+    bool isInUsers = Html.IsPage("users") || Html.IsPage("useredit");
+    bool isInBusinesses = Html.IsPage("Businesses") || Html.IsPage("BusinessEdit");
+    bool isInBusinessGroups = Html.IsPage("UserGroups");
+    bool isInApprovalRequests = Html.IsPage("ApprovalUserEdit") || Html.IsPage("ApprovalRequests") || Html.IsPage("RejectedUsers");
+    bool isInDiscountRequests = Html.IsPage("DiscountRequests");
+    bool isInCommissionRequests = Html.IsPage("CommissionRequests");
+    
+    var user = Model.CurrentUser;
+}
+
+
+<ul class="tab-bar">
+    @if(user.HasAccess(SystemAccessEnum.ViewUsers))
+    {
+        <li class=@((isInUsers) ? "active-tab" : "")>
+            <a href="@Url.Action("Users","Userdashboard")">@ResourceUI.AllUsers</a>
+        </li>
+    }
+    @if (user.HasAccess(SystemAccessEnum.ManageGroups))
+    {
+        <li class=@((isInBusinessGroups) ? "active-tab" : "")>
+            <a href="@Url.Action("UserGroups","Userdashboard")">@ResourceUI.UserGroups</a>
+        </li>
+    }
+    @if (user.HasAccess(SystemAccessEnum.ViewBusiness))
+    {
+        <li class=@((isInBusinesses) ? "active-tab" : "")>
+            <a href="@Url.Action("Businesses","Userdashboard")">@ResourceUI.AllBusinesses</a>
+        </li>
+    }
+
+    @if (user.HasAccess(SystemAccessEnum.ApproveDiscounts))
+    {
+        <li class=@((isInDiscountRequests) ? "active-tab" : "")>
+            <a href="@Url.Action("DiscountRequests","Userdashboard")">@ResourceUI.DiscountRequests</a>
+        </li>
+    }
+    
+    @if (user.HasAccess(SystemAccessEnum.ApprovedRequestCommission))
+    {
+        <li class=@((isInCommissionRequests) ? "active-tab" : "")>
+            <a href="@Url.Action("CommissionRequests","Userdashboard")">@ResourceUI.RequestedCommission</a>
+        </li>
+    }
+
+    @if (user.HasAccess(SystemAccessEnum.ApproveUsers))
+    {
+        <li class=@((isInApprovalRequests) ? "active-tab" : "")>
+            <a href="@Url.Action("ApprovalRequests","Userdashboard")">@ResourceUI.ApprovalRequests</a>
+        </li>
+    }
+
+    
+   
+</ul>

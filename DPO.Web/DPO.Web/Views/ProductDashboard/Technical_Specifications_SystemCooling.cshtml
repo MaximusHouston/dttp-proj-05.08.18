@@ -1,0 +1,252 @@
+﻿@*This view is not used. Delete after 06/01/2017*@
+@model ProductModel
+@{
+    var specs = Model.Specifications;
+    Layout = null;
+}
+
+
+<div>
+
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        <span class="pull-left">Additional Refrigerant Charge</span> <span class="pull-right">@specs.GetDecimal("AdditionalRefrigerantCharge", "N2")</span>
+        <span class="pull-left"> Air Flow Rate - High</span> 
+        @if (specs.GetString("AirFlowRateHighText") != null)
+            {
+            @specs.GetString("AirFlowRateHighText")
+        }
+        @if (@specs.GetString("AirFlowRateHighCooling") != null)
+        {
+            @specs.GetString("AirFlowRateHighCooling")
+        }
+        else
+        {
+            @specs.GetDecimal("AirFlowRateHighHeating", "N2")
+        }
+    </div>
+
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        <span class="pull-left">Capacity Control Range - Max</span> <span>@specs.GetDecimal("CapacityControlRangeMax", "N2")</span>
+        <span class="pull-left">Capacity Control Range - Min</span> <span>@specs.GetDecimal("CapacityControlRangeMin", "N2")</span>
+    </div>
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        <span class="pull-left">
+            Compressor Stage
+        </span>
+        <span class="pull-right">@specs.GetString("CompressorStages")</span>
+        <span class="pull-left">
+            Condensate Drain Outlet
+        </span>
+        <span class="pull-right">@specs.GetString("CondensateDrainOutlet")</span>
+    </div>
+
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        <span class="pull-left">
+            Cooling Capacity Rated
+        </span>
+        <span class="pull-right">@specs.GetDecimal("CoolingCapacityRated", "N2")</span>
+        <span class="pull-left">
+            Cooling Input Power
+        </span>
+        <span class="pull-right">@specs.GetDecimal("CoolingInputPower", "N2")</span>
+    </div>
+
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        <span class="pull-left">
+            Cooling Operation Range StdMax
+        </span>
+        <span class="pull-right">@specs.GetDecimal("CoolingOperationRangeStdMax", "N2")</span>
+        <span class="pull-left">
+            Cooling Operation Range StdMin
+        </span>
+        <span class="pull-right">@specs.GetDecimal("CoolingOperationRangeStdMin", "N2")</span>
+    </div>
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        <span class="pull-left">
+            Cooling Operation Range wBaffleMax
+        </span>
+        <span class="pull-right">@specs.GetDecimal("CoolingOperationRangewBaffleMax", "N2")</span>
+        <span class="pull-left">
+            CoolingOperationRangewBaffleMin
+        </span>
+        <span class="pull-right">@specs.GetDecimal("CoolingOperationRangewBaffleMin", "N2")</span>
+    </div>
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        <span class="pull-left">
+            Dimensions - Depth
+        </span>
+        <span class="pull-right">@specs.GetString("DimensionsUnitDepth")</span>
+        <span class="pull-left">
+            Dimensions - Height
+        </span>
+        <span class="pull-right">@specs.GetString("DimensionsUnitHeight")</span>
+    </div>
+
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        <span class="pull-left">
+            Dimensions - Width
+        </span>
+        <span class="pull-right">@specs.GetString("DimensionsUnitWidth")</span>
+        <span class="pull-left">
+            EER Nonducted
+        </span>
+        <span class="pull-right">@specs.GetDecimal("EERNonDucted", "N2")</span>
+    </div>
+
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        <span class="pull-left">
+            Factory Std Refrigerant Charge
+        </span>
+        <span class="pull-right">
+            @specs.GetString("FactoryStdRefrigerantCharge")
+        </span>
+        <span class="pull-left">
+            Fuse Size
+        </span>
+        <span class="pull-right">@specs.GetDecimal("FuseSize", "N2")</span>
+    </div>
+
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        <span class="pull-left">
+            Heat Exchanger Type
+        </span>
+        <span class="pull-right">@specs.GetString("HeatExchangerType")</span>
+        <span class="pull-left">
+            InERP
+        </span>
+        <span class="pull-right">@specs.GetString("InERP")</span>
+    </div>
+
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        <span class="pull-left">
+            Inter Connecting Wires
+        </span>
+        <span class="pull-right">@specs.GetString("InterConnectingWires")</span>
+        <span class="pull-left">
+            Max Indoor to Indoor Piping
+        </span>
+        <span class="pull-right">@specs.GetDecimal("MaxIndoorToIndoorPiping", "N2")</span>
+    </div>
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+
+        <span class="pull-left">
+            Max Overcurrent Protection
+        </span>
+        <span class="pull-right">
+            @specs.GetString("MaxOvercurrentProtection")
+        </span>
+        <span class="pull-left">
+            Max Pipe Length Total
+        </span>
+        <span class="pull-right">@specs.GetDecimal("MaxPipeLengthTotal", "N2")</span>
+    </div>
+
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+
+        <span class="pull-left">
+            Min Circuit Amps
+        </span>
+        <span class="pull-right">
+            @specs.GetString("MinCircuitAmps")
+        </span>
+        <span class="pull-left">
+            Pipe Size - Gas
+        </span>
+        <span class="pull-right">@specs.GetString("PipeSizeGas")</span>
+    </div>
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+
+        <span class="pull-left">
+            PipeSize - Liquid
+        </span>
+        <span class="pull-right">@specs.GetString("PipeSizeLiquid")</span>
+        <span class="pull-left">
+            Power Frequency
+        </span>
+        <span class="pull-right">@specs.GetDecimal("PowerFrequency", "N2")</span>
+    </div>
+
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+
+        <span class="pull-left">
+            Power Phase
+        </span>
+        <span class="pull-right">@specs.GetDecimal("PowerPhase", "N2")</span>
+        <span class="pull-left">
+            Power Voltage
+        </span>
+        <span class="pull-right">@specs.GetString("PowerVoltage")</span>
+    </div>
+
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        <span class="pull-left">
+            Rated Cooling Condition AmbientDB
+        </span>
+        <span class="pull-right">@specs.GetDecimal("RatedCoolingConditionAmbientDB", "N2")</span>
+    </div>
+
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+
+        <span class="pull-left">
+            Rated Cooling Condition AmbientWB
+        </span>
+        <span class="pull-right">@specs.GetDecimal("RatedCoolingConditionAmbientWB", "N2")</span>
+        <span class="pull-left">
+            Rated Cooling Condition RoomDB
+        </span>
+        <span class="pull-right">@specs.GetDecimal("RatedCoolingConditionRoomDB", "N2")</span>
+    </div>
+
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+
+        <span class="pull-left">
+            Rated Cooling Condition RoomWB
+        </span>
+        <span class="pull-right">@specs.GetDecimal("RatedCoolingConditionRoomWB", "N2")</span>
+        <span class="pull-left">
+            Rated Height Difference
+        </span>
+        <span class="pull-right">@specs.GetDecimal("RatedHeightDifference", "N2")</span>
+    </div>
+
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+
+        <span class="pull-left">
+            Rated Load Amps
+        </span>
+        <span class="pull-right">
+            @specs.GetString("RatedLoadAmps") 
+        </span>
+        <span class="pull-left">
+            Refrigerant Type
+        </span>
+        <span class="pull-right">@specs.GetString("RefrigerantType")</span>
+    </div>
+
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+
+        <span class="pull-left">
+            SEER Nonducted
+        </span>
+        <span class="pull-right">@specs.GetDecimal("SEERNonDucted", "N2")</span>
+        <span class="pull-left">
+            Sound Pressure - High
+        </span>
+        <span class="pull-right">@(specs.GetDecimal("SoundPressureHighCooling", "N2") != null ? specs.GetDecimal("SoundPressureHighCooling", "N2"): specs.GetDecimal("SoundPressureHighHeating", "N2"))</span>
+    </div>
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+
+        <span class="pull-left">
+            Unit Installation Type
+        </span>
+        <span class="pull-right">@Model.ProductCategoryName</span>
+        <span class="pull-left">
+            Weight - Net
+        </span>
+        <span class="pull-right">
+            @specs.GetString("WeightUnit")
+        </span>
+    </div>
+</div>
+
+

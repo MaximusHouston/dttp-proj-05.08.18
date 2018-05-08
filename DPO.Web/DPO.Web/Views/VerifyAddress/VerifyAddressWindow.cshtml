@@ -1,0 +1,58 @@
+﻿@{
+    Layout = null;
+}
+<div ng-controller="verifyAddressController">
+   <div ng-if="$parent.$parent.invalidAddress">
+       <p>We were unable to verify entered address, please review. Do you want to continue?</p>
+       <div class="c-align" style="margin-top:10px;">
+           <button class="btn btn-default" ng-click="cancel()">Re-enter address</button>
+           <button class="btn btn-primary" ng-click="continue()">Continue</button>
+       </div>
+   </div>
+
+    <div ng-if="!$parent.$parent.invalidAddress">
+        <p>Address you entered:</p>
+        <div>
+            @*<input type="radio" id="enteredAddress" name="enteredAddress" value="1">*@
+            <p>
+                <span>{{$parent.$parent.$parent.$parent.projectVM.shipToAddress.addressLine1}}</span>
+                <span>{{$parent.$parent.$parent.$parent.projectVM.shipToAddress.addressLine2}},</span>
+                <span>{{$parent.$parent.$parent.$parent.projectVM.shipToAddress.location}}, </span>
+                <enum url="/api/Common/GetStates" keyid="{{$parent.$parent.$parent.$parent.projectVM.shipToAddress.stateId}}"></enum>
+                <span>{{$parent.$parent.$parent.$parent.projectVM.shipToAddress.postalCode}}</span>
+            </p>
+        </div>
+
+        <p>Suggested Address:</p>
+        <div>
+            <p>
+                <input type="checkbox" id="suggestedAddresse" name="suggestedAddress" value="2">
+
+                <span>{{$parent.$parent.suggestedAddresses[0].line1}}</span>
+                <span>{{$parent.$parent.suggestedAddresses[0].line2}},</span>
+                <span>{{$parent.$parent.suggestedAddresses[0].city}}, </span>
+                <span>{{$parent.$parent.suggestedAddresses[0].stateProvince}} </span>
+                <span>{{$parent.$parent.suggestedAddresses[0].zipCode}}</span>
+            </p>
+
+        </div>
+        <div class="c-align" style="margin-top:10px;">
+            <button class="btn btn-default" ng-click="cancel()">Re-enter address</button>
+            <button class="btn btn-primary" ng-click="apply()">Continue</button>
+        </div>
+    </div>
+    
+
+    @*<div ng-repeat="address in $parent.$parent.suggestedAddresses">
+            <div>
+                <input type="radio" name="address" value="1" ng-model="selectedAddress">
+                <span>{{address.line1}}</span>
+                <span>{{address.line2}},</span>
+                <span>{{address.city}}, </span>
+                <span>{{address.stateProvince}} </span>
+                <span>{{address.zipCode}}</span>
+            </div>
+        </div>*@
+
+    
+</div>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://crmtestisv.goodmanmfg.com/Services/DPOServices/CrmService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+  <xs:element name="VerifyAccount">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" minOccurs="0" name="request" nillable="true" type="q1:VerifyAccountRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VerifyAccountResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" minOccurs="0" name="VerifyAccountResult" nillable="true" type="q2:VerifyAccountResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RetrieveProducts">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" minOccurs="0" name="request" nillable="true" type="q3:RetrieveProductsRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RetrieveProductsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" minOccurs="0" name="RetrieveProductsResult" nillable="true" type="q4:RetrieveProductsResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RetrieveGroups">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" minOccurs="0" name="request" nillable="true" type="q5:RetrieveGroupsRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RetrieveGroupsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" minOccurs="0" name="RetrieveGroupsResult" nillable="true" type="q6:RetrieveGroupsResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RetrieveAccounts">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" minOccurs="0" name="request" nillable="true" type="q7:RetrieveAccountsRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RetrieveAccountsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" minOccurs="0" name="RetrieveAccountsResult" nillable="true" type="q8:RetrieveAccountsResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RetrieveAccountMultipliers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" minOccurs="0" name="request" nillable="true" type="q9:RetrieveAccountMultipliersRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RetrieveAccountMultipliersResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" minOccurs="0" name="RetrieveAccountMultipliersResult" nillable="true" type="q10:RetrieveAccountMultipliersResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RetrieveSystemComponents">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" minOccurs="0" name="request" nillable="true" type="q11:RetrieveSystemComponentsRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RetrieveSystemComponentsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" minOccurs="0" name="RetrieveSystemComponentsResult" nillable="true" type="q12:RetrieveSystemComponentsResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RetrieveSalesLiterature">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" minOccurs="0" name="request" nillable="true" type="q13:RetrieveSalesLiteratureRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RetrieveSalesLiteratureResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" minOccurs="0" name="RetrieveSalesLiteratureResult" nillable="true" type="q14:RetrieveSalesLiteratureResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RetrieveProductSalesLiterature">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" minOccurs="0" name="request" nillable="true" type="q15:RetrieveProductSalesLiteratureRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RetrieveProductSalesLiteratureResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" minOccurs="0" name="RetrieveProductSalesLiteratureResult" nillable="true" type="q16:RetrieveProductSalesLiteratureResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RetrieveInternalUsers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" minOccurs="0" name="request" nillable="true" type="q17:RetrieveInternalUsersRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RetrieveInternalUsersResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" minOccurs="0" name="RetrieveInternalUsersResult" nillable="true" type="q18:RetrieveInternalUsersResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RetrieveProductNotes">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" minOccurs="0" name="request" nillable="true" type="q19:RetrieveProductNotesRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RetrieveProductNotesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" minOccurs="0" name="RetrieveProductNotesResult" nillable="true" type="q20:RetrieveProductNotesResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RetrieveOptions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" minOccurs="0" name="request" nillable="true" type="q21:RetrieveOptionsRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RetrieveOptionsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" minOccurs="0" name="RetrieveOptionsResult" nillable="true" type="q22:RetrieveOptionsResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

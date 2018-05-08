@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:tns="http://cfg001r.wsbeans.iseries" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ns="http://cfg001r.wsbeans.iseries/xsd" xmlns:ns1="http://org.apache.axis2/xsd" targetNamespace="http://cfg001r.wsbeans.iseries" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation>CFG001R</wsdl:documentation>
+  <wsdl:types>
+    <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://cfg001r.wsbeans.iseries/xsd">
+      <xs:element name="cfg001r_XML">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="args0" type="ns:CFG001RInput" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="CFG001RInput">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="INORDERREQ" type="ns:INORDERREQ" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="INORDERREQ">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="length" type="xs:int" />
+          <xs:element minOccurs="0" name="string" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="cfg001r_XMLResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="cfg001r">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="args0" type="ns:CFG001RInput" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="cfg001rResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" type="ns:CFG001RResult" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="CFG001RResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="INORDERREQ" type="ns:INORDERREQ" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="cfg001rRequest">
+    <wsdl:part name="parameters" element="ns:cfg001r" />
+  </wsdl:message>
+  <wsdl:message name="cfg001rResponse">
+    <wsdl:part name="parameters" element="ns:cfg001rResponse" />
+  </wsdl:message>
+  <wsdl:message name="cfg001r_XMLRequest">
+    <wsdl:part name="parameters" element="ns:cfg001r_XML" />
+  </wsdl:message>
+  <wsdl:message name="cfg001r_XMLResponse">
+    <wsdl:part name="parameters" element="ns:cfg001r_XMLResponse" />
+  </wsdl:message>
+  <wsdl:portType name="CFG001RPortType">
+    <wsdl:operation name="cfg001r">
+      <wsdl:input wsaw:Action="urn:cfg001r" message="tns:cfg001rRequest" />
+      <wsdl:output wsaw:Action="urn:cfg001rResponse" message="tns:cfg001rResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="cfg001r_XML">
+      <wsdl:input wsaw:Action="urn:cfg001r_XML" message="tns:cfg001r_XMLRequest" />
+      <wsdl:output wsaw:Action="urn:cfg001r_XMLResponse" message="tns:cfg001r_XMLResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CFG001RSoap11Binding" type="tns:CFG001RPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="cfg001r">
+      <soap:operation soapAction="urn:cfg001r" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cfg001r_XML">
+      <soap:operation soapAction="urn:cfg001r_XML" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="CFG001RSoap12Binding" type="tns:CFG001RPortType">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="cfg001r">
+      <soap12:operation soapAction="urn:cfg001r" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cfg001r_XML">
+      <soap12:operation soapAction="urn:cfg001r_XML" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CFG001R">
+    <wsdl:port name="CFG001RHttpSoap11Endpoint" binding="tns:CFG001RSoap11Binding">
+      <soap:address location="http://TESTDEV.GOODMANMFG.COM:10057/web/services/CFG001R.CFG001RHttpSoap11Endpoint/" />
+    </wsdl:port>
+    <wsdl:port name="CFG001RHttpSoap12Endpoint" binding="tns:CFG001RSoap12Binding">
+      <soap12:address location="http://TESTDEV.GOODMANMFG.COM:10057/web/services/CFG001R.CFG001RHttpSoap12Endpoint/" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

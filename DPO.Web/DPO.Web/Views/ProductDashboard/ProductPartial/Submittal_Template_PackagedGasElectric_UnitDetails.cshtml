@@ -1,0 +1,180 @@
+﻿
+@model ProductModel
+@{
+    var specs = Model.Specifications;
+}
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Power Supply (V/Hz/Ph):</span>
+    <span class="pull-right">@specs.GetString("PowerVoltage") / @specs.GetString("PowerFrequency") / @specs.GetString("PowerPhase")</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Compressor Stage:</span>
+    <span class="pull-right">@specs.GetString("CompressorStages")</span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Min. Circuit Amps MCA (A):</span>
+    <span class="pull-right">
+        @specs.GetString("MinCircuitAmps")
+    </span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Gas Valve Type:</span>
+    <span class="pull-right">@specs.GetString("GasValveType")</span>
+
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Max Overcurrent Protection (MOP) (A):</span>
+    <span class="pull-right">
+        @specs.GetString("MaxOvercurrentProtection") 
+    </span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    @{
+        var airFlowLabels = new List<string>
+            {
+            "HH","High","Med","Low","SL"
+            };
+
+        var airFlowHigh = "";
+
+        if (specs.GetString("AirFlowRateHighText") != null)
+        {
+            airFlowHigh = specs.GetString("AirFlowRateHighText");
+        }
+        else if (specs.GetString("AirFlowRateHighCooling") != null)
+        {
+            airFlowHigh = specs.GetString("AirFlowRateHighCooling");
+        }
+        else if (specs.GetDecimal("AirFlowRateHighHeating", "N0") != null)
+        {
+            airFlowHigh = specs.GetDecimal("AirFlowRateHighHeating", "N0");
+        }
+
+        var airFlowRates = new List<string>{
+            specs.GetDecimal("AirFlowRateSuperHighCooling", "N0") != null? specs.GetDecimal("AirFlowRateSuperHighCooling", "N0"): specs.GetDecimal("AirFlowRateSuperHighHeating", "N0"),
+            airFlowHigh,
+            specs.GetDecimal("AirFlowRateMediumCooling", "N0") != null? specs.GetDecimal("AirFlowRateMediumCooling", "N0"): specs.GetDecimal("AirFlowRateMediumHeating", "N0"),
+            specs.GetDecimal("AirFlowRateLowCooling", "N0") != null? specs.GetDecimal("AirFlowRateLowCooling", "N0"): specs.GetDecimal("AirFlowRateLowHeating", "N0"),
+            specs.GetDecimal("AirFlowRateSuperLowCooling", "N0") != null? specs.GetDecimal("AirFlowRateSuperLowCooling", "N0"): specs.GetDecimal("AirFlowRateSuperLowHeating", "N0")
+        };
+        var airFlowLabelsCombined = new List<string>();
+        var airFlowRatesCombined = new List<string>();
+
+        for (var i = 0; i < airFlowRates.Count; i++)
+        {
+            if (airFlowRates[i] != null)
+            {
+                airFlowRatesCombined.Add(airFlowRates[i]);
+                airFlowLabelsCombined.Add(airFlowLabels[i]);
+            }
+        }
+    }
+    @if (airFlowHigh != null)
+            {
+        <span class="pull-left">Airflow Rate (@string.Join(" / ", airFlowLabelsCombined)) (CFM):</span>
+        <span class="pull-right">@string.Join(" / ", airFlowRatesCombined)</span>
+    }
+    else
+    {
+        <span class="pull-left">Airflow Rate (CFM):</span>
+        <span class="pull-right"></span>
+    }
+
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Max Starting Current MSC(A):</span>
+    <span class="pull-right">
+        @((specs.GetString("MaxStartingCurrentText") != null) ? specs.GetString("MaxStartingCurrentText") : specs.GetDecimal("MaxStartingCurrent", "N2"))
+    </span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    @{
+        var soundPressureLabels = new List<string>
+            {
+                "High","Med","Low","SL"
+            };
+        var soundPressureRates = new List<string>{
+            specs.GetDecimal("SoundPressureHighCooling", "N0") != null? specs.GetDecimal("SoundPressureHighCooling", "N0"): specs.GetDecimal("SoundPressureHighHeating", "N0"),
+            specs.GetDecimal("SoundPressureMediumCooling", "N0") != null? specs.GetDecimal("SoundPressureMediumCooling", "N0"): specs.GetDecimal("SoundPressureMediumHeating", "N0"),
+            specs.GetDecimal("SoundPressureLowCooling", "N0") != null? specs.GetDecimal("SoundPressureLowCooling", "N0"): specs.GetDecimal("SoundPressureLowHeating", "N0"),
+            specs.GetDecimal("SoundPressureSuperLowCooling", "N0") != null? specs.GetDecimal("SoundPressureSuperLowCooling", "N0"): specs.GetDecimal("SoundPressureSuperLowHeating", "N0")
+        };
+        var soundPressureLabelsCombined = new List<string>();
+        var soundPressureRatesCombined = new List<string>();
+
+        for (var i = 0; i < soundPressureRates.Count; i++)
+        {
+            if (soundPressureRates[i] != null)
+            {
+                soundPressureRatesCombined.Add(soundPressureRates[i]);
+                soundPressureLabelsCombined.Add(soundPressureLabels[i]);
+            }
+        }
+    }
+    @if (soundPressureRates != null)
+            {
+        <span class="pull-left">Sound Pressure (@string.Join(" / ", soundPressureLabelsCombined)) (dBA):</span>
+        <span class="pull-right">@string.Join(" / ", soundPressureRatesCombined)</span>
+    }
+    else
+    {
+        <span class="pull-left">Sound Pressure (dBA):</span>
+        <span class="pull-right"></span>
+    }
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Rated Load Amps RLA(A):</span>
+    <span class="pull-right">
+       @specs.GetString("RatedLoadAmps")
+    </span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Rated External Static Pressure - inWG:</span>
+    <span class="pull-right">@specs.GetString("ExternalStaticPressureRated")</span>
+</div>
+
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Refrigerant Type:</span>
+    <span class="pull-right">@specs.GetString("RefrigerantType")</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Cooling Operation Range (&deg;F DB):</span>
+    <span class="pull-right">@specs.GetDecimal("CoolingOperationRangeStdMin", "N0") - @specs.GetDecimal("CoolingOperationRangeStdMax", "N0")</span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Holding Refrigerant Charge (lbs):</span>
+    <span class="pull-right">
+        @specs.GetString("FactoryStdRefrigerantCharge")
+    </span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Net Weight (lb):</span>
+    <span class="pull-right">
+        @specs.GetString("WeightUnit")
+   </span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Dimensions (HxWxD) (in):</span>
+    <span class="pull-right">@specs.GetString("DimensionsUnitHeight") x @specs.GetString("DimensionsUnitWidth") x @specs.GetString("DimensionsUnitDepth")</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Gross Weight (lb):</span>
+    <span class="pull-right">@specs.GetDecimal("WeightShippingUnit", "N0")</span>
+</div>
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row"></div>

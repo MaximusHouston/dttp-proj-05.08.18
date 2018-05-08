@@ -1,0 +1,93 @@
+﻿
+<div id="login-bg">
+    <div id="hidden-div" class="hidden-xs hidden-sm"></div>
+    <div id="login-form" class='container-fluid'>
+        <div class="main-content">
+            <div>
+                <!--Old layout-->
+                <!--<div class="col col-md-7" id="signIn">
+                    <h1>Sign In</h1>
+                    <form *ngIf="user" #form="ngForm" novalidate>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="text" class="form-control" #email="ngModel" required name="email" [(ngModel)]="user.email">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="form-control" #password="ngModel" required name="password" [(ngModel)]="user.password">
+                        </div>
+
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="persistent" [(ngModel)]="user.persistent" /> Remember me
+                                </label>
+                                <a class="pull-right" href="/Account/RequestNewPassword">Forgot Password</a>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Jump To</label>
+                            <kendo-dropdownlist *ngIf="user"  name="loginJump"
+                                                [data]="user.links.items" [defaultItem]="loginJumpDefault"
+                                                [textField]="'text'" [valueField]="'value'"
+                                                [(ngModel)]="user.selectedlink" (ngModelChange)="selectedLinkChange($event)">
+                            </kendo-dropdownlist>
+                            <button class="btn btn-primary pull-right" type="submit" (click)="logIn()">Sign In</button>
+                        </div>
+
+
+                    </form>
+                </div>
+                <div class="col col-md-5" id="signUp">
+                    <div id="innerDiv">
+                        <h3 style="color:#00A1E4">Create a new account</h3>
+                        <p>
+                            Not register yet? <br />
+                            Click the button below to get started
+                        </p>
+                        <a [routerLink]="['/account/userRegistration']" class="btn btn-primary">Sign Up</a>
+                    </div>
+                </div>-->
+
+                <!--New layout-->
+                <div id="signIn">
+                    <h1>Sign In</h1>
+                    <form *ngIf="user" #form="ngForm" novalidate>
+
+                        <div class="form-group">
+                            <label class="control-label">Email Address</label>
+                            <input type="text" class="form-control" #email="ngModel" required name="email" [(ngModel)]="user.email">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Password</label>
+                            <input type="password" class="form-control" #password="ngModel" required name="password" [(ngModel)]="user.password">
+                        </div>
+
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="persistent" [(ngModel)]="user.persistent" /> Remember me
+                                </label>
+                                <a class="pull-right" href="/Account/RequestNewPassword">Forgot Password</a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary" type="submit" (click)="logIn()" style="width:93%">Sign In</button>
+                        </div>
+                        <hr />
+                        <div class="form-group">
+                            <a class="btn btn-default" [routerLink]="['/account/userRegistration']" style="width:93%">Create a new account</a>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

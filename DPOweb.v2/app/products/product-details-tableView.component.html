@@ -1,0 +1,163 @@
+﻿<!--<kendo-grid id="product-table-view" [data]="gridViewData" [skip]="skip" [pageSize]="pageSize" [pageable]="true" (pageChange)="pageChange($event)" style="height:480px;">-->
+<kendo-grid id="product-table-view" [data]="gridViewData"
+            [skip]="skip" [pageSize]="pageSize" [pageable]="true"
+            (pageChange)="pageChange($event)" [height]="570">
+
+    <kendo-grid-column field="product.name" title="PRODUCT" width="450">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <img class="product-image" *ngIf="dataItem.product.image.hasImage" src="{{dataItem.product.image.url}}" style="width:32px;height:auto;" />
+            <img class="product-image" *ngIf="!dataItem.product.image.hasImage && dataItem.product.subProducts[0] && dataItem.product.subProducts[0].image.hasImage" src="{{dataItem.product.subProducts[0].image.url}}" style="width:32px;height:auto;" />
+            <a (click)="productDetails($event, dataItem.product, 'product-overview')">{{dataItem.product.name}}</a>
+            <div *ngIf="user.showPrices" style="text-align:right">
+                <span [ngSwitch]="dataItem.product.productStatusTypeId">
+                    <span *ngSwitchCase="enums.ProductStatusTypeEnum.New" style="color:blue; font-size:smaller;">New</span>
+                    <span *ngSwitchCase="enums.ProductStatusTypeEnum.Active" style="color:#38c638; font-size:smaller;">Active</span>
+                    <span *ngSwitchCase="enums.ProductStatusTypeEnum.HiddenModuleUnit" style="color:red; font-size:smaller;">Hidden</span>
+                    <span *ngSwitchCase="enums.ProductStatusTypeEnum.Inactive" style="color:red; font-size:smaller;">Inactive</span>
+                    <span *ngSwitchCase="enums.ProductStatusTypeEnum.Obsolete" style="color:red; font-size:smaller;">Obsolete</span>
+                </span>
+                <span [ngSwitch]="dataItem.product.inventoryStatusId">
+                    <span *ngSwitchCase="enums.ProductInventoryStatusTypeEnum.Available" style="color:black; background-color:#6df0af; padding:3px; font-size:smaller;">Available</span>
+                    <span *ngSwitchCase="enums.ProductInventoryStatusTypeEnum.ContactCSR" style="color:black; background-color:#f7d38c; padding:3px; font-size:smaller;">
+                        <span *ngIf="dataItem.product.productStatusTypeId == enums.ProductStatusTypeEnum.Active && dataItem.product.invAvailableDate != null && (user.businessTypeId == enums.BusinessTypeEnum.Daikin || user.businessTypeId == enums.BusinessTypeEnum.ManufacturerRep); else contactCSRBlock">
+                            ETA: {{dataItem.product.invAvailableDate | date : 'shortDate'}}
+                        </span>
+                        <ng-template #contactCSRBlock>
+                            <span>Contact CSR</span>
+                        </ng-template>
+                        
+                    </span>
+                    <span *ngSwitchCase="enums.ProductInventoryStatusTypeEnum.NotAvailable" style="color:black; background-color:#ffcce6; padding:3px; font-size:smaller;">Not Available</span>
+                </span>
+            </div>
+
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="product.productNumber" title="MODEL NO." width="230">
+    </kendo-grid-column>
+
+    <kendo-grid-column width="180">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <a (click)="productDetails($event, dataItem.product, 'product-overview')" title="Product overview"><img src="/Images/RelatedDocumentsLinkIcon_Blue.png"></a>
+            <a (click)="productDetails($event, dataItem.product, 'product-accessories')" title="Product accessories"><img src="/Images/RelatedAccessoriesLinkIcon_Blue.png"></a>
+            <a (click)="productDetails($event, dataItem.product, 'product-specs')" title="Product specifications"><img src="/Images/TechDetailLInkIcon_blue.png"></a>
+        </ng-template>
+
+    </kendo-grid-column>
+
+    <kendo-grid-column title="Quantity" *ngIf="basketQuoteId != 0 && basketQuoteId != undefined" width="150">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <product-quantity-input [(product)]="dataItem.product"></product-quantity-input>
+            <!--<product-quantity-input [(quantity)]="dataItem.product.quantity"></product-quantity-input>-->
+        </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column *ngIf="userSvc.currentUser.showPrices" field="product.price" title="PRICE" width="150">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <span>{{dataItem.product.price | currency:'USD':true:'1.2-2'}}</span>
+        </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column *ngIf="SEERNonDucted" title="SEER (Non-Ducted)" width="150">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <div *ngIf="dataItem.product.specifications.all != null && dataItem.product.productFamilyId != enums.ProductFamilyEnum.UnitarySplitSystem && dataItem.product.productFamilyId != this.enums.ProductFamilyEnum.UnitaryPackagedSystem && dataItem.product.productFamilyId != this.enums.ProductFamilyEnum.LightCommercialSplitSystem && dataItem.product.productFamilyId != this.enums.ProductFamilyEnum.LightCommercialPackagedSystem">
+                <span *ngIf="dataItem.product.specifications.all.seerNonDucted">{{dataItem.product.specifications.all.seerNonDucted.value | number:'1.2-2'}}</span>
+            </div>
+        </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column *ngIf="IEERNonDucted" title="IEER (Non-Ducted)" width="150">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <div *ngIf="dataItem.product.specifications.all != null && dataItem.product.productFamilyId != enums.ProductFamilyEnum.UnitarySplitSystem && dataItem.product.productFamilyId != enums.ProductFamilyEnum.UnitaryPackagedSystem && dataItem.product.productFamilyId != this.enums.ProductFamilyEnum.LightCommercialSplitSystem && dataItem.product.productFamilyId != this.enums.ProductFamilyEnum.LightCommercialPackagedSystem">
+                <span *ngIf="dataItem.product.specifications.all.ieerNonDucted">{{dataItem.product.specifications.all.ieerNonDucted.value | number:'1.2-2'}}</span>
+            </div>
+
+        </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column *ngIf="EERNonDucted" title="EER (Non-Ducted)" width="150">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <div *ngIf="dataItem.product.specifications.all != null && dataItem.product.productFamilyId != enums.ProductFamilyEnum.UnitarySplitSystem && dataItem.product.productFamilyId != enums.ProductFamilyEnum.UnitaryPackagedSystem && dataItem.product.productFamilyId != this.enums.ProductFamilyEnum.LightCommercialSplitSystem && dataItem.product.productFamilyId != this.enums.ProductFamilyEnum.LightCommercialPackagedSystem">
+                <span *ngIf="dataItem.product.specifications.all.eerNonDucted">{{dataItem.product.specifications.all.eerNonDucted.value | number:'1.2-2'}}</span>
+            </div>
+
+        </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column *ngIf="HSPFNonDucted" title="HSPF (Non-Ducted)" width="150">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <div *ngIf="dataItem.product.specifications.all != null && dataItem.product.productFamilyId != enums.ProductFamilyEnum.UnitarySplitSystem && dataItem.product.productFamilyId != enums.ProductFamilyEnum.UnitaryPackagedSystem && dataItem.product.productFamilyId != this.enums.ProductFamilyEnum.LightCommercialSplitSystem && dataItem.product.productFamilyId != this.enums.ProductFamilyEnum.LightCommercialPackagedSystem">
+                <span *ngIf="dataItem.product.specifications.all.hspfNonDucted">{{dataItem.product.specifications.all.hspfNonDucted.value | number:'1.2-2'}}</span>
+            </div>
+
+        </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column *ngIf="COP47NonDucted" title="COP47 (Non-Ducted)" width="150">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <div *ngIf="dataItem.product.specifications.all != null && dataItem.product.productFamilyId != enums.ProductFamilyEnum.UnitarySplitSystem && dataItem.product.productFamilyId != enums.ProductFamilyEnum.UnitaryPackagedSystem && dataItem.product.productFamilyId != this.enums.ProductFamilyEnum.LightCommercialSplitSystem && dataItem.product.productFamilyId != this.enums.ProductFamilyEnum.LightCommercialPackagedSystem">
+                <span *ngIf="dataItem.product.specifications.all.coP47NonDucted">{{dataItem.product.specifications.all.coP47NonDucted.value | number:'1.2-2'}}</span>
+            </div>
+        </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column *ngIf="SCHENonDucted" title="SCHE (Non-Ducted)" width="150">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <div *ngIf="dataItem.product.specifications.all != null">
+                <span *ngIf="dataItem.product.specifications.all.scheNonDucted">{{dataItem.product.specifications.all.scheNonDucted.value | number:'1.2-2'}}</span>
+            </div>
+        </ng-template>
+    </kendo-grid-column>
+
+    <!--Unitary-->
+
+    <kendo-grid-column *ngIf="SEERDucted" title="SEER (Ducted)">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex" width="150">
+            <div *ngIf="dataItem.product.specifications.all != null &&  (dataItem.product.productFamilyId == enums.ProductFamilyEnum.UnitarySplitSystem || dataItem.product.productFamilyId == enums.ProductFamilyEnum.UnitaryPackagedSystem || dataItem.product.productFamilyId == enums.ProductFamilyEnum.LightCommercialSplitSystem || dataItem.product.productFamilyId == enums.ProductFamilyEnum.LightCommercialPackagedSystem)">
+                <span *ngIf="dataItem.product.specifications.all.seerDucted">{{dataItem.product.specifications.all.seerDucted.value | number:'1.2-2'}}</span>
+            </div>
+        </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column *ngIf="EERDucted" title="EER (Ducted)">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex" width="150">
+            <div *ngIf="dataItem.product.specifications.all != null && (dataItem.product.productFamilyId == enums.ProductFamilyEnum.UnitarySplitSystem || dataItem.product.productFamilyId == enums.ProductFamilyEnum.UnitaryPackagedSystem || dataItem.product.productFamilyId == enums.ProductFamilyEnum.LightCommercialSplitSystem || dataItem.product.productFamilyId == enums.ProductFamilyEnum.LightCommercialPackagedSystem)">
+                <span *ngIf="dataItem.product.specifications.all.eerDucted">{{dataItem.product.specifications.all.eerDucted.value | number:'1.2-2'}}</span>
+            </div>
+        </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column *ngIf="HSPFDucted" title="HSPF (Ducted)">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex" width="150">
+            <div *ngIf="dataItem.product.specifications.all != null &&  (dataItem.product.productFamilyId == enums.ProductFamilyEnum.UnitarySplitSystem || dataItem.product.productFamilyId == enums.ProductFamilyEnum.UnitaryPackagedSystem || dataItem.product.productFamilyId == enums.ProductFamilyEnum.LightCommercialSplitSystem || dataItem.product.productFamilyId == enums.ProductFamilyEnum.LightCommercialPackagedSystem)">
+                <span *ngIf="dataItem.product.specifications.all.hspfDucted">{{dataItem.product.specifications.all.hspfDucted.value | number:'1.2-2'}}</span>
+            </div>
+        </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column *ngIf="COP47Ducted" title="COP47 (Ducted)">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex" width="150">
+            <div *ngIf="dataItem.product.specifications.all != null &&  (dataItem.product.productFamilyId == enums.ProductFamilyEnum.UnitarySplitSystem || dataItem.product.productFamilyId == enums.ProductFamilyEnum.UnitaryPackagedSystem || dataItem.product.productFamilyId == enums.ProductFamilyEnum.LightCommercialSplitSystem || dataItem.product.productFamilyId == enums.ProductFamilyEnum.LightCommercialPackagedSystem)">
+                <span *ngIf="dataItem.product.specifications.all.coP47Ducted">{{dataItem.product.specifications.all.coP47Ducted.value | number:'1.2-2'}}</span>
+            </div>
+        </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column *ngIf="AFUE" title="AFUE">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex" width="150">
+            <div *ngIf="dataItem.product.specifications.all != null">
+                <span *ngIf="dataItem.product.specifications.all.afue">{{dataItem.product.specifications.all.afue.value | number:'1.2-2'}}</span>
+            </div>
+        </ng-template>
+    </kendo-grid-column>
+
+    <!--<kendo-grid-column title="Quantity" *ngIf="basketQuoteId != 0 && basketQuoteId != undefined" width="150">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex" >
+
+            <product-quantity-input [(product.quantity)]="product.quantity"></product-quantity-input>
+        </ng-template>
+    </kendo-grid-column>-->
+
+
+
+</kendo-grid>

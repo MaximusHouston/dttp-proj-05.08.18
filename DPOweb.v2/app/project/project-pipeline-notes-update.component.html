@@ -1,0 +1,79 @@
+﻿<div id="estimateDeliveryDialog" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Please update the estimated delivery date</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <label class="col-md-3 col-xs-12" for="bidDate">Bid Date:</label>
+                        <kendo-datepicker class="col-md-4 col-xs-12" [value]="project.bidDate" [disabled]="true">
+
+                        </kendo-datepicker>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-3 col-xs-12" for="closeDate">Est. Close Date</label>
+                        <kendo-datepicker class="col-md-4 col-xs-12" [value]="project.estimatedClose" [disabled]="true">
+
+                        </kendo-datepicker>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-3 col-xs-12" for="deliveryDate">Est. Delivery Date</label>
+                        <kendo-datepicker class="col-md-4 col-xs-12" [(value)]="project.estimatedDelivery">
+
+                        </kendo-datepicker>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="updateDeliveryDate()">Save</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<form *ngIf="canEditPipelineData && !project.deleted && newProjectPipelineNote && projectPipelineNoteOptions">
+    <div class="row no-gutters">
+        <div class="form-group col-md-3 col-xs-10">
+            <select class="form-control" [(ngModel)]="newProjectPipelineNote.projectPipelineNoteId" name="projectPipelineNote" (ngModelChange)="pipelineNoteChange($event)">
+                <option [value]="null" selected>Select ...</option>
+                <option *ngFor="let item of projectPipelineNoteOptions.items"
+                        [value]="item.projectPipelineNoteTypeId">
+                    {{item.name}}
+                </option>
+            </select>
+        </div>
+        <div class="form-group col-md-1 col-xs-2">
+            <button class="btn btn-default" (click)="addPipelineNote()">Add</button>
+        </div>
+
+    </div>
+    <div class="row no-gutters">
+        <div class="form-group col-md-5 col-xs-12">
+            <textarea class="form-control" name="note" [(ngModel)]="newProjectPipelineNote.note"></textarea>
+        </div>
+    </div>
+</form>
+
+<div *ngIf="projectPipelineNotes && (canViewPipelineData || canEditPipelineData)" class="row no-gutters">
+    <div class="col-md-5 col-xs-12">
+        <div *ngIf="projectPipelineNotes.length > 0">
+            <div *ngFor="let item of projectPipelineNotes">
+                <hr />
+                <p>{{item.projectPipelineNoteType.name}} at {{ item.timestamp | date: 'short' }} by {{ item.ownerName }}</p>
+                <p>{{item.note}}</p>
+            </div>
+        </div>
+
+        <div *ngIf="projectPipelineNotes.length == 0">
+            No Records to display
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,94 @@
+﻿@model DiscountRequestListModel
+@{
+    ViewBag.Title = "Discount Requests";
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/confirmmodal")
+}
+
+@Html.Partial("ConfirmModal")
+
+@Html.Partial("_UserdashboardTabsPartial")
+
+@using (Html.BeginForm("DiscountRequests", "Projectdashboard", FormMethod.Get))
+{
+    @Html.HiddenFor(m => m.SortColumn)
+    @Html.HiddenFor(m => m.IsDesc)
+    @Html.HiddenFor(m => m.Page)
+    @Html.AntiForgeryToken()
+
+    @Html.PageMessages()
+    
+    <div class="section">
+    
+    <div class="tbl-opts">
+        @Html.Partial("_TableDisplayOptionsPartial")
+        @Html.Partial("_SearchBarPartial")
+    </div>
+    <div class=" tbl-holder scroll-x">
+        <table class="tbl" id="discountstable">
+            <thead>
+                <tr>
+                    <th class="actions"></th>
+                    <th id="businessname">@ResourceUI.BusinessName</th>
+                    <th id="discountrequestid">Reference</th>
+                    <th id="projectname">@ResourceUI.ProjectName</th>
+                    <th id="quotetitle">@ResourceUI.QuoteName</th>
+                    <th id="user">@ResourceUI.User</th>
+                    <th id="requestedon" aria-sort="none">@ResourceUI.RequestDate</th>
+                    <th id="requesttype" aria-sort="none">@ResourceUI.RequestType</th>
+                    <th id="requeststatus" aria-sort="none">@ResourceUI.RequestStatus</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td class="actions">
+                            <div>
+                                <ul>
+                                    <li>
+                                        @Html.ActionLink("View", "DiscountRequest", new { discountRequestId = item.DiscountRequestId })
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td>
+                            @Html.ActionLink(item.DiscountRequestId.ToString(), "DiscountRequest", new { DiscountRequestId = item.DiscountRequestId })
+                        </td>
+                        <td>
+                            @Html.ActionLink(item.BusinessName, "BusinessEdit", new { discountRequestId = item.BusinessId })
+                        </td>
+                        <td>
+                            @Html.ActionLink(item.Project.Name, "Project","ProjectDashboard", new { ProjectId = item.ProjectId })
+                        </td>
+                        <td>
+                            @Html.ActionLink(item.Quote.Title, "Quote", "ProjectDashboard", new { ProjectId = item.ProjectId, quoteId = item.QuoteId })
+                        </td>
+                        <td>
+                            @Html.ActionLink(item.ProjectOwner, "User", "UserDashboard", new { UserId = item.ProjectOwnerId })
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.RequestedOn)</td>
+                        <td>Discount</td>
+                        <td>@Html.DisplayFor(modelItem => item.DiscountRequestStatusTypeDescription)</td>
+                    </tr>
+                }
+            </tbody>
+        </table> 
+    </div>
+    <div class="pager">@Html.Pager(Model)</div>
+</div>
+}
+<script>
+
+    $(function ()
+    {
+        tablehelper.setColumnIds('discountstable');
+    });
+</script>

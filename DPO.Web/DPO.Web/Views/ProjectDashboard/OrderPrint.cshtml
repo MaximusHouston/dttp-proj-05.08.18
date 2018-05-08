@@ -1,0 +1,374 @@
+﻿@model OrderViewModel
+@{
+    Layout = null;
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+    var project = Model.Project;
+    var showCostPricing = (bool)ViewData["ShowCostPricing"];
+    @Styles.Render("~/Content/css/pdf-base");
+
+}
+@using DPO.Data
+@{
+    var db = new DPOContext();
+}
+
+<div class="pdf">
+    <h2 class="single-line" style="color: #000;
+text-transform: none; font-size: 1.5em; margin-top: -1em; margin-bottom: 0; padding-bottom: 0;">
+        @{
+            string status = "";
+            switch ((OrderStatusTypeEnum)Model.OrderStatusTypeId)
+            {
+                case OrderStatusTypeEnum.Accepted:
+                    status = "Accpted";
+                    break;
+                case OrderStatusTypeEnum.AwaitingCSR:
+                    status = "Awaiting CSR";
+                    break;
+                case OrderStatusTypeEnum.Canceled:
+                    status = "Canceld";
+                    break;
+                case OrderStatusTypeEnum.InProcess:
+                    status = "In Process";
+                    break;
+                case OrderStatusTypeEnum.Picked:
+                    status = "Picked";
+                    break;
+                case OrderStatusTypeEnum.Shipped:
+                    status = "Shipped";
+                    break;
+                case OrderStatusTypeEnum.Submitted:
+                    status = "Submitted";
+                    break;
+                default:
+                    status = "New request";
+                    break;
+            }
+        }
+        Status: @status
+
+    </h2>
+    @if ((OrderStatusTypeEnum)Model.OrderStatusTypeId == OrderStatusTypeEnum.Accepted)
+    {
+        <p>
+            <span>Approved by </span>@Model.UpdatedByUser
+        </p>
+        <p>&nbsp;</p>
+    }
+
+    <div class="row pad-top pad-btm">
+        @Html.Partial("ProjectDetails", project)
+    </div>
+    <br class="clearfix"/>
+    
+    <div class="row pad-top pad-btm">
+        <h4>Project Location </h4>
+        <div class="details-list">
+
+            @if (user != null && (user.HasAccess(SystemAccessEnum.ViewOrder) || user.HasAccess(SystemAccessEnum.SubmitOrder)))
+            {
+                <div class="col-md-6">
+                <ul>
+                    <li>
+                        <p class="detail-name">@Html.LabelFor(m => project.ShipToName, ResourceUI.BusinessName)</p>
+                        <p style="display: block;">
+                            @if (project.ShipToName != null)
+                            {
+                                @Html.DisplayFor(m => project.ShipToName)
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(m => m.ShipToName)
+                            }
+                        </p>
+                    </li>
+                    <li>
+                        <p class="detail-name">@Html.LabelFor(m => project.ShipToAddress.AddressLine1, ResourceUI.AddressLine1)</p>
+                        <p style="display: block;">
+                            @Html.DisplayFor(m => project.ShipToAddress.AddressLine1)
+                        </p>
+                    </li>
+                    @if (project.ShipToAddress.AddressLine2 != null)
+                    {
+                        <li>
+                            <p class="detail-name">@Html.LabelFor(m => project.ShipToAddress.AddressLine2, ResourceUI.AddressLine2)</p>
+                            <p style="display: block;">
+                                @Html.DisplayFor(m => project.ShipToAddress.AddressLine1)
+                            </p>
+                        </li>
+                    }
+                    <li>
+                        <p class="detail-name">@Html.LabelFor(m => project.ShipToAddress.Location, ResourceUI.Location)</p>
+                        <p style="display: block;">
+                            @Html.DisplayFor(m => project.ShipToAddress.Location)
+                        </p>
+                    </li>
+                    <li>
+                        <p class="detail-name">@Html.LabelFor(m => project.ShipToAddress.StateId, ResourceUI.Region)</p>
+                        <p style="display: block;">
+                            @{
+                var shipToAddressState = db.States.Where(s => s.StateId == project.ShipToAddress.StateId).FirstOrDefault();
+                            }
+                            @shipToAddressState.Name
+                        </p>
+                    </li>
+                    <li>
+                        <p class="detail-name">@Html.LabelFor(m => project.ShipToAddress.PostalCode, ResourceUI.ZipCode)</p>
+                        <p style="display: block;">
+                            @Html.DisplayFor(m => project.ShipToAddress.PostalCode)
+                        </p>
+                    </li>
+                    <li>
+                        <p class="detail-name">@Html.LabelFor(m => project.ShipToAddress.Location, ResourceUI.Location)</p>
+                        <p style="display: block;">
+                            @Html.DisplayFor(m => project.ShipToAddress.Location)
+                        </p>
+                    </li>
+                </ul>
+             </div>
+            }
+
+        </div>
+        <div class="details-list">
+            <h4>Dealer/Contractor Location </h4>
+            @if (user != null && (user.HasAccess(SystemAccessEnum.ViewOrder) || user.HasAccess(SystemAccessEnum.SubmitOrder)))
+            {
+               
+                    <ul>
+                        <li>
+                            <p class="detail-name">@Html.LabelFor(m => project.DealerContractorName, ResourceUI.DealerContractorName)</p>
+                            <p style="display: block;">
+                                @if (project.DealerContractorName != null)
+                                {
+                                    @Html.DisplayFor(m => project.DealerContractorName)
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(m => Model.CustomerName)
+                                }
+                            </p>
+                        </li>
+                        <li>
+                            <p class="detail-name">@Html.LabelFor(m => project.CustomerAddress.AddressLine1, ResourceUI.AddressLine1)</p>
+                            <p style="display: block;">
+                                @Html.DisplayFor(m => project.CustomerAddress.AddressLine1)
+                            </p>
+                        </li>
+                        @if (project.CustomerAddress.AddressLine2 != null)
+                        {
+                            <li>
+                                <p class="detail-name">@Html.LabelFor(m => project.CustomerAddress.AddressLine2, ResourceUI.AddressLine2)</p>
+                                <p style="display: block;">
+                                    @Html.DisplayFor(m => project.CustomerAddress.AddressLine2)
+                                </p>
+                            </li>
+                        }
+                        <li>
+                            <p class="detail-name">@Html.LabelFor(m => project.CustomerAddress.Location, ResourceUI.Location)</p>
+                            <p style="display: block;">
+                                @Html.DisplayFor(m => project.CustomerAddress.Location)
+                            </p>
+                        </li>
+                        <li>
+                            <p class="detail-name">@Html.LabelFor(m => project.CustomerAddress.StateId, ResourceUI.Region)</p>
+                            <p style="display: block;">
+                                @{
+                                    var customerAddressState = db.States.Where(s => s.StateId == project.CustomerAddress.StateId).FirstOrDefault();
+                                }
+                                @customerAddressState.Name
+                            </p>
+                        </li>
+                        <li>
+                            <p class="detail-name">@Html.LabelFor(m => project.CustomerAddress.PostalCode, ResourceUI.ZipCode)</p>
+                            <p style="display: block;">
+                                @Html.DisplayFor(m => project.CustomerAddress.PostalCode)
+                            </p>
+                        </li>
+                        <li>
+                            <p class="detail-name">@Html.LabelFor(m => project.CustomerAddress.Location, ResourceUI.Location)</p>
+                            <p style="display: block;">
+                                @Html.DisplayFor(m => project.CustomerAddress.Location)
+                            </p>
+                        </li>
+                    </ul>
+            }
+        </div> 
+    </div>
+    <br class="clearfix" />
+    <div class="row pad-top pad-btm">
+        <h4>Seller Location</h4>
+        <div class="details-list">
+            @if (user != null && (user.HasAccess(SystemAccessEnum.ViewOrder) || user.HasAccess(SystemAccessEnum.SubmitOrder)))
+            {
+              
+                    <ul>
+                        <li>
+                            <p class="detail-name">@Html.LabelFor(m => project.SellerName, ResourceUI.BusinessName)</p>
+                            <p style="display: block;">
+                                @if (project.SellerName != null)
+                                {
+                                    @Html.DisplayFor(m => project.SellerName)
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(m => Model.SellerName)
+                                }
+                            </p>
+                        </li>
+                        <li>
+                            <p class="detail-name">@Html.LabelFor(m => project.SellerAddress.AddressLine1, ResourceUI.AddressLine1)</p>
+                            <p style="display: block;">
+                                @Html.DisplayFor(m => project.SellerAddress.AddressLine1)
+                            </p>
+                        </li>
+                        @if (project.SellerAddress.AddressLine2 != null)
+                        {
+                            <li>
+                                <p class="detail-name">@Html.LabelFor(m => project.SellerAddress.AddressLine2, ResourceUI.AddressLine2)</p>
+                                <p style="display: block;">
+                                    @Html.DisplayFor(m => project.SellerAddress.AddressLine1)
+                                </p>
+                            </li>
+                        }
+                        <li>
+                            <p class="detail-name">@Html.LabelFor(m => project.SellerAddress.Location, ResourceUI.Location)</p>
+                            <p style="display: block;">
+                                @Html.DisplayFor(m => project.SellerAddress.Location)
+                            </p>
+                        </li>
+                        <li>
+                            <p class="detail-name">@Html.LabelFor(m => project.SellerAddress.StateId, ResourceUI.Region)</p>
+                            <p style="display: block;">
+                                @{
+                                   var sellerAddressState = db.States.Where(s => s.StateId == project.SellerAddress.StateId).FirstOrDefault();
+                                }
+                                @sellerAddressState.Name
+                            </p>
+                        </li>
+                        <li>
+                            <p class="detail-name">@Html.LabelFor(m => project.SellerAddress.PostalCode, ResourceUI.ZipCode)</p>
+                            <p style="display: block;">
+                                @Html.DisplayFor(m => project.SellerAddress.PostalCode)
+                            </p>
+                        </li>
+                        <li>
+                            <p class="detail-name">@Html.LabelFor(m => project.SellerAddress.Location, ResourceUI.Location)</p>
+                            <p style="display: block;">
+                                @Html.DisplayFor(m => project.SellerAddress.Location)
+                            </p>
+                        </li>
+                    </ul>
+            }
+        </div>
+    </div>
+    <br class="clearfix"/>
+    <div class="row pad-top pad-btm">
+        <h4>Order Details</h4>
+        <div class="details-list">
+            <ul>
+                <li>
+                    <p class="detail-name"><strong>Submitted By</strong></p>
+                    <p style="display: block;">
+                        @((Model.SubmittedByUser != null) ? Model.SubmittedByUser : (user != null) ? user.FirstName + " " + user.LastName: "Not given")
+                    </p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>Submitted Date</strong></p>
+                    <p style="display: block;">
+                        @((Model.SubmitDate != null) ? Model.SubmitDate.ToString() : "Not given")
+                    </p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>Release Date</strong></p>
+                    <p style="display: block;">
+                        @Html.DisplayFor(m => m.OrderReleaseDate)
+                    </p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>PO Number</strong></p>
+                    <p style="display: block;">
+                        @Html.DisplayFor(m => m.PONumber)
+                    </p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>PO Attachment File</strong></p>
+                    <p style="display:block;">
+                        @Html.DisplayTextFor(m => m.POAttachmentFileName)
+                    </p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>Total Net Price</strong></p>
+                    <p style="display:block;">
+                        @Html.DisplayTextFor(m => m.TotalNetPrice)
+                    </p>
+                </li>
+
+                @*--To Discuss: not show the Toatl Discount on Order Print becuase currently we not save TotalDiscount to Order Print.
+                  --Modify by Aaron 06/10/2016
+                *@
+                @*<li>
+                    <p class="detail-name"><strong>Total Discount</strong></p>
+                    <p style="display:block;">@String.Format("{0} {1}",(Model.TotalDiscountPercent * 100).ToString("0.000"),"%")</p>
+                </li>*@
+
+                @if (Model.DeliveryAppointmentRequired == true)
+                        {
+                        <li>
+                            <p class="detail-name"><strong>Delivery Appointment</strong></p>
+                            <p style="display:block;">@Model.DeliveryAppointmentRequired</p>
+                        </li>
+                        <li>
+                            <p class="detail-name"><strong>Delivery Contact Name</strong></p>
+                            <p style="display:block;">@Model.DeliveryContactName</p>
+                        </li>
+                        <li>
+                            <p class="detail-name"><strong>Delivery Contact Phone</strong></p>
+                            <p style="display:block;">@Model.DeliveryContactPhone</p>
+                        </li>
+                        }
+                <li>
+                    <p>&nbsp;</p>
+                </li>
+            </ul>
+        </div>
+        <br />
+
+    </div>
+    <br class="clearfix"/>
+
+    <div class="row pad-top pad-btm">
+       
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Product Code</th>
+                    <th>Description</th>
+                    <th>Qty</th>
+                    <th>List Price Each</th>
+                    <th>Net price Each</th>
+                    <th>Ext.List Price</th>
+                    <th>Ext.Net Price</th>
+                </tr>
+            </thead>
+            <tbody>
+
+
+                @foreach (QuoteItemModel item in Model.QuoteItems)
+                {
+                        <tr>
+                            <td>@item.ProductNumber</td>
+                            <td>@item.Description</td>
+                            <td>@String.Format("{0:N0}", item.Quantity)</td>
+                            <td>@String.Format("{0:C}", item.ListPrice.Value)</td>
+                            <td>@String.Format("{0:C}", item.NetPrice.Value)</td>
+                            <td>@String.Format("{0:C}", (item.ListPrice * item.Quantity))</td>
+                            <td>@String.Format("{0:C}", (item.NetPrice * @item.Quantity))</td>
+                        </tr>
+                }
+            </tbody>
+
+        </table>
+           
+    </div>
+
+</div>

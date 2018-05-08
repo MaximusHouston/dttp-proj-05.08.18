@@ -1,0 +1,86 @@
+﻿@model List<ToolModel>
+@{
+    ViewBag.Title = ResourceUI.Tools;
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+}
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+@Html.Partial("_ProjectTabsPartial")
+
+<div class="section t-flush b-flush">
+    <div class="item-strap">
+        <div class="itemname">
+            <h1>@ResourceUI.Tools</h1>
+            <p></p>
+        </div>
+        <div class="btn-bar">
+            &nbsp;
+        </div>
+    </div>
+</div>
+@if (Model.Count == 0)
+{
+    <div class="section form dark" style="padding-bottom: 0;">
+        <p style="margin-top: 8px;">
+            There are currently no tools available for download.
+            <br /><br />
+        </p>
+    </div>
+}
+else
+{
+    foreach (var tool in Model)
+    {
+        <div class="section form dark" style="padding-bottom: 0;">
+            <a href="/document/Tools/@tool.Filename" class="pull-left" style="padding:0; text-decoration: none;">
+                <img src="~/Images/tools_icon.png" style="width: 100px; position: relative; bottom: 12px;" />
+            </a>
+
+            <div style="margin-left: 115px;">
+                <h3 style="padding-bottom: 0px;">@tool.Name</h3>
+                <p style="margin-top: 8px;">
+                    @*@if(tool.Name.Contains("VRV"))
+                        {
+                            <span>@Html.Raw(tool.Description)</span>
+                        }
+                        else
+                        {
+                             <span>@tool.Description</span>
+                        }*@
+
+                    @if (tool.Description.Contains("securenet.goodmanmfg.com/litconfig-DCTool/listDealers.html"))
+                    {
+                        <span>@Html.Raw(tool.Description)</span>
+                        <a href="http://securenet.goodmanmfg.com/litconfig-DCTool/listDealers.html?sessionId=123&userId=@user.UserId&firstName=@user.FirstName&lastName=@user.LastName&email=@user.Email" target="_blank"> Click here to access</a>
+                    }
+                    else
+                    {
+                        <span>@Html.Raw(tool.Description)</span>
+                    }
+
+                    
+
+                    <br />
+                    <br />
+
+                    @if (!tool.Description.Contains("href"))
+                    {
+                        <a style="padding:0;" href="/document/Tools/@tool.Filename">Click here to download</a>
+                    }
+
+
+                </p>
+            </div>
+            <div class="clearfix">&nbsp;</div>
+        </div>
+        <br />
+    }
+}
+
+@*<script>
+        $(function () {
+
+        });
+    </script>*@
+

@@ -1,0 +1,13 @@
+import { ConfigurationService } from '../common/configuration.service';
+import { SettingsComponent } from '../common/settings.component';
+import { DragAction, MousewheelZoom } from '../common/property-types';
+import { Zoomable } from '../common/property-types';
+/**
+ * @hidden
+ */
+export declare abstract class ZoomableComponentGenerated extends SettingsComponent implements Zoomable {
+    configurationService: ConfigurationService;
+    mousewheel: boolean | MousewheelZoom;
+    selection: boolean | DragAction;
+    constructor(configurationService: ConfigurationService);
+}

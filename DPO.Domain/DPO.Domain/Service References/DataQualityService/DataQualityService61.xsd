@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://goodmanmfg.com/GMC/WebService/DataQualityService/Entities" elementFormDefault="qualified" targetNamespace="http://goodmanmfg.com/GMC/WebService/DataQualityService/Entities" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://warranty.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?xsd=xsd2" namespace="http://goodmanmfg.com/GMC/WebService/Entities" />
+  <xs:complexType name="DataQualityRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://goodmanmfg.com/GMC/WebService/Entities" base="q1:Request">
+        <xs:sequence>
+          <xs:element name="TokenId" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DataQualityRequest" nillable="true" type="tns:DataQualityRequest" />
+  <xs:complexType name="SoundexRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DataQualityRequest">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SoundexRequest" nillable="true" type="tns:SoundexRequest" />
+  <xs:complexType name="DataQualityResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://goodmanmfg.com/GMC/WebService/Entities" base="q2:Response">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DataQualityResponse" nillable="true" type="tns:DataQualityResponse" />
+  <xs:complexType name="MetaphoneResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DataQualityResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Result" nillable="true" type="tns:MetaphoneResult" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="MetaphoneResponse" nillable="true" type="tns:MetaphoneResponse" />
+  <xs:complexType name="MetaphoneResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AlternateKey" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AlternateKeyShort" type="xs:unsignedShort" />
+      <xs:element minOccurs="0" name="PrimaryKey" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PrimaryKeyShort" type="xs:unsignedShort" />
+      <xs:element minOccurs="0" name="Value" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MetaphoneResult" nillable="true" type="tns:MetaphoneResult" />
+  <xs:complexType name="MetaphoneCompareRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DataQualityRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Compare1" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Compare2" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Type" type="tns:MetaphoneType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="MetaphoneCompareRequest" nillable="true" type="tns:MetaphoneCompareRequest" />
+  <xs:simpleType name="MetaphoneType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Metaphone" />
+      <xs:enumeration value="DoubleMetaphone" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="MetaphoneType" nillable="true" type="tns:MetaphoneType" />
+  <xs:complexType name="CleanAddressMultipleRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DataQualityRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Addresses" nillable="true" type="tns:ArrayOfDQAddress" />
+          <xs:element minOccurs="0" name="IsTest" type="xs:boolean" />
+          <xs:element minOccurs="0" name="NumSuggestions" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CleanAddressMultipleRequest" nillable="true" type="tns:CleanAddressMultipleRequest" />
+  <xs:complexType name="ArrayOfDQAddress">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DQAddress" nillable="true" type="tns:DQAddress" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDQAddress" nillable="true" type="tns:ArrayOfDQAddress" />
+  <xs:complexType name="DQAddress">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Addressee" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Barcode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="City" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CityStateZip" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Country" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="County" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CountyFips" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DpvConfirmCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Line1" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Line2" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Line3" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Line4" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StateProvince" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UnitNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Urbanization" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Zip4" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Zip5" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ZipCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Latitude" type="xs:decimal" />
+      <xs:element minOccurs="0" name="Longitude" type="xs:decimal" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DQAddress" nillable="true" type="tns:DQAddress" />
+  <xs:complexType name="CleanAddressResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DataQualityResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Addresses" nillable="true" type="tns:ArrayOfDQAddress" />
+          <xs:element minOccurs="0" name="IsAddressValid" type="xs:boolean" />
+          <xs:element minOccurs="0" name="IsZipStateValid" type="xs:boolean" />
+          <xs:element minOccurs="0" name="IsZipValid" type="xs:boolean" />
+          <xs:element minOccurs="0" name="NumSuggestions" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CleanAddressResponse" nillable="true" type="tns:CleanAddressResponse" />
+  <xs:complexType name="CleanAddressRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DataQualityRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Address" nillable="true" type="tns:DQAddress" />
+          <xs:element minOccurs="0" name="IsTest" type="xs:boolean" />
+          <xs:element minOccurs="0" name="NumSuggestions" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CleanAddressRequest" nillable="true" type="tns:CleanAddressRequest" />
+  <xs:complexType name="CleanAddressMultipleResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DataQualityResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Addresses" nillable="true" type="tns:ArrayOfArrayOfDQAddress" />
+          <xs:element minOccurs="0" name="NumSuggestions" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CleanAddressMultipleResponse" nillable="true" type="tns:CleanAddressMultipleResponse" />
+  <xs:complexType name="ArrayOfArrayOfDQAddress">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ArrayOfDQAddress" nillable="true" type="tns:ArrayOfDQAddress" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfArrayOfDQAddress" nillable="true" type="tns:ArrayOfArrayOfDQAddress" />
+  <xs:complexType name="MetaphoneCompareResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DataQualityResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Result1" nillable="true" type="tns:MetaphoneResult" />
+          <xs:element minOccurs="0" name="Result2" nillable="true" type="tns:MetaphoneResult" />
+          <xs:element minOccurs="0" name="Strength" type="tns:MetaphoneMatchStrength" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="MetaphoneCompareResponse" nillable="true" type="tns:MetaphoneCompareResponse" />
+  <xs:simpleType name="MetaphoneMatchStrength">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Low" />
+      <xs:enumeration value="Medium" />
+      <xs:enumeration value="High" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="MetaphoneMatchStrength" nillable="true" type="tns:MetaphoneMatchStrength" />
+  <xs:complexType name="CleanPhoneResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DataQualityResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="PhoneNumber" nillable="true" type="tns:DQPhoneNumber" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CleanPhoneResponse" nillable="true" type="tns:CleanPhoneResponse" />
+  <xs:complexType name="DQPhoneNumber">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AreaCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CountryCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CountryText" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Extension" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LineNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Prefix" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StateOrProvinceText" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DQPhoneNumber" nillable="true" type="tns:DQPhoneNumber" />
+  <xs:complexType name="SoundexResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DataQualityResponse">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SoundexResponse" nillable="true" type="tns:SoundexResponse" />
+  <xs:complexType name="MetaphoneRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DataQualityRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Type" type="tns:MetaphoneType" />
+          <xs:element minOccurs="0" name="Value" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="MetaphoneRequest" nillable="true" type="tns:MetaphoneRequest" />
+  <xs:complexType name="CleanPhoneRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DataQualityRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="PhoneNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CleanPhoneRequest" nillable="true" type="tns:CleanPhoneRequest" />
+</xs:schema>

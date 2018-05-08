@@ -1,0 +1,101 @@
+﻿@model String
+@{
+    Layout = null;
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+}
+
+@section Page_Styles {
+    @*@Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles", "~/Content/themes/base/css")*@
+    @Styles.Render("~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles", "~/Content/themes/base/css", "~/Content/bootstrap.css")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/jqueryui", "~/bundles/scripts/projectedit")
+}
+
+<div id="editSellerPopup" ng-controller="projectEditSellerController">
+
+    <form role="form" kendo-validator="ProjectSellerValidator">
+        <div class="row">
+            <page-message ng-if="HasPageMessage"></page-message>
+        </div>
+        <div class="row section form">
+            <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                    <label class="required">Seller Name:</label>
+                    <div><input type="text" class="k-textbox" ng-model="$parent.$parent.projectVM.sellerName" name="SellerName" required validationmessage="Seller Name is required" style="width:80%;" /></div>
+                    <span class="k-invalid-msg" data-for="SellerName"></span>
+                </div>
+                <div class="form-group">
+                    <label class="required">Country:</label>
+                    <div>
+                        <select kendo-drop-down-list="countryDLL" k-ng-model="$parent.$parent.projectVM.sellerAddress.countryCode"
+                                k-value-primitive="true"
+                                k-data-text-field="'text'"
+                                k-data-value-field="'value'"
+                                data-option-label="'select ...'"
+                                k-data-source="$parent.$parent.projectVM.sellerAddress.countries.items"
+                                k-on-change="updateStateDDL()" name="Country" required validationmessage="Country is required"></select>
+                        <span class="k-invalid-msg" data-for="Country"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="required">Address Line 1:</label>
+                    <div><input type="text" class="k-textbox" ng-model="$parent.$parent.projectVM.sellerAddress.addressLine1" name="AddressLine1" required validationmessage="Address Line1 is required" style="width:80%;" /></div>
+                    <span class="k-invalid-msg" data-for="AddressLine1"></span>
+                </div>
+                <div class="form-group">
+                    <label>Address Line 2:</label>
+                    <div><input type="text" class="k-textbox" ng-model="$parent.$parent.projectVM.sellerAddress.addressLine2" style="width:80%;" /></div>
+                </div>
+            </div>
+
+            <div class="col col-xs-12 col-sm-5 col-md-5 col-lg-5">
+
+                <div class="form-group">
+                    <label class="required">City:</label>
+                    <div><input type="text" class="k-textbox" ng-model="$parent.$parent.projectVM.sellerAddress.location" name="City" required validationmessage="City is required" /></div>
+                    <span class="k-invalid-msg" data-for="City"></span>
+                </div>
+                <div class="form-group">
+                    <label class="required">State:</label>
+                    <div>
+                        <select kendo-drop-down-list="stateDLL" k-ng-model="$parent.$parent.projectVM.sellerAddress.stateId"
+                                k-value-primitive="true"
+                                k-data-text-field="'text'"
+                                k-data-value-field="'valueLong'"
+                                data-option-label="'select ...'"
+                                k-data-source="$parent.$parent.projectVM.sellerAddress.states.items" name="State" required validationmessage="State is required"></select>
+                        <span class="k-invalid-msg" data-for="State"></span>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="required">Zip Code:</label>
+                    <div><input type="text" class="k-textbox" ng-model="$parent.$parent.projectVM.sellerAddress.postalCode" name="ZipCode" required validationmessage="Zip Code is required" /></div>
+                    <span class="k-invalid-msg" data-for="ZipCode"></span>
+                    <error-message ng-if="HasServerError" key="SellerAddress.PostalCode"></error-message>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row section action c-align">
+            <button type="button" class="btn btn-default" ng-click="cancel()">@ResourceUI.Cancel</button>
+
+            <input type="submit" class="btn btn-primary" value="Update" ng-click="update()" />
+
+        </div>
+    </form>
+
+</div>
+<script type="text/javascript">
+    function ProjectId() {
+        var self = this;
+        self.value = @Html.Raw(Json.Encode(Model));
+    }
+
+
+</script>
+
+

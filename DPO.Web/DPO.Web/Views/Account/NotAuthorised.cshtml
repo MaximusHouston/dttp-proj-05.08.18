@@ -1,0 +1,24 @@
+﻿@model DPO.Common.UserResetPasswordModel
+@{
+    ViewBag.Title = ResourceUI.NotAuthorised;
+
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978")
+}
+
+<h1>@ViewBag.Title</h1>
+
+    <div class="section">
+        <div class="row">
+            <div class="col1">&nbsp;</div>
+            <div class="col11">
+                <p>@ResourceUI.NotAuthorisedMessage.</p>
+                <br />
+                <input type="button" value="@ResourceUI.Back" class="btn" onclick="location.href='@user.DefaultPageUrl'" />
+            </div>
+            <div class="row-end">&nbsp;</div>
+        </div>
+    </div>

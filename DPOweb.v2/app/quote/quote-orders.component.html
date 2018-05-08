@@ -1,0 +1,71 @@
+﻿<kendo-grid *ngIf="quoteItems" #grid id="quoteOrdersGrid" [data]="quoteItems.quoteOrders">
+    <kendo-grid-column media="(max-width: 450px)" title="Order submitted">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <dl>
+                <dt></dt>
+                <!--<dd><a href="/Projectdashboard/OrderPrint?projectId={{dataItem.projectId}}&quoteId={{dataItem.quoteId}}&orderId={{dataItem.orderId}}" class="btn btn-default">Print Order</a></dd>-->
+                <dd><a href="/Document/OrderPrint/{{dataItem.orderId}}?projectId={{dataItem.projectId}}&quoteId={{dataItem.quoteId}}" target='_blank' class="btn btn-default">Print Order</a></dd>
+                <dt>Reference</dt>
+                <dd><a href="/Projectdashboard/SubmittedOrderForm?projectId={{dataItem.projectId}}&quoteId={{dataItem.quoteId}}" style="color:#00A1E4; text-decoration:underline;">{{dataItem.orderId}}</a></dd>
+                <dt>Order Date</dt>
+                <dd>{{ dataItem.submitDate | date :'shortDate' }}</dd>
+                <dt>Order Status</dt>
+                <dd>{{ dataItem.orderStatusTypeDescription }}</dd>
+                <dt>Purchase Order</dt>
+                <dd>{{ dataItem.poNumber }}</dd>
+                <dt>PO Attachment</dt>
+                <dd><a href='/ProjectDashboard/GetPOAttachment?quoteId={{dataItem.quoteId}}&poAttachmentFileName={{dataItem.poAttachmentFileName}}' target='_blank' style="color:#00A1E4; text-decoration:underline;">{{dataItem.poAttachmentFileName}}</a></dd>
+            </dl>
+        </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column media="(min-width: 450px)" width="130">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <!--<a href="/Projectdashboard/OrderPrint?projectId={{dataItem.projectId}}&quoteId={{dataItem.quoteId}}&orderId={{dataItem.orderId}}" class="btn btn-default">Print Order</a>-->
+            <a href="/Document/OrderPrint/{{dataItem.orderId}}?projectId={{dataItem.projectId}}&quoteId={{dataItem.quoteId}}" target='_blank' class="btn btn-default">Print Order</a>
+        </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column media="(min-width: 450px)" title="Order Reference">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <!--<a href="/Projectdashboard/SubmittedOrderForm?projectId={{dataItem.projectId}}&quoteId={{dataItem.quoteId}}" style="color:#00A1E4; text-decoration:underline;">{{dataItem.orderId}}</a>-->
+            <a href="/v2/#/orderForm/{{dataItem.projectId}}/{{dataItem.quoteId}}/submitted" style="color:#00A1E4; text-decoration:underline;">{{dataItem.orderId}}</a>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)"  title="Order Date">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            {{dataItem.submitDate | date :'shortDate'}}
+        </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column media="(min-width: 450px)" title="Est. Release Date">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            {{dataItem.estimatedReleaseDate | date :'shortDate'}}
+        </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column media="(min-width: 450px)" title="Order Release Date">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            {{dataItem.orderReleaseDate | date :'shortDate'}}
+        </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column media="(min-width: 450px)" title="Order Status">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <span *ngIf="dataItem.orderStatusTypeId == enums.OrderStatusTypeEnum.Accepted" style="color:#5dad70">{{dataItem.orderStatusTypeDescription}}</span>
+            <span *ngIf="dataItem.orderStatusTypeId != enums.OrderStatusTypeEnum.Accepted">{{dataItem.orderStatusTypeDescription}}</span>
+        </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column media="(min-width: 450px)" field="poNumber" title="Purchase Order">
+      
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" field="poAttachmentFileName" title="PO Attachment">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <a href='/ProjectDashboard/GetPOAttachment?quoteId={{dataItem.quoteId}}&poAttachmentFileName={{dataItem.poAttachmentFileName}}' target='_blank' style="color:#00A1E4; text-decoration:underline;">{{dataItem.poAttachmentFileName}}</a>
+        </ng-template>
+            
+</kendo-grid-column>
+
+
+</kendo-grid>

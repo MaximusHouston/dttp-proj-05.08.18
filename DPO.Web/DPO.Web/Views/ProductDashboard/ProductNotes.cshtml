@@ -1,0 +1,32 @@
+﻿@model ProductModel
+@if (Model.Notes.Count > 0)
+{
+    <div class="pad-top clearfix">
+        @if (ViewBag.UnitTypeLabel != null && ViewBag.UnitTypeLabel != "")
+        {
+            <h4>Notes - @ViewBag.UnitTypeLabel </h4>
+        }
+        else
+        {
+            <h4>Notes</h4>
+        }
+        <ul>
+            @if (Model.Notes.Count == 0)
+            {
+                <li>No notes specified</li>
+            }
+            else
+            {
+                foreach (var item in Model.Notes)
+                {
+                    <li>@item.Description</li>
+                }
+            }
+        </ul>
+    </div>
+
+}
+
+
+
+

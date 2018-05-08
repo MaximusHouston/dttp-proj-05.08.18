@@ -1,0 +1,77 @@
+﻿@model UserGroupsModel
+@{
+    ViewBag.Title = ResourceUI.UserGroups;
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+}
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles", "~/Content/css/usergroups")
+}
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/usergroups", "~/bundles/scripts/confirmmodal")
+}
+@Html.Partial("UserGroupAddMembers")
+@Html.Partial("UserGroupMoveMembers")
+@Html.Partial("UserGroupMoveGroup")
+@Html.Partial("UserGroupCreate")
+@Html.Partial("UserGroupEdit")
+@Html.Partial("ConfirmModal")
+@Html.Partial("_UserdashboardTabsPartial")
+<div class="row" id="UserGroups">
+    <div id="GroupsListCol">
+        <div class="arrow-right"></div>
+        <button type="button" id="widthToggleBtn"></button>
+        <h1>@ResourceUI.UserGroups</h1>
+        @if (user.HasAccess(SystemAccessEnum.AdminAccessRights) && user.IsGroupOwner)
+        {
+            <button data-usergroupid="@Model.UserGroupId" id="creategroupBtn" class="context-btn submit" type="button" style="position: absolute; top: 12px; right: 35px;">Add top level group</button>
+        }
+        <button id="collapseGroupBtn" class="context-btn" type="button" style="position: absolute; top: 12px; right: 220px;">Collapse</button>
+        <div class="tbl-holder" id="GroupsList">
+            @*@Html.Action("UserGroupsList")*@
+        </div>
+        
+    </div>
+    <div id="UserListCol">
+        <h1 id="currentGroupTitle">Unallocated</h1>
+        <h4>group members</h4>
+        <button type="button" class="context-btn submit" id="addMembersBtn">
+            <img src="/Images/add-new-user-icon.png">
+            Add members
+        </button>
+        <div class="pull-right" id="UserSelectionBtns" style="display:none;">
+            <button type="button" class="context-btn" id="unAllocateBtn" style="display:none;">Unallocate Selected</button>
+            <button type="button" class="context-btn" id="moveMembersBtn">Move Selected</button>
+        </div>
+        <div class="clearfix">&nbsp;</div>
+        <div id="UserList">
+            @Html.Action("UserGroupsUsers", new { GroupId = 0} )
+        </div>
+    </div>
+    <div class="row-end">&nbsp;</div>
+</div>
+<div id="groupslist-bg">&nbsp;</div>
+<div id="userlist-bg">&nbsp;</div>
+<script>
+    var userGroupsPageHandler;
+    $(function () {
+        var config = {
+            mainPageRoute: '@Url.Action("UserGroups","UserDashboard")',
+            usersRoute: '@Url.Action("UserGroupsUsers","UserDashboard")',
+            groupsRoute: '@Url.Action("UserGroupsList","UserDashboard")',
+            moveUsersRoute: '@Url.Action("UserGroupsUsersMove","UserDashboard")',
+            createGroupRoute: '@Url.Action("UserGroupsGroupCreate","UserDashboard")',
+            deleteGroupRoute: '@Url.Action("UserGroupsGroupDelete","UserDashboard")',
+            editGroupRoute: '@Url.Action("UserGroupsGroupRename", "UserDashboard")',
+            moveGroupRoute: '@Url.Action("UserGroupsGroupMove","UserDashBoard")',
+            toggleGroupAdminRoute: '@Url.Action("UserGroupsUserMakeOwner", "UserDashBoard")',
+
+            deletegrouptext: {
+                title: '@ResourceUI.UserGroupDelete',
+                msg: '@ResourceUI.UserGroupDeleteConfirm'
+            }
+        };
+
+        userGroupsPageHandler = new UserGroupsPageHandler(config);
+    });
+
+</script>

@@ -1,0 +1,24 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var base_event_1 = require("./base-event");
+/**
+ * Arguments for the `plotAreaHover` event.
+ */
+var PlotAreaHoverEvent = /** @class */ (function (_super) {
+    tslib_1.__extends(PlotAreaHoverEvent, _super);
+    /**
+     * @hidden
+     */
+    function PlotAreaHoverEvent(e, sender) {
+        var _this = _super.call(this, sender) || this;
+        _this.category = e.category;
+        _this.originalEvent = e.originalEvent;
+        _this.value = e.value;
+        _this.x = e.x;
+        _this.y = e.y;
+        return _this;
+    }
+    return PlotAreaHoverEvent;
+}(base_event_1.BaseEvent));
+exports.PlotAreaHoverEvent = PlotAreaHoverEvent;

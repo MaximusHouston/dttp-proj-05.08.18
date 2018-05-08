@@ -1,0 +1,9 @@
+﻿{
+  "routeConfig": {
+    "libraryLink": "/Library",
+    "unitaryMatchupToolURL": "https://testapi.goodmanmfg.com/EBizWebServices/requestEntry",
+    "commercialSplitMatchupToolURL": "https://testapi.goodmanmfg.com/EBizWebServices/requestEntry",
+    "lcstURL": "http://testsecurenet.goodmanmfg.com/litconfig-DC/listDealers.html?sessionId=123"
+  }
+ 
+}

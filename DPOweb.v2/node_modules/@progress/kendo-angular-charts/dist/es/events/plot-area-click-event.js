@@ -1,0 +1,22 @@
+import * as tslib_1 from "tslib";
+import { BaseEvent } from './base-event';
+/**
+ * Arguments for the `plotAreaClick` event.
+ */
+var PlotAreaClickEvent = /** @class */ (function (_super) {
+    tslib_1.__extends(PlotAreaClickEvent, _super);
+    /**
+     * @hidden
+     */
+    function PlotAreaClickEvent(e, sender) {
+        var _this = _super.call(this, sender) || this;
+        _this.category = e.category;
+        _this.originalEvent = e.originalEvent;
+        _this.value = e.value;
+        _this.x = e.x;
+        _this.y = e.y;
+        return _this;
+    }
+    return PlotAreaClickEvent;
+}(BaseEvent));
+export { PlotAreaClickEvent };

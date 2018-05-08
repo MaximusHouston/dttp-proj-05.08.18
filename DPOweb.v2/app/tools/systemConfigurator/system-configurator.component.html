@@ -1,0 +1,396 @@
+﻿<basket id="userBasket" [userBasket]="userBasket"></basket>
+<project-tabs [user]="user" ></project-tabs>
+
+<div id="main-container" class='container-fluid'>
+    <div class="main-content">
+
+        <h4>Unitary System Matchup</h4>
+        <div *ngIf="isAuthenticated" id="systemConfiguratorTool">
+            <div class="row" id="systemConfigForm">
+                <!--Instructions-->
+                <div class="col col-md-3 col-xs-12">
+                    <fieldset>
+                        <legend style="font-weight:bold">INSTRUCTIONS</legend>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="UserHeaderTd">How to use this configurator:</td>
+                                </tr>
+                                <tr>
+                                    <td class="UserText">1. Select outdoor unit information</td>
+                                </tr>
+                                <tr>
+                                    <td class="UserText">2. Select indoor unit information</td>
+                                </tr>
+                                <tr>
+                                    <td class="UserText">3. Click "show results"</td>
+                                </tr>
+                                <tr>
+                                    <td class="UserText">4. Before using System Configurator, please read the Terms and Conditions information.</td>
+                                </tr>
+                                <tr>
+                                    <td class="UserText">5. By using System Configurator, you are in agreement with all <a href="/SystemMatchups-Daikin/disclaimer.jsp">Terms and Conditions</a></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="UserText">
+                                        <b>Note:</b><br /> If your matchup does not show up in System Configurator, it may have been archived.  You can submit a request to retrieve archived certifications by filling out a request form through AHRI, which can be accessed in the link below.  Note that additional fields will appear as you complete the form.  Please allow at least 3 business days for AHRI to process your request.<br>
+                                        <a href="https://www.ahridirectory.org/ahridirectory/pages/Techsupport/support.aspx">https://www.ahridirectory.org</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                </div>
+
+
+                <!--Search Form-->
+                <div class="col col-md-9 col-xs-12 form-horizontal" style="font-size:small; padding-left: 50px;">
+                    <div class="row">
+                        <!--Search By-->
+
+                        <div class="scrollmenu">
+                            <ul class="systemConfig-tab-bar">
+                                <li id="searchBySystemNeeds" class="active-tab"> <a (click)="searchBy('systemNeeds')">Search By System Needs</a> </li>
+                                <li id="searchByModelNumber"> <a (click)="searchBy('modelNumber')">Search By Model Number</a> </li>
+                            </ul>
+
+                        </div>
+
+
+                    </div>
+
+                    <fieldset>
+                        <legend style="font-weight:bold">
+                            OUTDOOR UNIT
+                        </legend>
+
+                        <div class="row">
+                            <div class="row configToolRow">
+                                <!--Outdoor Unit Type-->
+                                <div class="col col-md-4 col-xs-12 form-group">
+                                    <label class="col col-md-6 configToolLabel control-label" for="outDoorUnitTypeDDL">Unit Type:<font color="red">*</font></label>
+                                    <div class="col col-md-6">
+                                        <select id="outDoorUnitTypeDDL"></select>
+                                    </div>
+                                </div>
+                                <!--packageType-->
+                                <div class="col col-md-4 col-xs-12 form-group" *ngIf="outDoorUnitType == 'pkg'">
+                                    <label class="col col-md-6 configToolLabel control-label">Select Package:</label>
+                                    <div class="col col-md-6">
+                                        <kendo-dropdownlist [data]="packageTypes" [textField]="'text'" [valueField]="'value'"
+                                                            [(ngModel)]="packageType" (ngModelChange)="packageTypeOnChange()">
+                                        </kendo-dropdownlist>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="row configToolRow">
+                                <!--CEETier-->
+                                <div class="col col-md-4 col-xs-12 form-group" *ngIf="model=='N'">
+                                    <div class="col col-md-6 configToolLabel control-label">Select CEE Tier:</div>
+                                    <div class="col col-md-6">
+                                        <div id="ceeTierDDL"></div>
+                                    </div>
+                                </div>
+                                <!--Region-->
+                                <div class="col col-md-4 col-xs-12 form-group" *ngIf="!(outDoorUnitType == 'pkg' && (packageType.value == 'pkg1' || packageType.value == 'pkg2'))">
+                                    <div class="col col-md-6 configToolLabel control-label">Region:</div>
+                                    <div class="col col-md-6">
+                                        <select id="regionDDL"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--Outdoor Unit - Search By System Needs-->
+                        <div *ngIf="model=='N'" class="row">
+                            <!--<fieldset>
+                            <legend style="font-weight:bold">
+                                Outdoor Unit
+                            </legend>-->
+                            <!--<div style="padding-left:20px;">Unit Criteria</div>-->
+                            <!--<div class="outDoorUnitCriteria" style="border-style:solid; border-width:1px; border-radius:7px;">-->
+                            <!--<div class="outDoorUnitCriteria col col-md-8">-->
+                            <!--<div class="row">
+                                <div class="col col-md-7 col-sm-10" style="margin-left:40px; color:#656565; border-bottom:solid; border-bottom-width:1px; border-color:#e5e5e5;">Unit Criteria</div>
+                            </div>-->
+                            <div>
+                                <div style="padding-left:50px; color:#656565; text-decoration: underline">UNIT CRITERIA</div>
+                            </div>
+
+
+                            <div class="row configToolRow">
+                                <div class="col col-md-4 col-xs-12 form-group">
+                                    <div class="col col-md-6 configToolLabel control-label">Tonnage:<font color="red">*</font></div>
+                                    <div class="col col-md-6">
+                                        <select id="tonnageDDL"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row configToolRow form-group" style="margin-left:-35px;">
+                                <div class="col col-md-2 col-xs-12 configToolLabel control-label">SEER:<font color="red">*</font></div>
+                                <div class="col col-md-10 col-xs-12">
+                                    <span class="col col-md-2 col col-xs-12" style="padding:0px">Min <input id="minSEER" [(ngModel)]="minSEER" style="width: 100px" /></span>
+                                    <span class="col col-md-2 col col-xs-12" style="padding:0px">Max <input id="maxSEER" [(ngModel)]="maxSEER" style="width: 100px" /></span>
+                                </div>
+                            </div>
+                            <div class="row configToolRow form-group" style="margin-left:-35px;">
+                                <div class="col col-md-2 col-xs-12 configToolLabel control-label">EER:</div>
+                                <div class="col col-md-10 col-xs-12">
+                                    <span class="col col-md-2 col col-xs-12" style="padding:0px">Min <input id="minEER" [(ngModel)]="minEER" style="width: 100px" /></span>
+                                    <span class="col col-md-2 col col-xs-12" style="padding:0px">Max <input id="maxEER" [(ngModel)]="maxEER" style="width: 100px" /></span>
+
+                                </div>
+                            </div>
+                            <div class="row configToolRow form-group" style="margin-left:-35px;" *ngIf="outDoorUnitType == 'hp' || outDoorUnitType == 'pkg'">
+                                <div class="col col-md-2 col-xs-12 configToolLabel control-label">HSPF:</div>
+                                <div class="col col-md-10 col-xs-12">
+                                    <span class="col col-md-2 col col-xs-12" style="padding:0px">Min <input id="minHSPF" [(ngModel)]="minHSPF" style="width: 100px" /></span>
+                                    <span class="col col-md-2 col col-xs-12" style="padding:0px">Max <input id="maxHSPF" [(ngModel)]="maxHSPF" style="width: 100px" /></span>
+
+                                </div>
+                            </div>
+                            <div class="row configToolRow" *ngIf="outDoorUnitType != 'pkg'">
+                                <div class="col col-md-4  col-xs-12 form-group">
+                                    <div class="col col-md-6 col-xs-12 configToolLabel control-label">TXV:</div>
+                                    <div class="col col-md-6 col-xs-12">
+                                        <kendo-dropdownlist [data]="txvOptions" [textField]="'text'" [valueField]="'value'"
+                                                            [(ngModel)]="txv">
+                                        </kendo-dropdownlist>
+                                        <!--<span class="col col-md-2 col col-xs-12"><input type="radio" name="txv" [(ngModel)]="txv" value="Y" /> Yes</span>
+                                            <span class="col col-md-2 col col-xs-12"><input type="radio" name="txv" [(ngModel)]="txv" value="N" /> No</span>
+                                            <span class="col col-md-3 col col-xs-12"><input type="radio" name="txv" [(ngModel)]="txv" value="T" /> No Preference</span>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row configToolRow">
+                                <div class="col col-md-4  col-xs-12 form-group">
+                                    <div class="col col-md-6 col-xs-12 configToolLabel control-label">Status:</div>
+                                    <div class="col col-md-6 col-xs-12">
+                                        <kendo-dropdownlist [data]="statusOptions" [textField]="'text'" [valueField]="'value'"
+                                                            [(ngModel)]="status">
+                                        </kendo-dropdownlist>
+                                        <!--<span class="col col-md-2 col col-xs-12"><input type="radio" name="status" [(ngModel)]="status" value="Y" /> Active</span>
+                                            <span class="col col-md-2 col col-xs-12"><input type="radio" name="status" [(ngModel)]="status" value="N" /> Discontinued</span>
+                                            <span class="col col-md-3 col col-xs-12"><input type="radio" name="status" [(ngModel)]="status" value="S" /> No Preference</span>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <!--</fieldset>-->
+
+
+                        </div>
+                    </fieldset>
+
+
+                    <!--Indoor Unit - Search By System Needs-->
+                    <div *ngIf="model=='N' && outDoorUnitType != 'pkg'">
+                        <fieldset>
+                            <legend style="font-weight:bold">
+                                INDOOR UNIT
+                            </legend>
+                            <div class="row configToolRow form-group" style="margin-left:-35px;">
+                                <div class="col col-md-2 col-xs-12 configToolLabel control-label">Unit Type:<font color="red">*</font></div>
+                                <div class="col col-md-10 col-xs-12">
+                                    <div class="row">
+                                        <span class="col col-md-2 col col-xs-12"><input type="radio" name="indoorUnitType" value="coilOnly" [(ngModel)]="indoorUnitType" (ngModelChange)="indoorUnitTypeOnChange()" /> Coil(only)</span>
+                                        <span class="col col-md-2 col col-xs-12"><input type="radio" name="indoorUnitType" value="furnaceCoil" [(ngModel)]="indoorUnitType" (ngModelChange)="indoorUnitTypeOnChange()" /> Furnace</span>
+                                        <span class="col col-md-2 col col-xs-12"><input type="radio" name="indoorUnitType" value="airHandler" [(ngModel)]="indoorUnitType" (ngModelChange)="indoorUnitTypeOnChange()" /> Air Handler</span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="configToolRow " id="furnace-extra-params" *ngIf="indoorUnitType == 'furnaceCoil'">
+                                <div class="row form-group" style="margin-left:-35px;">
+                                    <div class="col col-md-2 col-xs-12 configToolRow configToolLabel control-label">AFUE Range:</div>
+                                    <div class="col col-md-10 col-xs-12">
+
+
+
+                                        <span class="col col-md-2 col col-xs-12" style="padding:0px">
+                                            Min <kendo-dropdownlist [data]="minAFUEOptions" [textField]="'text'" [valueField]="'value'"
+                                                                    [defaultItem]="defaultItem"
+                                                                    [(ngModel)]="minAFUE"
+                                                                    style="width: 100px">
+                                            </kendo-dropdownlist>
+                                        </span>
+                                        <span class="col col-md-2 col col-xs-12" style="padding:0px">
+                                            Max <kendo-dropdownlist [data]="maxAFUEOptions" [textField]="'text'" [valueField]="'value'"
+                                                                    [defaultItem]="defaultItem"
+                                                                    [(ngModel)]="maxAFUE"
+                                                                    style="width: 100px">
+                                            </kendo-dropdownlist>
+                                        </span>
+
+
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="row form-group" style="margin-left:-35px;">
+                                    <div class="col-md-offset-2 col col-md-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" [(ngModel)]="flushfit"> Flush fit
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </fieldset>
+
+                    </div>
+
+
+                    <!--Outdoor Unit - Search By Model#-->
+                    <div *ngIf="model=='Y'" class="row">
+                        <!--<fieldset>
+                            <legend style="font-weight:bold">
+                                Outdoor Unit
+                            </legend>-->
+                        <!--<div class="row row-nomargin configToolRow configToolLabel">Enter Outdoor Unit Model#</div>-->
+                        <div class="row configToolRows">
+                            <div class="col col-md-4 col-xs-12 form-group">
+                                <label class="col col-md-6 configToolLabel control-label" for="outdoorModelAutoComplete">Model:<font color="red">*</font></label>
+                                <div class="col col-md-6">
+                                    <input id="outdoorModelAutoComplete" />
+                                    <div style="font-size:xx-small; font-style:italic; color:#656565;">Enter at least two characters</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--</fieldset>-->
+
+                    </div>
+
+                    <!--Indoor Unit - Search By Model #-->
+                    <div *ngIf="model=='Y' && outDoorUnitType != 'pkg'">
+                        <fieldset>
+                            <legend style="font-weight:bold">
+                                INDOOR UNIT
+                            </legend>
+                            <div class="row">
+                                <div class="row configToolRow form-group">
+                                    <div class="col col-md-2 col-xs-12 configToolLabel control-label">Unit Type:</div>
+                                    <div class="col col-md-10 col-xs-12">
+                                        <div class="row row-nomargin ">
+                                            <span class="col col-md-2 col col-xs-12"><input type="radio" name="indoorUnitType" value="coilOnly" [(ngModel)]="indoorUnitType" (ngModelChange)="indoorUnitTypeOnChange()" /> Coil(only)</span>
+                                            <span class="col col-md-2 col col-xs-12"><input type="radio" name="indoorUnitType" value="furnaceCoil" [(ngModel)]="indoorUnitType" (ngModelChange)="indoorUnitTypeOnChange()" /> Furnace+Coil</span>
+                                            <span class="col col-md-2 col col-xs-12"><input type="radio" name="indoorUnitType" value="airHandler" [(ngModel)]="indoorUnitType" (ngModelChange)="indoorUnitTypeOnChange()" /> Air Handler</span>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!--indoor-unit-dropdowns Go here-->
+                            <div id="indoor-unit-dropdowns" style="margin-left:-35px;">
+                                <div class="row configToolRow form-group" *ngIf="indoorUnitType =='coilOnly'  && outdoorModelNumber != null ">
+                                    <div class="col col-md-2 col col-xs-12 configToolLabel control-label">
+                                        Coil#:
+                                    </div>
+                                    <div class="col col-md-10 col col-xs-12">
+                                        <input id="coilDDL" />
+                                    </div>
+                                </div>
+
+                                <div class="row configToolRow form-group" *ngIf="indoorUnitType =='furnaceCoil' && outdoorModelNumber != null ">
+                                    <div class="col col-md-2 col col-xs-12 configToolLabel control-label">
+                                        Furnace#:
+                                    </div>
+                                    <div class="col col-md-10 col col-xs-12">
+                                        <input id="furnaceDDL" />
+                                    </div>
+                                </div>
+
+                                <div class="row configToolRow form-group" *ngIf="indoorUnitType =='furnaceCoil' && outdoorModelNumber != null  && furnaceModelNumber != undefined && furnaceModelNumber != '' ">
+                                    <div class="col col-md-2 col col-xs-12 configToolLabel control-label">
+                                        Coil#:
+                                    </div>
+                                    <div class="col col-md-10 col col-xs-12">
+                                        <input id="furnaceCoilDDL" />
+                                    </div>
+                                </div>
+
+                                <div class="row configToolRow form-group" *ngIf="indoorUnitType =='airHandler' && outdoorModelNumber != null ">
+                                    <div class="col col-md-2 col col-xs-12 configToolLabel control-label">
+                                        Air Handler/ Coil#:
+                                    </div>
+                                    <div class="col col-md-10 col col-xs-12">
+                                        <input id="airHandlerDDL" />
+                                    </div>
+                                </div>
+
+                                <div class="row configToolRow form-group" *ngIf="indoorUnitType =='airHandler' && outdoorModelNumber != null && airHandlerModelNumber != undefined && airHandlerModelNumber != '' ">
+                                    <div class="col col-md-2 col col-xs-12 configToolLabel control-label">
+                                        Blower#:
+                                    </div>
+                                    <div class="col col-md-10 col col-xs-12">
+                                        <input id="airHandlerBlowerDDL" />
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </fieldset>
+
+                    </div>
+
+                    <!--Show result/ reset-->
+                    <div class="form-group">
+                        <div class="col-md-offset-9 col-md-3">
+                            <button id="showResultBtn" type="submit" class="btn btn-primary" (click)="getResult()">Show Result</button>
+                            <button id="resetBtn" class="btn btn-default" (click)="reset()">Reset</button>
+
+                            <!--<button id="testBtn" class="btn btn-default" (click)="getEqModelList()">Test</button>-->
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="matchupResultGrid">
+                <matchup-master-grid *ngIf="matchupResult" [matchupResult]="matchupResult" [indoorUnitType]="indoorUnitType" [outDoorUnitType]="outDoorUnitType" [userBasket]="userBasket"></matchup-master-grid>
+            </div>
+        </div>
+
+        <!--<div>
+            <button (click)="Test()">Test</button>
+            <div id="userGroup"></div>
+        </div>-->
+        <!--<kendo-grid
+                    *ngIf="matchupResult"
+                  [data]="matchupResult"
+                  [pageSize]="pageSize"
+                  [skip]="skip"
+                  [sortable]="true"
+                  [sort]="sort"
+                  [pageable]="true"
+                  [scrollable]="'none'"
+                  (dataStateChange)="dataStateChange($event)"
+                    >
+            <kendo-grid-column field="modelNumber" ></kendo-grid-column>
+            <kendo-grid-column field="coilModelNumber"></kendo-grid-column>
+            <kendo-grid-column field="seer"></kendo-grid-column>
+
+        </kendo-grid>-->
+
+
+    </div>
+</div>

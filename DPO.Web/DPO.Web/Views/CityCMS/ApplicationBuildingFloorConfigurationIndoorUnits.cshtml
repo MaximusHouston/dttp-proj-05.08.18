@@ -1,0 +1,86 @@
+﻿@model FloorConfigurationIndoorUnitsModel
+
+@{
+    ViewBag.Title = "Daikin City Content Management";
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@section scripts{
+}
+
+@Html.Partial("_CityCMSTabsPartial")
+@Html.Partial("_FloorConfigurationIndoorUnitAddModal", Model.systemsToPickFrom)
+
+<ul class="breadcrumbs">
+    <li><a href="@Url.Action("ApplicationBuildings", "CityCMS")">Application Buildings</a></li>
+    <li><a href="@Url.Action("ApplicationBuildings", "CityCMS")#@Model.buildingName">@Model.buildingName</a></li>
+    <li><a href="@Url.Action("ApplicationBuildingFloor", "CityCMS", new { floorid = Model.floorId, buildingid = Model.buildingId })">@Model.floorName</a></li>
+    <li><a href="@Url.Action("ApplicationBuildingFloor", "CityCMS", new { floorid = Model.floorId, buildingid = Model.buildingId })">@Model.configName</a></li>
+    <li>Edit Indoor Units</li>
+</ul>
+
+<div class="section t-flush b-flush">
+    <div class="item-strap">
+        <div class="itemname">
+            <h1 style="padding-bottom: 0;">Edit Indoor Units</h1>
+            <h4>@Model.configName</h4>
+        </div>
+        <div class="btn-bar">
+            <a style="visibility:hidden;" href="#" class="submit-btn">&nbsp;</a>
+        </div>
+    </div>
+</div>
+
+@using(Html.BeginForm())
+{
+    <div class="section form">
+    @for (var u = 0; u < Model.indoorUnitsToEdit.Count; u++)
+    {
+        <div style="display:inline-block; width: 45%; margin-right: @((u == 0) ? "40px;" : "0px;")">
+            <label>Indoor Unit @(u + 1)</label>
+            @Html.HiddenFor(m => m.indoorUnitsToEdit[u].id)
+            @Html.DropDownListFor(m => m.indoorUnitsToEdit[u].systemId, new SelectList(Model.systemsToPickFrom, "id", "name", Model.indoorUnitsToEdit[u].systemId), new { @style = "width: 100%;" })
+        </div>
+    }
+    @if (Model.indoorUnitsToEdit.Count < 2)
+    {
+        <div>
+            <button type="button" id="add_new_indoor_unit" class="context-btn submit">Add New Indoor Unit</button>
+        </div>
+    }
+    </div>
+    <div class="section action c-align">
+        <button type="button" class="btn" onclick="location.replace('@Url.Action("ApplicationBuildingFloor", "CityCMS", new { floorid = Model.floorId, buildingid = Model.buildingId })')">Cancel</button>
+        <input type="submit" class="submit-btn" value="Save">
+    </div>
+
+}
+<script>
+    $(function ()
+    {
+        $('#add_new_indoor_unit').on('click', function () {
+            $('#confirm_modal_indoor_unit_add').fadeIn(200);
+        });
+
+        $('#confirm_modal_indoor_unit_add_yes').on('click', function (e)
+        {
+            e.preventDefault();
+            var addParams = {
+                systemId: $('#NewIndoorUnit').val(),
+                configId: "@Model.configId"
+            }
+
+            $.post("@Url.Action("ApplicationBuildingFloorConfigurationIndoorUnit")", addParams, function (result)
+            {
+                location.reload();
+            });
+        });
+    });
+</script>
+
+
+

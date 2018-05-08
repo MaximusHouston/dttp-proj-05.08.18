@@ -1,0 +1,194 @@
+﻿
+@model ProductModel
+@{
+    var specs = Model.Specifications;
+}
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Power Supply (V/Hz/Ph):</span>
+    <span class="pull-right">@specs.GetString("PowerVoltage") / @specs.GetString("PowerFrequency") / @specs.GetString("PowerPhase")</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Compressor Stage:</span>
+    <span class="pull-right">@specs.GetString("CompressorStages")</span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Power Supply Connections:</span>
+    <span class="pull-right">@specs.GetString("InterConnectingWires")</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Capacity Control Range (%):</span>
+    <span class="pull-right">@specs.GetDecimal("CapacityControlRangeMin", "N0") - @specs.GetDecimal("CapacityControlRangeMax", "N0")</span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Min. Circuit Amps MCA (A):</span>
+    <span class="pull-right">
+        @specs.GetString("MinCircuitAmps")
+   </span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Capacity Index Limit:</span>
+    <span class="pull-right">@specs.GetDecimal("CapacityIndexLimitMin", "N1") - @specs.GetDecimal("CapacityIndexLimitMax", "N1")</span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Max Overcurrent Protection (MOP) (A):</span>
+    <span class="pull-right">
+        @specs.GetString("MaxOvercurrentProtection")
+    </span>
+    @{
+        var airFlowLabels = new List<string>
+        {
+            "HH","H","M","L","SL"
+        };
+
+        var airFlowHigh = "";
+
+        if (specs.GetString("AirFlowRateHighText") != null)
+        {
+            airFlowHigh = specs.GetString("AirFlowRateHighText");
+        }
+        else if (specs.GetString("AirFlowRateHighCooling") != null)
+        {
+            airFlowHigh = specs.GetString("AirFlowRateHighCooling");
+        }
+        else if (specs.GetDecimal("AirFlowRateHighHeating", "N0") != null)
+        {
+            airFlowHigh = specs.GetDecimal("AirFlowRateHighHeating", "N0");
+        }
+
+
+        var airFlowRates = new List<string>{
+            specs.GetDecimal("AirFlowRateSuperHighCooling", "N0") != null? specs.GetDecimal("AirFlowRateSuperHighCooling", "N0"): specs.GetDecimal("AirFlowRateSuperHighHeating", "N0"),
+            airFlowHigh,
+            specs.GetDecimal("AirFlowRateMediumCooling", "N0") != null? specs.GetDecimal("AirFlowRateMediumCooling", "N0"): specs.GetDecimal("AirFlowRateMediumHeating", "N0"),
+            specs.GetDecimal("AirFlowRateLowCooling", "N0") != null? specs.GetDecimal("AirFlowRateLowCooling", "N0"): specs.GetDecimal("AirFlowRateLowHeating", "N0"),
+            specs.GetDecimal("AirFlowRateSuperLowCooling", "N0") != null? specs.GetDecimal("AirFlowRateSuperLowCooling", "N0"): specs.GetDecimal("AirFlowRateSuperLowHeating", "N0")
+        };
+
+        var airFlowLabelsCombined = new List<string>();
+        var airFlowRatesCombined = new List<string>();
+
+        for (var i = 0; i < airFlowRates.Count; i++)
+        {
+            if (airFlowRates[i] != null)
+            {
+                airFlowRatesCombined.Add(airFlowRates[i]);
+                airFlowLabelsCombined.Add(airFlowLabels[i]);
+            }
+        }
+    }
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Airflow Rate (@string.Join("/", airFlowLabelsCombined)) (CFM):</span>
+    <span class="pull-right">@string.Join("/", airFlowRatesCombined)</span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Max Starting Current MSC(A):</span>
+    <span class="pull-right">
+        @((specs.GetString("MaxStartingCurrentText") != null) ? specs.GetString("MaxStartingCurrentText") : specs.GetDecimal("MaxStartingCurrent", "N2"))
+    </span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Gas Pipe Connection (inch):</span>
+    <span class="pull-right">@specs.GetString("PipeSizeGas")</span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Rated Load Amps RLA(A):</span>
+    <span class="pull-right">
+        @specs.GetString("RatedLoadAmps")
+    </span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Liquid Pipe Connection (inch):</span>
+    <span class="pull-right">@specs.GetString("PipeSizeLiquid")</span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Dimensions (Height) (in):</span>
+    <span class="pull-right">@specs.GetString("DimensionsUnitHeight")</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">H/L Pressure Connection (inch)</span>
+    <span class="pull-right">@specs.GetString("PipeSizeHPLP")</span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Dimensions (Width) (in):</span>
+    <span class="pull-right">@specs.GetString("DimensionsUnitWidth")</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">H/L Equalizing Connection (inch)</span>
+    <span class="pull-right">@specs.GetString("PipeSizeHLEqualizing")</span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Dimensions (Depth) (in):</span>
+    <span class="pull-right">@specs.GetString("DimensionsUnitDepth")</span>
+    @{
+        var soundPressureLabels = new List<string>
+        {
+            "H","M","L","SL"
+        };
+
+        var soundPressureRates = new List<string>{
+            specs.GetDecimal("SoundPressureHighCooling", "N0") != null? specs.GetDecimal("SoundPressureHighCooling", "N0"): specs.GetDecimal("SoundPressureHighHeating", "N0"),
+            specs.GetDecimal("SoundPressureMediumCooling", "N0") != null? specs.GetDecimal("SoundPressureMediumCooling", "N0"): specs.GetDecimal("SoundPressureMediumHeating", "N0"),
+            specs.GetDecimal("SoundPressureLowCooling", "N0") != null? specs.GetDecimal("SoundPressureLowCooling", "N0"): specs.GetDecimal("SoundPressureLowHeating", "N0"),
+            specs.GetDecimal("SoundPressureSuperLowCooling", "N0") != null? specs.GetDecimal("SoundPressureSuperLowCooling", "N0"): specs.GetDecimal("SoundPressureSuperLowHeating", "N0")
+        };
+
+        var soundPressureLabelsCombined = new List<string>();
+        var soundPressureRatesCombined = new List<string>();
+
+        for (var i = 0; i < soundPressureRates.Count; i++)
+        {
+            if (soundPressureRates[i] != null)
+            {
+                soundPressureRatesCombined.Add(soundPressureRates[i]);
+                soundPressureLabelsCombined.Add(soundPressureLabels[i]);
+            }
+        }
+    }
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Sound Pressure (@string.Join("/", soundPressureLabelsCombined)) (dBA):</span>
+    <span class="pull-right">@string.Join("/", soundPressureRatesCombined)</span>
+
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Net Weight (lb):</span>
+    <span class="pull-right">
+        @specs.GetString("WeightUnit")
+    </span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Sound Power Level (dBA):</span>
+    <span class="pull-right">@specs.GetString("SoundPower")</span>
+</div>
+
+
+@if (specs.GetDecimal("MaxIndoorUnits", "N0") != null)
+{
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        <span class="pull-left"></span>
+        <span class="pull-right"></span>
+    </div>
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        <span class="pull-left">Max. No. of Indoor Units:</span>
+        <span class="pull-right">@specs.GetDecimal("MaxIndoorUnits", "N0")</span>
+    </div>
+}

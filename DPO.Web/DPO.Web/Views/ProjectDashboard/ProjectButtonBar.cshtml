@@ -1,0 +1,98 @@
+﻿@{
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+    var exportProjectStatus = ViewData["exportProjectStatus"] as string;
+}
+<div class="btn-bar">
+    @if (user.HasAccess(SystemAccessEnum.UndeleteProject) && Model.Deleted)
+    {
+        <a href="#" sc-ajaxpost="@Url.Action("ProjectUndelete")" class="btn h-slim">
+            <img src="~/Images/context-btn-delete-icon.png" />
+            @ResourceUI.ProjectUndelete
+        </a>
+    }
+    else if (Model.Deleted == false)
+    {
+            if (user.HasAccess(SystemAccessEnum.RequestDiscounts)
+                && Model.IsTransferred == false
+                && Model.ActiveQuoteSummary.HasDAR == false
+                && Model.ActiveQuoteSummary.HasCOM == false
+                && user.ShowPrices
+                && Model.ActiveQuoteSummary.QuoteId > 0
+                && Model.ProjectStatusTypeId == (int)ProjectStatusTypeEnum.Open)
+            {
+                @*if (Model.ActiveQuoteSummary.IsCommission)
+                {
+                    <a id="requestCommissionBtn" href="@Url.Action("CommissionRequest", "Projectdashboard",
+                    new { ProjectId = Model.ProjectId, QuoteId = Model.ActiveQuoteSummary.QuoteId })" class="btn h-slim">
+                    <img src="~/Images/request.png" width="17" height="17" />
+                    @ResourceUI.RequestCommission
+                    </a>
+                }
+                else
+                {
+                    <a id="requestDiscountBtn" href="@Url.Action("DiscountRequest", "Projectdashboard", new { ProjectId = Model.ProjectId, QuoteId = Model.ActiveQuoteSummary.QuoteId })" class="btn h-slim">
+                        <img src="~/Images/request.png" width="17" height="17" />
+                        Request Discount
+                    </a>
+                }*@
+               
+                
+               @*<a id="requestDiscountBtn" href="@Url.Action("DiscountRequest", "Projectdashboard", new { ProjectId = Model.ProjectId, QuoteId = Model.ActiveQuoteSummary.QuoteId })" class="btn h-slim">
+               <img src="~/Images/request.png" width="17" height="17" />
+                Request Discount
+               </a>*@
+
+            }
+
+            if (user.HasAccess(SystemAccessEnum.RequestCommission)
+                && Model.IsTransferred == false
+                && Model.ActiveQuoteSummary.HasDAR == false
+                && Model.ActiveQuoteSummary.HasCOM == false
+                && user.ShowPrices
+                && Model.ActiveQuoteSummary.QuoteId > 0
+                && Model.ProjectStatusTypeId == (int)ProjectStatusTypeEnum.Open
+                && Model.ProjectStatusTypeId != (int)ProjectStatusTypeEnum.Inactive 
+                && Model.OrderStatus != (byte)OrderStatusTypeEnum.AwaitingCSR 
+                && Model.OrderStatus != (byte)OrderStatusTypeEnum.Submitted)
+            {
+                if (Model.ActiveQuoteSummary.IsCommission)
+                {
+                    @*<a id="requestCommissionBtn" href="@Url.Action("CommissionRequest", "Projectdashboard",
+                    new { ProjectId = Model.ProjectId, QuoteId = Model.ActiveQuoteSummary.QuoteId })" class="btn h-slim">
+                        <img src="~/Images/request.png" width="17" height="17" />
+                        @ResourceUI.RequestCommission
+                    </a>*@
+                }
+                @*else
+                {
+                <a id="requestDiscountBtn" href="@Url.Action("DiscountRequest", "Projectdashboard", new { ProjectId = Model.ProjectId, QuoteId = Model.ActiveQuoteSummary.QuoteId })" class="btn h-slim">
+                        <img src="~/Images/request.png" width="17" height="17" />
+                    Request Discount
+                </a>
+                }*@
+
+            }
+
+            <a href="@Url.Action("ProjectExport", "Projectdashboard", new { ProjectId = Model.ProjectId })" class="btn h-slim">
+                <img src="~/Images/package-quote-icon.png" />
+                @ResourceUI.Export
+            </a>
+            if (user.HasAccess(SystemAccessEnum.EditProject) && Model.IsTransferred == false)
+            { 
+                <a href="#" data-confirm="ProjectDelete" data-sc-ajaxpost="@Url.Action("ProjectDelete")" class="btn h-slim">
+                    <img src="~/Images/context-btn-delete-icon.png" />
+                    @ResourceUI.ProjectDelete
+                </a>
+
+               
+        }
+
+    }
+    
+    @* this is for testing the status code after export project *@
+    @if (exportProjectStatus != null)
+    {
+        <div id="exportProjectStatus" style="display:none" status="@exportProjectStatus">@exportProjectStatus</div>
+
+    }
+</div>

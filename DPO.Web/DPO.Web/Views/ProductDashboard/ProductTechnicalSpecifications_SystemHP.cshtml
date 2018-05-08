@@ -1,0 +1,287 @@
+﻿@model ProductModel
+@{
+    var specs = Model.Specifications;
+}
+    <tr>
+        <td>
+            Additional Refrigerant Charge
+        </td>
+       <td>@specs.GetDecimal("AdditionalRefrigerantCharge", "N2")</td>
+       <td>Heating COP (Non-Ducted):</td>
+       <td>@specs.GetDecimal("COP47NonDucted", "N2")</td>
+    </tr>
+    <tr>
+        <td>Condensate Drain Outlet (in):</td>
+        <td>@specs.GetString("CondensateDrainOutlet")</td>
+        <td>
+            Cooling Capacity Max
+        </td>
+        <td>@specs.GetDecimal("CoolingCapacityMax", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            Cooling Capacity Min
+        </td>
+        <td>@specs.GetDecimal("CoolingCapacityMin", "N2")</td>
+        <td>
+            Cooling Capacity Rated
+        </td>
+        <td>@specs.GetDecimal("CoolingCapacityRated", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            Cooling Capacity Sensible
+        </td>
+        <td>@specs.GetDecimal("CoolingCapacitySensible", "N2")</td>
+        <td>
+            Cooling Input Power
+        </td>
+        <td>@specs.GetDecimal("CoolingInputPower", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            Cooling Operation Range StdMax
+        </td>
+        <td>@specs.GetDecimal("CoolingOperationRangeStdMax", "N2")</td>
+        <td>
+            Cooling Operation Range StdMin
+        </td>
+        <td>@specs.GetDecimal("CoolingOperationRangeStdMin", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            Cooling Operation Range wBaffleMax
+        </td>
+        <td>@specs.GetDecimal("CoolingOperationRangewBaffleMax", "N2")</td>
+
+        <td>
+            CoolingOperationRangewBaffleMin
+        </td>
+        <td>@specs.GetDecimal("CoolingOperationRangewBaffleMin", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            EER Nonducted
+        </td>
+        <td>@specs.GetDecimal("EERNonDucted", "N2")</td>
+        <td>
+            Factory Std Refrigerant Charge
+        </td>
+        <td>
+            @specs.GetString("FactoryStdRefrigerantCharge")
+       </td>
+    </tr>
+    <tr>
+        <td>
+            Fuse Size
+        </td>
+        <td>@specs.GetDecimal("FuseSize", "N2")</td>
+        <td>
+            HSPF Nonducted
+        </td>
+        <td>@specs.GetDecimal("HSPFNonDucted", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            Heating Capacity Max
+        </td>
+        <td>@specs.GetDecimal("HeatingCapacityMax", "N2")</td>
+
+        <td>
+            Heating Capacity Min
+        </td>
+        <td>@specs.GetDecimal("HeatingCapacityMin", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            Heating Capacity Rated
+        </td>
+        <td>@specs.GetDecimal("HeatingCapacityRated", "N2")</td>
+        <td>
+            Heating Input Power
+        </td>
+        <td>@specs.GetDecimal("HeatingInputPower", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            Heating Operation Range Std Max
+        </td>
+        <td>@specs.GetDecimal("HeatingOperationRangeStdMax", "N2")</td>
+        <td>
+            Heating Operation Range Std Min
+        </td>
+        <td>@specs.GetDecimal("HeatingOperationRangeStdMin", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            Heating Operation Range wBaffle Max
+        </td>
+        <td>@specs.GetDecimal("HeatingOperationRangewBaffleMax", "N2")</td>
+        <td>
+            Heating Operation Range wBaffle Min
+        </td>
+        <td>@specs.GetDecimal("HeatingOperationRangewBaffleMin", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            InERP
+        </td>
+        <td>@specs.GetString("InERP")</td>
+        <td>
+            Inter Connecting Wires
+        </td>
+        <td>@specs.GetString("InterConnectingWires")</td>
+    </tr>
+    <tr>
+        <td>
+            Max External Static Pressure
+        </td>
+        <td>@specs.GetString("ExternalStaticPressureMax")</td>
+        <td>
+            Max Indoor to Indoor Piping
+        </td>
+        <td>@specs.GetDecimal("MaxIndoorToIndoorPiping", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            Max Overcurrent Protection
+        </td>
+        <td>
+            @specs.GetString("MaxOvercurrentProtection")
+       </td>
+        <td>
+            Max Pipe Length Total
+        </td>
+        <td>@specs.GetDecimal("MaxPipeLengthTotal", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            Min Circuit Amps
+        </td>
+        <td>
+            @specs.GetString("MinCircuitAmps")
+
+        </td>
+        <td>
+            Moisture Removal Rate
+        </td>
+        <td>@specs.GetDecimal("MoistureRemovalRate", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            Pipe Size - Gas
+        </td>
+        <td>@specs.GetString("PipeSizeGas")</td>
+        <td>
+            PipeSize - Liquid
+        </td>
+        <td>@specs.GetString("PipeSizeLiquid")</td>
+    </tr>
+    <tr>
+        <td>
+            Power Frequency
+        </td>
+        <td>@specs.GetDecimal("PowerFrequency", "N2")</td>
+        <td>
+            Power Phase
+        </td>
+        <td>@specs.GetDecimal("PowerPhase", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            Power Voltage
+        </td>
+        <td>@specs.GetString("PowerVoltage")</td>
+
+        <td>
+            Rated Cooling Condition AmbientDB
+        </td>
+        <td>@specs.GetDecimal("RatedCoolingConditionAmbientDB", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            Rated Cooling Condition AmbientWB
+        </td>
+        <td>@specs.GetDecimal("RatedCoolingConditionAmbientWB", "N2")</td>
+        <td>
+            Rated Cooling Condition RoomDB
+        </td>
+        <td>@specs.GetDecimal("RatedCoolingConditionRoomDB", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            Rated Cooling Condition RoomWB
+        </td>
+        <td>@specs.GetDecimal("RatedCoolingConditionRoomWB", "N2")</td>
+
+        <td>
+            Rated External Static Pressure
+        </td>
+        <td>@specs.GetString("ExternalStaticPressureRated")</td>
+    </tr>
+    <tr>
+        <td>
+            Rated Heating Condition AmbientDB
+        </td>
+        <td>@specs.GetDecimal("RatedHeatingConditionAmbientDB", "N2")</td>
+        <td>
+            Rated Heating Condition AmbientWB
+        </td>
+        <td>@specs.GetDecimal("RatedHeatingConditionAmbientWB", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            Rated Heating Condition RoomDB
+        </td>
+        <td>@specs.GetDecimal("RatedHeatingConditionRoomDB", "N2")</td>
+        <td>
+            Rated Heating Condition RoomWB
+        </td>
+        <td>@specs.GetDecimal("RatedHeatingConditionRoomWB", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            Rated Height Difference
+        </td>
+        <td>@specs.GetDecimal("RatedHeightDifference", "N2")</td>
+        <td>
+            Rated Load Amps
+        </td>
+        <td>
+            @specs.GetString("RatedLoadAmps")
+       </td>
+    </tr>
+    <tr>
+        <td>
+            Refrigerant Type
+        </td>
+        <td>@specs.GetString("RefrigerantType")</td>
+        <td>
+            SEER Nonducted
+        </td>
+        <td>@specs.GetDecimal("SEERNonDucted", "N2")</td>
+    </tr>
+    <tr>
+        @*<td>
+            Short Name
+        </td>
+        <td>@specs.GetString("ShortName")</td>*@
+        <td>
+            Sound Pressure - High
+        </td>
+        <td>@(specs.GetDecimal("SoundPressureHighCooling", "N2") != null ? specs.GetDecimal("SoundPressureHighCooling", "N2"): specs.GetDecimal("SoundPressureHighHeating", "N2"))</td>
+    </tr>
+    <tr>
+        <td>
+            Unit Installation Type
+        </td>
+        <td>@Model.ProductCategoryName</td>
+        <td>
+            Weight - Net
+        </td>
+        <td>
+            @specs.GetString("WeightUnit")
+       </td>
+
+    </tr>
+

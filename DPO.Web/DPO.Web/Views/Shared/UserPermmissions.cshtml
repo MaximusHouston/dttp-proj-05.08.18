@@ -1,0 +1,89 @@
+﻿@using MvcCheckBoxList.Model;
+
+@model DPO.Common.UserModel
+
+    @{ 
+        var chkstate = (Model.UserId != Model.CurrentUser.UserId) ? null : new { disabled = "disabled" }; 
+    }
+   
+    @if(Model.IsUserPermission  == true)
+    { 
+    <div id="userAccess" class="sub-tab-view" style="display:grid;">
+        <div class="section form">
+            <div class="row">
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col7 details-list">
+                    <h5>city areas</h5>
+                        <div class="chkbox-hlpr">
+                            @Html.CheckBoxListFor(m => m.CityAreas.PostedIds, m => m.CityAreas.List, e => e.Id, e => e.Name, m => m.CityAreas.Selected, Position.Vertical, h => chkstate)
+                           
+                        </div>
+                </div>
+                <div class="r-col4">&nbsp;</div>
+                <div class="row-end">&nbsp;</div>
+            </div>
+        </div>
+        <br/>
+        <div class="section form">
+            <div class="row">
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col7 details-list">
+                    <h5>product families</h5>
+                    <div class="chkbox-hlpr">
+                        @Html.CheckBoxListFor(m => m.ProductFamilies.PostedIds, m => m.ProductFamilies.List, e => e.Id, e => e.Name, m => m.ProductFamilies.Selected, Position.Vertical, h => chkstate)
+                    </div>
+                </div>
+                <div class="r-col4">&nbsp;</div>
+                <div class="row-end">&nbsp;</div>
+            </div>
+        </div>
+        <br/>
+        <div class="section form">
+            <div class="row">
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col7 details-list">
+                    <h5>brands</h5>
+                    <div class="chkbox-hlpr">
+                        @*@Html.CheckBoxListFor(m => m.Business.Brands.PostedIds, m => m.Business.Brands.List, e => e.Id, e => e.Name, m => m.Business.Brands.Selected, Position.Vertical, h => chkstate)*@
+                        @Html.CheckBoxListFor(m => m.Brands.PostedIds, m => m.Brands.List, e => e.Id, e => e.Name, m => m.Brands.Selected, Position.Vertical, h => chkstate)
+                    </div>
+                </div>
+                <div class="r-col4">&nbsp;</div>
+                <div class="row-end">&nbsp;</div>
+            </div>
+        </div>
+        <br/>
+        <div class="section form">
+            <div class="row">
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col7 details-list">
+                    <h5>apps and tools</h5>
+                    <div class="chkbox-hlpr">
+                        @*@Html.CheckBoxListFor(m => m.Business.Tools.PostedIds, m => m.Business.Tools.List, e => e.Id, e => e.Name, m => m.Business.Tools.Selected, Position.Vertical, h => chkstate)*@
+                        @Html.CheckBoxListFor( m => m.Tools.PostedIds, m => m.Tools.List, e => e.Id, e => e.Name, m => m.Tools.Selected, Position.Vertical, h => chkstate)
+                    </div>
+                </div>
+                <div class="r-col4">&nbsp;</div>
+                <div class="row-end">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+    }
+    
+    @if(Model.IsUserAccess == true)
+    {
+    <div id="userPermissions" class="sub-tab-view" style="display: grid;">
+            <div class="section form">
+                <div class="row">
+                    <h5>admin rights</h5>
+                    <div class="details-list">
+                        <div class="chkbox-hlpr" data-break-content-at-labels="Content Management" data-label-prefix="Rights">
+                            @Html.CheckBoxListFor(m => m.SystemAccesses.PostedIds, m => m.SystemAccesses.List, e => e.Id, e => e.Name, m => m.SystemAccesses.Selected, Position.Vertical, h => chkstate)
+                            
+                        </div>
+                    </div>
+                    <div class="row-end">&nbsp;</div>
+                </div>
+            </div>
+    </div>
+  }

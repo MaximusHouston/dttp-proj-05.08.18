@@ -1,0 +1,14 @@
+﻿@{
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+    Layout = null;
+    @Styles.Render("~/Content/css/pdf-base");
+}
+<div class="header-print injected">
+    <img src="@Server.MapPath("~/Images/daikin-logo-print.png")" />
+    @if (user.BusinessLogoUrl != null)
+    {
+        <img src="@(Server.MapPath(user.BusinessLogoUrl))" class="push-right" style="max-height: 50px;" />
+    }
+    <h2 class="single-line"><strong>@ResourceUI.CommissionAuthorizationRequest</strong></h2>
+</div>
+

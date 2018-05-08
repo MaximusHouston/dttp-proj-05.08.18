@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://goodmanmfg.com/GMC/WebService/DataQualityService" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:i0="http://goodmanmfg.com/GMC/WebService/DataQualityService/rest" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:i1="http://goodmanmfg.com/GMC/WebService/DataQualityService/wshttp" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="DataQualityService" targetNamespace="http://goodmanmfg.com/GMC/WebService/DataQualityService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:import namespace="http://goodmanmfg.com/GMC/WebService/DataQualityService/rest" location="http://wartest.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?wsdl=wsdl1" />
+  <wsdl:import namespace="http://goodmanmfg.com/GMC/WebService/DataQualityService/wshttp" location="http://wartest.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?wsdl=wsdl3" />
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://goodmanmfg.com/GMC/WebService/DataQualityService/Imports">
+      <xsd:import schemaLocation="http://wartest.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?xsd=xsd3" namespace="http://goodmanmfg.com/GMC/WebService/DataQualityService" />
+      <xsd:import schemaLocation="http://wartest.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?xsd=xsd0" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://wartest.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?xsd=xsd1" namespace="http://goodmanmfg.com/GMC/WebService/DataQualityService/Entities" />
+      <xsd:import schemaLocation="http://wartest.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?xsd=xsd2" namespace="http://goodmanmfg.com/GMC/WebService/Entities" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IDataQualityService_Execute_InputMessage">
+    <wsdl:part name="parameters" element="tns:Execute" />
+  </wsdl:message>
+  <wsdl:message name="IDataQualityService_Execute_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExecuteResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IDataQualityService">
+    <wsdl:operation name="Execute">
+      <wsdl:input wsaw:Action="http://goodmanmfg.com/GMC/WebService/DataQualityService/IDataQualityService/Execute" message="tns:IDataQualityService_Execute_InputMessage" />
+      <wsdl:output wsaw:Action="http://goodmanmfg.com/GMC/WebService/DataQualityService/IDataQualityService/ExecuteResponse" message="tns:IDataQualityService_Execute_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IDataQualityService" type="tns:IDataQualityService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Execute">
+      <soap:operation soapAction="http://goodmanmfg.com/GMC/WebService/DataQualityService/IDataQualityService/Execute" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DataQualityService">
+    <wsdl:port name="BasicHttpBinding_IDataQualityService" binding="tns:BasicHttpBinding_IDataQualityService">
+      <soap:address location="http://wartest.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc" />
+    </wsdl:port>
+    <wsdl:port name="WSHttpBinding_IDataQualityService" binding="i1:WSHttpBinding_IDataQualityService">
+      <soap12:address location="http://wartest.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc/wshttp" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>http://wartest.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc/wshttp</wsa10:Address>
+        <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
+          <Spn>host/WARIIS</Spn>
+        </Identity>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,8 @@
+﻿<kendo-dialog *ngIf="dialogOpen && recordState=='newRecord'" title="Add or Import Products" (close)="closeDialog()">
+    <p>Quote has been created. You can now add or import products to the quote, or close the window to view the new quote.</p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="browseProductsWithQuoteId()">Add Products</button>
+        <button kendoButton (click)="closeDialog()" primary="true" data-toggle="modal" data-target="#importProductsPopup">Import Products</button>
+        <button kendoButton (click)="closeDialog()" primary="true" data-toggle="modal" data-target="#selectProductsPopup">Select Products</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

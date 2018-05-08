@@ -1,0 +1,418 @@
+﻿.tbl {
+    width: 100%;
+    font-family: inherit;
+    margin-top: 0;
+}
+
+.tbl-opts {
+    position: relative;
+    top: 20px;
+    margin-top: -30px;
+    clear: both;
+}
+/* row of dropdowns etc.*/
+.tbl-selects {
+    background-color: #E5F2FA;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+}
+
+    .tbl-selects li {
+        display: inline-block;
+    }
+
+    .tbl-selects button {
+        vertical-align: middle;
+    }
+
+    .tbl-selects label {
+        display: inline-block;
+        margin: 0px 5px 0px 5px;
+        vertical-align: middle;
+        font-size: 0.9em;
+    }
+
+    .tbl-selects select, .tbl-selects input {
+        margin-right: 8px;
+        vertical-align: middle;
+        font-size: 0.9em;
+    }
+
+    .tbl-selects img {
+        top: 10px !important;
+        margin-right: 5px;
+    }
+
+    .tbl-selects input[type="datetime"] {
+        width: 90px;
+    }
+
+.tbl + .tbl {
+    margin-top: 45px;
+}
+
+.tbl thead tr th {
+    background-color: #007fcc;
+    color: #fff;
+    text-transform: uppercase;
+    border-width: 3px;
+    border-style: solid;
+    border-color: #007fcc;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    font-weight: normal;
+}
+
+    .tbl thead tr th small {
+        font-size: 10px;
+        text-transform: none;
+    }
+
+/* grey colour variant */
+.tbl.grey thead tr th {
+    background-color: #616771;
+    border-color: #616771;
+}
+
+.tbl thead tr th input[type="checkbox"],
+.tbl tbody tr td input[type="checkbox"] {
+    position: relative;
+    top: 4px;
+}
+
+.tbl thead tr th input[type="checkbox"] {
+    right: 2px;
+}
+
+.tbl thead tr {
+    height: 45px;
+}
+
+.tbl tbody tr {
+    height: 57px;
+    border-top: 1px solid #A6D7EF;
+    border-bottom: 1px solid #A6D7EF;
+}
+
+.tbl td.c-align, .tbl th.c-align {
+    text-align: center;
+}
+
+.tbl td.r-align, .tbl th.r-align {
+    text-align: right;
+}
+
+.tbl tr input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+}
+
+.tbl tr td select {
+    width: 150px;
+}
+
+.tbl tr td.select-cell {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.tbl tr td.blucell {
+    background-color: #DFF6FE;
+}
+
+.tbl td, .tbl th {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.tbl-holder {
+    width: 100%;
+    max-width: 100%;
+    padding-top: 30px;
+    min-height: 90px;
+}
+
+    .tbl-holder.scroll-x {
+        overflow: auto;
+    }
+
+/* deleted/disabled row style*/
+.tbl tbody tr.disabled-row td,
+/*.tbl tbody tr.disabled-row td > a{
+    background-color: #E5F2FA;
+    color: #808080;
+}*/
+.tbl tbody tr.lost-row td {
+    background-color: #E0E4E7;
+}
+
+.tbl tbody tr.won-row td {
+    background-color: #DFEED7;
+}
+
+.tbl tbody tr.transfered-row td {
+    background-color: #DFEED7;
+}
+
+/* invalid info cell style*/
+.tbl tbody td .invalid {
+    color: red;
+}
+
+.tbl tbody td.invalid {
+    background-color: #B20000;
+    color: red;
+}
+
+/*table cells - actions*/
+.tbl thead th.actions {
+    width: 43px;
+    min-width: 43px;
+}
+
+.tbl tbody td.actions, .tbl tbody td.actions.open {
+    -webkit-transition: .25s background-color ease;
+    -moz-transition: .25s background-color ease;
+    -o-transition: .25s background-color ease;
+    transition: .25s background-color ease;
+}
+
+.tbl tbody td.actions {
+    background-image: url(/Images/action-icon.png);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+    .tbl tbody td.actions:hover {
+        background-color: #E5F2FA;
+    }
+
+    .tbl tbody td.actions.open {
+        background-color: #1D9FD9;
+        background-image: url(/Images/action-icon-light.png);
+    }
+
+    .tbl tbody td.actions > div {
+        position: relative;
+        overflow: visible;
+    }
+
+        .tbl tbody td.actions > div ul {
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+            position: absolute;
+            top: -28px;
+            left: 32px;
+            background-image: url(/Images/lightboxmask.png);
+            z-index: 1;
+            max-width: 0px;
+            max-height: 0px;
+            overflow: hidden;
+            display: block;
+        }
+
+    .tbl tbody td.actions.open > div ul {
+        //min-height: 56px;
+        max-width: 1000px;
+        max-height: 1000px;
+        -webkit-transition: 1s max-width ease, 1s max-height ease;
+        -moz-transition: 1s max-width ease, 1s max-height ease;
+        -o-transition: 1s max-width ease, 1s max-height ease;
+        transition: 1s max-width ease, 1s max-height ease;
+    }
+
+.tbl tbody tr:nth-last-child(-n+3) td.actions > div ul {
+    top: auto;
+    bottom: -2.15em;
+}
+
+.tbl tbody td.actions > div ul li {
+    padding: 8px 14px 8px 6px;
+}
+
+    .tbl tbody td.actions > div ul li.second-col {
+        float: right;
+        margin-left: 110px;
+    }
+
+    .tbl tbody td.actions > div ul li a {
+        color: #fff;
+        text-decoration: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+    }
+
+/* table cells - alerts*/
+.tbl thead th.alerts {
+    width: 43px;
+}
+
+.tbl tbody td.alerts {
+    padding: 0;
+}
+
+    .tbl tbody td.alerts > div,
+    .tbl tbody td.tags > div {
+        position: relative;
+    }
+
+    .tbl tbody td.alerts .tooltip,
+    .tbl tbody td.tags .tooltip {
+        position: absolute;
+        background-image: url(/Images/lightboxmask.png);
+        color: #fff;
+        padding: 10px 20px;
+        display: none;
+        left: 50px;
+        top: 2px;
+        width: 170px;
+        max-width: 170px;
+        min-height: 40px;
+        white-space: normal;
+    }
+
+.tbl tbody td.tags:hover .tooltip {
+    display: block;
+}
+
+.tbl tbody td.tags .tooltip {
+    min-width: 335px;
+    text-align: center;
+    left: -140px;
+    top: auto;
+    bottom: 150%;
+    word-wrap: break-word;
+}
+
+    .tbl tbody td.tags .tooltip img {
+        position: absolute;
+        bottom: -9px;
+        left: 45%;
+    }
+
+.tbl tbody td.alerts > div {
+    cursor: pointer;
+}
+
+.tbl tbody td.alerts .tooltip img {
+    position: absolute;
+    top: 17px;
+    left: -9px;
+}
+
+.tbl tbody td.alerts.open .tooltip {
+    display: inline-block;
+}
+
+/* table cells - selections / selected states */
+.tbl th.selections, .tbl td.selections {
+    width: 30px;
+    padding-right: 10px;
+}
+
+.tbl tr.selected {
+    background-color: #E2F6FF;
+}
+
+/* table options bar */
+.tbl-filters {
+    float: right;
+    position: relative;
+}
+
+    .tbl-filters + .tbl-filters {
+        margin-right: 4px;
+    }
+
+    .tbl-filters ul {
+        position: absolute;
+        top: 37px;
+        right: 0px;
+        background-color: #fff;
+        border: 1px solid #B7B7B7;
+        width: auto;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        z-index: 8;
+    }
+
+        .tbl-filters ul li {
+            display: block;
+            white-space: nowrap;
+            vertical-align: middle;
+            padding: 5px 20px 5px 20px;
+        }
+
+            .tbl-filters ul li label {
+                display: inline-block;
+                margin-left: 10px;
+            }
+
+/* table sorting */
+.pager {
+    text-align: center;
+    padding-top: 10px;
+}
+
+.pager-page {
+    font-weight: bold;
+    text-decoration: none;
+    margin-left: 6px;
+    margin-right: 6px;
+}
+
+.pager-highlight {
+    color: #fff;
+    background-color: #007FCB;
+    padding: 3px 6px;
+}
+
+.tbl th[aria-sort]:after {
+    content: '▼';
+    padding-left: 8px;
+    opacity: 0.2;
+}
+
+.tbl th[aria-sort]:hover {
+    border-bottom: 3px solid #1F5D84;
+    cursor: pointer;
+}
+
+.tbl th[aria-sort="descending"], .tbl th[aria-sort="asending"] {
+    border-bottom: 3px solid #1F5D84;
+}
+
+    .tbl th[aria-sort="descending"]:after {
+        content: '▼';
+        opacity: 1;
+    }
+
+    .tbl th[aria-sort="asending"]:after {
+        content: '▲';
+        opacity: 1;
+    }
+
+/*strapline at top of table*/
+.tbl-strap {
+    padding-bottom: 10px;
+    overflow: hidden;
+}
+
+    .tbl-strap h6, .tbl-strap p {
+        padding: 0;
+        margin: 0 0 0 10px;
+    }
+
+table.wrap, table.wrap td {
+    white-space: normal;
+    word-break: break-all;
+}

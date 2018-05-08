@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewBag.Title = "Accessory";
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles", "~/Content/css/productlisting")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/numericstepperhelpers", "~/bundles/scripts/productpages")
+}
+
+@Html.Partial("ProductItemCount")
+@*@Html.Partial("ProductFamilyTabs", Model.ProductFamilyTabs)*@
+
+<ul class="breadcrumbs">
+    <li><a href="@Url.Action("ProductFamilies")">Products</a></li>
+    <li><a href="@Url.Action("Products")">Productfamilyname **TBD**</a></li>
+    <li><a href="@Url.Action("Product")">Productname / Productnumber **TBD**</a></li>
+    <li>Accessory Name **TBD**</li>
+</ul>
+
+<div id="divAddProducts" class="pull-right" style="margin-right:198px;margin-top:-15px;"></div>
+
+<div class="section t-flush">
+    <div class="item-strap">
+        <div class="itemname full">
+            <h1>accessory name</h1>
+        </div>
+        <div class="btn-bar">
+            <table class="search-bar">
+                <tr>
+                    <td>
+                        <div>
+                            <input type="text" value="**TBD**" name="Filter" placeholder="@ResourceUI.Search" />
+                            <button type="button" class="clear-search-btn" style="display:none;">X</button>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="search-btn" type="button"><img src="~/Images/search-btn-icon.png" /></button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="section t-flush">
+    <div class="row product-list">
+        <div class="r-col4">
+            @* accessory image column *@
+            <div class="product-image lrg pull-left">
+                <img src="/Images/example-product-large.png">
+            </div>
+            <div class="clearfix">&nbsp;</div>
+        </div>
+        <div class="r-col8">
+            @* accessory details column *@
+            <div class="row" style="border:none;">
+                <div class="product-ratings r-col7">
+                    <p class="as-lnk">Model No.:</p>
+                    <p>**TBD**</p>
+                    <p class="as-lnk">Description:</p>
+                    <p>**TBD**</p>
+                    <br />
+                </div>
+
+                <div class="product-qty-picker r-col5">
+                    <p class="c-align">Quantity</p>
+                    @Html.NumericStepperFor(0, new { @class = "c-align" })
+                    <div class="c-align">
+                        <button class="submit-btn h-slim" type="button">Add</button>
+                    </div>
+                </div>
+               
+            </div>
+            <div class="row-end">&nbsp;</div>
+            <div class="row" style="border:none;">
+                @* tech specs *@
+                <table class="tbl grey"><thead><tr><th colspan="2">Technical Specifications</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td>**TBD**</td>
+                                <td>**TBD**</td>
+                            </tr>
+                            <tr>
+                                <td>**TBD**</td>
+                                <td>**TBD**</td>
+                            </tr>
+                            <tr>
+                                <td>**TBD**</td>
+                                <td>**TBD**</td>
+                            </tr>
+                            <tr>
+                                <td>**TBD**</td>
+                                <td>**TBD**</td>
+                            </tr>
+                            <tr>
+                                <td>**TBD**</td>
+                                <td>**TBD**</td>
+                            </tr>
+                        </tbody>
+                </table>
+                <div class="row-end">&nbsp;</div>
+            </div>
+        </div>
+        <div class="row-end">&nbsp;</div>
+    </div>
+</div>
+

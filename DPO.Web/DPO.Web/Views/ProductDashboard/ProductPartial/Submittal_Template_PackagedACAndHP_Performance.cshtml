@@ -1,0 +1,130 @@
+﻿
+@model ProductModel
+@{
+    var specs = Model.Specifications;
+}
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Product Model No.</span>
+    <span class="pull-right">@Model.ProductNumber</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Product Model Name:</span>
+    <span class="pull-right">@Model.Name</span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Rated Cooling Conditions:</span>
+    <span class="pull-right">
+        Indoor (&deg;F DB/WB): @specs.GetDecimal("RatedCoolingConditionRoomDB", "N0") / @specs.GetDecimal("RatedCoolingConditionRoomWB", "N0")
+        <br />
+        Ambient (&deg;F DB/WB): @specs.GetDecimal("RatedCoolingConditionAmbientDB", "N0") / @specs.GetDecimal("RatedCoolingConditionAmbientWB", "N0")
+    </span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Rated Heating Conditions:</span>
+    <span class="pull-right">
+        Indoor (&deg;F DB/WB): @specs.GetDecimal("RatedHeatingConditionRoomDB", "N0") / @specs.GetDecimal("RatedHeatingConditionRoomWB", "N0")
+        <br />
+        Ambient (&deg;F DB/WB): @specs.GetDecimal("RatedHeatingConditionAmbientDB", "N0") / @specs.GetDecimal("RatedHeatingConditionAmbientWB", "N0")
+    </span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Rated Cooling Capacity (Btu/hr):</span>
+    <span class="pull-right">@specs.GetDecimal("CoolingCapacityRated", "N0")</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Motor Type:</span>
+    <span class="pull-right">@specs.GetString("MotorSpeedType")</span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Cooling Capacity (Sensible) (Btu/hr):</span>
+    <span class="pull-right">@specs.GetDecimal("CoolingCapacitySensible", "N0")</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Blower Speed (RPM):</span>
+    <span class="pull-right">@specs.GetDecimal("BlowerMotorRPM", "N0")</span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Cooling Capacity (Nominal) (Btu/hr):</span>
+    <span class="pull-right">@specs.GetDecimal("CoolingCapacityNominal", "N0")</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Blower Input Power (kW):</span>
+    <span class="pull-right">@specs.GetDecimal("BlowerInputPower", "N2")</span>
+</div>
+
+
+
+@if (specs.GetString("ProductClassPIM") == "Package HP" || specs.GetString("ProductClassPIM") == "Packaged Heat Pump")
+{
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        @if (specs.GetDecimal("EERDucted", "N2") != null)
+        {
+            <span class="pull-left">EER:</span>
+            <span class="pull-right">@specs.GetDecimal("EERDucted", "N2")</span>
+        }
+        else
+        {
+            <span class="pull-left">EER:</span>
+            <span class="pull-right"></span>
+        }
+    </div>
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        <span class="pull-left">Heating COP:</span>
+        <span class="pull-right">@specs.GetDecimal("COP47Ducted", "N1")</span>
+    </div>
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        @if (specs.GetDecimal("SEERDucted", "N2") != null)
+        {
+            <span class="pull-left">SEER:</span>
+            <span class="pull-right">@specs.GetDecimal("SEERDucted", "N2")</span>
+        }
+        else
+        {
+            <span class="pull-left">SEER:</span>
+            <span class="pull-right"></span>
+        }
+    </div>
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        <span class="pull-left">HSPF:</span>
+        <span class="pull-right">@specs.GetDecimal("HSPFDucted", "N1")</span>
+    </div>
+
+}
+else
+{
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        @if (specs.GetDecimal("EERDucted", "N2") != null)
+        {
+            <span class="pull-left">EER:</span>
+            <span class="pull-right">@specs.GetDecimal("EERDucted", "N2")</span>
+        }
+        else
+        {
+            <span class="pull-left">EER:</span>
+            <span class="pull-right"></span>
+        }
+    </div>
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        @if (specs.GetDecimal("SEERDucted", "N2") != null)
+        {
+            <span class="pull-left">SEER:</span>
+                <span class="pull-right">@specs.GetDecimal("SEERDucted", "N2")</span>
+        }
+        else
+        {
+            <span class="pull-left">SEER:</span>
+                <span class="pull-right"></span>
+        }
+    </div>
+
+}
+
+

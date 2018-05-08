@@ -1,0 +1,34 @@
+﻿<kendo-grid *ngIf="quoteItems" #grid id="quoteCommissionRequestsGrid" [data]="commissionRequests">
+    <kendo-grid-column media="(max-width: 450px)" title="Commission Requests">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <dl>
+                <dt>Reference</dt>
+                <dd>{{ dataItem.commissionRequestId }}</dd>
+                <dt>Request Date</dt>
+                <dd>{{ dataItem.requestedOn | date :'shortDate' }}</dd>
+                <dt>Request Status</dt>
+                <dd>{{ dataItem.commissionRequestStatusTypeDescription }}</dd>
+            </dl>
+        </ng-template>
+    </kendo-grid-column>
+
+
+
+    <kendo-grid-column media="(min-width: 450px)" field="commissionRequestId" title="Reference">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <a href="/ProjectDashboard/CommissionRequest?CommissionRequestId={{dataItem.commissionRequestId}}" style="color:#00A1E4; text-decoration:underline;">{{dataItem.commissionRequestId}}</a>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" field="requestedOn" title="Request Date">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            {{dataItem.requestedOn | date :'shortDate'}}
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" field="commissionRequestStatusTypeDescription" title="Request Status">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <span *ngIf="dataItem.commissionRequestStatusTypeId == enums.CommissionRequestStatusTypeEnum.Approved" style="color:#5dad70">{{dataItem.commissionRequestStatusTypeDescription}}</span>
+            <span *ngIf="dataItem.commissionRequestStatusTypeId != enums.CommissionRequestStatusTypeEnum.Approved">{{dataItem.commissionRequestStatusTypeDescription}}</span>
+        </ng-template>
+    </kendo-grid-column>
+
+</kendo-grid>

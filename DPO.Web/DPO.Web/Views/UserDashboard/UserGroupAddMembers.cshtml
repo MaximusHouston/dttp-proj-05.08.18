@@ -1,0 +1,20 @@
+﻿<div class="modal" id="add_members_modal" style="display: none;">
+    <div style="width: 66%; height: 625px; margin-top: 50px;">
+
+        <div style="padding-bottom: 5px">
+            <img src="~/Images/modal-close-btn.png" class="close-btn" />
+            <h1 id="addMembersTitle"></h1>
+            @Html.Partial("_SearchBarPartial")
+            <h4 id="addMembersTableTitle" style="padding-bottom: 5px;">Unallocated Users</h4>
+        </div>
+
+        <div id="AddMembersToGroupList" style="overflow: auto; height: 365px;">
+            @* populated by POST *@
+        </div>
+
+        <div class="section action c-align">
+            <button type="button" class="btn cancel-btn">Cancel</button>
+            <button type="button" class="submit-btn" id="addMembersSubmitBtn">Add</button>
+        </div>
+    </div>
+</div>

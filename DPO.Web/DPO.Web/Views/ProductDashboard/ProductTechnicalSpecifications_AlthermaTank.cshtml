@@ -1,0 +1,173 @@
+﻿@model ProductModel
+@{
+    var specs = Model.Specifications;
+}
+    <tr>
+        <td>
+            Backup Heater:
+        </td>
+        <td>@specs.GetDecimal("BackupHeater", "N2")</td>
+        <td>
+            Cooling Operation Range StdMax
+        </td>
+        <td>@specs.GetDecimal("CoolingOperationRangeStdMax", "N2")</td>
+    </tr>
+   
+    <tr>
+        <td>
+            Cooling Operation Range StdMin:
+        </td>
+        <td>@specs.GetDecimal("CoolingOperationRangeStdMin", "N2")</td>
+        <td>
+            Dimensions - Depth:
+        </td>
+        <td>@specs.GetString("DimensionsUnitDepth")</td>
+    </tr>
+  
+    <tr>
+    <td>
+        Dimensions - Height:
+    </td>
+    <td>@specs.GetString("DimensionsUnitHeight")</td>
+    <td>
+        Dimensions - Width
+    </td>
+    <td>@specs.GetString("DimensionsUnitWidth")</td>
+</tr>
+
+    <tr>
+        <td>
+            Fuse Size:
+        </td>
+        <td>@specs.GetDecimal("FuseSize", "N2")</td>
+        <td>
+            Heating Capacity Rated:
+        </td>
+        <td>@specs.GetDecimal("HeatingCapacityRated", "N2")</td>
+    </tr>
+   
+    <tr>
+        <td>
+            Heating Operation Range StdMax
+        </td>
+        <td>@specs.GetDecimal("HeatingOperationRangeStdMax", "N2")</td>
+        <td>
+            Heating Operation Range StdMin:
+        </td>
+        <td>@specs.GetDecimal("HeatingOperationRangeStdMin", "N2")</td>
+    </tr>
+    
+    <tr>
+        <td>
+            InERP
+        </td>
+        <td>@specs.GetString("InERP")</td>
+        <td>
+            Inter Connecting Wires:
+        </td>
+        <td>@specs.GetString("InterConnectingWires")</td>
+    </tr>
+   
+   <tr>
+    <td>
+        Max Water Pressure:
+    </td>
+    <td>@specs.GetDecimal("WaterPressureMax", "N2")</td>
+    <td>
+        Max Water Pressure Drop:
+    </td>
+    <td>@specs.GetDecimal("WaterPressureDropMax", "N2")</td>
+
+</tr>
+
+    <tr>
+        <td>
+            Pipe Size - Gas:
+        </td>
+        <td>@specs.GetString("PipeSizeGas")</td>
+        <td>
+            PipeSize - Liquid:
+        </td>
+        <td>@specs.GetString("PipeSizeLiquid")</td>
+    </tr>
+    
+    <tr>
+        <td>
+            Power Frequency:
+        </td>
+        <td>@specs.GetDecimal("PowerFrequency", "N2")</td>
+        <td>
+            Power Phase:
+        </td>
+        <td>@specs.GetDecimal("PowerPhase", "N2")</td>
+    </tr>
+ 
+    <tr>
+        <td>
+            Power Voltage:
+        </td>
+        <td>@specs.GetString("PowerVoltage")</td>
+        @*<td>
+            Product Class Name
+        </td>
+        <td>@specs.GetString("ProductClassName")</td>*@
+    </tr>
+    
+    <tr>
+        <td>
+            Rated Heating Condition AmbientDB:
+        </td>
+        <td>@specs.GetDecimal("RatedHeatingConditionAmbientDB", "N2")</td>
+        <td>
+            Rated Heating Condition AmbientWB:
+        </td>
+        <td>@specs.GetDecimal("RatedHeatingConditionAmbientWB", "N2")</td>
+    </tr>
+   
+    <tr>
+        <td>
+            Refrigerant Type
+        </td>
+        <td>@specs.GetString("RefrigerantType")</td>
+        @*<td>
+            Short Name
+        </td>
+        <td>@specs.GetString("ShortName")</td>*@
+    </tr>
+    
+    <tr>
+        <td>
+            Sound Pressure - High
+        </td>
+        <td>@(specs.GetDecimal("SoundPressureHighCooling", "N2") != null ? specs.GetDecimal("SoundPressureHighCooling", "N2"): specs.GetDecimal("SoundPressureHighHeating", "N2"))</td>
+        <td>
+            Water Flow Range - Max
+        </td>
+        <td>@specs.GetDecimal("WaterFlowRangeMax", "N2")</td>
+    </tr>
+    <tr>
+        <td>
+            Water Flow Range - Min
+        </td>
+        <td>@specs.GetDecimal("WaterFlowRangeMin", "N2")</td>
+        <td>
+            Water Inlet Connection
+        </td>
+        <td>@specs.GetString("WaterInletConnection")</td>
+    </tr>
+   
+    <tr>
+       
+        <td>
+            Water Outlet Connection
+        </td>
+        <td>@specs.GetString("WaterOutletConnection")</td>
+        <td>
+            Weight - Net
+        </td>
+        <td>
+            @specs.GetString("WeightUnit")
+        </td>
+
+    </tr>
+ 

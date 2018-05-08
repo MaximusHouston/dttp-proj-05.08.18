@@ -1,0 +1,58 @@
+﻿<div class="row row-nomargin product-details" style="padding:10px;">
+    <div class="col col-md-2 product-image no-padding" style="background-color:none">
+        <product-image [product]="product"></product-image>
+    </div>
+
+    <div class="product-info" [ngClass]="{'col col-md-8' : quoteId != 0 && quoteId != undefined, 'col col-md-10' : quoteId == 0 || quoteId == undefined}" style="background-color:none">
+        <div>
+            <span class="as-lnk">Model No.: </span> <span class="pull-right"> {{product.productNumber}}</span>
+        </div>
+        <div>
+            <span class="as-lnk">Model Type.: </span> <span class="pull-right"> {{product.productModelTypeDescription}}</span>
+        </div>
+        <div *ngIf="showPrices" >
+            <span class="as-lnk">Price: </span> <span class="pull-right"> {{product.price | currency:'USD':true:'1.2-2'}}</span>
+        </div>
+        <div>
+            <span class="as-lnk">Rated Cooling Capacity: </span> <span class="pull-right"> {{product.coolingCapacityRated}}</span>
+        </div>
+        <div>
+            <span class="as-lnk">Rated Heating Capacity: </span> <span class="pull-right"> {{product.heatingCapacityRated}}</span>
+        </div>
+
+        <product-spec-bars [product]="product"></product-spec-bars>
+    </div>
+
+
+
+    <div *ngIf="quoteId != 0 && quoteId != undefined" class="col col-md-2 product-qty no-padding" style="text-align:center">
+        <product-quantity-add [product]="product"></product-quantity-add>
+    </div>
+
+    <!--<div class="product-info" [ngClass]="{'col col-md-8' : userBasket.quoteId != 0 && userBasket.quoteId != undefined, 'col col-md-10' : userBasket.quoteId == 0 || userBasket.quoteId == undefined}" style="background-color:none">
+        <div>
+            <span class="as-lnk">Model No.: </span> <span class="pull-right"> {{product.productNumber}}</span>
+        </div>
+        <div>
+            <span class="as-lnk">Model Type.: </span> <span class="pull-right"> {{product.productModelTypeDescription}}</span>
+        </div>
+        <div *ngIf="userSvc.currentUser.showPrices">
+            <span class="as-lnk">Price: </span> <span class="pull-right"> {{product.price | currency:'USD':true:'1.2-2'}}</span>
+        </div>
+        <div>
+            <span class="as-lnk">Rated Cooling Capacity: </span> <span class="pull-right"> {{product.coolingCapacityRated}}</span>
+        </div>
+        <div>
+            <span class="as-lnk">Rated Heating Capacity: </span> <span class="pull-right"> {{product.heatingCapacityRated}}</span>
+        </div>
+               
+        <product-spec-bars [product]="product"></product-spec-bars>
+    </div>
+
+
+
+    <div *ngIf="userBasket.quoteId != 0 && userBasket.quoteId != undefined" class="col col-md-2 product-qty no-padding" style="text-align:center">
+        <product-quantity-add [product]="product"></product-quantity-add>
+    </div>-->
+
+</div>

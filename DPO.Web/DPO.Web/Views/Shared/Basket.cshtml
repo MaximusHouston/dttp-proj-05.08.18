@@ -1,0 +1,47 @@
+﻿@model UserBasketModel
+
+@{
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+
+@if (!user.HasAccess(SystemAccessEnum.ViewProject))
+{
+    return;
+}
+
+@if (Model.QuoteId == 0)
+{
+    <div class="product-cart">
+        <div>
+            <span>You are currently browsing products,</span>
+            @*<a href="@Url.Action("Projects","Projectdashboard")">choose a quote within a project</a>*@
+            <a href="/v2/#/projects">choose a quote within a project</a>
+            <span>to begin adding products.</span>
+        </div>
+    </div>
+}
+else
+{
+    string amountOfItemsWord = (Model.QuoteItemCount != 1) ? "items" : "item";
+    
+    <form class="product-cart" id="quoteBasket">
+        <input type="hidden" id="ActiveQuoteId" name="QuoteId" value="@Model.QuoteId"/>
+        <div style="height:75px;">
+            <span class="pull-right" >
+                <a class="context-btn submit" href="@Url.Action("QuoteItems", "Projectdashboard", new { QuoteId = Model.QuoteId, ProjectId = Model.ProjectId })">Back to Quote</a>
+
+            </span>
+
+            <img src="/Images/quote-icon.png" class="pull-left"/>
+           
+            <div style="padding: 0; margin-right: 260px; margin-left: 30px;">
+                <a class="quote-name" href="@Url.Action("QuoteItems", "Projectdashboard", new { QuoteId = Model.QuoteId, ProjectId = Model.ProjectId })">@Model.Description</a>
+                <span style="display:block; margin-top: -2px;">@Model.QuoteItemCount @amountOfItemsWord in active quote</span>
+            </div>
+            <div class="clearfix">&nbsp;</div>
+            <div id="divAddProducts" class="pull-right" style="margin-right:198px;margin-top:-15px;"></div>
+        </div>
+    </form>
+}
+
+

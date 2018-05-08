@@ -1,0 +1,73 @@
+﻿@model CityCMSBillboardModel
+@{
+    ViewBag.Title = "Daikin City Content Management";
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/confirmmodal")
+}
+
+@Html.Partial("_CityCMSTabsPartial")
+
+<ul class="breadcrumbs">
+    <li><a href="/Userdashboard/users">Management</a></li>
+    <li><a href="@Url.Action("Index","CityCMS")">Daikin City CMS</a></li>
+    <li>Billboard Posters</li>
+</ul>
+
+<div class="section b-flush t-flush">
+    <div class="item-strap btm-bdr">
+        <div class="itemname">
+            <h1>Billboard Posters</h1>
+        </div>
+        <div class="btn-bar">
+            <a href="@Url.Action("BillboardPosterEdit", "CityCMS")" class="submit-btn h-slim">
+                <img src="/Images/new-project-icon.png">
+                Add New Poster
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+
+    <div class="tbl-holder scroll-x">
+        <table class="tbl">
+            <thead>
+                <tr>
+                    <th class="actions" style="min-width: 43px;">&nbsp;</th>
+                    <th>url</th>
+                    <th>image</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.poster)
+                {
+                    <tr>
+                        <td class="actions">
+                            <div>
+                                <ul>
+                                    <li>
+                                        <a href="@Url.Action("BillboardPosterEdit", "CityCMS")">Edit Poster</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td>@item.url</td>
+                        <td>@item.image</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+
+
+

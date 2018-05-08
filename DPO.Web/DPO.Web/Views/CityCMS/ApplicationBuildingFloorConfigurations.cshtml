@@ -1,0 +1,104 @@
+﻿@model BuildingFloorEditModel
+@using (Html.BeginForm("ApplicationBuildingFloor", "CityCMS", FormMethod.Post, new { @id = "ConfigurationsForm" }))
+{
+<div class="r-col3" style="max-width: 230px;">
+    <h4>Configurations</h4>
+    @for (var i = 0; i < Model.configurations.configuration.Count; i++)
+    {
+        if (i == 0)
+        {
+            <label class="radio-label"><input type="radio" name="configurations_list" value="@Model.configurations.configuration[i].id" checked /> @Model.configurations.configuration[i].name</label>
+        }
+        else
+        {
+            <label class="radio-label"><input type="radio" name="configurations_list" value="@Model.configurations.configuration[i].id" /> @Model.configurations.configuration[i].name</label>
+        }
+        <br />
+        <br />
+    }
+</div>
+<div class="r-col9" style="padding-left: 30px;">
+
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.id)
+    @Html.HiddenFor(m => m.buildingId)
+    @Html.HiddenFor(m => m.buildingName)
+
+        @for (var k = 0; k < Model.configurations.configuration.Count; k++)
+        {
+            <div data-configid="@Model.configurations.configuration[k].id" style=@((k == 0) ? "display:block;" : "display:none;")>
+
+                <h4>Configuration Details</h4>
+
+                @Html.HiddenFor(m => m.configurations.configuration[k].id)
+                @Html.HiddenFor(m => m.configurations.configuration[k].floorId)
+
+                <div class="float-left details-list" style="width: 45%; margin-right: 40px;">
+                    <label>Configuration Title</label>
+                    @Html.TextBoxFor(m => m.configurations.configuration[k].name, new { @class = "full" })
+                    <br />
+                    <label>System Name</label>
+                    @Html.TextBoxFor(m => m.configurations.configuration[k].systemName, new { @class = "full" })
+                    <br />
+                    <label>System Type</label>
+                    @Html.TextBoxFor(m => m.configurations.configuration[k].systemType, new { @class = "full" })
+                </div>
+                <div class="float-left details-list" style="width: 45%;">
+                    <label>System Size</label>
+                    @Html.TextBoxFor(m => m.configurations.configuration[k].systemSize, new { @class = "full" })
+                    <br />
+                    <label>System Energy Rating</label>
+                    @Html.TextBoxFor(m => m.configurations.configuration[k].energy, new { @class = "full" })
+                </div>
+                <br class="clearfix"/>
+                <br/>
+                <br/>
+                <div class="float-left details-list" style="width: 45%; margin-right: 40px;">
+                    <label>Product Image</label>
+                    <br />
+                    <img style="max-width: 100%; background-color: #fff;" src="@Model.configurations.configuration[k].systemImage" />
+                    <br/>
+                    <a href="@Url.Action("ApplicationBuildingFloorConfigurationImageEdit", new { systemImage = Model.configurations.configuration[k].systemImage, id = Model.configurations.configuration[k].id, floorId = Model.configurations.configuration[k].floorId })" class="context-btn submit c-align" style="width: 100%;">Upload new Product Image</a>
+                </div>
+                <div class="float-left details-list" style="width: 45%;">
+                    <label>Overlay Image</label>
+                    <br />
+                    <img style="max-width: 100%; background-color: #fff;" src="@Model.configurations.configuration[k].overlayImage" />
+                    <br/>
+                    <a href="@Url.Action("ApplicationBuildingFloorConfigurationImageEdit", new { overlayImage = Model.configurations.configuration[k].overlayImage, id = Model.configurations.configuration[k].id, floorId = Model.configurations.configuration[k].floorId })" class="context-btn submit c-align" style="width: 100%;">Upload new Overlay Image</a>
+                </div>
+                <br class="clearfix" />
+                <br />
+                <br />
+                @if (k > 0)
+                {
+                    <div>
+                        <br/>
+                        <h4 style="padding-bottom: 5px;">Advanced Configuration Options</h4>
+                        @if (Model.configurations.configuration[k].indoorUnits != null)
+                        {
+                            <a href="@Url.Action("ApplicationBuildingFloorConfigurationIndoorUnits", "CityCMS", new { configid = Model.configurations.configuration[k].id, buildingid = Model.buildingId, floorid = Model.id })" class="context-btn">Edit Indoor Units in Configuration</a>
+                            <br/>
+                        }
+
+                            <a href="@Url.Action("ApplicationBuildingFloorConfigurationProducts", "CityCMS", new { configid = Model.configurations.configuration[k].id, buildingid = Model.buildingId, floorid = Model.id })" class="context-btn">Edit Products in Decision Tree</a>
+                            <br/>
+                    </div>
+                }
+               
+            </div>
+       }
+        <br/>
+
+</div>
+<div class="row-end">&nbsp;</div>
+
+}
+<script>
+    $(function () {
+        $('input[name="configurations_list"]').on('change', function () {
+            $('#configurations_view [data-configid]').hide();
+            $('#configurations_view [data-configid="' + $(this).val() + '"]').show();
+        });
+    });
+</script>

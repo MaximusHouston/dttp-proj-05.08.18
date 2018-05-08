@@ -1,0 +1,23 @@
+﻿<div>
+    <div class="sub-product-img-container" style="width:150px; height:135px;" >
+        <span *ngIf="images.length == 0">
+            <!--<img width="135" height="100" src="/Images/NoImage.png" class="sub-product-img"/>-->
+            <img src="/Images/NoImage.png" class="sub-product-img no-image" style="width:145px; height:110px;" />
+        </span>
+        <span *ngIf="images.length > 0">
+            <span *ngFor="let image of images ; let idx = index">
+                <!--<img id="img-{{product.productNumber}}-{{idx}}" width="135" height="100" src="{{image.url}}" class="sub-product-img" [ngClass]="{hidden : idx > 0}" />-->
+                <img id="img-{{product.productNumber}}-{{idx}}" src="{{image.url}}" class="sub-product-img" style="width:145px; height:110px;" [ngClass]="{hidden : idx > 0}" />
+            </span>
+        </span>
+        
+        <div *ngIf="images.length > 1" style="text-align:center">
+            <span *ngFor="let image of images ; let idx = index">
+                <button id="img-btn-{{product.productNumber}}-{{idx}}" class="product-img-btn" [ngClass]="{active : idx == 0}"></button>
+            </span>
+        </div>
+
+    </div>
+</div>
+
+<!--[ngStyle]="{'display': idx > 0 ? 'none': 'block'}"-->

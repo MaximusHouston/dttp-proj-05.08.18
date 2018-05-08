@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="CrmService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="BasicHttpBinding_ICrmService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false" />
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="https://crmtestisv.goodmanmfg.com/Services/DPOServices/CrmService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="https://crmtestisv.goodmanmfg.com/Services/DPOServices/CrmService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="https://crmtestisv.goodmanmfg.com/Services/DPOServices/CrmService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Messages" />
+      <xsd:import schemaLocation="https://crmtestisv.goodmanmfg.com/Services/DPOServices/CrmService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Gmc.Crm.ProjectOffice.Services.Entities" />
+      <xsd:import schemaLocation="https://crmtestisv.goodmanmfg.com/Services/DPOServices/CrmService.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ICrmService_VerifyAccount_InputMessage">
+    <wsdl:part name="parameters" element="tns:VerifyAccount" />
+  </wsdl:message>
+  <wsdl:message name="ICrmService_VerifyAccount_OutputMessage">
+    <wsdl:part name="parameters" element="tns:VerifyAccountResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICrmService_RetrieveProducts_InputMessage">
+    <wsdl:part name="parameters" element="tns:RetrieveProducts" />
+  </wsdl:message>
+  <wsdl:message name="ICrmService_RetrieveProducts_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RetrieveProductsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICrmService_RetrieveGroups_InputMessage">
+    <wsdl:part name="parameters" element="tns:RetrieveGroups" />
+  </wsdl:message>
+  <wsdl:message name="ICrmService_RetrieveGroups_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RetrieveGroupsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICrmService_RetrieveAccounts_InputMessage">
+    <wsdl:part name="parameters" element="tns:RetrieveAccounts" />
+  </wsdl:message>
+  <wsdl:message name="ICrmService_RetrieveAccounts_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RetrieveAccountsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICrmService_RetrieveAccountMultipliers_InputMessage">
+    <wsdl:part name="parameters" element="tns:RetrieveAccountMultipliers" />
+  </wsdl:message>
+  <wsdl:message name="ICrmService_RetrieveAccountMultipliers_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RetrieveAccountMultipliersResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICrmService_RetrieveSystemComponents_InputMessage">
+    <wsdl:part name="parameters" element="tns:RetrieveSystemComponents" />
+  </wsdl:message>
+  <wsdl:message name="ICrmService_RetrieveSystemComponents_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RetrieveSystemComponentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICrmService_RetrieveSalesLiterature_InputMessage">
+    <wsdl:part name="parameters" element="tns:RetrieveSalesLiterature" />
+  </wsdl:message>
+  <wsdl:message name="ICrmService_RetrieveSalesLiterature_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RetrieveSalesLiteratureResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICrmService_RetrieveProductSalesLiterature_InputMessage">
+    <wsdl:part name="parameters" element="tns:RetrieveProductSalesLiterature" />
+  </wsdl:message>
+  <wsdl:message name="ICrmService_RetrieveProductSalesLiterature_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RetrieveProductSalesLiteratureResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICrmService_RetrieveInternalUsers_InputMessage">
+    <wsdl:part name="parameters" element="tns:RetrieveInternalUsers" />
+  </wsdl:message>
+  <wsdl:message name="ICrmService_RetrieveInternalUsers_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RetrieveInternalUsersResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICrmService_RetrieveProductNotes_InputMessage">
+    <wsdl:part name="parameters" element="tns:RetrieveProductNotes" />
+  </wsdl:message>
+  <wsdl:message name="ICrmService_RetrieveProductNotes_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RetrieveProductNotesResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICrmService_RetrieveOptions_InputMessage">
+    <wsdl:part name="parameters" element="tns:RetrieveOptions" />
+  </wsdl:message>
+  <wsdl:message name="ICrmService_RetrieveOptions_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RetrieveOptionsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ICrmService">
+    <wsdl:operation name="VerifyAccount">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICrmService/VerifyAccount" message="tns:ICrmService_VerifyAccount_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICrmService/VerifyAccountResponse" message="tns:ICrmService_VerifyAccount_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveProducts">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICrmService/RetrieveProducts" message="tns:ICrmService_RetrieveProducts_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICrmService/RetrieveProductsResponse" message="tns:ICrmService_RetrieveProducts_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveGroups">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICrmService/RetrieveGroups" message="tns:ICrmService_RetrieveGroups_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICrmService/RetrieveGroupsResponse" message="tns:ICrmService_RetrieveGroups_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveAccounts">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICrmService/RetrieveAccounts" message="tns:ICrmService_RetrieveAccounts_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICrmService/RetrieveAccountsResponse" message="tns:ICrmService_RetrieveAccounts_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveAccountMultipliers">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICrmService/RetrieveAccountMultipliers" message="tns:ICrmService_RetrieveAccountMultipliers_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICrmService/RetrieveAccountMultipliersResponse" message="tns:ICrmService_RetrieveAccountMultipliers_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveSystemComponents">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICrmService/RetrieveSystemComponents" message="tns:ICrmService_RetrieveSystemComponents_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICrmService/RetrieveSystemComponentsResponse" message="tns:ICrmService_RetrieveSystemComponents_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveSalesLiterature">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICrmService/RetrieveSalesLiterature" message="tns:ICrmService_RetrieveSalesLiterature_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICrmService/RetrieveSalesLiteratureResponse" message="tns:ICrmService_RetrieveSalesLiterature_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveProductSalesLiterature">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICrmService/RetrieveProductSalesLiterature" message="tns:ICrmService_RetrieveProductSalesLiterature_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICrmService/RetrieveProductSalesLiteratureResponse" message="tns:ICrmService_RetrieveProductSalesLiterature_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveInternalUsers">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICrmService/RetrieveInternalUsers" message="tns:ICrmService_RetrieveInternalUsers_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICrmService/RetrieveInternalUsersResponse" message="tns:ICrmService_RetrieveInternalUsers_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveProductNotes">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICrmService/RetrieveProductNotes" message="tns:ICrmService_RetrieveProductNotes_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICrmService/RetrieveProductNotesResponse" message="tns:ICrmService_RetrieveProductNotes_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveOptions">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICrmService/RetrieveOptions" message="tns:ICrmService_RetrieveOptions_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICrmService/RetrieveOptionsResponse" message="tns:ICrmService_RetrieveOptions_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_ICrmService" type="tns:ICrmService">
+    <wsp:PolicyReference URI="#BasicHttpBinding_ICrmService_policy" />
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="VerifyAccount">
+      <soap:operation soapAction="http://tempuri.org/ICrmService/VerifyAccount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveProducts">
+      <soap:operation soapAction="http://tempuri.org/ICrmService/RetrieveProducts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveGroups">
+      <soap:operation soapAction="http://tempuri.org/ICrmService/RetrieveGroups" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveAccounts">
+      <soap:operation soapAction="http://tempuri.org/ICrmService/RetrieveAccounts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveAccountMultipliers">
+      <soap:operation soapAction="http://tempuri.org/ICrmService/RetrieveAccountMultipliers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveSystemComponents">
+      <soap:operation soapAction="http://tempuri.org/ICrmService/RetrieveSystemComponents" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveSalesLiterature">
+      <soap:operation soapAction="http://tempuri.org/ICrmService/RetrieveSalesLiterature" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveProductSalesLiterature">
+      <soap:operation soapAction="http://tempuri.org/ICrmService/RetrieveProductSalesLiterature" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveInternalUsers">
+      <soap:operation soapAction="http://tempuri.org/ICrmService/RetrieveInternalUsers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveProductNotes">
+      <soap:operation soapAction="http://tempuri.org/ICrmService/RetrieveProductNotes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveOptions">
+      <soap:operation soapAction="http://tempuri.org/ICrmService/RetrieveOptions" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CrmService">
+    <wsdl:port name="BasicHttpBinding_ICrmService" binding="tns:BasicHttpBinding_ICrmService">
+      <soap:address location="https://crmtestisv.goodmanmfg.com/Services/DPOServices/CrmService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,215 @@
+﻿<div style="margin-bottom:50px;">
+    <h1 *ngIf="product">{{product.name}}</h1>
+
+    <div class="scrollmenu" id="productDetailsTabs">
+        <ul class="sub-tab-bar">
+            <li id="product-overview" class="active"> <a> OVERVIEW </a> </li>
+            <li id="product-accessories"> <a> RELATED ACCESSORIES </a> </li>
+            <li id="product-specs"> <a> TECHNICAL SPECIFICATIONS </a> </li>
+        </ul>
+
+    </div>
+
+    <!--Overview Tab-->
+    <div id="productOverviewTab" *ngIf="product" class="sub-tab-view">
+        <product-overview [product]="product" [userBasket]="userBasket" [currentUser]="currentUser"></product-overview>
+    </div>
+
+    <!--Related Accessories / Parent Products Tab-->
+    <div id="productRelatedAccessoriesTab" *ngIf="product" class="sub-tab-view accessory-list-view" style="display:none;">
+        <!--General Product-->
+        <div *ngIf="!product.isSystem && product.productModelTypeId != enums.ProductModelTypeEnum.Accessory">
+            <product-accessories [product]="product" [userBasket]="userBasket" [currentUser]="currentUser"></product-accessories>
+        </div>
+        <!--System Product-->
+        <div *ngIf="product.isSystem">
+            <div class="sort-filter-container" *ngIf="product.isSystem" id="accessoryFilters">
+                <div class="type-opts">
+                    <label>Showing:&nbsp;</label>
+                    <input type="radio" name="accessory-filter-type" value="all" checked />
+                    <label>All</label>
+                    <input type="radio" name="accessory-filter-type" value="indoor" />
+                    <label>Indoor</label>
+                    <input type="radio" name="accessory-filter-type" value="outdoor" />
+                    <label>Outdoor</label>
+                </div>
+            </div>
+            <div id="indoorAccessories">
+                <product-accessories [product]="relatedIndoorUnit" [userBasket]="userBasket" [currentUser]="currentUser"></product-accessories>
+            </div>
+            <div id="outdoorAccessories">
+                <product-accessories [product]="relatedOutdoorUnit" [userBasket]="userBasket" [currentUser]="currentUser"></product-accessories>
+            </div>
+        </div>
+
+        <!--Accessories Product-->
+        <div *ngIf="product.productModelTypeId == enums.ProductModelTypeEnum.Accessory">
+
+            <div class="row row-nomargin border-bottom-row accessory-list-row" *ngFor="let item of product.parentProducts ; let idx = index">
+
+                <div class="col col-md-2 product-image no-padding" style="height:130px;">
+                    <img src="{{item.image.url}}" width="150" height="130" class="sub-product-img" />
+                </div>
+
+                <div *ngIf="userBasket" class="product-info" [ngClass]="{'col-md-8' : userBasket.basketQuoteId != 0 && userBasket.basketQuoteId != undefined, 'col-md-10' : userBasket.basketQuoteId == 0 || userBasket.basketQuoteId == undefined}" style="background-color:none">
+                    <div>
+                        <a (click)="productDetails($event, item)" class="product-link">  {{item.name}}</a>
+                    </div>
+                    <div>
+                        <span class="as-lnk">Model No.: </span> <span class="pull-right"> {{item.productNumber}}</span>
+                    </div>
+                    <div *ngIf="showPrices">
+
+                        <span class="as-lnk">Price: </span> <span class="pull-right"> {{item.price | currency:'USD':true:'1.2-2'}}</span>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--Technical Specs Tabs-->
+    <div id="productSpecsTab" *ngIf="product" class="sub-tab-view dk-list-grey" style="display:none;">
+      
+
+        <div *ngIf="!product.isSystem">
+            
+            <div *ngIf="product.submittalSheetTypeId == enums.SubmittalSheetTypeEnum.Controllers 
+                || product.submittalSheetTypeId == enums.SubmittalSheetTypeEnum.RTU
+                || product.submittalSheetTypeId == enums.SubmittalSheetTypeEnum.Packaged">
+
+                <!--<technical-specifications [specifications]="product.specifications" [userBasket]="userBasket"></technical-specifications>-->
+                <!--<div>General Product</div>-->
+                <div id="technical-specs"></div>
+
+            </div>
+        </div>
+
+        <div *ngIf="product.isSystem">
+            
+            <div *ngIf="product.submittalSheetTypeId == enums.SubmittalSheetTypeEnum.Controllers
+                || product.submittalSheetTypeId == enums.SubmittalSheetTypeEnum.RTU
+                || product.submittalSheetTypeId == enums.SubmittalSheetTypeEnum.Packaged">
+                <!--<technical-specifications [specifications]="product.specifications" [userBasket]="userBasket"></technical-specifications>-->
+                <!--<div>System Product</div>-->
+                <div id="technical-specs"></div>
+            </div>
+        </div>
+               
+
+        <div *ngIf="product.submittalSheetTypeId == enums.SubmittalSheetTypeEnum.Accessories">
+            <!--<div>Accessories</div>-->
+            <technical-specifications-accessories [product]="product" [userBasket]="userBasket"></technical-specifications-accessories>
+
+        </div>
+
+        <div *ngIf="product.submittalSheetTypeId == 1">
+            <!--<div>Other</div>-->
+            <technical-specifications-other [product]="product" [userBasket]="userBasket"></technical-specifications-other>
+        </div>
+
+        <div *ngIf="product.submittalSheetTypeId == enums.SubmittalSheetTypeEnum.SystemHP">
+            <!--<div>System HP</div>-->
+            <div id="technical-specs">Template</div>
+           
+        </div>
+
+        <div *ngIf="product.submittalSheetTypeId == enums.SubmittalSheetTypeEnum.SystemCooling">
+            <!--<div>System cooling</div>-->
+            <div id="technical-specs">Template</div>
+        </div>
+
+        <!--if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.MultiSplitIndoor || Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.VRVIndoor)-->
+        <div *ngIf="product.submittalSheetTypeId == enums.SubmittalSheetTypeEnum.MultiSplitIndoor || product.submittalSheetTypeId == enums.SubmittalSheetTypeEnum.VRVIndoor">
+            <!--<div>MultiSplitIndoor || VRVIndoor</div>-->
+            <div id="technical-specs">Template</div>
+                     
+        </div>
+
+        <!--if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.MultiSplitOutdoor)-->
+        <div *ngIf="product.submittalSheetTypeId == enums.SubmittalSheetTypeEnum.MultiSplitOutdoor">
+            <!--<div>MultiSplitOutdoor</div>-->
+            <div id="technical-specs">Template</div>
+            
+        </div>
+
+        <!--if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.VRVIIIAirCooled)-->
+        <div *ngIf="product.submittalSheetTypeId == enums.SubmittalSheetTypeEnum.VRVIIIAirCooled">
+            <!--<div>VRVIIIAirCooled</div>-->
+            <div id="technical-specs">Template</div>
+
+        </div>
+
+        <!--if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.VRVIIIWaterCooled)-->
+        <div *ngIf="product.submittalSheetTypeId == enums.SubmittalSheetTypeEnum.VRVIIIWaterCooled">
+            <!--<div>VRVIIIWaterCooled</div>-->
+            <div id="technical-specs">Template</div>
+
+        </div>
+
+        <!--if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.ACAndHP)-->
+        <div *ngIf="product.submittalSheetTypeId == enums.SubmittalSheetTypeEnum.ACAndHP">
+            <!--<div>ACAndHP</div>-->
+            <div id="technical-specs">Template</div>
+
+        </div>
+
+        <!--if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.CoilsAndAirHandler)-->
+        <div *ngIf="product.submittalSheetTypeId == enums.SubmittalSheetTypeEnum.CoilsAirHandlers">
+            <!--<div>CoilsAirHandlers</div>-->
+            <div id="technical-specs">Template</div>
+
+        </div>
+
+        <!--if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.GasFurnace)-->
+        <div *ngIf="product.submittalSheetTypeId == enums.SubmittalSheetTypeEnum.GasFurnace">
+            <!--<div>GasFurnace</div>-->
+            <div id="technical-specs">Template</div>
+
+        </div>
+
+        <!--if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.CommercialACAndHP)-->
+        <div *ngIf="product.submittalSheetTypeId == enums.SubmittalSheetTypeEnum.CommercialACAndHP">
+            <!--<div>CommercialACAndHP</div>-->
+            <div id="technical-specs">Template</div>
+
+        </div>
+
+        <!--if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.CommercialAH)-->
+        <div *ngIf="product.submittalSheetTypeId == enums.SubmittalSheetTypeEnum.CommercialAH">
+            <!--<div>CommercialAH</div>-->
+            <div id="technical-specs">Template</div>
+
+        </div>
+
+
+        <!--if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.PackagedACAndHP)-->
+        <div *ngIf="product.submittalSheetTypeId == enums.SubmittalSheetTypeEnum.PackagedACAndHP">
+            <!--<div>PackagedACAndHP</div>-->
+            <div id="technical-specs">Template</div>
+
+        </div>
+
+
+        <!--if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.PackagedDualFuel)-->
+        <div *ngIf="product.submittalSheetTypeId == enums.SubmittalSheetTypeEnum.PackagedDF">
+            <!--<div>PackagedDF</div>-->
+            <div id="technical-specs">Template</div>
+
+        </div>
+
+
+        <!--if (Model.SubmittalSheetTypeId == SubmittalSheetTypeEnum.PackagedGasElectric)-->
+        <div *ngIf="product.submittalSheetTypeId == enums.SubmittalSheetTypeEnum.PackagedGE">
+            <!--<div>PackagedGE</div>-->
+            <div id="technical-specs">Template</div>
+
+        </div>
+
+        <!--<div>{{product.submittalSheetTypeId}}</div>-->
+
+    </div>
+</div>
+

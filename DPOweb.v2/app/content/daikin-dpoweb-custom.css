@@ -1,0 +1,441 @@
+﻿/*span.editableGridCell {
+    border-style: inset;
+}*/
+
+
+
+
+body, html {
+    background-color: #BDEBFF;
+    height: 100%;
+}
+
+#content {
+    height: 100%;
+}
+
+
+
+/*#daikin-header {
+    height:8%;
+}*/
+
+/***Old Login layout***/
+/*#login-bg {
+    background-image: url(/Images/project-office-bg.png);
+    background-size: cover;
+    height: 92%;
+}
+
+#hidden-div {
+    height: 150px;
+}
+
+#login-form {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+#signIn {
+    height: 320px;
+    padding-left: 30px;
+}
+
+#signUp {
+    background-color: #edf9ff;
+    height: 320px;
+}
+
+
+@media all and (max-width: 710px) {
+    #signIn, #signUp {
+        float: none;
+        width: 100%;
+    }
+
+    #login-form {
+        width: 100%;
+    }
+}*/
+
+/****Header Buttons****/
+
+#home_btn {
+    background-color: transparent;
+    padding: 0px;
+    margin: 0px;
+}
+
+#topMenuBar {
+    background-color: #fff;
+    color: #007FCC;
+}
+
+    #topMenuBar li a {
+        color: #007FCC;
+        background-color: transparent;
+        border-radius: 0;
+        margin-bottom: 0px;
+        margin-top: 0px;
+        padding: 15px;
+        height: 25px;
+    }
+
+        /*This is to line up SignIn Btn and city location menu*/
+        #topMenuBar li a#signInBtn {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            height: 45px;
+        }
+
+    #topMenuBar li:hover {
+        color: #004f71;
+        background-color: #e5e5e5;
+    }
+
+
+
+/*fix navbar-right margin*/
+#headerButtons {
+    margin-right: 0px;
+}
+
+#menu-dropdown {
+    /*padding-right:0px;*/
+}
+
+#cityLocationsDropdown li {
+    height: 30px;
+}
+
+#userOptionsDropdown li {
+    height: 30px;
+}
+
+
+#cityLocationsDropdown li a {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#userOptionsDropdown li a {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+/*************/
+
+.container-fluid {
+    background-color: #fff;
+    width: 97%;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.main-content {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+/*.tab-header {
+    padding:10px;
+}*/
+
+h4 {
+    color: #00A1E4;
+    text-transform: uppercase;
+    font-family: "museo-sans", sans-serif;
+    font-weight: bold;
+}
+
+/*Top menu bar*/
+/*#home_btn {
+    padding:0px;
+}
+
+#topMenuBar {
+   background-color: #fff;
+   background: #fff;
+   border-color: transparent;
+}
+
+#topMenuBar ul li a{
+    background-color: #fff;
+    background: #fff;
+    color:#00A1E4 !important;
+}
+
+*/
+
+/*navigation bar*/
+#content .navbar-default {
+    background-color: #BDEBFF;
+}
+
+.navbar, .navbar-default {
+    border-color: none !important;
+    border: none;
+}
+
+#nav-bar {
+    margin: 0px !important;
+    /*height:50px;*/
+}
+
+/*#nav-bar li{
+    height:50px;
+}*/
+
+#tabsMenuBar {
+    padding: 0px !important;
+}
+
+    #tabsMenuBar li a:hover {
+        color: #fff;
+        background-color: #4D535D;
+    }
+
+nav {
+    margin-bottom: 0px !important;
+    /*background-color: #BDEBFF !important;*/
+}
+
+
+.container-fluid.navibar {
+    background-color: #BDEBFF;
+    padding-left: 0px;
+}
+
+
+
+
+
+/*custom navbar*/
+.navbar-default .navbar-nav.tabsMenuBar a, .navbar-default .navbar-nav.productFamilyTab a {
+    /*color: #555;
+  background-color: #e7e7e7;*/
+    color: #fff;
+    background-color: #2e3138;
+    border-radius: 0;
+    margin-right: 3px;
+    margin-bottom: 0px;
+    padding-top: 10px;
+    padding-right: 30px;
+    padding-bottom: 10px;
+    padding-left: 30px;
+    height: 20px;
+}
+
+    .navbar-default .navbar-nav.tabsMenuBar a:focus, .navbar-default .navbar-nav.productFamilyTab a:focus {
+        color: #00A1E4;
+        background-color: #fff;
+        font-weight: bold;
+    }
+
+    .navbar-default .navbar-nav.tabsMenuBar a:hover, .navbar-default .navbar-nav.productFamilyTab a:hover {
+        color: #fff;
+        background-color: #4D535D;
+    }
+
+.navbar-default .navbar-nav.tabsMenuBar li.selected a, .navbar-default .navbar-nav.productFamilyTab li.selected a {
+    color: #00A1E4;
+    background-color: #fff;
+    font-weight: bold;
+}
+
+
+/* sub tab bar */
+.sub-tab-bar {
+    /*margin:0 30px 18px 30px;*/
+    list-style-type: none;
+    display: block;
+    padding: 0;
+    border-bottom: 4px solid #007FCC;
+    /*width: 100%;*/
+    text-align: left;
+}
+
+.sub-tab-bar.tabbar-fullwidth{
+    width: 100%;
+}
+
+
+    .sub-tab-bar li {
+        display: inline-block;
+        text-transform: uppercase;
+        color: #000;
+        cursor: pointer;
+        /*-moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;*/
+    }
+
+        .sub-tab-bar li span, .sub-tab-bar li a {
+            padding: 10px 20px;
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+
+
+        .sub-tab-bar li.active-tab, .sub-tab-bar li.active-tab:hover,
+        .sub-tab-bar li.active, .sub-tab-bar li.active:hover {
+            color: #fff;
+            background-color: #007FCC;
+        }
+
+    .sub-tab-bar a.active-tab, .sub-tab-bar a.active-tab:hover {
+        color: #fff;
+        background-color: #007FCC;
+    }
+
+/*need ul.sub-tab-bar*/
+div.scrollmenu {
+    /*background-color: #333;*/
+    overflow: auto;
+    white-space: nowrap;
+}
+
+    div.scrollmenu ul {
+        display: inline-block;
+        /*text-align: center;*/
+        /*padding: 14px;*/
+        text-decoration: none;
+    }
+
+        div.scrollmenu ul:hover {
+            /*background-color: #777;*/
+        }
+
+/* end of custom navbar*/
+
+#cityLocationsDropdown, #userOptionsDropdown {
+    background-image: url(/Images/lightboxmask.png);
+}
+
+    #cityLocationsDropdown li a {
+        color: #ffffff;
+        padding-left: 5px;
+    }
+
+        #cityLocationsDropdown li a:hover {
+            color: black;
+        }
+
+    #userOptionsDropdown li a {
+        color: #ffffff;
+    }
+
+        #userOptionsDropdown li a:hover {
+            color: black;
+        }
+
+    #cityLocationsDropdown li a span.glyphicon-menu-right {
+        color: #3EB2D9;
+    }
+
+    
+/*This is to line up SignIn Btn and city location menu*/
+#signInBtn {
+    padding-bottom: 0px !important;
+    padding-top: 10px !important;
+}
+
+
+
+#newProjectBtn {
+    color: #fff;
+}
+
+/*kendo dialog center & responsive width*/
+@media (min-width: 1200px) {
+    .popup-window {
+        width:750px; 
+        margin:auto;
+        /*padding:20px;*/
+    }
+}
+
+@media (max-width: 576px) {
+    .popup-window {
+        width:100%; 
+        margin:auto;
+    }
+    .k-dialog {
+        min-width:100%;
+    }
+}
+
+
+/*Moved to kendo-custom.css*/
+/*hide horizontal scroll bar on kendo window*/
+/*.k-window div.k-window-content {
+    overflow: hidden;
+}*/
+
+/*loading icon*/
+/*.k-loading-image {
+  background-image: url('http://kendo.cdn.telerik.com/2016.2.714/styles/Bootstrap/loading-image.gif');
+  background-repeat:no-repeat;
+  background-position: center; 
+}*/
+
+/*.k-grid-header th.k-header{
+    background-image: -webkit-linear-gradient(#5397cf, #428bca 60%, #007FCC);
+    background-image: -o-linear-gradient(#5397cf, #428bca 60%, #007FCC);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#5397cf), color-stop(60%, #428bca), to(#007FCC));
+    background-image: linear-gradient(#5397cf, #428bca 60%, #007FCC);
+    background-repeat: no-repeat;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5397cf', endColorstr='#ff007fcc', GradientType=0);
+    -webkit-filter: none;
+    filter: none;
+    border-bottom: 1px solid #007FCC;
+    color: white;
+    font-family: "museo-sans", sans-serif;
+    font-size: 16px;
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*.k-grid tr {
+   background-color: transparent; 
+}*/
+
+
+/*.k-grid .k-alt {
+   background-color: #f1f1f1;
+}*/
+
+/*.k-grid tr{
+   background-color: #ffffff; 
+}*/
+
+
+/*Kendo grid size*/
+/*#project-grid {
+    height: 100%; 
+}*/
+
+/*html, body,  #parent,  #project-grid
+      {
+        margin: 0;
+        padding: 0;
+        border-width: 0;
+        height: 95%; 
+      }*/
+
+/*html
+      {
+        overflow: hidden;
+      }*/

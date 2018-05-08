@@ -1,0 +1,10 @@
+﻿@model WidgetContainerModel
+<li data-templateid="@Model.Widget.TemplateId">
+    <div class="widget-body">
+        @Html.Partial("OverviewWidgetTitle")
+        @Html.Partial("OverviewWidgetSettings")
+        <div class="contentbox">
+            <p class="c-align" style="padding-left: 20px; padding-right:20px">Press the settings icon above to change this tile's content</p>
+        </div>
+    </div>
+</li>

@@ -1,0 +1,16 @@
+import { ConfigurationService } from '../../common/configuration.service';
+import { SettingsComponent } from '../../common/settings.component';
+import { Border, MarkerType } from '../../common/property-types';
+import { ValueAxisNotesIcon } from '../../common/property-types';
+/**
+ * @hidden
+ */
+export declare abstract class ValueAxisNotesIconComponentGenerated extends SettingsComponent implements ValueAxisNotesIcon {
+    configurationService: ConfigurationService;
+    background: string;
+    border: Border;
+    size: number;
+    type: MarkerType;
+    visible: boolean;
+    constructor(configurationService: ConfigurationService);
+}

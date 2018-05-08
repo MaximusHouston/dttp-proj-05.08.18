@@ -1,0 +1,211 @@
+﻿<project-tabs [user]="user"></project-tabs>
+
+<div *ngIf="quote.quoteOptions.canAddProducts" class="popup-window">
+    <add-import-products-dialog [user]="user" [quote]="quote" [recordState]="recordState" ></add-import-products-dialog>
+</div>
+
+
+<div id="main-container" class='container-fluid'>
+    <div class="main-content">
+
+        <ul class="breadcrumbs">
+            <li><a href="/v2/#/projects">Projects</a></li>
+            <!--<li><a href="/ProjectDashboard/Project?ProjectId={{quote.projectId}}">{{quote.project.name}}</a></li>-->
+            <li><a href="/v2/#/project/{{quote.projectId}}">{{quote.project.name}}</a></li>
+            <li>{{quote.title}}</li>
+        </ul>
+        <div class="tab-header">
+            <h4>{{quote.title}}</h4>
+        </div>
+               
+
+        <quote-button-bar [user]="user" [quote]="quote" [(quoteItems)]="quoteItems"></quote-button-bar>
+
+        <!--<div kendoDialogContainer></div>-->
+
+        <kendo-tabstrip id="sub-tabs">
+            <kendo-tabstrip-tab [title]="'OVERVIEW'" [selected]="overViewActive" >
+                <ng-template kendoTabContent>
+                    <!--Quote Active directive-->
+                    <div class="row no-gutters">
+                        <div class="row no-gutters sub-heading">
+                            <!--<h4>@((Model.Active) ? ResourceUI.QuoteActive : "Quote Summary")</h4>-->
+                            <h4 *ngIf="quote.active" class="col pull-left">ACTIVE QUOTE</h4>
+                            <h4 *ngIf="!quote.active" class="col pull-left">QUOTE SUMMARY</h4>
+                            <!--<div class="col pull-right"><a href="/ProjectDashboard/QuoteEdit/{{quote.projectId}}" class="btn btn-primary pull-right" ><span class="k-icon k-i-file-add"></span> CREATE REVISION</a></div>-->
+                            <div class="col pull-right"><a href="/v2/#/quoteCreate/{{quote.projectId}}" class="btn btn-primary pull-right"><span class="k-icon k-i-file-add"></span> CREATE REVISION</a></div>
+                        </div>
+
+                        <active-quote-info [user]="user" [quote]="quote" (showQuoteOverViewEvent)="showQuoteOverview()" (reloadDataEvent)="reloadData()"></active-quote-info>
+
+                    </div>
+                    <div class="row no-gutters sub-heading">
+                        <h4 class="col pull-left">PRODUCTS IN THIS QUOTE</h4>
+
+                        <div class="col pull-right hidden-xs">
+
+                            <button class="btn btn-default" (click)="showQuoteItems()"><span class="glyphicon glyphicon-list-alt"></span> VIEW ALL PRODUCTS</button>
+                            <!--<a href="/api/Product/Products?quoteId={{quote.quoteId}}" *ngIf="quote.quoteOptions.canAddProducts" class="btn btn-primary"><span class="k-icon k-i-file-add"></span> ADD PRODUCTS</a>-->
+                            <button *ngIf="quote.quoteOptions.canAddProducts" class="btn btn-primary" (click)="browseProductsWithQuoteId()"><span class="k-icon k-i-file-add"></span> ADD PRODUCTS</button>
+                            <!--<button *ngIf="quote.quoteOptions.canAddProducts" class="btn btn-primary" data-toggle="modal" data-target="#selectProductsPopup"><span class="k-icon k-i-file-add"></span> SELECT PRODUCTS</button>-->
+                            <select-products-dialog [user]="user" [quote]="quote"></select-products-dialog>
+                            <!--<button *ngIf="quote.quoteOptions.canAddProducts" class="btn btn-primary"><span class="k-icon k-i-file-add"></span> IMPORT PRODUCTS</button>-->
+                            <import-products-dialog [user]="user" [(quote)]="quote" [(quoteItems)]="quoteItems" (reloadDataEvent)="reloadData()"></import-products-dialog>
+
+                        </div>
+
+                        <div class="col visible-xs">
+                            <button style="width:90%" class="btn btn-default btn-block" (click)="showQuoteItems()"><span class="glyphicon glyphicon-list-alt"></span> VIEW ALL PRODUCTS</button>
+                            <button style="width:90%; margin-top:5px;" *ngIf="quote.quoteOptions.canAddProducts" class="btn btn-primary btn-block" (click)="browseProductsWithQuoteId()"><span class="k-icon k-i-file-add"></span> ADD PRODUCTS</button>
+                            <select-products-dialog [user]="user" [quote]="quote"></select-products-dialog>
+                            <import-products-dialog [user]="user" [(quote)]="quote" [(quoteItems)]="quoteItems" (reloadDataEvent)="reloadData()"></import-products-dialog>
+                        </div>
+                    </div>
+
+                    <div class="row no-gutters active-quote-bar">
+                        <div class="pull-left">
+                            <img src="/Images/added-items-list-icon.png" style="top:2.5em;" />
+                            <span> {{quote.itemCount}} product(s)</span>
+                            <a (click)="showQuoteItems()">View added items list</a>
+                            <!--<a href="@Url.Action(" QuoteItems", new { ProjectId=Model.ProjectId, QuoteId=Model.QuoteId })">View added items list</a>-->
+                        </div>
+                    </div>
+
+                    <quote-details [user]="user" [quote]="quote"></quote-details>
+
+
+                </ng-template>
+            </kendo-tabstrip-tab>
+            <kendo-tabstrip-tab [title]="'PRODUCTS'" [selected]="quoteItemsActive" >
+                <ng-template kendoTabContent>
+                    <div class="row no-gutters">
+                        <div class="row no-gutters sub-heading">
+                            <h4 *ngIf="quote.active" class="col pull-left">ACTIVE QUOTE</h4>
+                            <h4 *ngIf="!quote.active" class="col pull-left">QUOTE SUMMARY</h4>
+                            <!--<div class="col pull-right"><a href="/ProjectDashboard/QuoteEdit/{{quote.projectId}}" class="btn btn-primary pull-right"><span class="k-icon k-i-file-add"></span> CREATE REVISION</a></div>-->
+                            <div class="col pull-right"><a href="/v2/#/quoteCreate/{{quote.projectId}}" class="btn btn-primary pull-right"><span class="k-icon k-i-file-add"></span> CREATE REVISION</a></div>
+                        </div>
+                        <active-quote-info [user]="user" [quote]="quote" (showQuoteOverViewEvent)="showQuoteOverview()" (reloadDataEvent)="reloadData()"></active-quote-info>
+
+
+                    </div>
+                    
+
+                    <div class="row no-gutters sub-heading">
+                        <h4 class="col pull-left">PRODUCTS IN THIS QUOTE</h4>
+                        <div class="col pull-right hidden-xs">
+                            <!--<button *ngIf="quote.quoteOptions.canCalculateCommission" class="btn btn-default" data-toggle="modal" data-target="#calculateCommissionPopup"><span class="k-icon k-i-calculator"></span> CALCULATE COMMISSION</button>-->
+                            <calculate-commission-dialog [user]="user" [quote]="quote" [quoteItems]="quoteItems" (reloadQuoteEvent)="reloadQuote()"></calculate-commission-dialog>
+                            <!--<a href="/api/Product/Products?quoteId={{quote.quoteId}}" *ngIf="quote.quoteOptions.canAddProducts" class="btn btn-primary"><span class="k-icon k-i-file-add"></span> ADD PRODUCTS</a>-->
+                            <button *ngIf="quote.quoteOptions.canAddProducts" class="btn btn-primary" (click)="browseProductsWithQuoteId()"><span class="k-icon k-i-file-add"></span> ADD PRODUCTS</button>
+                            <!--<button *ngIf="quote.quoteOptions.canAddProducts" class="btn btn-primary"><span class="k-icon k-i-file-add"></span> SELECT PRODUCTS</button>-->
+                            <select-products-dialog [user]="user" [quote]="quote"></select-products-dialog>
+                            <!--<button *ngIf="quote.quoteOptions.canAddProducts" class="btn btn-primary"><span class="k-icon k-i-file-add"></span> IMPORT PRODUCTS</button>-->
+                            <import-products-dialog [user]="user" [(quote)]="quote" [(quoteItems)]="quoteItems" (reloadDataEvent)="reloadData()"></import-products-dialog>
+                        </div>
+
+                        <div class="col visible-xs">
+                            <button style="width:90%" *ngIf="quote.quoteOptions.canAddProducts" class="btn btn-primary btn-block" (click)="browseProductsWithQuoteId()"><span class="k-icon k-i-file-add"></span> ADD PRODUCTS</button>
+                            <select-products-dialog [user]="user" [quote]="quote"></select-products-dialog>
+                            <import-products-dialog [user]="user" [(quote)]="quote" [(quoteItems)]="quoteItems" (reloadDataEvent)="reloadData()"></import-products-dialog>
+                        </div>
+                    </div>
+
+                    <quote-items-list [user]="user" [(quote)]="quote" [(quoteItems)]="quoteItems" (reloadQuoteEvent)="reloadQuote()" (reloadDataEvent)="reloadData()"></quote-items-list>
+                </ng-template>
+            </kendo-tabstrip-tab>
+
+            <kendo-tabstrip-tab *ngIf="quote.hasDAR" [title]="'DISCOUNT REQUESTS'" [selected]="quoteDiscountRequestsActive">
+                <ng-template kendoTabContent>
+                    <div class="row no-gutters">
+                        <div class="row no-gutters sub-heading">
+                            <h4 *ngIf="quote.active" class="col pull-left">ACTIVE QUOTE</h4>
+                            <h4 *ngIf="!quote.active" class="col pull-left">QUOTE SUMMARY</h4>
+                            <!--<div class="col pull-right"><a href="/ProjectDashboard/QuoteEdit/{{quote.projectId}}" class="btn btn-primary pull-right"><span class="k-icon k-i-file-add"></span> CREATE REVISION</a></div>-->
+                            <div class="col pull-right"><a href="/v2/#/quoteCreate/{{quote.projectId}}" class="btn btn-primary pull-right"><span class="k-icon k-i-file-add"></span> CREATE REVISION</a></div>
+                        </div>
+                        <active-quote-info [user]="user" [quote]="quote" (showQuoteOverViewEvent)="showQuoteOverview()" (reloadDataEvent)="reloadData()"></active-quote-info>
+
+
+                    </div>
+
+
+                    <div class="row no-gutters sub-heading">
+                        <h4 class="col pull-left">REQUESTED DISCOUNTS FOR THIS QUOTE</h4>
+                    </div>
+                    <quote-discount-requests [user]="user" [quote]="quote" [quoteItems]="quoteItems"></quote-discount-requests>
+                </ng-template>
+            </kendo-tabstrip-tab>
+
+            <kendo-tabstrip-tab *ngIf="quote.hasCOM" [title]="'COMMISSION REQUESTS'" [selected]="quoteCommissionRequestsActive">
+                <ng-template kendoTabContent>
+                    <div class="row no-gutters">
+                        <div class="row no-gutters sub-heading">
+                            <h4 *ngIf="quote.active" class="col pull-left">ACTIVE QUOTE</h4>
+                            <h4 *ngIf="!quote.active" class="col pull-left">QUOTE SUMMARY</h4>
+                            <!--<div class="col pull-right"><a href="/ProjectDashboard/QuoteEdit/{{quote.projectId}}" class="btn btn-primary pull-right"><span class="k-icon k-i-file-add"></span> CREATE REVISION</a></div>-->
+                            <div class="col pull-right"><a href="/v2/#/quoteCreate/{{quote.projectId}}" class="btn btn-primary pull-right"><span class="k-icon k-i-file-add"></span> CREATE REVISION</a></div>
+                        </div>
+                        <active-quote-info [user]="user" [quote]="quote" (showQuoteOverViewEvent)="showQuoteOverview()" (reloadDataEvent)="reloadData()"></active-quote-info>
+                    </div>
+
+
+                    <div class="row no-gutters sub-heading">
+                        <h4 class="col pull-left">REQUESTED COMMISSIONS FOR THIS QUOTE</h4>
+                    </div>
+                    <quote-commission-requests [user]="user" [quote]="quote" [quoteItems]="quoteItems"></quote-commission-requests>
+                </ng-template>
+            </kendo-tabstrip-tab>
+
+            <kendo-tabstrip-tab *ngIf="quote.hasOrder" [title]="'ORDER'" [selected]="quoteOrderActive">
+                <ng-template kendoTabContent>
+                    <div class="row no-gutters">
+                        <div class="row no-gutters sub-heading">
+                            <h4 *ngIf="quote.active" class="col pull-left">ACTIVE QUOTE</h4>
+                            <h4 *ngIf="!quote.active" class="col pull-left">QUOTE SUMMARY</h4>
+                            <!--<div class="col pull-right"><a href="/ProjectDashboard/QuoteEdit/{{quote.projectId}}" class="btn btn-primary pull-right"><span class="k-icon k-i-file-add"></span> CREATE REVISION</a></div>-->
+                            <div class="col pull-right"><a href="/v2/#/quoteCreate/{{quote.projectId}}" class="btn btn-primary pull-right"><span class="k-icon k-i-file-add"></span> CREATE REVISION</a></div>
+                        </div>
+                        <active-quote-info [user]="user" [quote]="quote" (showQuoteOverViewEvent)="showQuoteOverview()" (reloadDataEvent)="reloadData()"></active-quote-info>
+                    </div>
+
+
+                    <div class="row no-gutters sub-heading">
+                        <h4 class="col pull-left">ORDER SUBMITTED</h4>
+                    </div>
+                    <quote-orders [user]="user" [quote]="quote" [quoteItems]="quoteItems"></quote-orders>
+                </ng-template>
+            </kendo-tabstrip-tab>
+
+        </kendo-tabstrip>
+
+
+        <!--<div id="projectsGridContainer">
+            <project-grid></project-grid>
+        </div>-->
+    </div>
+</div>
+
+
+
+<!--<select-products-dialog [user]="user" [quote]="quote"></select-products-dialog>-->
+
+<!--Write a new component for this-->
+<!--<div id="selectProductsPopup" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">TOOLS:</h4>
+            </div>
+            <div class="modal-body">
+                <textarea rows="4" maxlength="500" style="width:100%;"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="openTool()">Open</button>
+            </div>
+        </div>
+
+    </div>
+</div>-->

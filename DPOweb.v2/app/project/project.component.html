@@ -1,0 +1,164 @@
+﻿<project-tabs [user]="user"></project-tabs>
+<div id="main-container" class='container-fluid'>
+    <div class="main-content">
+        <ul class="breadcrumbs">
+            <li><a href="/v2/#/projects">Projects</a></li>
+            <li>{{project.name}}</li>
+        </ul>
+        <h4>{{project.name}}</h4>
+        <div class="row">
+            <div class="pull-right">
+                <a href="/Projectdashboard/ProjectExport?projectId={{project.projectId}}" class="btn btn-default"><img src="/Images/package-quote-icon.png" /> EXPORT</a>
+                <a *ngIf="canEditProject && !project.deleted && !project.isTransferred" (click)="deleteProject()" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> DELETE PROJECT</a>
+                <a *ngIf="canEditProject && project.deleted && !project.isTransferred" (click)="undeleteProject()" class="btn btn-default">UNDELETE PROJECT</a>
+            </div>
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs">
+        <li id="projectOverviewTabHeader" class="active tabs-header"><a id="projectOverviewTabLink" data-toggle="tab" href="#projectOverview">OVERVIEW</a></li>
+        <li id="projectQuotesTabHeader" class="tabs-header"><a id="projectQuotesTabLink" data-toggle="tab" href="#projectQuotes">QUOTES</a></li>
+    </ul>
+
+    <div class="tab-content" style="margin:10px;">
+        <div id="projectOverview" class="tab-pane fade in active">
+                <div class="row no-gutters">
+                    <div class="row no-gutters sub-heading">
+                        <h4 class="col pull-left">ACTIVE QUOTE</h4>
+                        <!--<div class="col pull-right"><a href="/ProjectDashboard/QuoteEdit/{{quote.projectId}}" class="btn btn-primary pull-right" ><span class="k-icon k-i-file-add"></span> CREATE REVISION</a></div>-->
+                        <div *ngIf="canEditProject && !project.deleted && !project.isTransferred" class="col pull-right"><a href="/v2/#/quoteCreate/{{project.projectId}}" class="btn btn-primary pull-right"><span class="k-icon k-i-file-add"></span> CREATE REVISION</a></div>
+                    </div>
+                    <active-quote-info [user]="user" [quote]="project.activeQuoteSummary" (showQuoteOverViewEvent)="showQuoteOverview()"></active-quote-info>
+                </div>
+                <div class="row no-gutters sub-heading">
+                    <h4 class="pull-left">PROJECT DETAILS</h4>
+                    <div *ngIf="canEditProject && !project.deleted && !project.isTransferred" class="pull-right">
+                        <div class="pull-right">
+                            <a href="/v2/#/projectEdit/{{project.projectId}}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> EDIT PROJECT DETAILS</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row no-gutters">
+                    <div class="hidden-xs col-md-2"></div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="col-md-6 col-xs-6 as-lnk">Project Name: </div> <div class="col-md-6 col-xs-6">{{project.name}}</div>
+                        <div class="col-md-6 col-xs-6 as-lnk">Project Reference: </div> <div class="col-md-6 col-xs-6">{{project.projectId}}</div>
+                        <div class="col-md-6 col-xs-6 as-lnk">Registration Date: </div> <div class="col-md-6 col-xs-6">{{project.projectDate  | date: 'shortDate'}}</div>
+                        <div class="col-md-6 col-xs-6 as-lnk">Bid Date: </div> <div class="col-md-6 col-xs-6">{{project.bidDate | date: 'shortDate'}}</div>
+                        <div class="col-md-6 col-xs-6 as-lnk">Estimated Close: </div> <div class="col-md-6 col-xs-6">{{project.estimatedClose | date: 'shortDate'}}</div>
+                        <div class="col-md-6 col-xs-6 as-lnk">Estimated Delivery: </div> <div class="col-md-6 col-xs-6">{{project.estimatedDelivery | date: 'shortDate'}}</div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="col-md-6 col-xs-6 as-lnk">Construction Type: </div> <div class="col-md-6 col-xs-6">{{project.constructionTypeDescription}}</div>
+                        <div class="col-md-6 col-xs-6 as-lnk">Project Status: </div> <div class="col-md-6 col-xs-6">{{project.projectStatusDescription}}</div>
+                        <div class="col-md-6 col-xs-6 as-lnk">Project Type: </div> <div class="col-md-6 col-xs-6">{{project.projectTypeDescription}}</div>
+                        <div class="col-md-6 col-xs-6 as-lnk">Project Open Status: </div> <div class="col-md-6 col-xs-6">{{project.projectOpenStatusDescription}}</div>
+                        <div class="col-md-6 col-xs-6 as-lnk">Vertical Market: </div> <div class="col-md-6 col-xs-6">{{project.verticalMarketDescription}}</div>
+                        <div class="col-md-6 col-xs-6 as-lnk">Project Status Notes: </div> <div class="col-md-6 col-xs-6">{{project.description}}</div>
+                    </div>
+                    <div class="hidden-xs col-md-2"></div>
+                </div>
+
+                <h4>PROJECT ADDRESSES</h4>
+                <div class="row no-gutters">
+                    <div class="col-md-3 col-xs-12">
+                        <div class="col-md-12 as-lnk">Engineering Details:</div>
+                        <div class="col-md-12">
+                            <div>{{project.engineerName}}</div>
+                            <div>{{project.engineerBusinessName}}</div>
+                        </div>
+                        <div class="col-md-12">
+                            <div>
+                                {{project.engineerAddress.addressLine1}} &nbsp; {{project.engineerAddress.addressLine2}}
+                            </div>
+                            <div *ngIf="project.engineerAddress.location">
+                                {{project.engineerAddress.location}}, {{project.engineerAddress.stateName}} {{project.engineerAddress.postalCode}}, {{project.engineerAddress.countryCode}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-xs-12">
+                        <div class="col-md-12 as-lnk">Dealer/Contractor Details:</div>
+                        <div class="col-md-12">
+                            <div>{{project.dealerContractorName}}</div>
+                            <div>{{project.customerName}}</div>
+                        </div>
+                        <div class="col-md-12">
+                            <div>
+                                {{project.customerAddress.addressLine1}} &nbsp; {{project.customerAddress.addressLine2}}
+                            </div>
+                            <div *ngIf="project.customerAddress.location">
+                                {{project.customerAddress.location}}, {{project.customerAddress.stateName}} {{project.customerAddress.postalCode}}, {{project.customerAddress.countryCode}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-xs-12">
+                        <div class="col-md-12 as-lnk">Seller Address:</div>
+                        <div class="col-md-12">
+
+                            <div>{{project.sellerName}}</div>
+                        </div>
+                        <div class="col-md-12">
+                            <div>
+                                {{project.sellerAddress.addressLine1}} &nbsp; {{project.sellerAddress.addressLine2}}
+                            </div>
+                            <div *ngIf="project.sellerAddress.location">
+                                {{project.sellerAddress.location}}, {{project.sellerAddress.stateName}} {{project.sellerAddress.postalCode}}, {{project.sellerAddress.countryCode}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-xs-12">
+                        <div class="col-md-12 as-lnk">Shipping Address/Project Location:</div>
+                        <div class="col-md-12">
+                            <div>{{project.shipToName}}</div>
+                        </div>
+                        <div class="col-md-12">
+                            <div>
+                                {{project.shipToAddress.addressLine1}} &nbsp; {{project.shipToAddress.addressLine2}}
+                            </div>
+                            <div *ngIf="project.shipToAddress.location">
+                                {{project.shipToAddress.location}}, {{project.shipToAddress.stateName}} {{project.shipToAddress.postalCode}}, {{project.shipToAddress.countryCode}}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <h4>ORDER DETAILS</h4>
+                <div class="row no-gutters">
+                    <div class="hidden-xs col-md-2"></div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="col-md-6 col-xs-6 as-lnk">Pipeline Status: </div> <div class="col-md-6 col-xs-6">{{project.projectLeadStatusTypeDescription}}</div>
+                        <div class="col-md-6 col-xs-6 as-lnk">Order Number: </div> <div class="col-md-6 col-xs-6">{{project?.eRPFirstOrderNumber}}&nbsp;</div>
+                        <div class="col-md-6 col-xs-6 as-lnk">Order Date: </div> <div class="col-md-6 col-xs-6">{{project?.eRPFirstOrderDate}}&nbsp;</div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="col-md-6 col-xs-6 as-lnk">Order PO Number: </div> <div class="col-md-6 col-xs-6">{{project?.eRPFirstPONumber}}&nbsp;</div>
+                        <div class="col-md-6 col-xs-6 as-lnk">Order Comments: </div> <div class="col-md-6 col-xs-6">{{project?.eRPFirstOrderComment}}&nbsp;</div>
+                    </div>
+                    <div class="hidden-xs col-md-2"></div>
+                </div>
+                <div *ngIf="canViewPipelineData || canEditPipelineData">
+                    <h4>PROJECT UPDATE NOTES</h4>
+                    <project-pipeline-notes-update [user]="user" [project]="project" [canViewPipelineData]="canViewPipelineData" [canEditPipelineData]="canEditPipelineData"></project-pipeline-notes-update>
+                </div>
+           
+            </div>
+            <div id="projectQuotes" class="tab-pane fade">
+               
+                    <div class="row no-gutters sub-heading">
+                        <h4 class="col pull-left">ACTIVE QUOTE</h4>
+                        <div *ngIf="canEditProject && !project.deleted && !project.isTransferred" class="col pull-right"><a href="/v2/#/quoteCreate/{{project.projectId}}" class="btn btn-primary pull-right"><span class="k-icon k-i-file-add"></span> CREATE REVISION</a></div>
+                    </div>
+
+                    <active-quote-info [user]="user" [quote]="project.activeQuoteSummary" (showQuoteOverViewEvent)="showQuoteOverview()"></active-quote-info>
+
+                    <div class="row no-gutters sub-heading">
+                        <project-quotes [user]="user" [project]="project" [projectQuotes]="projectQuotes" (reloadDataEvent)="reloadData()"></project-quotes>
+                    </div>
+                
+            </div>
+        </div>
+    </div>

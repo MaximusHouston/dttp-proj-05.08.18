@@ -1,0 +1,17 @@
+﻿<table class="tbl grey">
+    <tbody>
+        @foreach (var document in Model.Documents)
+        {
+            <tr>
+                <td>
+                    <img src="~/Images/related-document-icon.png" />
+                    @document.Description
+                </td>
+                <td class="r-align">
+                    <a href="@document.URL" target="_blank"> View Document </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

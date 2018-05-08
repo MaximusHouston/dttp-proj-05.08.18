@@ -1,0 +1,69 @@
+﻿<div class="row no-gutters quote-details">
+    <div class="row no-gutters sub-heading">
+        <h4 class="col pull-left">DETAILS</h4>
+        <div class="col pull-right">
+            <!--<a href="/Projectdashboard/QuoteEdit?projectId={{quote.projectId}}&quoteId={{quote.quoteId}}" *ngIf="quote.quoteOptions.canEditQuote" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> EDIT QUOTE</a>-->
+            <a href="/v2/#/quoteEdit/{{quote.projectId}}/{{quote.quoteId}}" *ngIf="quote.quoteOptions.canEditQuote" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> EDIT QUOTE</a>
+        </div>
+    </div>
+    <div class="row no-gutters">
+        <div class="col col-md-6 quote-details-info">
+            <div class="row">
+                <div class="col col-xs-6 col-md-6 as-lnk">Quote Name:</div>
+                <div class="col col-xs-6 col-md-6">{{quote.title}}</div>
+            </div>
+            <div class="row">
+                <div class="col col-xs-6 col-md-6 as-lnk">Revision:</div>
+                <div class="col col-xs-6 col-md-6">{{quote.revision}}</div>
+            </div>
+            <div class="row">
+                <div class="col col-xs-6 col-md-6 as-lnk">Date:</div>
+                <div class="col col-xs-6 col-md-6">{{quote.timestamp | date :'medium'}}</div>
+            </div>
+            <div class="row">
+                <div class="col col-xs-6 col-md-6 as-lnk">Quote Description:</div>
+                <div class="col col-xs-6 col-md-6">{{quote.description}}</div>
+            </div>
+        </div>
+        <div class="col col-md-6 quote-details-info">
+            <div class="row">
+                <div class="col col-xs-6 col-md-6 as-lnk">Pricing Method:</div>
+                <div class="col col-xs-6 col-md-6" *ngIf="quote.isCommission; else elseBlock1">Commission</div>
+                <ng-template #elseBlock1>
+                    <div class="col col-xs-6 col-md-6" *ngIf="quote.isGrossMargin; else elseBlock2">Gross Margin</div>
+                </ng-template>
+                <ng-template #elseBlock2>
+                    <div class="col col-xs-6 col-md-6">Mark Up</div>
+                </ng-template>
+            </div>
+            <div *ngIf="user.showPrices && !quote.isCommission" class="row">
+                <div class="col col-xs-6 col-md-6 as-lnk">Discount Percentage:</div>
+                <div class="col col-xs-6 col-md-6">{{quote.approvedDiscountPercentage*100}} %</div>
+            </div>
+            <div *ngIf="user.showPrices && quote.isCommission" class="row">
+                <div class="col col-xs-6 col-md-6 as-lnk">Commission Percentage:</div>
+                <div class="col col-xs-6 col-md-6">{{quote.commissionPercentage}} %</div>
+            </div>
+            <div *ngIf="user.showPrices" class="row">
+                <div class="col col-xs-6 col-md-6 as-lnk">Freight Costs:</div>
+                <div class="col col-xs-6 col-md-6">{{quote.totalFreight | currency:'USD':true:'1.2-2'}}</div>
+            </div>
+            <div *ngIf="user.showPrices" class="row">
+                <div class="col col-xs-6 col-md-6 as-lnk">Total List:</div>
+                <div class="col col-xs-6 col-md-6">{{quote.totalList | currency:'USD':true:'1.2-2'}}</div>
+            </div>
+            <div *ngIf="user.showPrices" class="row">
+                <div class="col col-xs-6 col-md-6 as-lnk">Total Net:</div>
+                <div class="col col-xs-6 col-md-6">{{quote.totalNet | currency:'USD':true:'1.2-2'}}</div>
+            </div>
+            <div *ngIf="user.showPrices" class="row">
+                <div class="col col-xs-6 col-md-6 as-lnk">Total Sell:</div>
+                <div class="col col-xs-6 col-md-6">{{quote.totalSell | currency:'USD':true:'1.2-2'}}</div>
+            </div>
+            <div class="row">
+                <div class="col col-xs-6 col-md-6 as-lnk">Notes:</div>
+                <div class="col col-xs-6 col-md-6">{{quote.notes}}</div>
+            </div>
+        </div>
+    </div>
+</div>

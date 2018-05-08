@@ -1,0 +1,78 @@
+﻿#DAC .cb-switch-label{
+    margin-top: 20px;
+}
+
+#DAC .row{
+    padding-top: 30px;
+}
+
+#DAC .row .row{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+#DAC .dactbl-heading{
+    background-color: #E6EEF1;
+    text-transform: uppercase;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: center;
+    font-size: 15px;
+}
+
+#DAC .bluecol{
+    background-color: #DFF6FE;
+}
+
+#DAC .dactbl{
+    width: 100%;
+}
+
+#DAC .dactbl .blucell{
+    background-color: #DFF6FE;
+    color: #00A1E4;
+}
+
+#DAC .dactbl .blucell.inputs{
+    color: #000;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+}
+
+#DAC .dactbl .totalrow td{
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+#DAC .dactbl .totalrow td.totalcell{
+    font-size: 24px;
+    background-color: #E6EEF1;
+    padding-left: 20px;
+}
+
+#DAC textarea{
+    width: 100%;
+    margin-top: 20px;
+}
+
+#DAC .datepicker{
+    width: 150px;
+    margin-top: 20px;
+    display: inline-block;
+}
+
+#DAC .checkboxstatusmsg{
+    display: inline;
+    position: relative;
+    bottom: 1em;
+    padding-left: 5px;
+}
+
+.no-csstransitions #DAC .checkboxstatusmsg{
+    bottom: 0;
+}
+
+#DiscountRequestStepper input{
+    width: 100px;
+}

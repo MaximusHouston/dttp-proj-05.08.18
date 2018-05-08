@@ -1,0 +1,61 @@
+﻿
+.no-padding {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+
+  > .col,
+  > [class*="col-"] {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+/* breadcrumbs */
+.breadcrumbs{
+    display: block;
+    padding: 15px 0px 0px 0px;
+}
+
+.breadcrumbs li{
+    display: inline;
+    line-height: 25px;
+}
+
+.breadcrumbs li a{
+    background-image: url(/Images/breadcrumb-chevron-icon.png);
+    background-repeat: no-repeat;
+    background-position: right center;
+    padding-right: 26px;
+}
+
+
+.btn-bar{
+    margin-left:0;
+    margin-right: 0px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+/* active quote bar*/
+.active-quote-bar{
+    background-color: #E5F2FA;
+    padding: 20px;
+}
+
+/* sub-heading */
+.sub-heading {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+    /*.sub-heading h3, .sub-heading h4 {
+        display: inline-block;
+        padding-bottom: 10px;
+    }*/

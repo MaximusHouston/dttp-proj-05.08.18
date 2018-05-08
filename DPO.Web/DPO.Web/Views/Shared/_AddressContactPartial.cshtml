@@ -1,0 +1,33 @@
+﻿@model IAddressContactModel
+@*Country*@
+@Html.LabelFor(m => m.Address.CountryCode, ResourceUI.Country, new { @class = "required" })
+@Html.DropDownCountryListFor(m => m.Address.CountryCode, m => m.Address.StateId, Model.Address.Countries)
+@Html.KeyMessages(m => m.Address.CountryCode)
+@*Address line 1*@
+@Html.LabelFor(m => m.Address.AddressLine1, ResourceUI.AddressLine1, new { @class = "required" })
+@Html.TextBoxFor(m => m.Address.AddressLine1, new { @class = "full" })
+@Html.KeyMessages(m => m.Address.AddressLine1)
+@*Address line 2*@
+@Html.LabelFor(m => m.Address.AddressLine2, ResourceUI.AddressLine2)
+@Html.TextBoxFor(m => m.Address.AddressLine2, new { @class = "full" })
+@Html.KeyMessages(m => m.Address.AddressLine2)
+@*City*@
+@Html.LabelFor(m => m.Address.Location, ResourceUI.Location, new { @class = "required" })
+@Html.TextBoxFor(m => m.Address.Location, new { @class = "full" })
+@Html.KeyMessages(m => m.Address.Location)
+@*State*@
+@Html.LabelFor(m => m.Address.StateId, ResourceUI.State, new { @class = "required" })
+@Html.DropDownRegionListFor(m => m.Address.StateId, Model.Address.States)
+@Html.KeyMessages(m => m.Address.StateId)
+@*Zip Code*@
+@Html.LabelFor(m => m.Address.PostalCode, ResourceUI.ZipCode, new { @class = "required" })
+@Html.TextBoxFor(m => m.Address.PostalCode, new { @class = "half upcase" })
+@Html.KeyMessages(m => m.Address.PostalCode)
+
+@Html.LabelFor(m => m.Contact.OfficeNumber, ResourceUI.OfficePhoneNumber)
+@Html.TextBoxFor(m => m.Contact.OfficeNumber, new { @class = "half" })
+@Html.KeyMessages(m => m.Contact.OfficeNumber)
+@*Web address*@
+@Html.LabelFor(m => m.Contact.WebAddress, ResourceUI.WebAddress)
+@Html.TextBoxFor(m => m.Contact.WebAddress, new { @class = "full", autocomplete = "off" })
+@Html.KeyMessages(m => m.Contact.WebAddress)

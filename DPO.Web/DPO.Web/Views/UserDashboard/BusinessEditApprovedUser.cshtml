@@ -1,0 +1,261 @@
+﻿@using MvcCheckBoxList.Model;
+
+@model UserModel
+
+@{
+    ViewBag.Title = ResourceUI.BusinessEdit;
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/checkboxhelpers", "~/bundles/scripts/confirmmodal")
+}
+
+@Html.Partial("ConfirmModal")
+@Html.Partial("BusinessLogoUploadModal", Model.Business)
+
+@Html.Partial("_UserdashboardTabsPartial")
+
+@if (user.BusinessLogoUrl != null)
+{
+    <img src="@(user.BusinessLogoUrl)" class="pull-right" style="max-height: 50px; position: relative; top: 15px; right: 30px;" />
+}
+<ul class="breadcrumbs">
+    <li><a href="@Url.Action("Businesses")">@ResourceUI.AllBusinesses</a></li>
+    @if(Model.Business.BusinessId == null)
+    {
+        <li>@ResourceUI.BusinessAddNew</li>
+    }
+    else
+    {
+        <li>@ResourceUI.BusinessEdit</li>
+    }
+    
+</ul>
+
+@using (Html.BeginForm("BusinessEdit", "Userdashboard", FormMethod.Post, new { @id = "BusinessEditForm"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.PageMessages()
+    @Html.HiddenFor(m => m.Business.BusinessId);
+    @Html.HiddenFor(m => m.Enabled);
+    @Html.HiddenFor(m => m.UserId);
+    
+    <div class="section t-flush">
+            <div class="item-strap">
+                <div class="itemname">
+                    @if (Model.Business.BusinessId != null)
+                    {
+                        <h1>@ResourceUI.BusinessEdit</h1>
+                    }
+                    else
+                    {
+                        <h1>@ResourceUI.BusinessAddNew</h1>
+                    }
+                </div>
+                <div class="btn-bar">
+                    <a href="#" id="showBusinessLogoUploadModal" class="btn">@ResourceUI.UploadLogo</a>
+
+                    @if (Model.Enabled == true && Model.Business.BusinessId != null)
+                    {
+                        <a href="#" class="btn" data-confirm="DisableBusiness" data-sc-ajaxpost="@Url.Action("BusinessDisable", "Userdashboard", new { BusinessId = Model.Business.BusinessId })">@ResourceUI.BusinessDisable</a>
+                    }
+                    else if(Model.Business.BusinessId != null)
+                    {
+                          <a href="#" class="btn" data-confirm="EnableBusiness" data-sc-ajaxpost="@Url.Action("BusinessEnable", "Userdashboard", new { BusinessId = Model.Business.BusinessId })">@ResourceUI.BusinessEnable</a>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <ul class="sub-tab-bar">
+            <li class="active-tab" data-view="businessDetails">
+                <span>@ResourceUI.BusinessDetails</span>
+            </li><li data-view="businessPermissions">
+                <span>@ResourceUI.DefaultAccess</span>
+            </li>
+        </ul>
+
+      <div id="businessDetails" class="sub-tab-view">
+        <div class="section form">
+            <p class="mandatory" style="top: 0; right: 20px;">@ResourceUI.FieldsMarkedWithAStar <span>*</span> @ResourceUI.AreMandatory</p>
+            <div class="row">
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col4 details-list">
+                    <h5>@ResourceUI.BusinessDetails</h5>    
+                    @Html.LabelFor(m => m.Business.BusinessName, "Business Name", new { @class = "required" })
+                    @Html.TextBoxFor(m => m.Business.BusinessName, new { @class = "full" })
+                    @Html.KeyMessages(m => m.Business.BusinessName)
+                    @*Business Type*@
+                    @if (Model.CurrentUser.UserTypeId >= UserTypeEnum.DaikinEmployee )
+                    {
+                        @Html.LabelFor(m => m.Business.BusinessTypeId, ResourceUI.BusinessType)
+                        @Html.DropDownBusinessTypeListFor(m => m.Business.BusinessTypeId, Model.Business.BusinessTypes)
+                        @Html.KeyMessages(m => m.Business.BusinessTypeId)
+                    }
+                    @if (Model.Business.BusinessId != null)
+                    {
+                          @Html.LabelFor(m => m.AccountId, @ResourceUI.AccountID)
+                          @Html.TextBoxFor(m => m.AccountId, new { @class = "threequarters" })
+                          @Html.KeyMessages(m => m.AccountId)
+                    }
+                    @if (Model.Business.BusinessId != null && Model.CurrentUser.UserTypeId >= UserTypeEnum.DaikinEmployee )
+                    {
+                        @Html.LabelFor(m => m.ShowPricing, "Show Prices")
+                        @Html.CheckBoxFor(m => m.ShowPricing)
+                        @Html.KeyMessages(m => m.ShowPricing)
+                    }
+                  
+                </div>
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col4">
+                    <h5>&nbsp;</h5>
+                    @*Email*@
+                    @Html.LabelFor(m => m.Business.Address.CountryCode, ResourceUI.Country)
+                    @Html.DropDownCountryListFor(m => m.Business.Address.CountryCode, m => m.Business.Address.StateId, Model.Business.Address.Countries)
+                    @Html.KeyMessages(m => m.Business.Address.CountryCode)
+                    @*Address line 1*@
+                    @Html.LabelFor(m => m.Business.Address.AddressLine1, ResourceUI.AddressLine1)
+                    @Html.TextBoxFor(m => m.Business.Address.AddressLine1, new { @class = "full" })
+                    @Html.KeyMessages(m => m.Business.Address.AddressLine1)
+                    @*Address line 2*@
+                    @Html.LabelFor(m => m.Business.Address.AddressLine2, ResourceUI.AddressLine2)
+                    @Html.TextBoxFor(m => m.Business.Address.AddressLine2, new { @class = "full" })
+                    @Html.KeyMessages(m => m.Business.Address.AddressLine2)
+                    @*City*@
+                    @Html.LabelFor(m => m.Business.Address.Location, ResourceUI.Location)
+                    @Html.TextBoxFor(m => m.Business.Address.Location, new { @class = "full" })
+                    @Html.KeyMessages(m => m.Business.Address.Location)
+                    @*State*@
+                    @Html.LabelFor(m => m.Business.Address.StateId, ResourceUI.State)
+                    @Html.DropDownRegionListFor(m => m.Business.Address.StateId, Model.Business.Address.States)
+                    @Html.KeyMessages(m => m.Business.Address.StateId)
+                    @*Zip Code*@
+                    @Html.LabelFor(m => m.Business.Address.PostalCode, ResourceUI.ZipCode)
+                    @Html.TextBoxFor(m => m.Business.Address.PostalCode, new { @class = "half upcase" })
+                    @Html.KeyMessages(m => m.Business.Address.PostalCode)
+                    @*Office phone number*@
+                    @Html.LabelFor(m => m.Business.Contact.OfficeNumber, ResourceUI.OfficePhoneNumber)
+                    @Html.TextBoxFor(m => m.Business.Contact.OfficeNumber, new { @class = "half" })
+                    @Html.KeyMessages(m => m.Business.Contact.OfficeNumber)
+                    @*Web address*@
+                    @Html.LabelFor(m => m.Business.Contact.WebAddress, ResourceUI.WebAddress)
+                    @Html.TextBoxFor(m => m.Business.Contact.WebAddress, new { @class = "full", autocomplete = "off" })
+                    @Html.KeyMessages(m => m.Business.Contact.WebAddress)
+                </div>
+                <div class="r-col2">&nbsp;</div>
+                <div class="row-end">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="businessPermissions" class="sub-tab-view" style="display: none;">
+        <div class="section form">
+            <div class="row">
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col7 details-list">
+                    <h5>@ResourceUI.CityAreas</h5>
+                    @*<div class="chkbox-hlpr-select-all">
+                        <input type="checkbox" /><label>@ResourceUI.AllAreas</label>
+                    </div>*@
+                    <div class="chkbox-hlpr">
+                        @Html.CheckBoxListFor(m => m.Business.CityAreas.PostedIds, m => m.Business.CityAreas.List, e => e.Id, e => e.Name, m => m.CityAreas.Selected, Position.Vertical)
+                    </div>
+                </div>
+                <div class="r-col4">&nbsp;</div>
+                <div class="row-end">&nbsp;</div>
+            </div>
+        </div>
+        <br />
+        <div class="section form">
+            <div class="row">
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col7 details-list">
+                    <h5>@ResourceUI.ProductFamilies</h5>
+                    @*<div class="chkbox-hlpr-select-all">
+                        <input type="checkbox" /><label>@ResourceUI.AllFamilies</label>
+                    </div>*@
+                    <div class="chkbox-hlpr">
+                       @Html.CheckBoxListFor(m => m.Business.ProductFamilies.PostedIds, m => m.Business.ProductFamilies.List, e => e.Id, e => e.Name, m => m.ProductFamilies.Selected, Position.Vertical)
+                    </div>
+                </div>
+                <div class="r-col4">&nbsp;</div>
+                <div class="row-end">&nbsp;</div>
+            </div>
+        </div>
+        <br />
+        <div class="section form">
+            <div class="row">
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col7 details-list">
+                    <h5>@ResourceUI.Brands</h5>
+                    @*<div class="chkbox-hlpr-select-all">
+                        <input type="checkbox" /><label>@ResourceUI.AllBrands</label>
+                    </div>*@
+                    <div class="chkbox-hlpr">
+                       @Html.CheckBoxListFor(m => m.Business.Brands.PostedIds, m => m.Business.Brands.List, e => e.Id, e => e.Name, m => m.Brands.Selected, Position.Vertical)
+                    </div>
+                </div>
+                <div class="r-col4">&nbsp;</div>
+                <div class="row-end">&nbsp;</div>
+            </div>
+        </div>
+        <br />
+        <div class="section form">
+            <div class="row">
+                <div class="r-col1">&nbsp;</div>
+                <div class="r-col7 details-list">
+                    <h5>@ResourceUI.AppsAndTools</h5>
+                    @*<div class="chkbox-hlpr-select-all">
+                        <input type="checkbox" /><label>@ResourceUI.AllAppsAndTools</label>
+                    </div>*@
+                    <div class="chkbox-hlpr">
+                       @Html.CheckBoxListFor(m => m.Business.Tools.PostedIds, m => m.Business.Tools.List, e => e.Id, e => e.Name, m => m.Tools.Selected, Position.Vertical)
+                    </div>
+                </div>
+                <div class="r-col4">&nbsp;</div>
+                <div class="row-end">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+      <div class="section action c-align">
+        <button type="button" class="btn" onclick="window.location = document.referrer">@ResourceUI.Cancel</button>
+        <a href="#" sc-ajaxpost="@Url.Action("BusinessEdit")" class="submit-btn">@((Model.Business.BusinessId != null) ? ResourceUI.SaveChanges : ResourceUI.Create)</a>
+        @Html.Partial("_LastEditedPartial")
+    </div>
+}
+
+<script>
+    $(function () {
+        var subTabs = $('.sub-tab-bar li');
+        var subViews = $('.sub-tab-view');
+
+        subTabs.click(function () {
+            subViews.hide();
+            subTabs.removeClass('active-tab');
+
+            var viewToShow = $(this).attr('data-view');
+            $('#' + viewToShow).show();
+
+            $(this).addClass('active-tab');
+        });
+
+        checkBoxHelper.createListsOfCheckboxes().enableSelectAllOnCheckboxLists();
+
+        //delay user disable until after confirmation
+        $('[data-confirm="DisableBusiness"]').on('click', function (e) {
+            confirmModal.showConfirmMsg('@ResourceUI.BusinessDisable', '@ResourceUI.BusinessDisableConfirm', PostAfterConfirm(this, '#BusinessEditForm'));
+        });
+        $('[data-confirm="EnableBusiness"]').on('click', function (e) {
+            confirmModal.showConfirmMsg('@ResourceUI.BusinessEnable', '@ResourceUI.BusinessEnableConfirm', PostAfterConfirm(this, '#BusinessEditForm'));
+        });
+
+        $('#showBusinessLogoUploadModal').on('click', function (e) {
+            $('#business_logo_upload_modal').fadeIn(200);
+        });
+    });
+</script>

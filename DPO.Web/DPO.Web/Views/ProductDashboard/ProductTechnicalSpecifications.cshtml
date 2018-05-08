@@ -1,0 +1,23 @@
+﻿@model ProductSpecificationsModel
+
+        @if (Model.NoRecords)
+        {
+            <tr>
+                <td colspan="100%">
+                    No Technical Specifications Available
+                </td>
+            </tr>
+        }
+        
+        @foreach (var item in Model.All)
+        {
+            ProductSpecificationModel spec = item.Value;
+            <tr>
+                <td>
+                    @spec.Name
+                </td>
+                <td>
+                    @spec.Value
+                </td>
+            </tr>
+        }

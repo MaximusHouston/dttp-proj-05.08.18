@@ -1,0 +1,30 @@
+﻿
+@model ProductModel
+@{
+    var specs = Model.Specifications;
+    Layout = null;
+}
+
+<div class="dk-list-header">TECHNICAL SPECIFICATIONS</div>
+
+@if (specs.NoRecords)
+{
+    <div class="col col-md-12 col-xs-12 row row-nomargin">
+        <span colspan="100%">
+            No Technical Specifications Available
+        </span>
+    </div>
+}
+
+@foreach (var item in specs.All)
+{
+    ProductSpecificationModel spec = item.Value;
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        <span class="pull-left">
+            @spec.Name
+        </span>
+        <span class="pull-right">
+            @spec.Value
+        </span>
+    </div>
+}

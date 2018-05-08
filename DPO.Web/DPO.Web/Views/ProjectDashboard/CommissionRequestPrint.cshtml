@@ -1,0 +1,442 @@
+﻿@model CommissionRequestModel
+@{
+    Layout = null;
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+    var project = Model.Project;
+    var showCostPricing = (bool)ViewData["ShowCostPricing"];
+    @Styles.Render("~/Content/css/pdf-base");
+}
+
+<div class="pdf"> 
+    <h2 class="single-line" style="color: #000; text-transform: none; font-size: 1.5em; margin-top: -1em; margin-bottom: 0; padding-bottom: 0;">
+        @{
+            string status = "";
+            switch ((CommissionRequestStatusTypeEnum)Model.CommissionRequestStatusTypeId)
+            {
+                case CommissionRequestStatusTypeEnum.Pending:
+                    status = "Pending";
+                    break;
+                case CommissionRequestStatusTypeEnum.Rejected:
+                    status = "Rejected";
+                    break;
+                case CommissionRequestStatusTypeEnum.Approved:
+                    status = "Approved";
+                    break;
+                case CommissionRequestStatusTypeEnum.Deleted:
+                    status = "Deleted";
+                    break;
+                default:
+                    status = "New request";
+                    break;
+            }
+        }
+        Status: @status
+        </h2>
+    @if ((CommissionRequestStatusTypeEnum)Model.CommissionRequestStatusTypeId == CommissionRequestStatusTypeEnum.Approved)
+    {
+        <p>
+            <span>Approved by </span>@Model.CommissionRequestStatusModifiedBy<span> on </span>@Model.CommissionRequestStatusModifiedOn
+        </p>
+        <p>&nbsp;</p>
+    }
+    @Html.Partial("ProjectDetails", project)
+    <br />
+    <div class="row">
+        <div class="r-col1 hide-print">&nbsp;</div>
+        <div class="r-col2 details-list">
+            <p style="color: #00A1E3;"><strong>@ResourceUI.EngineerDetails:</strong></p>
+            <p>@Model.Project.EngineerName</p>
+            <p>@Model.Project.EngineerName</p>
+            <p>@Model.Project.EngineerAddress.AddressLine1</p>
+            <p>@Model.Project.EngineerAddress.AddressLine2</p>
+            <p>@Model.Project.EngineerAddress.AddressLine3</p>
+            <p>@Model.Project.EngineerAddress.Location</p>
+            <p>@Model.Project.EngineerAddress.PostalCode</p>
+        </div>
+        <div class="r-col1 hide-print">&nbsp;</div>
+        <div class="r-col2 details-list">
+            <p style="color: #00A1E3;"><strong>@ResourceUI.CustomerAddress:</strong></p>
+            <p>@Model.Project.CustomerName</p>
+            <p>@Model.Project.CustomerAddress.AddressLine1</p>
+            <p>@Model.Project.CustomerAddress.AddressLine2</p>
+            <p>@Model.Project.CustomerAddress.AddressLine3</p>
+            <p>@Model.Project.CustomerAddress.Location</p>
+            <p>@Model.Project.CustomerAddress.PostalCode</p>
+        </div>
+        <div class="r-col1 hide-print">&nbsp;</div>
+        <div class="r-col2 details-list">
+            <p style="color: #00A1E3;"><strong>@ResourceUI.SellerAddress:</strong></p>
+            <p>@Model.Project.SellerName</p>
+            <p>@Model.Project.SellerAddress.AddressLine1</p>
+            <p>@Model.Project.SellerAddress.AddressLine2</p>
+            <p>@Model.Project.SellerAddress.AddressLine3</p>
+            <p>@Model.Project.SellerAddress.Location</p>
+            <p>@Model.Project.SellerAddress.PostalCode</p>
+        </div>
+        <div class="r-col1 hide-print">&nbsp;</div>
+        <div class="r-col1 hide-print">&nbsp;</div>
+        <div class="r-col2 details-list">
+            <p style="color: #00A1E3;"><strong>@ResourceUI.ShipToAddress:</strong></p>
+            <p>@Model.Project.ShipToName</p>
+            <p>@Model.Project.ShipToAddress.AddressLine1</p>
+            <p>@Model.Project.ShipToAddress.AddressLine2</p>
+            <p>@Model.Project.ShipToAddress.AddressLine3</p>
+            <p>@Model.Project.ShipToAddress.Location</p>
+            <p>@Model.Project.ShipToAddress.PostalCode</p>
+        </div>
+        <div class="r-col1 hide-print">&nbsp;</div>
+        <div class="row-end">&nbsp;</div>
+    </div>
+    <br />
+    <div class="details-list">
+        <ul>
+            <li>
+                <p class="detail-name"><strong>Quote Name:</strong></p>
+                <p style="display: block;">@Model.Quote.Title</p>
+            </li>
+        </ul>
+    </div>
+    @if (Model.QuoteItems != null)
+    {
+        <div class="details-list">
+            <ul>
+                <li>
+                    <p class="detail-name"><strong>Products in Quote:</strong></p>
+                    <p style="display: block;">@Model.QuoteItems.Count</p>
+                </li>
+            </ul>
+        </div>
+        <br class="clearfix" />
+        <div class="pad-btm">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        @if (user.ShowPrices && showCostPricing)
+                        {
+                            <th>List Price</th>
+                            <th>Net Price</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.QuoteItems)
+                    {
+                        <tr>
+                            <td>@item.ProductNumber</td>
+                            <td>@Html.DisplayFor(m => item.Quantity)</td>
+                            @if (user.ShowPrices && showCostPricing)
+                            {
+                                <td>@Html.DisplayFor(m => item.PriceList)</td>
+                                <td>@Html.DisplayFor(m => item.PriceNet)</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    <div class="pad-btm">
+        <h4>project systems and competitive position of opportunity</h4>
+        <br />
+        <div class="details-list">
+            <ul>
+                <li>
+                    <p class="detail-name"><strong>Project System Basis Of Design</strong></p>
+                    <p style="display: block;">@Model.SystemBasisDesignTypeDescription</p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>Brand Specified</strong></p>
+                    <p style="display: block;">@Model.BrandApprovedTypeDescription</p>
+                </li>
+            </ul>
+        </div>
+        <div class="details-list">
+            <ul>
+                <li>
+                    <p class="detail-name"><strong>Zone Strategy</strong></p>
+                    <p style="display: block;">@Model.ZoneStrategyTypeDescription</p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>Approved Equals</strong></p>
+                    <p style="display: block;">@Model.BrandSpecifiedTypeDescription</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <br class="clearfix" />
+    <div class="pad-btm">
+        <div class="details-list">
+            <ul>
+                <li>
+                    <p class="detail-name"><strong>Copy of competitors price to customer available?</strong></p>
+                    <p style="display: block;">@((Model.HasCompetitorPrice) ? ResourceUI.Yes : ResourceUI.No)</p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>Copy of competitors quote to customer available?</strong></p>
+                    <p style="display: block;">@((Model.HasCompetitorQuote) ? ResourceUI.Yes : ResourceUI.No)</p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>Was a line by line comparison of competitor to Daikin completed?</strong></p>
+                    <p style="display: block;">@((Model.HasCompetitorLineComparsion) ? ResourceUI.Yes : ResourceUI.No)</p>
+                </li>
+                @*<li>
+                    <p class="detail-name"><strong>Is Daikin Equipment at an Advantage/Disadvantage?</strong></p>
+                    <p style="display: block;">@((Model.DaikinEquipmentAtAdvantageDescription != null) ? Model.DaikinEquipmentAtAdvantageDescription : "No answer given")</p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>Is rep/distributor confident that competition offer is equal to this offer?</strong></p>
+                    <p style="display: block;">@((Model.IsConfidentCompetitorQuote) ? ResourceUI.Yes : ResourceUI.No)</p>
+                </li>*@
+            </ul>
+        </div>
+        <div class="details-list">
+            <ul>
+                @if (Model.HasCompetitorPrice)
+                {
+                    <li>
+                        <p class="detail-name"><strong>Competitor Price</strong></p>
+                        <p style="display: block;">@Model.CompetitorPrice</p>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <p class="detail-name"><strong>&nbsp;</strong></p>
+                        <p style="display: block;">&nbsp;</p>
+                    </li>
+                }
+                @if (Model.HasCompetitorQuote)
+                {
+                    <li>
+                        <p class="detail-name"><strong>Competitor quote attached:</strong></p>
+                        <p style="display: block;">
+                            @((Model.CompetitorQuoteFileName != null) ? ResourceUI.Yes : ResourceUI.No)
+                        </p>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <p class="detail-name"><strong>&nbsp;</strong></p>
+                        <p style="display: block;">&nbsp;</p>
+                    </li>
+                }
+                @if (Model.HasCompetitorLineComparsion)
+                {
+                    <li>
+                        <p class="detail-name"><strong>Competitors line By line comparison file attached:</strong></p>
+                        <p style="display: block;">
+                            @((Model.CompetitorLineComparsionFileName != null) ? ResourceUI.Yes : ResourceUI.No)
+                        </p>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <p class="detail-name"><strong>&nbsp;</strong></p>
+                        <p style="display: block;">&nbsp;</p>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+    <br class="clearfix" />
+    @if (user.ShowPrices == true && showCostPricing == true)
+    {
+        <div class="row pad-top pad-btm">
+            <h4>REP/DISTRIBUTOR AND DAIKIN INFORMATION AND COSTING FOR OPPORTUNITY</h4>
+            <p>TOTAL NET PRICE BASED ON STANDARD MULTIPLIER(S)</p>
+            <div class="details-list">
+                <ul>
+                    <li>
+                        <p class="detail-name"><strong>Total Listed Value Of This Project Offering</strong></p>
+                        <p style="display: block;">@Html.DisplayFor(m => Model.StandardTotals.TotalList)</p>
+                    </li>
+                    <li>
+                        <p class="detail-name"><strong>Total Net</strong></p>
+                        <p style="display: block;">@Html.DisplayFor(m => Model.StandardTotals.TotalNet)</p>
+                    </li>
+                    <li>
+                        <p class="detail-name"><strong>Freight Costs</strong></p>
+                        <p style="display: block;">@Html.DisplayFor(m => Model.Quote.TotalFreight)</p>
+                    </li>
+                    <li>
+                        <p class="detail-name"><strong>Start up / Commissioning costs</strong></p>
+                        <p style="display: block;">@string.Format("{0:C}", Model.StartUpCosts)</p>
+                    </li>
+                    @*<li>
+                        <p class="detail-name"><strong>Rep/Distributor Gross Profit on Opportunity</strong></p>
+                        <p style="display: block;"
+                           >@string.Format("{0:C}", Model.StartUpCosts) / @string.Format("{0:C}", Model.StandardTotals.TotalCommissionAmount)</p>
+                    </li>
+                    <li>
+                        <p class="detail-name"><strong>Total standard sales value of this opportunity<br />from Rep/Dist to customer</strong></p>
+                        <p style="display: block;">@string.Format("{0:C}", Model.StandardTotals.TotalSell + Model.StartUpCosts + Model.Quote.TotalFreight) </p>
+                    </li>*@
+                </ul>
+            </div>
+        </div>
+
+        <br class="clearfix" />
+
+        <div class="row pad-top pad-btm">
+            <h4>OPPORTUNITY COMMISSION AMOUNT REQUESTED</h4>
+            <p>TOTAL NET PRICE BASED ON REQUESTED COMMISSION</p>
+            <div class="details-list">
+                <ul>
+                    <li>
+                        <p class="detail-name"><strong>Commission being requested for this opportunity</strong></p>
+                        @if (Model.RequestedCommissionPercentage != null)
+                        {
+                            <p style="display:block;">@string.Format("{0:#,0.000}%", Model.RequestedCommissionPercentage)</p>
+                        }
+                    </li>
+                    <li>
+                        <p class="detail-name"><strong>Commission being approved for this opportunity</strong></p>
+                        @if (Model.ApprovedCommissionPercentage != null)
+                        {
+                            <p style="display: block;">@string.Format("{0:#,0.000}%", Model.ApprovedCommissionPercentage)</p>
+                        }
+                    </li>
+                 
+                </ul>
+            </div>
+            <div class="details-list">
+                <ul>
+    <li>
+        @*keep the Commission Amount line alignment with the Commission Approved Percent on the same line on print pdf*@
+        <p class="detail-name"></p>
+        <br />
+        <br />
+        <p style="display:block;"></p>
+    </li>
+    <li>
+        <p class="detail-name"><strong>Commission Amount</strong></p>
+
+        @if (Model.ApprovedCommissionTotal > 0)
+        {
+
+            <p style="display: block;">
+                @string.Format("{0:C}", Model.ApprovedCommissionTotal)
+            </p>
+
+        }
+        else if (Model.RequestedCommissionTotal > 0)
+        {
+            <p style="display: block;">
+                @String.Format("{0:C}", Model.RequestedCommissionTotal)
+            </p>
+        }
+
+        <p class="detail-name"><strong>Total Net</strong></p>
+
+        @if (Model.TotalNet != null)
+        {
+            <p style="display: block;">
+                @string.Format("{0:C}", Model.TotalNet)
+            </p>
+
+        }
+
+        <p class="detail-name"><strong>Total Net Multiplier</strong></p>
+        @if (Model.ApprovedMultiplier > 0)
+        {
+            <p style="display: block;">
+                @Model.ApprovedMultiplier.ToString("0.000");
+            </p>
+        }
+        else if (Model.RequestedMultiplier > 0)
+        {
+            <p style="display: block;">
+              @Model.RequestedMultiplier.ToString("0.000")
+            </p>
+        }
+      
+        <p class="detail-name"><strong>Net Material Value Multiplier</strong></p>
+       
+        @if (Model.RequestedNetMaterialValueMultiplier > 0)
+            {
+           <p style="display: block;">
+             @Model.RequestedNetMaterialValueMultiplier.ToString("0.000");
+           </p>
+        }
+            <p class="detail-name"><strong>Net Material Value</strong></p>
+           
+                @if (Model.RequestedNetMaterialValue > 0)
+                {
+                    <p style="display: block;">
+                        @string.Format("{0:C}", Model.RequestedNetMaterialValue);
+                    </p>
+                }
+
+         </li>
+            </ul>
+               </div>
+        </div>
+        
+        <br />
+       
+        <br class="clearfix" />
+    }
+    
+    <div class="row pad-top pad-btm">
+       <div class="details-list">
+           <ul>
+               <li>
+                   <p class="detail-name"><strong>Total revised Rep/Dist selling price as a result of Commission</strong></p>
+                   <p style="display:block;">
+                       @string.Format("{0:C}", Model.TotalRevised);
+                   </p>
+
+                   <br />
+               </li>
+           </ul>
+          
+       </div>
+    </div>
+    <br class="clear-fix" />
+
+    <div class="row pad-top pad-btm">
+        <div class="details-list">
+            <ul>
+                <li>
+                    <p class="detail-name"><strong>Probability of close</strong></p>
+                    <p style="display: block;">
+                        @((Model.ProbabilityOfCloseTypeDescription != null) ? Model.ProbabilityOfCloseTypeDescription : "Not given")
+                    </p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>If approved, order will be issued to Daikin on:</strong></p>
+                    <p style="display: block;">
+                        @Html.DisplayFor(m => m.OrderPlannedFor)
+                    </p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>Approximate delivery date for required equipment:</strong></p>
+                    <p style="display: block;">
+                        @Html.DisplayFor(m => m.OrderDeliveryDate)
+                    </p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>Any further information or reason for commission request:</strong></p>
+                    <p style="display:block;">
+                        @Html.DisplayTextFor(m => m.Notes)
+                    </p>
+                </li>
+                @if (Model.ResponseNotes != null)
+                {
+                    <li>
+                        <p class="detail-name"><strong>Response from approval team</strong></p>
+                        <p style="display:block;">@Model.ResponseNotes</p>
+                    </li>
+                }
+                <li>
+                    <p>&nbsp;</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="OLEDB.DaikinCity.ProjectOfficeTemp"
+  DTS:DTSID="{92049030-89F8-4F91-B5A3-5DFE34463AC0}"
+  DTS:CreationName="OLEDB">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectionString="Data Source=GMCSQL12\DCTYDB;User ID=DaikinAdmin;Initial Catalog=dbDaikinProjectOfficeTemp;Provider=SQLNCLI11.1;Persist Security Info=True;Auto Translate=False;">
+      <DTS:Password
+        DTS:Name="Password"
+        Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA//egNKZ7pUSYyth6HWT7dQAAAAACAAAAAAAQZgAAAAEAACAAAAD3Q7SgIwi/265Q7hULMjAjzExRhhXSU7tquBbFHR0VVgAAAAAOgAAAAAIAACAAAAAI0h/YYQrgzPmh2rqctzbVvnYkwdpTl1iFmOiWwVGBg4AAAAA+NnUdoXe6iYnzBsbmhqGSb0FK7IDK4p7IFxlK0tNmfTQmgXShI1dWo/6Vcpzw+w8ZzqQRqEOPVS2eytHQ2IOj6XYB56r/gu+SS9Pvii7UbyjN1IMKKb6q8LMpyweeDywsHbAiVvpc/BozFUDaP0IVoTDRHQrG8nzKS/TcOgwVQUAAAAA1TAYBtMqOnRZMlRmYKze418yJa0JPEvhf8yqpWObkE21du07fSxM2Bz28kPdd7Y9gnlWqupIFKHs8rqx6NjlO</DTS:Password>
+    </DTS:ConnectionManager>
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

@@ -1,0 +1,12 @@
+﻿<div>
+    <div ng-repeat="note in vm.notes">
+        <hr />
+        <div>
+            {{ note.projectPipelineNoteType.name}} at {{ note.timestamp | date: 'MM/dd/yyyy' }}
+            by {{ note.ownerName }}
+        </div>
+        <div>
+            <p>{{ note.note }}</p>
+        </div>
+    </div>
+</div>

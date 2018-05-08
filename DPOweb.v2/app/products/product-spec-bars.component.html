@@ -1,0 +1,55 @@
+﻿<div *ngIf="product.specifications.all != null">
+    <div *ngIf="SEERNonDucted">
+        <div *ngIf="product.specifications.all.seerNonDucted">SEER (Non-Ducted):<span class="pull-right">{{product.specifications.all.seerNonDucted.value | number:'1.2-2'}}</span></div>
+        <div class="seerRatingBar"></div>
+    </div>
+    
+    <div *ngIf="IEERNonDucted">
+        <div *ngIf="product.specifications.all.ieerNonDucted">IEER (Non-Ducted):<span class="pull-right">{{product.specifications.all.ieerNonDucted.value | number:'1.2-2'}}</span></div>
+        <div class="ieerRatingBar"></div>
+    </div>
+
+    <div *ngIf="EERNonDucted">
+        <div *ngIf="product.specifications.all.eerNonDucted">EER (Non-Ducted):<span class="pull-right">{{product.specifications.all.eerNonDucted.value | number:'1.2-2'}}</span></div>
+        <div class="eerRatingBar"></div>
+    </div>
+
+    <div *ngIf="HSPFNonDucted">
+        <div *ngIf="product.specifications.all.hspfNonDucted">HSPF (Non-Ducted):<span class="pull-right">{{product.specifications.all.hspfNonDucted.value | number:'1.2-2'}}</span></div>
+        <div class="hspfRatingBar"></div>
+    </div>
+
+    <div *ngIf="COP47NonDucted">
+        <div *ngIf="product.specifications.all.coP47NonDucted">COP47 (Non-Ducted):<span class="pull-right">{{product.specifications.all.coP47NonDucted.value | number:'1.2-2'}}</span></div>
+        <div class="cop47RatingBar"></div>
+    </div>
+    
+  
+    <div *ngIf="SCHENonDucted">
+        <div *ngIf="product.specifications.all.scheNonDucted">SCHE(Non-Ducted):<span class="pull-right">{{product.specifications.all.scheNonDucted.value | number:'1.2-2'}}</span></div>
+        <div class="scheRatingBar"></div>
+    </div>
+
+    <div *ngIf="SEERDucted">
+        <div *ngIf="product.specifications.all.seerDucted">SEER (Ducted):<span class="pull-right">{{product.specifications.all.seerDucted.value | number:'1.2-2'}}</span></div>
+        <div class="seerRatingBarDucted"></div>
+    </div>
+    <div *ngIf="EERDucted">
+        <div *ngIf="product.specifications.all.eerDucted">EER (Ducted):<span class="pull-right">{{product.specifications.all.eerDucted.value | number:'1.2-2'}}</span></div>
+        <div class="eerRatingBarDucted"></div>
+    </div>
+    <div *ngIf="HSPFDucted">
+        <div *ngIf="product.specifications.all.hspfDucted">HSPF (Ducted):<span class="pull-right">{{product.specifications.all.hspfDucted.value | number:'1.2-2'}}</span></div>
+        <div class="hspfRatingBarDucted"></div>
+    </div>
+    <div *ngIf="COP47Ducted">
+        <div *ngIf="product.specifications.all.coP47Ducted">COP47 (Ducted):<span class="pull-right">{{product.specifications.all.coP47Ducted.value | number:'1.2-2'}}</span></div>
+        <div class="cop47RatingBarDucted"></div>
+    </div>
+    <div *ngIf="AFUE">
+        <div *ngIf="product.specifications.all.afue">AFUE:<span class="pull-right">{{product.specifications.all.afue.value | number:'1.2-2'}}</span></div>
+        <div class="afueRatingBar"></div>
+    </div>
+    
+        
+</div>

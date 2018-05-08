@@ -1,0 +1,290 @@
+﻿@model QuoteItemsModel
+@{
+    ViewBag.Title = ResourceUI.QuotePackage;
+}
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/packagequotemodal")
+}
+<div id="quote_package_modal_container">
+    @Html.Partial("QuotePackageModal")
+</div>
+<div class="modal confirm" id="confirm_modal_package_creation" style="display: none;">
+    <div style="top: 20%;">
+        <img src="~/Images/modal-close-btn.png" class="close-btn" />
+        <h1>Your Package is being created</h1>
+        <p>Please be patient, this may take some time</p>
+        <button class="btn">@ResourceUI.Ok</button>
+    </div>
+</div>
+@Html.Partial("_ProjectTabsPartial")
+<ul class="breadcrumbs">
+    <li><a href="/v2/#/projects">@ResourceUI.Projects</a></li>
+    <li><a href="@Url.Action("Project", new { ProjectId = Model.ProjectId })">@Model.ProjectName</a></li>
+    @*<li><a href="@Url.Action("Quote", new { projectId = Model.ProjectId, QuoteId = Model.QuoteId })">@Model.Title</a></li>*@
+    <li><a href="/v2/#/quote/@Model.QuoteId/existingRecord">@Model.Title</a></li>
+    <li>@ResourceUI.QuotePackage</li>
+</ul>
+@using (Html.BeginForm("QuotePackageCreate", "Projectdashboard", FormMethod.Post, new { @id = "QuotePackageCreateForm" }))
+{
+    <div class="section t-flush">
+        <div class="item-strap">
+            <div class="itemname">
+                <h1>@ResourceUI.QuotePackage</h1>
+            </div>
+            <div class="btn-bar">
+                <button type="submit" class="submit-btn"><img src="~/Images/create-package-btn-icon.png" />Create Package</button>
+            </div>
+        </div>
+    </div>
+
+    // Key post data
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.ProjectId)
+    @Html.HiddenFor(m => m.QuoteId)
+
+    @Html.PageMessages()
+    <div class="section t-flush">
+        <div class="tbl-strap">
+            <img src="~/Images/assoc-products-icon.png" class="pull-left" />
+            <div class="pull-left">
+                <h6>Associated Product Files</h6>
+                <p>Customise the available documents you wish to be included in this package</p>
+            </div>
+        </div>
+        <div class="tbl-holder scroll-x">
+            <table class="tbl" id="associatedproducts_table">
+                <thead>
+                    <tr>
+                        <th id="productreference" aria-sort="none" style="width:180px;">Reference</th>
+                        <th id="productdescription" aria-sort="none" style="width:180px;">Description</th>
+                        <th><input type="checkbox" name="chkAllSubmittalSheets" class="pull-left" />Submittal<br />Sheets</th>
+                        <th><input type="checkbox" name="chkAllInstallationManuals" class="pull-left" />Installation<br />Manual</th>
+                        <th><input type="checkbox" name="chkAllOperationalManuals" class="pull-left" />Operation<br />Manual</th>
+                        <th><input type="checkbox" name="chkAllGuideSpecs" class="pull-left" />Guide<br />Specs</th>
+                        <th><input type="checkbox" name="chkAllProductBrochures" class="pull-left" />Product<br />Brochure</th>
+                        <th><input type="checkbox" name="chkAllRevitDrawing" class="pull-left" />Revit<br />Drawing</th>
+                        <th><input type="checkbox" name="chkAllCADDrawing" class="pull-left" />CAD<br />Drawing</th>
+                        <th><input type="checkbox" name="chkAllProductFlyer" class="pull-left" />Product<br />Flyer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @helper GenerateCheckBox(DocumentModel doc)
+                    {
+if (doc != null)
+{
+        <input type="checkbox" name="@("doc"+doc.FileName.ToString())" @(Model.IsDocumentInPackage(doc) ? "checked" : "") />
+    if (!string.IsNullOrWhiteSpace(doc.URL))
+    {
+            <a href="@doc.URL" target="_blank">View</a>
+    }
+    else
+    {
+            @doc.FileName.ToString()
+    }
+}
+}
+                    @foreach (var item in Model.Items)
+                    {
+                        if (item.LineItemTypeId != (byte)LineItemTypeEnum.Configured)
+                        {
+                            <tr>
+                                <td class="as-lnk" style="padding-right: 10px;">
+                                    @*<a href="@Url.Action("Product", "ProductDashboard", new { ProductId = item.ProductId, QuoteId = Model.QuoteId })" target="_blank">@item.ProductNumber</a>*@
+                                    <a href="/v2/#/products/(productDetails:@item.ProductId)?activeTab=product-overview">@item.ProductNumber</a>
+                                </td>
+                                <td style="padding-right: 10px; max-width: 40px; white-space:normal;">
+                                    @item.Description
+                                </td>
+                                <td style="padding-right: 10px;">
+                                    @GenerateCheckBox(item.GetDocument(DocumentTypeEnum.SubmittalData))
+                                </td>
+                                <td style="padding-right: 10px;">
+                                    @GenerateCheckBox(item.GetDocument(DocumentTypeEnum.InstallationManual))
+                                </td>
+                                <td style="padding-right: 10px;">
+                                    @GenerateCheckBox(item.GetDocument(DocumentTypeEnum.OperationManual))
+                                </td>
+                                <td style="padding-right: 10px;">
+                                    @GenerateCheckBox(item.GetDocument(DocumentTypeEnum.WrittenGuideSpec))
+                                </td>
+                                <td style="padding-right: 10px;">
+                                    @GenerateCheckBox(item.GetDocument(DocumentTypeEnum.ProductBrochure))
+                                </td>
+                                <td style="padding-right: 10px;">
+                                    @GenerateCheckBox(item.GetDocument(DocumentTypeEnum.RevitDrawing))
+                                </td>
+                                <td style="padding-right: 10px;">
+                                    @GenerateCheckBox(item.GetDocument(DocumentTypeEnum.CADDrawing))
+                                </td>
+                                <td style="padding-right: 10px;">
+                                    @GenerateCheckBox(item.GetDocument(DocumentTypeEnum.ProductFlyer))
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @*Configured products*@
+        @if (Model.HasConfiguredItem)
+        {
+            <div class="tbl-holder scroll-x">
+                <table class="tbl" id="configuredproducts_table">
+                    <thead>
+                        <tr>
+                            <th id="productreference" aria-sort="none" style="width:180px;">Reference</th>
+                            <th id="productdescription" aria-sort="none" style="width:180px;">Description</th>
+                            <th><input type="checkbox" name="chkAllSubmittalSheets" class="pull-left" />Submittal<br />Sheets</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model.Items)
+                        {
+                            if (item.LineItemTypeId == (byte)LineItemTypeEnum.Configured)
+                            {
+
+                                <tr>
+                                    <td class="as-lnk" style="padding-right: 10px;">
+                                        <span>@item.CodeString</span>
+                                    </td>
+                                    <td style="padding-right: 10px; max-width: 40px; white-space:normal;">
+                                        Configured Item
+                                    </td>
+                                    <td style="padding-right: 10px;">
+                                        @GenerateCheckBox(item.GetDocument(DocumentTypeEnum.SubmittalData))
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+
+
+        @*Configured products*@
+    </div>
+    <br />
+
+    <div class="section">
+        <div class="tbl-strap">
+            <img src="~/Images/attached-files-icon.png" class="pull-left" />
+            <div class="pull-left">
+                <h6>Other Uploaded Files</h6>
+                <p>Please select the files to be attached when this package is created</p>
+            </div>
+            <div class="pull-right">
+                <span class="selections-buttons">
+                    <button type="button" class="context-btn" id="attach_new_file_btn">
+                        <img src="~/Images/context-btn-export-icon.png" />
+                        Upload New File
+                    </button>
+                </span>
+            </div>
+        </div>
+        <div class="tbl-holder scroll-x">
+            <table class="tbl" id="attachedfiles_table">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" name="chkAllAttachedFiles" class="pull-left" />
+                            <span style="vertical-align: middle;">File Name</span>
+                        </th>
+                        <th style="width: 100px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var file in Model.QuotePackageAttachedFiles)
+                {
+                        <tr>
+                            <td>@GenerateCheckBox(file)</td>
+                            <td>
+                                <a href="#" class="delete_quote_package_attached_file context-btn h-slim">
+                                    <img src="~/Images/context-btn-delete-icon.png" />
+                                    @ResourceUI.Delete File
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section action c-align">
+        @*<button type="button" class="btn" onclick="window.location = document.referrer">@ResourceUI.Cancel</button>*@
+        <a class="btn btn-default" href="/v2/#/quote/@Model.QuoteId/existingRecord">@ResourceUI.Cancel</a>
+        <button type="button" class="submit-btn"><img src="~/Images/create-package-btn-icon.png" />Create Package</button>
+    </div>
+}
+<script>
+    $(function () {
+
+        $('#QuotePackageCreateForm .submit-btn').on('click', function () {
+            $('#confirm_modal_package_creation').fadeIn(200);
+            $('#QuotePackageCreateForm').submit();
+        });
+
+        $('#confirm_modal_package_creation .btn').on('click', function () {
+            $('#confirm_modal_package_creation').fadeOut(200);
+        });
+
+        tablehelper.setColumnIds('associatedproducts_table');
+        tablehelper.setColumnIds('configuredproducts_table');
+        tablehelper.setColumnIds('attachedfiles_table');
+
+        $('.tbl thead input[type="checkbox"]').on('click', function () {
+            var column_id = $(this).parents('th').attr('data-col-id');
+            if (!column_id) return;
+
+            var applicable_checkboxes = $('.tbl td[data-col-id="' + column_id + '"] input');
+            //($(this).is(':checked')) ? applicable_checkboxes.attr('checked', true) : applicable_checkboxes.removeAttr('checked');
+            ($(this).is(':checked')) ? applicable_checkboxes.prop('checked', true) : applicable_checkboxes.prop('checked',false);
+        });
+
+        $('.tbl tbody input[type="checkbox"]').on('click', function () {
+            var column_id = $(this).parents('td').attr('data-col-id');
+            if (!column_id) return;
+
+            var checkboxes_in_this_column = $('.tbl td[data-col-id="' + column_id + '"] input').length;
+            var checked_checkboxes_in_this_column = $('.tbl td[data-col-id="' + column_id + '"] input:checked').length;
+            var column_heading_checkbox = $('.tbl th[data-col-id="' + column_id + '"] input');
+
+            if (checkboxes_in_this_column !== checked_checkboxes_in_this_column) {
+                column_heading_checkbox.removeAttr('checked');
+            }
+            else {
+                column_heading_checkbox.attr('checked', true);
+            }
+        });
+
+        $('.delete_quote_package_attached_file').on('click', function (e) {
+            e.preventDefault();
+
+            var currentTableRow = $(this).parents('tr');
+            var currentCheckBox = currentTableRow.find('input[type="checkbox"]');
+            var currentCheckBoxName = currentCheckBox.attr('name');
+
+            currentTableRow.css('opacity', '0.5');
+            //removing 'doc' reference
+            currentCheckBox.attr('name', 'chkAttached-' + currentCheckBoxName.substr(3, currentCheckBoxName.length));
+            currentCheckBox.attr('checked', true);
+
+            $.post("@Url.Action("QuotePackageDeleteAttachFile", "ProjectDashboard")", $('#QuotePackageCreateForm').serialize(), function (result) {
+                window.location.replace("@Url.Action("QuotePackage", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })");
+            });
+        });
+
+        if ($('#attachedfiles_table input[type="checkbox"]').length > 1) {
+            $('#attachedfiles_table input[type="checkbox"]').attr('checked', true);
+        }
+
+    });
+</script>

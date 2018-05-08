@@ -1,0 +1,34 @@
+﻿<kendo-grid *ngIf="quoteItems" #grid id="quoteDicountRequestsGrid" [data]="quoteItems.discountRequests">
+    <kendo-grid-column media="(max-width: 450px)" title="Discount Requests">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <dl>
+                <dt>Reference</dt>
+                <dd>{{ dataItem.discountRequestId }}</dd>
+                <dt>Request Date</dt>
+                <dd>{{ dataItem.requestedOn | date :'shortDate' }}</dd>
+                <dt>Request Status</dt>
+                <dd>{{ dataItem.discountRequestStatusTypeDescription }}</dd>
+            </dl>
+        </ng-template>
+    </kendo-grid-column>
+
+
+
+    <kendo-grid-column media="(min-width: 450px)" field="discountRequestId" title="Reference">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <a href="/ProjectDashboard/DiscountRequest?DiscountRequestId={{dataItem.discountRequestId}}" style="color:#00A1E4; text-decoration:underline;">{{dataItem.discountRequestId}}</a>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" field="requestedOn" title="Request Date">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            {{dataItem.requestedOn | date :'shortDate'}}
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" field="discountRequestStatusTypeDescription" title="Request Status">
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <span *ngIf="dataItem.discountRequestStatusTypeId == enums.DiscountRequestStatusTypeEnum.Approved" style="color:#5dad70">{{dataItem.discountRequestStatusTypeDescription}}</span>
+            <span *ngIf="dataItem.discountRequestStatusTypeId != enums.DiscountRequestStatusTypeEnum.Approved">{{dataItem.discountRequestStatusTypeDescription}}</span>
+        </ng-template>
+    </kendo-grid-column>
+
+</kendo-grid>

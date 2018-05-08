@@ -1,0 +1,80 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "Order FAQ";
+}
+
+@section Page_Styles
+{
+    
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles",
+        "~/Content/css/bootstrap")
+}
+
+<a href="@Url.Action("Index", "Home")" id="home_btn"><img src="~/Images/daikin-logo.png" height="55" alt="www.daikin.co.uk" /></a>
+
+<div style="padding-left:30px;" >
+    <h1 style="padding-bottom:0px;">FAQ</h1>
+    <div class="section form">
+        <div class="faqcontent">
+            <p class="question">Q: How do you submit an order?<p>
+            <p class="answer">A: Open your active quote to view overall project summary and click Submit Order button.</p>
+            <img src="~/app/img/faq/submitOrderBtn.jpg" alt="Submit Order Button" style="width:70%;border:solid;" />
+            <br />
+            <p class="answer">One page order form will open with information that needs to be completed such as project location/address, dealer/contractor/address, Order Details such as P/O #, shipping instructions, etc.</p>
+            <img src="~/app/img/faq/orderForm.jpg" alt="Order Form" style="width:70%; border:solid;" />
+            <p class="answer">Upon entering all required information and PO is attached, click Submit button at the bottom of the form to submit the order.</p>
+
+            <p class="question">Q: What if I have do not have permission to submit a PO<p>
+            <p class="answer">A: Contact your Daikin City administrator to approve and set up access to submit order.</p>
+
+            <p class="question">Q: How do I know the CSR has received my order<p>
+            <p class="answer">A: You will receive an email letting you know the order has successfully been submitted. The CSR will send an acknowledgement within 1 business day.</p>
+
+            <p class="question">Q: What do I do if I need to cancel or change my PO?<p>
+            <p class="answer">A: Contact your CSR to review the changes.  If the variance is over 1% an amended discount request may be required..</p>
+
+            <p class="question">Q: How do I know what stage my orders in?<p>
+            <p class="answer">A: Click on the Revision # that was used to submit discount and Purchase Order. Click on Order Button on top of screen which will provide the following summary status.  The order status column will change once the CSR reviews and promotes it to MAPICS ordering system, as product ships and invoices.</p>
+            <img src="~/app/img/faq/submitedOrder.jpg" alt="Submitted Order" style="width:70%; border:solid;" />
+
+            <p class="question">Q: Upon submitting order can I maintain and update the project status in Daikin City?<p>
+            <p class="answer">A: Once a purchase order is entered, changes to the project in Daikin City are not permitted.  Contact your CSR to make adjustments to the order.</p>
+
+            <p class="question">Q: Do I need to attach my hard copy PO to the order in Daikin City?<p>
+            <p class="answer">A: Yes, before you electronically submit your order, you would attach the hard copy. Order cannot be processed without proper PO attachment.</p>
+
+            <p class="question">Q: Can we use the same PO # more than once?<p>
+            <p class="answer">A: No, once you’ve used a PO #, it cannot be duplicated. You will need to use a different PO #. </p>
+
+            <p class="question">Q: Do I need to email the CSR the DAR approval?<p>
+            <p class="answer">A: No, the DAR approval will automatically be attached when you submit the order.</p>
+
+            <p class="question">Q: What if there is an item not in Daikin City that I want to put on my PO?<p>
+            <p class="answer">A: You will need to contact Project Desk, and the CSR to decide whether or not the item can be added or if it needs to be done manually.</p>
+
+            <p class="question">Q: Can I submit a commission order via Daikin City Quote to Order Process?<p>
+            <p class="answer">A: At this time, the Quote to Order process is only for buy/sell projects.  The reason is that for commission projects, documents need to be reviewed by the Project Desk and Credit.  Additionally a customer number needs to be created in MAPICS.</p>
+        </div>
+    </div>
+</div>
+<style>
+    .question {
+        padding-top: 20px;
+        font-weight: bold;
+        
+    }
+
+    .answer {
+        
+    }
+
+    .section.form {
+        background-color: #F4FCFE;
+        /*margin-left: 30px;
+        margin-right: 30px;*/
+    }
+    .faqcontent {
+         margin-left: 30px;
+    }
+</style>
+

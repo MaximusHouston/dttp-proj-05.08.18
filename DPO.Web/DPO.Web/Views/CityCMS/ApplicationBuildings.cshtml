@@ -1,0 +1,58 @@
+﻿@model BuildingsModel
+@{
+    ViewBag.Title = "Daikin City Content Management";
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/confirmmodal")
+}
+
+@Html.Partial("_CityCMSTabsPartial")
+
+
+    <div class="section t-flush b-flush">
+        <div class="item-strap btm-bdr">
+            <div class="itemname">
+                <h1>Application Buildings</h1>
+            </div>
+            <div class="btn-bar">
+                <input type="button" value="Reset Changes" class="btn" style="visibility: hidden;">
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="section form">
+        @foreach (var b in Model.building)
+        {
+            <h4 id="@b.name">@b.name</h4>
+           
+                <table class="tbl">
+                    <thead>
+                        <tr>
+                            <th>Floor name</th>
+                            <th style="width: 100px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var f in b.floors.floor)
+                        {
+                                <tr style="background-color: #fff;">
+                                    <td>@f.name</td>
+                                    <td>@Html.ActionLink("Edit Floor", "ApplicationBuildingFloor", new { floorid = f.id, buildingid = f.buildingId })
+                                    @*<a href="@Url.Action("ApplicationBuildingFloor", new { floorid = f.id, buildingid = f.buildingId })">Edit Floor</a>*@
+                                    </td>
+                                </tr>
+                        }
+
+                    </tbody>
+                </table>
+            <br/>
+            <br/>
+         
+        }
+    </div>

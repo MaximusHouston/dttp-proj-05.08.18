@@ -1,0 +1,114 @@
+﻿/* top tab bar */
+.tab-bar{
+    list-style-type: none;
+    display:inline-block;
+    margin:0;
+    padding:0;
+    background-color: #BDEBFF;
+    width:100%;
+}
+.tab-bar li{
+    display: inline-block;
+    text-transform: uppercase;
+    background-color: #2e3641;
+    color: #fff;
+    padding: 10px 30px;
+    /*font-weight: bold;*/
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+
+     -webkit-transition: 1s max-width ease, 0.75s background-color ease;
+    -moz-transition: 1s max-width ease, 0.75s background-color ease;
+    -o-transition: 1s max-width ease, 0.75s background-color ease;
+    transition: 1s max-width ease, 0.75s background-color ease;
+
+    margin-top: 3px;
+}
+
+.tab-bar li:hover{
+    background-color: #4D535D;
+    -webkit-transition: 1s max-width ease, 0.75s background-color ease;
+    -moz-transition: 1s max-width ease, 0.75s background-color ease;
+    -o-transition: 1s max-width ease, 0.75s background-color ease;
+    transition: 1s max-width ease, 0.75s background-color ease;
+}
+
+.tab-bar li.active-tab:hover{
+    background-color: #fff;
+}
+
+.tab-bar.prod-cat li{
+    padding: 10px 12.5px;
+}
+
+.tab-bar li.active-tab{
+    background-color: #fff;
+    color: #00A1E4;
+}
+
+.tab-bar li.active-tab a{
+   font-family: "museo-sans", sans-serif;
+   font-weight: bold;
+   
+}
+
+.tab-bar li a{
+    text-decoration: none;
+    color: inherit;
+}
+
+/* sub tab bar */
+.sub-tab-bar{
+    margin:0 30px 18px 30px;
+    list-style-type: none;
+    display:block;
+    padding:0;
+    border-bottom: 4px solid #007FCC;
+}
+
+.sub-tab-bar li{
+    display: inline-block;
+    text-transform: uppercase;
+    color: #000;
+    cursor: pointer;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.sub-tab-bar li span, .sub-tab-bar li a{
+    padding: 10px 20px;
+    display:block;
+    text-decoration: none;
+    color: inherit;
+}
+
+
+.sub-tab-bar li.active-tab, .sub-tab-bar li.active-tab:hover{
+    color: #fff;
+    background-color: #007FCC;
+}
+
+.sub-tab-bar a.active-tab, 
+.sub-tab-bar a.active-tab:hover{
+    color: #fff;
+    background-color: #007FCC;
+} 
+
+/*dependency ul.sub-tab-bar */
+/*div.scrollmenu { 
+    
+    overflow: auto;
+    white-space: nowrap;
+}
+
+    div.scrollmenu ul {
+        display: inline-block;
+       
+        text-decoration: none;
+    }
+
+        div.scrollmenu ul:hover {
+           
+        }*/

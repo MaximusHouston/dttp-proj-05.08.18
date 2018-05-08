@@ -1,0 +1,28 @@
+﻿<div class="modal confirm" id="confirm_modal_order_request_export_type" style="display: none;">
+    <div style="top: 20%;">
+        <img src="~/Images/modal-close-btn.png" class="close-btn" />
+        <h1>Show cost pricing</h1>
+        <p>Should cost pricing be included in this report?</p>
+        <a class="btn cancel-btn" id="confirm_modal_order_request_export_yes" target="_blank" href="#">@ResourceUI.Yes</a>
+        <a class="btn cancel-btn" id="confirm_modal_order_request_export_no" target="_blank" href="#">@ResourceUI.No</a>       
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#order_request_download_modal_trigger, #order_request_print_modal_trigger').on('click', function (e) {
+            e.preventDefault();
+            switch ($(this).attr('id')) {
+                case 'order_request_print_modal_trigger':
+                    $('#confirm_modal_order_request_export_no')
+                        .attr('href', "@Url.Action("OrderPrint", "Document",
+                     new { Id = Model.OrderId, ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })");
+                
+                    break;
+            }
+
+            $('#confirm_modal_order_request_export_no')[0].click(); // manually trick the click event of button.
+            
+        });
+    });
+</script>
+

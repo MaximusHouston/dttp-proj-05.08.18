@@ -1,0 +1,72 @@
+﻿@model LibraryPageModel
+@{
+    ViewBag.Title = "Daikin City Content Management";
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles", "~/Content/css/usergroups")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/cms_library", "~/bundles/scripts/confirmmodal")
+}
+
+@Html.Partial("_CityCMSTabsPartial")
+@Html.Partial("_LibraryDocumentModal")
+@Html.Partial("_LibraryEditDirectoryModal")
+@Html.Partial("_LibraryMoveDirectoryModal")
+@Html.Partial("_LibraryMoveDocumentModal")
+@*@Html.Partial("_LibraryDocumentsUploadModal")*@
+@Html.Partial("ConfirmModal")
+
+<iframe name='document-edit-iframe' id="documentEditIframe" style='display: none;'></iframe>
+<div class="library">
+    <div id="GroupsListCol">
+        <div class="arrow-right"></div>
+        <button type="button" id="widthToggleBtn"></button>
+        <h1>Library Items</h1>
+        <div class="tbl-holder" id="GroupsList">
+            @Html.Partial("_LibraryDirectories", Model)
+        </div>
+    </div>
+
+    <div id="UserListCol">
+        <input type="hidden" id="current_directory_id" />
+        <h1 id="document_set_title">Library Home</h1>
+        <h4 id="document_set_amount">Please select a library item to view documents</h4>
+
+        <div class="pull-right">
+            <button type="button" class="context-btn" id="DeleteMultipleDocBtn" style="display:none;">Delete Selected</button>
+        </div>
+
+        <button type="button" class="context-btn submit addBtn" id="addDocumentsBtn" style="display: none;">
+            <img src="/Images/add-new-user-icon.png">
+            Add Documents
+        </button>
+
+        <div class="clearfix">&nbsp;</div>
+        <div id="UserList">
+            @* populated by ajax *@
+        </div>
+    </div>
+
+    <div id="groupslist-bg">&nbsp;</div>
+    <div id="userlist-bg">&nbsp;</div>
+</div>
+
+<script>
+    $("#addDocumentsBtn").on("click", function()
+    {
+        var params =
+        {
+            currentDirectoryId: $('#current_directory_id').val()
+        };
+        $.get("LibraryDocumentsUploadModal", params, function (result)
+        {
+            $('#document_modal_content').empty().append(result);
+            $('#currentFolderLocation').text('Current Folder: ' + $('#document_set_title').text());
+            $('#library_document_modal').fadeIn(200);
+        });
+    });
+</script>

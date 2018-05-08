@@ -1,0 +1,94 @@
+﻿/*hide long texttt... in kendo grid cell*/
+.k-grid tbody tr td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/*table body text*/
+.k-grid table tbody tr {
+    font-size: 14px;
+}
+
+/*.k-grid-header, .k-grid-header-wrap {
+    height:40px;
+}
+
+.k-grid table, .k-grid table thead tr {
+    height: 40px;
+}*/
+
+.k-grid table thead tr th {
+    vertical-align: middle !important;
+}
+
+
+/*kendo grid header color*/
+.k-grid th.k-header, .k-grid-header {
+    background-image: -webkit-linear-gradient(#5397cf, #428bca 60%, #007FCC);
+    background-image: -o-linear-gradient(#5397cf, #428bca 60%, #007FCC);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#5397cf), color-stop(60%, #428bca), to(#007FCC));
+    background-image: linear-gradient(#5397cf, #428bca 60%, #007FCC);
+    /*background-repeat: no-repeat;*/ /*changed after upgrade kendo-angular grid to 1.2.1*/
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5397cf', endColorstr='#ff007fcc', GradientType=0);
+    -webkit-filter: none;
+    filter: none;
+    /*border-bottom: 1px solid #007FCC;*/ /*changed after upgrade kendo-angular grid to 1.2.1*/
+    color: white;
+    font-family: "museo-sans", sans-serif;
+    font-size: 16px;
+}
+
+    /*kendo grid header text color*/
+    .k-grid-header .k-header > .k-link {
+        color: white;
+    }
+
+
+
+
+/*highlight deleted row in project grid*/
+.k-grid tr.projectDeleted {
+    background-color: gray;
+}
+
+    .k-grid tr.projectDeleted td a {
+        color: #fff;
+    }
+
+/*Kendo grid column dropdown menu link color*/
+.k-menu.k-menu-vertical .k-item .k-link {
+    color: #313131;
+}
+
+
+/*.k-grid th.k-header, .k-grid-header{
+    height: 35px;
+}*/
+
+.k-grid a {
+    color: #337ab7;
+}
+
+/*Fix Dropdown Editor in IE*/
+#project-grid .k-dropdown-wrap {
+    width:auto;
+    width: initial;
+}
+
+#project-grid .k-picker-wrap {
+    width:auto;
+    width: initial;
+}
+
+#project-grid .k-dateinput-wrap {
+    width:auto;
+    width: initial;
+}
+
+/*grid header IE*/
+/*#project-grid .k-grid-header, #project-grid .k-grid-header-wrap, #project-grid .k-header {
+    height: 47px;
+    vertical-align: top; 
+}*/
+

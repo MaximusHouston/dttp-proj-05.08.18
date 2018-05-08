@@ -1,0 +1,171 @@
+﻿@model ToolEditModel
+@{
+    ViewBag.Title = "Daikin City Content Management";
+}
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/confirmmodal")
+}
+@Html.Partial("_CityCMSTabsPartial")
+
+<ul class="breadcrumbs">
+    <li><a href="@Url.Action("Tools", "CityCMS")">Tools</a></li>
+    @if (Model.ToolId == null)
+    {
+        <li>Add New Tool</li>
+    }
+    else
+    {
+        <li>Edit Tool</li>
+    }
+</ul>
+
+<div class="section t-flush b-flush">
+    <div class="item-strap btm-bdr">
+        <div class="itemname">
+            @if (Model.ToolId == null)
+            {
+                <h1>Add New Tool</h1>
+            }
+            else
+            {
+                <h1>Edit Tool</h1>
+            }
+        </div>
+        <div class="btn-bar">
+            <a class="btn submit" href="#" style="visibility: hidden;"><img src="/Images/context-btn-edit-icon.png">&nbsp;</a>
+        </div>
+    </div>
+</div>
+
+@Html.PageMessages()
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" , @id = "ToolEditForm" }))
+{
+    @Html.HiddenFor(m => m.Filename)
+    @Html.HiddenFor(m => m.ToolId)
+
+    <div class="section form">
+        <p class="mandatory" style="top: 0; right: 20px;">Fields marked with a <span>*</span> are mandatory</p>
+        <div class="r-col9  details-list">
+
+            <label class="required">Tool Name - max 50 characters</label>
+            @Html.TextBoxFor(m => m.Name, new { maxlength = 50 })
+            <br />
+            <br/>
+            <label>Tool Description - max 500 characters </label>
+            <div class="txtDescription" contenteditable="true">
+             @Model.Description
+            </div>
+           
+            <br/>
+            <br/>
+            @if (Model.ToolId == null)
+            {
+                <table>
+                 <tr>
+                    <td style="padding-right:100px;">
+                      <label style="margin-bottom: 0.5em;" class="required">Upload zip file</label>
+                      <input type="file" name="toolsZip" style="width: 190px; max-width: 190px; margin-bottom: 0.5em;" />
+                    </td>
+                    <td>
+                      <label> Check this to create the hyperlink</label>
+                       <input type="checkbox" id="chkCreateHyperLink" name="chkCreateHyperLink" value="true" />
+                       <input type="hidden" id="createHyperLink" name="createHyperLink" />
+                    </td>
+                  </tr>
+                </table>
+                <br/> 
+                <br/>
+                <br/>
+                <label>Select Business Types that will have access to this tool:</label>
+                <br/>
+                <br/>
+                <div class="chkbox-hlpr">
+                    <ul>
+                    @for (var i = 0; i < Model.BusinessTypes.Count; i++)
+                    {
+                        <li>
+                            @Html.HiddenFor(m => Model.BusinessTypes[i].BusinessTypeId)
+                            @Html.HiddenFor(m => Model.BusinessTypes[i].BusinessTypeDescription)
+
+                            @if (Model.PostedBusinessTypeIds != null && Model.PostedBusinessTypeIds.Contains((int)Model.BusinessTypes[i].BusinessTypeId))
+                            {
+                                <input name="PostedBusinessTypeIds" type="checkbox" value="@Model.BusinessTypes[i].BusinessTypeId" checked/>
+                            }
+                            else
+                            {
+                                <input name="PostedBusinessTypeIds" type="checkbox" value="@Model.BusinessTypes[i].BusinessTypeId" />
+                            }
+                            
+                            <label>@Model.BusinessTypes[i].BusinessTypeDescription</label>
+                        </li>
+                    }
+                    </ul>
+                </div>
+            }
+            else
+            {
+                <table>
+                   <tr>
+                     <td style="padding-right:100px;">
+                        <label style="margin-bottom: 0.5em;">Upload new zip file (optional)</label>
+                        <input type="file" name="toolsZip" style="width: 190px; max-width: 190px; margin-bottom: 0.5em;" />
+                      </td>
+                      <td>
+                          <label> Check this to create the hyperlink</label>
+                          <input type="checkbox" id="chkCreateHyperLink" name="chkCreateHyperLink" value="true" />
+                          <input type="hidden" id="createHyperLink" name="createHyperLink" />
+                      </td>
+                    </tr>
+                </table>
+            }
+            <br />
+        </div>
+
+        <div class="row-end">&nbsp;</div>
+    </div>
+
+    <div class="section action c-align" id="save_buttons">
+        <button class="btn" type="button" onclick="location.replace('@Url.Action("Tools","CityCms")')">Cancel</button>
+        @if (Model.ToolId == null)
+        {
+            <input type="submit" value="Add" class="submit-btn">
+        }
+        else
+        {
+            <input type="submit" value="Save" class="submit-btn">
+        }
+    </div>
+    
+    @Html.Hidden("Description");
+}
+
+<style>
+    .txtDescription {
+        width: 300px;
+        height: 300px;
+        border-style: solid;
+        border-width: 2px;
+        border-color: black;
+        background-color: white;
+        color: black;
+        overflow: scroll;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        document.getElementById("#Description").contentEditable  = 'true';
+    })
+    
+    $('.submit-btn').click(function () {
+        $('#Description').val($(".txtDescription").text());
+    })
+
+    $('#chkCreateHyperLink').on('click', function(){
+        $('#createHyperLink').val( $('#chkCreateHyperLink').val());
+    })
+</script>

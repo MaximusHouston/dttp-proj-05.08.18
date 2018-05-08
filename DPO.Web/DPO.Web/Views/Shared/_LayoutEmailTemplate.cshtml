@@ -1,0 +1,60 @@
+﻿@model DPO.Common.SendEmailViewModel
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Daikin City Project Office</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body style="margin: 0; padding: 0;" bgcolor="#BDEBFF">
+    <table width="90%;" align="center" border="0">
+        <tr height="20"></tr>
+        <tr style="background-color: #fff;">
+            <td style="padding-right: 20px;">
+                <table>
+                    <tr>
+                        <td width="100%" style="padding-top: 16px;">
+                            <img src="@Url.Action("/Images/daikin-logo.png", "/", null, Request.Url.Scheme)" alt="Daikin" width="200" height="55" style="display: block;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @RenderBody()
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 28px; padding-top: 30px; font-family: Helvetica, Arial, sans-serif;">
+                            @ResourceUI.ThankYou
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 28px; padding-top: 10px; font-family: Helvetica, Arial, sans-serif;">
+                            @ResourceUI.TheDaikinCityTeam
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 48px; padding-top: 40px; padding-bottom: 10px; font-family: Helvetica, Arial, sans-serif;">
+                            <table>
+                                <tr>
+                                    <td style="font-family: Helvetica, Arial, sans-serif; font-weight: bold;">@ResourceUI.NeedHelp</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @ResourceUI.Contact <a href="@Model.HelpLink" style="color: #00A1E4; padding-left: 2px; padding-right: 2px;">@ResourceUI.CustomerSupport</a> @ResourceUI.ForAccountAssistance.
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-bottom: 30px;">&nbsp;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr height="40">
+            <td style="font-family: Helvetica, Arial, sans-serif;">@ResourceUI.Copyright &#169; Daikin, @ResourceUI.AllRightsReserved</td>
+        </tr>
+    </table>
+</body>
+</html>

@@ -1,0 +1,101 @@
+﻿
+<div *ngIf="user" class="product-details">
+    <div class="row no-padding" style="margin-bottom:10px;">
+        <div class="col col-md-12 product-name-gridView" style="background-color: #007fcc; height:35px;">
+            <a (click)="productDetails($event, product, 'product-overview')" style="color: #ffffff;">{{product.name}}</a>
+        </div>
+    </div>
+    <div class="row no-padding">
+        <div class="col col-md-6 product-image" style="background-color: transparent; height: 135px;">
+            <product-image [product]="product"></product-image>
+            <!--<img width="135" height="100" src="{{product.image.url}}" />-->
+        </div>
+        <div class="col col-md-6 product-info" style="background-color: transparent; height: 135px;">
+            <!--<div class="product-name"><a href="/ProductDashboard/Product?ProductId={{product.productId}}">{{product.name}}</a></div>-->
+            <div class="as-lnk">Model No.:</div>
+            <div style="font-size:smaller"> {{product.productNumber}}</div>
+            <div *ngIf="userSvc.currentUser.showPrices">
+                <div class="as-lnk">Price:</div>
+                <div style="font-size:smaller"> {{product.price | currency:'USD':true:'1.2-2'}}</div>
+            </div>
+            <div>
+                <span class="pull-right">
+                    <a (click)="productDetails($event, product, 'product-overview')" title="Product overview"><img src="/Images/RelatedDocumentsLinkIcon_Blue.png"></a>
+                    <a (click)="productDetails($event, product, 'product-accessories')" title="Product accessories"><img src="/Images/RelatedAccessoriesLinkIcon_Blue.png"></a>
+                    <a (click)="productDetails($event, product, 'product-specs')" title="Product specifications"><img src="/Images/TechDetailLInkIcon_blue.png"></a>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row no-padding" style="background-color: #effaff;">
+        <div class="col col-md-8" style="height: 120px; padding:10px">
+            <div *ngIf="product.specifications.all != null">
+
+
+                <div *ngIf="SEERNonDucted && product.specifications.all.seerNonDucted" class="as-lnk">SEER (Non-Ducted): <span class="grey-text">{{product.specifications.all.seerNonDucted.value | number:'1.2-2'}}</span></div>
+
+                <div *ngIf="IEERNonDucted && product.specifications.all.ieerNonDucted" class="as-lnk">IEER (Non-Ducted): <span class="grey-text">{{product.specifications.all.ieerNonDucted.value | number:'1.2-2'}}</span></div>
+
+                <div *ngIf="EERNonDucted && product.specifications.all.eerNonDucted" class="as-lnk">EER (Non-Ducted): <span class="grey-text">{{product.specifications.all.eerNonDucted.value | number:'1.2-2'}}</span></div>
+
+                <div *ngIf="HSPFNonDucted && product.specifications.all.hspfNonDucted" class="as-lnk">HSPF (Non-Ducted): <span class="grey-text">{{product.specifications.all.hspfNonDucted.value | number:'1.2-2'}}</span></div>
+
+                <div *ngIf="COP47NonDucted && product.specifications.all.coP47NonDucted" class="as-lnk">COP47 (Non-Ducted): <span class="grey-text">{{product.specifications.all.coP47NonDucted.value | number:'1.2-2'}}</span></div>
+
+                <div *ngIf="SCHENonDucted && product.specifications.all.scheNonDucted" class="as-lnk">SCHE (Non-Ducted): <span class="grey-text">{{product.specifications.all.scheNonDucted.value | number:'1.2-2'}}</span></div>
+
+
+                <div *ngIf="SEERDucted && product.specifications.all.seerDucted" class="as-lnk">SEER (Ducted): <span class="grey-text">{{product.specifications.all.seerDucted.value | number:'1.2-2'}}</span></div>
+
+                <div *ngIf="EERDucted && product.specifications.all.eerDucted" class="as-lnk">EER (Ducted): <span class="grey-text">{{product.specifications.all.eerDucted.value | number:'1.2-2'}}</span></div>
+
+                <div *ngIf="HSPFDucted && product.specifications.all.hspfDucted" class="as-lnk">HSPF (Ducted): <span class="grey-text">{{product.specifications.all.hspfDucted.value | number:'1.2-2'}}</span></div>
+
+                <div *ngIf="COP47Ducted && product.specifications.all.coP47Ducted" class="as-lnk">COP47 (Ducted): <span class="grey-text">{{product.specifications.all.coP47Ducted.value | number:'1.2-2'}}</span></div>
+
+                <div *ngIf="AFUE && product.specifications.all.afue" class="as-lnk">AFUE: <span class="grey-text">{{product.specifications.all.afue.value | number:'1.2-2'}}</span></div>
+
+
+            </div>
+
+        </div>
+        <div *ngIf="basketQuoteId != 0 && basketQuoteId != undefined" class="col col-md-4 product-qty no-padding" style="text-align:center">
+            <div>Quantity</div>
+            <product-quantity-input [(product)]="product"></product-quantity-input>
+            <!--<product-quantity-input [(quantity)]="product.quantity"></product-quantity-input>-->
+        </div>
+        <div *ngIf="user.showPrices">
+            <div [ngSwitch]="product.productStatusTypeId" style="text-align:center;">
+                <span *ngSwitchCase="enums.ProductStatusTypeEnum.New" style="color:blue; font-size:smaller; ">New</span>
+                <span *ngSwitchCase="enums.ProductStatusTypeEnum.Active" style="color:#38c638; font-size:smaller;">Active</span>
+                <span *ngSwitchCase="enums.ProductStatusTypeEnum.HiddenModuleUnit" style="color:red; font-size:smaller;">Hidden</span>
+                <span *ngSwitchCase="enums.ProductStatusTypeEnum.Inactive" style="color:red; font-size:smaller;">Inactive</span>
+                <span *ngSwitchCase="enums.ProductStatusTypeEnum.Obsolete" style="color:red; font-size:smaller;">Obsolete</span>
+            </div>
+            <div [ngSwitch]="product.inventoryStatusId" style="text-align:center;">
+                <span *ngSwitchCase="enums.ProductInventoryStatusTypeEnum.Available" style="color:black; background-color:#6df0af; padding:3px;">Available</span>
+                <span *ngSwitchCase="enums.ProductInventoryStatusTypeEnum.NotAvailable" style="color:black; background-color:#ffcce6; padding:3px;">Not Available</span>
+                <span *ngSwitchCase="enums.ProductInventoryStatusTypeEnum.ContactCSR" style="color:black; background-color:#f7d38c; padding:3px;">
+                    <span *ngIf="product.productStatusTypeId == enums.ProductStatusTypeEnum.Active && product.invAvailableDate != null && (user.businessTypeId == enums.BusinessTypeEnum.Daikin || user.businessTypeId == enums.BusinessTypeEnum.ManufacturerRep); else contactCSRBlock">
+                        ETA: {{product.invAvailableDate | date : 'shortDate'}}
+                    </span>
+                    <ng-template #contactCSRBlock>
+                        <span>Contact CSR</span>
+                    </ng-template>
+                </span>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+    <!--<div *ngIf="basketQuoteId!=0" class="col col-md-1" style="background-color: lightcyan">
+        <div>Quantity</div>
+        <input class="numericTextBox" type="number" value="{{product.quantity}}" min="0" max="1000" step="1" style="width:70px;" />
+
+    </div>-->
+
+</div>

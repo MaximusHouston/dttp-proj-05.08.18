@@ -1,0 +1,21 @@
+import { ConfigurationService } from '../common/configuration.service';
+import { SettingsComponent } from '../common/settings.component';
+import { Border, Margin, Padding } from '../common/property-types';
+import { Title } from '../common/property-types';
+/**
+ * @hidden
+ */
+export declare abstract class TitleComponentGenerated extends SettingsComponent implements Title {
+    configurationService: ConfigurationService;
+    align: 'center' | 'left' | 'right';
+    background: string;
+    border: Border;
+    color: string;
+    font: string;
+    margin: Margin | number;
+    padding: Padding | number;
+    position: 'top' | 'bottom';
+    text: string;
+    visible: boolean;
+    constructor(configurationService: ConfigurationService);
+}

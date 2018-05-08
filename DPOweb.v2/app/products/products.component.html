@@ -1,0 +1,170 @@
+﻿<!--<div *ngIf="basketQuoteId!=0">ActiveQuoteId: {{basketQuoteId}}</div>-->
+
+
+<basket id="userBasket" [userBasket]="userBasket" [productFamilyId]="productFamilyId" [productModelTypeId]="productModelTypeId" [productData]="productData"></basket>
+
+
+<div id="main-container" class='container-fluid'>
+    <div class="main-content">
+        <!--Product Family Tabs-->
+        <div id="productPageContainer">
+            <nav id="productTabs" class='navbar navbar-default'>
+                <div class='container-fluid navibar'>
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#productFamilyTabs">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+
+                    <div class="collapse navbar-collapse" id="productFamilyTabs">
+                        <ul class='nav navbar-nav productFamilyTab'>
+                            <li id="product-family-tab-home"> <a href="/v2/#/products" (click)="showProductHome()">PRODUCT HOME</a></li>
+                            <!--<li *ngFor="let item of productFamilyTabs ; let idx = index" attr.id="product-family-tab-{{item.id}}">-->
+                            <li *ngFor="let item of productFamilyTabs ; let idx = index" attr.id="product-family-tab-{{item.productFamilyId}}">
+
+                                <!--<a href="/v2/#/products" (click)="GetProducts(item.id,null)">{{item.description | uppercase}}</a>-->
+                                <a href="/v2/#/products" (click)="GetProducts(item.productFamilyId,null)">{{item.name | uppercase}}</a>
+                            </li>
+
+                    <!--TODO: delete after 9/1/2017-->
+                    <!--<li id="product-family-tab-accessories">
+                        <a href="/v2/#/products" (click)="GetAccessories()">ACCESSORIES</a>
+                    </li>-->
+
+                        </ul>
+
+                    </div>
+                </div>
+            </nav>
+
+
+
+            <!--Product Home Tab Content-->
+            <div id="productHome" class="product-family-listing-outer">
+                <div class="row">
+                    <h1 *ngIf="showProductHomeContent" class="pull-left">Our Product Ranges</h1>
+                    <h1 *ngIf="productFamilyId && showProductGrid" id="productFamilyName" class="pull-left">{{productFamilyName}}</h1>
+                    <div class="pull-right productSearch">
+                        <input type="text" class="k-input k-textbox" id="productSearchBox" name="productSearchFilter" placeholder=" Search {{productSearchTextHolder}} Products" />
+                        <button id="productSearchBtn"><span class="k-icon k-i-search"></span></button>
+                    </div>
+                </div>
+
+                <ul *ngIf="showProductHomeContent" class="product-family-listing-inner">
+
+            <li *ngFor="let item of productFamilyTabs ; let idx = index" style="width: 160px; height:300px;">
+                <!--<a (click)="GetProducts(item.id,null)">
+                    <img src="/image/10/{{item.id}}" onerror="this.onerror = null; this.src = '/Images/product-family-noimage.png'" style="height: 170px; width: 160px;" />
+                    <div class="fam-description" style="height:100px;">
+                        <h4 style="font-size: 1.4em;">{{item.description | uppercase}}</h4>
+                        <span>View Range</span>
+                    </div>
+                </a>-->
+
+                <a (click)="GetProducts(item.productFamilyId,null)">
+                    <img src="/image/10/{{item.productFamilyId}}" onerror="this.onerror = null; this.src = '/Images/product-family-noimage.png'" style="height: 170px; width: 160px;" />
+                    <div class="fam-description" style="height:100px;">
+                        <h4 style="font-size: 1.4em;">{{item.name | uppercase}}</h4>
+                        <span>View Range</span>
+                    </div>
+                </a>
+                
+            </li>
+
+            <!--TODO: delete after 9/1/2017-->
+            <!--<li style="width: 160px; height:300px;">
+                <a (click)="GetAccessories()">
+                    <img src="/image/10/100000010" onerror="this.onerror = null; this.src = '/Images/product-family-noimage.png'" style="height: 170px; width: 160px;" />
+                    <div class="fam-description" style="height:100px;">
+                        <h4 style="font-size: 1.4em;">ACCESSORIES</h4>
+                        <span>View Range</span>
+                    </div>
+                </a>
+            </li>-->
+
+                </ul>
+
+            </div>
+
+            <!--Product List-->
+            <div *ngIf="showProductGrid">
+                <!--Product Sub-Tabs-->
+                <div class="scrollmenu" *ngIf="productFamilyId && (productFamilyId == enums.ProductFamilyEnum.AlthermaSplit || productFamilyId == enums.ProductFamilyEnum.AlthermaMonobloc || productFamilyId == enums.ProductFamilyEnum.MultiSplit || productFamilyId == enums.ProductFamilyEnum.VRV)" id="productModelTypeTabs">
+                    <ul class="sub-tab-bar tabbar-fullwidth">
+                        <li id="subTab-111531"> <a (click)="GetProducts(productFamilyId, enums.ProductModelTypeEnum.Indoor)"> INDOOR </a> </li>
+                        <li id="subTab-111532"> <a (click)="GetProducts(productFamilyId, enums.ProductModelTypeEnum.Outdoor)"> OUTDOOR </a> </li>
+                        <li id="subTab-100000999"> <a (click)="GetProducts(productFamilyId,100000999)"> ALL </a> </li>
+                    </ul>
+
+                </div>
+
+                <!--show InstallationTypes Tabs when ProductFamilyName == Unitary Split || Unitary Package || Commercial Split -->
+                <!--<div class="scrollmenu" *ngIf="productFamilyId && (productFamilyId == enums.ProductFamilyEnum.UnitarySplitSystem || productFamilyId == enums.ProductFamilyEnum.UnitaryPackagedSystem || productFamilyId == enums.ProductFamilyEnum.LightCommercialSplitSystem || productFamilyId == enums.ProductFamilyEnum.LightCommercialPackagedSystem )" id="unitInstallationTypeTabs">
+                <ul class="sub-tab-bar">
+                    <li *ngFor="let item of unitInstallationTypeTabs; let idx = index" attr.id="subTab-{{item.id}}"> <a (click)="GetProductsByUnitInstallationType(productFamilyId,item.id)"> {{item.description | uppercase}} </a> </li>
+                    <li id="subTab-100000999"><a (click)="GetProductsByUnitInstallationType(productFamilyId, 100000999)"> ALL </a></li>
+                </ul>
+
+            </div>-->
+                <!--show InstallationTypes Tabs when ProductFamilyName == Unitary Split || Unitary Package || Commercial Split -->
+                <div class="scrollmenu" *ngIf="productFamilyId && (productFamilyId == enums.ProductFamilyEnum.UnitarySplitSystem || productFamilyId == enums.ProductFamilyEnum.UnitaryPackagedSystem || productFamilyId == enums.ProductFamilyEnum.LightCommercialSplitSystem || productFamilyId == enums.ProductFamilyEnum.LightCommercialPackagedSystem )" id="unitInstallationTypeTabs">
+                    <ul class="sub-tab-bar tabbar-fullwidth">
+                        <li *ngFor="let item of productClassPIMTabs; let idx = index" attr.id="subTab-{{item.id}}"> <a (click)="GetProductsByProductClassPIMId(productFamilyId,item.id)"> {{item.description | uppercase}} </a> </li>
+                        <li id="subTab-100000999"><a (click)="GetProductsByProductClassPIMId(productFamilyId, 100000999)"> ALL </a></li>
+                    </ul>
+
+                </div>
+
+
+                <!--Product grid and filters-->
+                <!--<product-list id="productGrid" *ngIf="productData" [productsModel]="productData"
+                          [productFamilyId]="productFamilyId"
+                          [productModelTypeId]="productModelTypeId"
+                          [unitInstallationTypeId]="unitInstallationTypeId"
+                          (updateBasketEvent)="updateUserBasket()"
+                          (showProductDetailsEvent)="showProductDetails($event)">
+
+
+            </product-list>-->
+                <!--How to put event emitter on router-outlet?-->
+                <!--<router-outlet name="productList"></router-outlet>-->
+
+                <product-list id="productGrid" *ngIf="productData" 
+                              [user]="user"
+                              [productsModel]="productData"
+                              [productFamilyId]="productFamilyId"
+                              [productTypeId]="productTypeId"
+                              [productModelTypeId]="productModelTypeId"
+                              [unitInstallationTypeId]="unitInstallationTypeId"
+                              [productClassPIMId]="productClassPIMId"
+                              (updateBasketEvent)="updateUserBasket()"
+                              (showProductDetailsEvent)="productDetails($event)">
+
+                </product-list>
+
+            </div>
+
+
+
+            <!--<router-outlet name="productDetails"></router-outlet>-->
+            <!--<div *ngIf="!showProductGrid && product">
+            <product-details [product]="product" [userBasket]="userBasket" ></product-details>
+        </div>-->
+            <!--<div *ngIf="!showProductGrid && product" style="margin-bottom:50px;">
+            <product-details></product-details>
+        </div>-->
+            <!--<div style="margin-bottom:50px;">
+            <router-outlet name="productDetails"></router-outlet>
+        </div>-->
+
+            <div>
+                <router-outlet name="productDetails"></router-outlet>
+            </div>
+        </div>
+
+       
+    </div>
+</div>
+

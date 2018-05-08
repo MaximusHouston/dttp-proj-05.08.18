@@ -1,0 +1,27 @@
+﻿@model DiscountRequestModel
+<div class="modal confirm" id="reject_dar_modal" style="display: none;">
+    <div style="top: 20%;">
+        <img src="~/Images/modal-close-btn.png" class="close-btn" />
+        <h1>Reject discount request</h1>
+        <p>Are you sure you want to reject this Discount Request?</p>
+        <label style="display:inline;">Send rejection email to user</label>
+        @Html.CheckBoxFor(m => m.ShouldSendEmail, new { @class = "js-alwaysactive" })
+        <br/>
+        <br/>
+        <button type="button" class="btn" id="reject_dar_modal_yes">@ResourceUI.Yes</button>
+        <button type="button" class="btn cancel-btn">@ResourceUI.No</button>
+    </div>
+</div>
+<script>
+    $(function ()
+    {
+        $('.reject_dar_btn').on('click', function () {
+            $('#reject_dar_modal').fadeIn(200);
+        });
+
+        $('#reject_dar_modal_yes').on('click', function () {
+            DataScPostAfterConfirm($('.reject_dar_btn').eq(0), $('#DiscountRequestForm'));
+
+        });
+    });
+</script>

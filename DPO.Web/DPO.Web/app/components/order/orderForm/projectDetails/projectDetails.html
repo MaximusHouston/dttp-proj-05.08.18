@@ -1,0 +1,111 @@
+﻿<div class="row" id="project-details">
+    <div style="clear: both; height: 10px;"></div>
+    <div class="r-col1 hide-print">&nbsp;</div>
+    <div class="r-col4 details-list">
+        <ul>
+            <li>
+                <p class="detail-name">Project Name:</p>
+                <p style="word-wrap: break-word;">{{projectVM.name}}</p>
+            </li>
+            <li>
+                <p class="detail-name">ProjectID: </p>
+                <p>{{projectVM.projectIdStr}}</p>
+            </li>
+
+            <!--<li>
+                <p class="detail-name">ProjectID: </p>
+                <input type="text" ng-model="projectVM.ProjectIdStr"></input>
+            </li>-->
+
+            <li>
+                <p class="detail-name">Project Date: </p>
+                <p>{{projectVM.projectDate | date:'MM/dd/yyyy'}}</p>
+                
+
+            </li>
+            <li>
+                <p class="detail-name">Bid Date: </p>
+                <p>{{projectVM.bidDate | date:'MM/dd/yyyy'}}</p>
+                
+            </li>
+            <li>
+                <p class="detail-name">Estimated Close: </p>
+                <p>{{projectVM.estimatedClose | date:'MM/dd/yyyy'}}</p>
+                
+            </li>
+            <li>
+                <p class="detail-name">Estimated Delivery: </p>
+                <p>{{projectVM.estimatedDelivery | date:'MM/dd/yyyy'}}</p>
+                
+            </li>
+            <li>
+                <p class="detail-name">Pricing Strategy: </p>
+                <p>{{vm.pricingTypeDescription}}</p>
+
+            </li>
+        </ul>
+    </div>
+
+    <div class="r-col1 hide-print">&nbsp;</div>
+    <div class="r-col4 details-list">
+        <ul>
+            <li>
+                <p class="detail-name">Project Construction Type: </p>
+                <p>{{projectVM.constructionTypeDescription}}</p>
+                <!--<enum ng-if="vmloaded" url="/api/Common/GetContructionTypes" keyid="{{projectVM.constructionTypeId}}"></enum>-->
+                
+            </li>
+            <li>
+                <p class="detail-name">Project Status: </p>
+                <p>{{projectVM.projectStatusDescription}}</p>
+                <!--<enum ng-if="vmloaded" url="/api/Common/GetProjectStatusTypes" keyid="{{projectVM.projectStatusTypeId}}"></enum>-->
+            </li>
+            <li>
+                <p class="detail-name">Project Type: </p>
+                <p>{{projectVM.projectTypeDescription}}</p>
+            </li>
+            <li>
+                <p class="detail-name">Project Open Status: </p>
+                <p>{{projectVM.projectOpenStatusDescription}}</p>
+                
+            </li>
+            <li>
+                <p class="detail-name">Vertical Market: </p>
+                <p>{{projectVM.verticalMarketDescription}}</p>
+                
+            </li>
+            <li>
+                <p class="detail-name full" style="display: block;">Project Notes: </p>
+                <p class="full">{{projectVM.description}}</p>
+                
+            </li>
+            <!--@if (Model.ProjectStatusTypeId == 3 || Model.ProjectStatusTypeId == 4)
+            {-->
+            <!--<li>
+                <div id="divProjectStatusReason">
+                    <p class="detail-name">Project Status Notes: </p>
+                    <p>{{projectVM.projectStatusNotes}}</p>
+                    
+                </div>
+            </li>-->
+            <!--}-->
+            
+            
+
+            
+        </ul>
+    </div>
+
+    <div class="r-col1 hide-print">&nbsp;</div>
+    <div class="r-col1 details-list">
+        <!--<a href="/ProjectDashboard/ProjectEdit?projectId={{OrderVM.projectIdStr}}" id="btn_Edit_ProjectDetail" ng-click="ProjectDetailsEdit()">Edit</a>-->
+        <a href="#" id="btn_Edit_ProjectDetail" ng-hide="true" ng-click="ProjectDetailsEdit()">Edit</a>
+    </div>
+
+    <!--<div kendo-window="ProjectDetailsEditWindow" k-title="'Project Details'"
+         k-width="1200" k-height="600" k-modal="true" k-visible="false"
+         k-content="{ url: '/ProjectDashboard/ProjectEditDetails?projectId={{OrderVM.projectIdStr}}' }">
+
+    </div>-->
+    <div class="row-end">&nbsp;</div>
+</div>

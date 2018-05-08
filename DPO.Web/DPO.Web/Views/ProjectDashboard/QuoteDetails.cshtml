@@ -1,0 +1,130 @@
+﻿@model QuoteModel
+@{
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+<div class="row">
+    <div class="r-col1 hide-print">&nbsp;</div>
+    <div class="r-col4 details-list">
+        <ul>
+            <li>
+                <p class="detail-name"><strong>@ResourceUI.QuoteName:</strong></p>
+                <p>@Model.Title</p>
+            </li>
+            <li>
+                <p class="detail-name">@ResourceUI.Revision:</p>
+                <p>@Model.Revision</p>
+            </li>
+            <li>
+                <p class="detail-name">@ResourceUI.Date:</p>
+                <p>@Html.DisplayFor(q => q.Timestamp)</p>
+            </li>
+            <li>
+                <p class="detail-name full" style="display: block;">@ResourceUI.QuoteDescription:</p>
+                <p class="full">
+                    @Model.Description
+                </p>
+            </li>
+        </ul>
+    </div>
+    <div class="r-col1 hide-print">&nbsp;</div>
+    <div class="r-col4 details-list">
+        <ul>
+            @if (user.ShowPrices)
+            {
+                <li>
+                    <p class="detail-name">@ResourceUI.PricingMethod:</p>
+                    <p>
+                        @if (Model.IsCommission)
+                        {
+                            @ResourceUI.CommissionBased;
+                        }
+                        else if (Model.IsGrossMargin)
+                        {
+                            @ResourceUI.GrossMargin;
+                        }
+                        else
+                        {
+                            @ResourceUI.MarkUp;
+                        }
+                    </p>
+                </li>
+
+                if (Model.ActiveQuoteSummary.IsCommission)
+                {
+                    <li>
+                        <p class="detail-name">@ResourceUI.CommissionPercentage:</p>
+
+                        @if (Model.DiscountRequestId == null)
+                        {
+                            if (!Model.AwaitingCommissionRequest)
+                            {
+                                decimal approvedCommissionPercentage = Model.ApprovedCommissionPercentage / 100;
+                                <p>@approvedCommissionPercentage.ToString("0.00")</p>
+                            }
+                            else
+                            {
+                                decimal requestedCommissionPercentage = Model.CommissionPercentage / 100;
+                                <p>@requestedCommissionPercentage.ToString("0.00")</p>
+                                @*<p>@String.Format("{0:#,##0.00}", requestedCommissionPercentage)</p>*@
+                                @*<p>@String.Format("{0:#,00}", requestedCommissionPercentage)</p>*@
+
+                            }
+                        }
+
+
+                    </li>
+                }
+
+                if (!Model.ActiveQuoteSummary.IsCommission)
+                {
+                    <li>
+                        <p class="detail-name">@ResourceUI.DiscountPercentage:</p>
+
+                        <p>@((Model.DiscountRequestId == null) ? Html.DisplayFor(q => q.DiscountPercentage) : Html.DisplayFor(q => q.ApprovedDiscountPercentage))</p>
+                    </li>
+                }
+
+                <li>
+                    <p class="detail-name">@ResourceUI.FreightCost:</p>
+                    <p>@Html.DisplayFor(q => q.TotalFreight)</p>
+                </li>
+                        <li>
+                            <p class="detail-name">@ResourceUI.TotalList:</p>
+                            <p>@Html.DisplayFor(q => q.TotalList)</p>
+                        </li>
+                        <li>
+                            <p class="detail-name">@ResourceUI.TotalNet:</p>
+                            <p>@Html.DisplayFor(q => q.TotalNet)</p>
+                        </li>
+                        <li>
+                            <p class="detail-name">@ResourceUI.TotalSell:</p>
+                            <p>@Html.DisplayFor(q => q.TotalSell)</p>
+                        </li>
+            }
+            <li>&nbsp;</li>
+            <li>
+                <p class="detail-name full" style="display: block;">@ResourceUI.Notes:</p>
+                <p class="full">
+                    @Model.Notes
+                </p>
+            </li>
+        </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+    <div class="r-col2 hide-print">&nbsp;</div>
+    <div class="row-end">&nbsp;</div>
+</div>

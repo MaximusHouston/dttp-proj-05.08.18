@@ -1,0 +1,36 @@
+﻿@model Search
+@{
+    var PlaceholderText = ResourceUI.Search;
+    if (ViewBag.searchBarPlaceholderText != null)
+    {
+        PlaceholderText += " " + (string)ViewBag.searchBarPlaceholderText;
+    }
+}
+<table class="search-bar">
+    <tr>
+        <td>
+            <div>
+                <input type="text" value="@Model.Filter" id="Filter" name="Filter" placeholder="@PlaceholderText" />
+                @Html.HiddenFor(m => m.PreviousFilter)
+                <button type="button" class="clear-search-btn" style="display:none;">X</button>
+            </div>
+        </td>
+        <td>
+        <td>
+            <button class="search-btn" id="btnSearch" style="padding-top:4px;"><img src="~/Images/search-btn-icon.png" height="18px;" /></button>
+        </td>
+    </tr>
+</table>
+<script>
+    var ButtonKeys = { "EnterKey": 13 };
+
+    $(function () {
+        $("#Filter").keypress(function (e) {
+            if (e.which == ButtonKeys.EnterKey) {
+                var defaultButtonId = $(this).attr("defaultbutton");
+                $("#btnSearch").click();
+                return false;
+            }
+        });
+    })
+</script>

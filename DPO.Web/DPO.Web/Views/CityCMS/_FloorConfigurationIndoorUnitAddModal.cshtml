@@ -1,0 +1,16 @@
+﻿@model List<CitySystemModel>
+<div class="modal confirm" id="confirm_modal_indoor_unit_add" style="display: none;">
+    <div style="top: 20%;">
+        <img src="~/Images/modal-close-btn.png" class="close-btn" />
+        <h1>Add New Indoor Unit</h1>
+        <p>Please select an indoor unit:</p>
+        @Html.DropDownList("NewIndoorUnit", new SelectList(Model, "id", "name"))
+        <div>
+            <br/>
+            <a class="btn cancel-btn" href="#">Cancel</a>
+            <a class="submit-btn" id="confirm_modal_indoor_unit_add_yes" href="#">Add</a>
+        </div>
+    </div>
+</div>
+
+

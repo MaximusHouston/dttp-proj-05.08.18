@@ -1,0 +1,54 @@
+﻿@model DPO.Common.DiscountRequestSendEmailModel
+@using System.Text
+
+@{
+    DateTime projectDate = (DateTime)Model.discountRequest.Project.ProjectDate;
+    DateTime now = DateTime.Now;
+    projectDate = projectDate.Add(new TimeSpan(now.Hour, now.Minute, now.Second));
+
+    string projectId = Model.discountRequest.ProjectId.ToString();
+
+    if (!Model.RenderTextVersion)
+    {
+        projectId = Html.ActionLink(Model.discountRequest.ProjectId.ToString(), "Project", "ProjectDashboard",
+                Request.Url.Scheme, Request.Url.Host, String.Empty, new { ProjectId = Model.discountRequest.ProjectId }, null).ToHtmlString();
+    }
+
+    var totalList = Model.discountRequest.Quote.TotalList ?? 0M;
+    var totalNet = Model.discountRequest.Quote.TotalNet ?? 0M;
+    var discountPercent = Model.discountRequest.RequestedDiscount/100;
+    var discountAmount = totalNet - (totalNet * discountPercent);
+
+    string emailMessage = string.Format(@"
+    A discount request for Project '{0}' and quote '{1}' has been submitted by {2} of {3}.<br />
+    Project Date: {4}<br />
+    List Price: {5}<br />
+    Requested Discount Price: {6}<br />
+    Discount Requested: {7}%<br />
+    Net Multiplier: {8}<br />
+    Project Reference: {9}",
+        Model.discountRequest.Project.Name, Model.discountRequest.Quote.Title, Model.discountRequest.ProjectOwner,
+        Model.discountRequest.BusinessName, projectDate,
+        totalList.ToString("C"),
+        discountAmount.ToString("C"),
+        String.Format("{0:#,0.00}", Model.discountRequest.RequestedDiscount),
+        Model.discountRequest.ApprovedTotals.NetMultiplier.ToString("N3"), projectId);
+}
+
+@if (Model.RenderTextVersion)
+{
+    Layout = null;
+    @emailMessage.Replace("<br />", String.Empty)
+}
+else
+{
+    Layout = "~/Views/Shared/EmailTemplate.cshtml";
+
+    <table>
+        <tr>
+            <td style="padding-left: 28px; padding-top: 20px; font-family: Helvetica, Arial, sans-serif; ">
+                @Html.Raw(emailMessage)
+            </td>
+        </tr>
+    </table>
+}

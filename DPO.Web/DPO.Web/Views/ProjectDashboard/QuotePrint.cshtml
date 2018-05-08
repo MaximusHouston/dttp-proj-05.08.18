@@ -1,0 +1,151 @@
+﻿@model QuotePrintModel
+@{
+    Layout = null;
+    ViewBag.Title = ResourceUI.QuotePrint;
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+    @Styles.Render("~/Content/css/pdf-base");
+}
+<div class="pdf">
+    <br />
+    <h4 style="font-size: 1.6em;">@ResourceUI.QuoteDetails</h4>
+    <div class="row pad-top pad-btm">
+        <div class="details-list">
+            <ul>
+                <li>
+                    <p class="detail-name"><strong>@ResourceUI.ProjectName:</strong></p>
+                    <p>@Model.Project.Name</p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>@ResourceUI.ProjectReference:</strong></p>
+                    <p>@Model.Project.ProjectId</p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>@ResourceUI.QuoteName:</strong></p>
+                    <p>@Model.Quote.Title</p>
+                </li>
+                <li>
+                    <p class="detail-name">@ResourceUI.Revision:</p>
+                    <p>@Model.Quote.Revision</p>
+                </li>
+                <li>
+                    <p class="detail-name">@ResourceUI.Date:</p>
+                    <p>@Model.Quote.Timestamp</p>
+                </li>
+                @if (user.ShowPrices)
+                {
+                    if (Model.WithCostPrices)
+                    {
+                        <li>
+                            <p class="detail-name">@ResourceUI.TotalList:</p>
+                            <p>@Html.DisplayFor(i => i.Quote.TotalList)</p>
+                        </li>
+                        <li>
+                            <p class="detail-name">@ResourceUI.TotalNet:</p>
+                            <p>@Html.DisplayFor(i => i.Quote.TotalNet)</p>
+                        </li>
+                        @*<li>
+                        <p class="detail-name">@ResourceUI.CommissionCost:</p>
+                        <p>@Html.DisplayFor(i => i.Quote.CommissionCost)</p>
+                    </li>*@
+                    }
+                    <li>
+                        <p class="detail-name">@ResourceUI.TotalSell:</p>
+                        <p>@Html.DisplayFor(i => i.Quote.TotalSell)</p>
+                    </li>
+                    <li>
+                        <p class="detail-name">@ResourceUI.FreightCost:</p>
+                        <p>@Html.DisplayFor(i => i.Quote.TotalFreight)</p>
+                    </li>
+                    <li>
+                        <p class="detail-name">Total:</p>
+                        <p>@Html.DisplayFor(i => i.Quote.Total)</p>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="details-list">
+            <ul>
+                <li>
+                    <p class="detail-name full">@ResourceUI.QuoteDescription:</p>
+                    @if (Model.Quote.Description != null)
+                    {
+                        <p class="full">@Model.Quote.Description</p>
+                    }
+                    else
+                    {
+                        <p>No description given</p>
+                    }
+                </li>
+            </ul>
+        </div>
+        <div class="row-end">&nbsp;</div>
+    </div>
+    <br class="clearfix" />
+    <br />
+    @*@if (Model.CommissionRequest != null)
+    {
+        <div class="details-list">
+            <ul>
+                <li>
+                    <p class="detail-name"><strong>@ResourceUI.RequestedCommissionPercent:</strong></p>
+                    <p>@Model.CommissionRequest.RequestedCommissionTotal</p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>@ResourceUI.ApprovedCommissionPercent:</strong></p>
+                    <p>@Model.CommissionRequest.ApprovedCommissionTotal</p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>@ResourceUI.RequestedCommissionMultiplier:</strong></p>
+                    <p>@Model.CommissionRequest.RequestedMultiplier</p>
+                </li>
+                <li>
+                    <p class="detail-name">@ResourceUI.ApprovedCommissionMultiplier:</p>
+                    <p>@Model.CommissionRequest.ApprovedMultiplier</p>
+                </li>
+                <li>
+                    <p class="detail-name">@ResourceUI.RequestCommissionPercentVRV:</p>
+                    <p>@Model.CommissionRequest.RequestedCommissionVRV</p>
+                </li>
+
+                <li>
+                    <p class="detail-name"><strong>@ResourceUI.ApprovedCommissionPercentVRV:</strong></p>
+                    <p>@Model.CommissionRequest.ApprovedCommissionVRV</p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>@ResourceUI.RequestedMultiplierVRV:</strong></p>
+                    <p>@Model.CommissionRequest.RequestedMultiplierVRV</p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>@ResourceUI.ApprovedMultiplierVRV:</strong></p>
+                    <p>@Model.CommissionRequest.ApprovedMultiplierVRV</p>
+                </li>
+                <li>
+                    <p class="detail-name">@ResourceUI.RequestedCommissionPercentSplit:</p>
+                    <p>@Model.CommissionRequest.RequestedCommissionSplit</p>
+                </li>
+                <li>
+                    <p class="detail-name">@ResourceUI.ApprovedCommissionPercentSplit:</p>
+                    <p>@Model.CommissionRequest.ApprovedCommissionSplit</p>
+                </li>
+                <li>
+                    <p class="detail-name">@ResourceUI.RequestedMultiplierSplit:</p>
+                    <p>@Model.CommissionRequest.RequestedMultiplierSplit</p>
+                </li>
+                <li>
+                    <p class="detail-name">@ResourceUI.ApprovedMultiplierSplit:</p>
+                    <p>@Model.CommissionRequest.ApprovedMultiplierSplit</p>
+                </li>
+
+            </ul>
+        </div>
+    }*@
+
+    <br class="clearfix" />
+    <br />
+  
+    <h4 class="pad-top" style="font-size: 1.6em;">@ResourceUI.ProductsInThisQuote</h4>
+    <table>
+        @Html.Partial("QuoteProductsTable", Model.QuoteItems)
+    </table>
+  
+</div>

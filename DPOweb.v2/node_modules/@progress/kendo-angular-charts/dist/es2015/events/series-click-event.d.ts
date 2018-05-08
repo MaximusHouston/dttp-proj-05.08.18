@@ -1,0 +1,46 @@
+import { ChartComponent } from '../chart.component';
+import { BaseEvent } from './base-event';
+import { EventSeriesOptions } from '../api-types/event-series-options.interface';
+import { SeriesPoint } from '../api-types/series-point.interface';
+/**
+ * Arguments for the `seriesClick` event.
+ */
+export declare class SeriesClickEvent extends BaseEvent {
+    /**
+     * The data point category.
+     */
+    category: any;
+    /**
+     * The original data item.
+     */
+    dataItem: any;
+    /**
+     * The original user event that triggered the drag action.
+     */
+    originalEvent: any;
+    /**
+     * The point value represented as a percentage value.
+     * Available only for the Donut, Pie, and 100% stacked charts.
+     */
+    percentage: number;
+    /**
+     * The clicked series point.
+     */
+    point: SeriesPoint;
+    /**
+     * The clicked point series options.
+     */
+    series: EventSeriesOptions;
+    /**
+     * The cumulative point value on the stack. Available only for the stackable series.
+     */
+    stackValue: number;
+    /**
+     * The data point value.
+     */
+    value: any;
+    /**
+     * @hidden
+     */
+    constructor(e: any, sender: ChartComponent);
+}

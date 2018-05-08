@@ -1,0 +1,101 @@
+﻿
+
+<a class="context-btn submit" id="addProductFromTool" onclick="showToolsWindow()">
+    <img src="~/Images/new-project-icon.png" />
+    Select Products
+</a>
+
+<div id="toolsWindow">
+    <p>
+        Select tool:
+    </p>
+    <div>
+        <div id="toolsDDL" style="width:300px"></div>
+    </div>
+    <div><button class="btn btn-default pull-right" onclick="openTool()">Open</button></div>
+</div>
+
+<script>
+    function showToolsWindow(){
+        var toolsWindow = $("#toolsWindow").data("kendoWindow").center().open();
+    }
+
+    function openTool(){
+        var quoteId = @Html.Raw(Json.Encode(Model.QuoteIdStr));
+        var projectId = @Html.Raw(Json.Encode(Model.ProjectIdStr));
+        var user = @Html.Raw(Json.Encode(ViewData["CurrentUser"] as UserSessionModel));
+        
+        var selectedTool =  $("#toolsDDL").val();
+        if(selectedTool == 35){
+            window.location.href= "/api/Tool/SystemConfigurator?quoteId=" + quoteId;
+        }else  if(selectedTool == 36){
+            window.location.href= "/api/Tool/SplitSystemConfigurator?quoteId=" + quoteId;
+        }
+        else if(selectedTool == 120){
+            window.location.href= "http://testsecurenet.goodmanmfg.com/litconfig-DC/listDealers.html?sessionId=123&quoteId=" + quoteId + "&projectId=" + projectId + "&userId="+ user.UserId;
+        }
+    }
+
+    $(document).ready(function () {
+
+        //Tools
+        $("#toolsWindow").kendoWindow({
+            width: "500px",
+            title: "Tools",
+            visible: false,
+            actions: ["Close"]
+        });
+
+        //var toolList = [
+        //                { text: "System Configurator", value: "System Configurator" }
+        //];
+
+
+        var toolListDS = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: "/api/User/GetCurrentUser",
+                    dataType: "json"
+                }
+            },
+            schema: {
+                //data: "model.toolAccesses",
+                parse: function(response){
+                    var tools = [];
+
+                    for (var i in response.model.toolAccesses){
+                        if(response.model.toolAccesses[i].toolId == 35){
+                            tools.push({ text: "Unitary Matchup Tool", value: 35 });
+                        }
+                        if(response.model.toolAccesses[i].toolId == 36){
+                            tools.push({ text: "Commercial Split Matchup Tool", value: 36 });
+                        }
+                        if(response.model.toolAccesses[i].toolId == 120){
+                            tools.push({ text: "LC Submittal Tool", value: 120 });
+                        }
+                    }
+                    if(tools.length == 0){
+                        $("#addProductFromTool").hide();
+                    }
+                    return tools;
+                }
+
+            }
+
+        });
+
+
+        $("#toolsDDL").kendoDropDownList({
+            dataTextField: "text",
+            dataValueField: "value",
+            dataSource: toolListDS,
+            index: 0,
+            //autoWidth: true,
+            change: function(e){
+                var value = this.value();
+
+            }
+        });
+
+    });
+</script>

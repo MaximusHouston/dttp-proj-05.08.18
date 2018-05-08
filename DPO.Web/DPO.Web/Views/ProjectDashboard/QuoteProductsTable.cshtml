@@ -1,0 +1,300 @@
+﻿@model QuoteItemsModel
+@{ Layout = "";
+   var user = ViewData["CurrentUser"] as UserSessionModel;
+   var SetActive = 0;
+}
+        <thead>
+            <tr>
+                @if (!Model.IsCommission)
+                {
+                    if (user.HasAccess(SystemAccessEnum.EditProject)
+                    && Model.IsTransferred == false
+                    && ViewBag.Title != ResourceUI.QuotePrint
+                    //&& !Model.HasDAR
+                    && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Submitted
+                    && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.AwaitingCSR
+                    && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Accepted
+                    && Model.ActiveQuoteSummary.OrderId == 0
+                    && Model.AwaitingDiscountRequest == false
+                    && Model.DiscountRequestAvailable == true)
+                    {
+                        <th class="actions"></th>
+                    }
+                }
+                else
+                {
+                    if (user.HasAccess(SystemAccessEnum.EditProject)
+                       && Model.IsTransferred == false
+                       && ViewBag.Title != ResourceUI.QuotePrint
+                       && Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved
+                       && Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Pending
+                       && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Submitted
+                       && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.AwaitingCSR
+                       && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Accepted)
+                    {
+                        <th class="actions"></th>
+                    }
+                }
+
+                <th id="productnumber" aria-sort="none">@ResourceUI.Product</th>
+                <th id="productdescription" aria-sort="none">@ResourceUI.ProductDescription</th>
+                @if (ViewBag.Title != ResourceUI.QuotePrint)
+                {
+                    <th id="tags">@ResourceUI.Tags</th>
+                }
+                <th id="productqty" aria-sort="none" class="c-align">@ResourceUI.Quantity</th>
+                @if (ViewBag.Title != ResourceUI.QuotePrint && Model.ProjectOwnerCommissionSchemeAllowed)
+                {
+                    <th id="productclasscode" aria-sort="none">Model #</th>
+                    <th id="commissionscheme">@ResourceUI.CommissionScheme</th>
+                }
+                @if (user.ShowPrices && Model.WithCostPrice)
+                {
+                    <th id="productprice">@ResourceUI.ListPriceEach</th>
+                    <th id="productprice">@ResourceUI.NetPriceEach</th>
+                    <th id="extendednet">@ResourceUI.ExtendedPrice</th>
+                }
+
+            </tr>
+
+        </thead>
+        <tbody>
+
+            @for (int i = 0; i < Model.Items.Count; i++)
+            {
+                var item = Model.Items[i];
+
+                if (Model.Items[i].Quantity > 0)
+                {
+                    <tr data-quoteitemid="@item.QuoteItemId">
+
+                        @if (!Model.IsCommission)
+                        {
+                            if (user.HasAccess(SystemAccessEnum.EditProject)
+                                && Model.IsTransferred == false
+                                && ViewBag.Title != ResourceUI.QuotePrint
+                                //&& !Model.HasDAR
+                                && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Submitted
+                                && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.AwaitingCSR
+                                && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Accepted
+                                && Model.AwaitingDiscountRequest == false &&
+                                Model.DiscountRequestAvailable == true)
+                            {
+
+                                <td class="actions">
+                                    <div>
+                                        <ul>
+                                            <li>
+                                                @Html.ActionLink(ResourceUI.QuoteItemRemove, "QuoteItemRemove", new { QuoteItemId = item.QuoteItemId, QuoteId = Model.QuoteId, ProjectId = Model.ProjectId })
+                                            </li>
+                                            <li>
+                                                <a href="#" class="edit_tag_link">Edit Tags</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <a href="/v2/#/products/(productDetails:@item.ProductId)?activeTab=product-overview">@item.ProductNumber</a>
+                                </td>
+
+                            }
+                            else
+                            {
+                                <td><div>@item.ProductNumber</div></td>
+                            }
+                        }
+                        else
+                        {
+                            if (user.HasAccess(SystemAccessEnum.EditProject)
+                                && Model.IsTransferred == false
+                                && ViewBag.Title != ResourceUI.QuotePrint
+                                && Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved
+                                && Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Pending
+                                && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Submitted
+                                && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.AwaitingCSR
+                                && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Accepted
+                                && Model.AwaitingDiscountRequest == false
+                                && Model.HasDAR == false)
+                            {
+                                <td class="actions">
+                                    <div>
+                                        <ul>
+                                            <li>
+                                                @Html.ActionLink(ResourceUI.QuoteItemRemove, "QuoteItemRemove", new { QuoteItemId = item.QuoteItemId, QuoteId = Model.QuoteId, ProjectId = Model.ProjectId })
+                                            </li>
+                                          
+                                              <li>
+                                                <a href="#" class="edit_tag_link">Edit Tags</a>
+                                              </li>
+                                            
+                                        </ul>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <a href="/v2/#/products/(productDetails:@item.ProductId)?activeTab=product-overview">@item.ProductNumber</a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td><div>@item.ProductNumber</div></td>
+                            }
+                        }
+
+
+                        <td style="white-space:normal;">@item.Description.Replace("’", "'")</td>
+
+                        @if (ViewBag.Title != ResourceUI.QuotePrint)
+                        {
+                            <td class="tags">
+                                <div>
+
+                                    @if (!string.IsNullOrEmpty(item.Tags) && item.Tags.ToCharArray().Count() > 2)
+                                    {
+                                        <div class="tooltip">
+                                            @item.Tags
+                                            <img src="~/Images/tooltip-tail-vertical.png" />
+                                        </div>
+                                    }
+
+                                    @if (!Model.IsCommission)
+                                    {
+                                        if (user.HasAccess(SystemAccessEnum.EditProject)
+                                            && Model.IsTransferred == false
+                                            && ViewBag.Title != ResourceUI.QuotePrint
+                                            //&& !Model.HasDAR
+                                            && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Submitted
+                                            && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.AwaitingCSR
+                                            && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Accepted
+                                            && Model.AwaitingDiscountRequest == false
+                                            && Model.DiscountRequestAvailable == true)
+                                        {
+                                            <a href="#" class="edit_tag_link">
+                                                @if (string.IsNullOrEmpty(item.Tags) )
+                                                {
+                                                    <img src="~/Images/tags-icon.png" style="position: relative; top : 3px; left: 2px;" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/Images/tags-icon-tick.png" style="position: relative; top : 3px;" />
+                                                }
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            if (string.IsNullOrEmpty(item.Tags) || item.Tags.ToCharArray().Count() == 2)
+                                            {
+                                                <img src="~/Images/tags-icon-gray.png" style="position: relative; top : 3px; left: 2px; " />
+                                            }
+                                            else
+                                            {
+                                                <img src="~/Images/tags-icon-tick-gray.png" style="position: relative; top : 3px;" />
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (user.HasAccess(SystemAccessEnum.EditProject)
+                                            && Model.IsTransferred == false
+                                            && ViewBag.Title != ResourceUI.QuotePrint
+                                            && Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved
+                                            && Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Pending
+                                            && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Submitted
+                                            && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.AwaitingCSR
+                                            && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Accepted
+                                            && Model.AwaitingDiscountRequest == false
+                                            && Model.HasDAR == false)
+                                        {
+
+                                            <a href="#" class="edit_tag_link">
+                                                @if (string.IsNullOrEmpty(item.Tags) )
+                                                {
+                                                    <img src="~/Images/tags-icon.png" style="position: relative; top : 3px; left: 2px;" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/Images/tags-icon-tick.png" style="position: relative; top : 3px;" />
+                                                }
+                                            </a>
+
+                                        }
+                                        else
+                                        {
+                                            if (string.IsNullOrEmpty(item.Tags) )
+                                            {
+                                                <img src="~/Images/tags-icon-gray.png" style="position: relative; top : 3px; left: 2px; " />
+                                            }
+                                            else
+                                            {
+                                                <img src="~/Images/tags-icon-tick-gray.png" style="position: relative; top : 3px;" />
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </td>
+                        }
+                        <td align="center">
+                            @if (!Model.IsCommission)
+                            {
+                            if (user.HasAccess(SystemAccessEnum.EditProject)
+                            && Model.IsTransferred == false
+                            && ViewBag.Title != ResourceUI.QuotePrint
+                            //&& !Model.HasDAR
+                            && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Submitted
+                            && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.AwaitingCSR
+                            && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Accepted
+                            && Model.AwaitingDiscountRequest == false
+                            && Model.DiscountRequestAvailable == true)
+                            {
+                            @Html.NumericStepperFor((long)item.Quantity, new { @class = "c-align" })
+                            }
+                            else
+                            {
+                            <div>@Html.DisplayFor(m => m.Items[i].Quantity)</div>
+                            }
+                            }
+                            else
+                            {
+                            if (user.HasAccess(SystemAccessEnum.EditProject)
+                            && Model.IsTransferred == false
+                            && ViewBag.Title != ResourceUI.QuotePrint
+                            && Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Approved
+                            && Model.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.Pending
+                            && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Submitted
+                            && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.AwaitingCSR
+                            && Model.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Accepted
+                            && Model.AwaitingDiscountRequest == false
+                            && Model.HasDAR == false)
+                            {
+
+                            @Html.NumericStepperFor((long)item.Quantity, new { @class = "c-align" })
+                            }
+                            else
+                            {
+                            <div>@Html.DisplayFor(m => m.Items[i].Quantity)</div>
+                            }
+                            }
+                        </td>
+
+                        @if (ViewBag.Title != ResourceUI.QuotePrint && Model.ProjectOwnerCommissionSchemeAllowed)
+                        {
+                            <td align="center">
+                                @item.ProductClassCode
+                            </td>
+                            <td align="center">
+                                @((item.IsCommissionable) ? "Yes" : "No")
+                            </td>
+                        }
+                        @if (user.ShowPrices && Model.WithCostPrice)
+                        {
+                            <td>@Html.DisplayFor(m => item.PriceList)</td>
+                            <td>@Html.DisplayFor(m => item.PriceNet)</td>
+                            <td>@Html.DisplayFor(m => item.ExtendedNet)</td>
+                        }
+                    </tr>
+
+                }
+
+            }
+        </tbody>

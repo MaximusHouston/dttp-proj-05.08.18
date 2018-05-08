@@ -1,0 +1,13 @@
+﻿@media (min-width: 1200px) {
+}
+
+@media (max-width: 576px) {
+    nav#topHeader {
+        background-color: white;
+    }
+
+    /*#topHeader.navbar-default {
+        background-color: white;
+    }*/
+
+}

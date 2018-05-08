@@ -1,0 +1,133 @@
+﻿@model QuoteListModel
+@{
+    ViewBag.Title = "ConfirmModalCommissionConvert";
+}
+
+@using System.Web.Configuration;
+
+<div class="modal confirm" id="confirm_modal_commission_conversion">
+    <div style="top: 20%;">
+
+        <a href="@Url.Action("Quote", "ProjectDashboard", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId, closePopup = true })">
+            <img src="~/Images/modal-close-btn.png" class="f-close-btn" />
+        </a>
+
+        <h1>Commission Conversion Confirm</h1>
+
+        <p>The Total List Price exceeds $150K. Do you want to convert the quote to Commission? </p>
+
+        <a href="#" class="submit-btn" id="confirm_modal_commission_convert_Yes">@ResourceUI.Yes</a>
+        <a href="#" class="submit-btn" id="confirm_modal_commission_convert_No">@ResourceUI.No</a>
+
+        <br />
+        <br />
+
+        <div id="commissionReasons" style="display:none;position:absolute;width:600px;height:150px;background-color:#fff; margin-left:-27px;">
+            <div style="padding-left:20px; padding-right:20px;padding-top:10px;">
+                <label>Please provide the reason </label>
+                @Html.TextArea("Notes", new { id = "commissionConvertReason" })
+                @*<a href="#" id="btnSaveCommissionConvertNotes" sc-ajaxpost="@Url.Action("UpdateQuoteNotesForCommission")" class="submit-btn">@ResourceUI.Save</a>*@
+                <input type="submit" id="btnSaveCommissionConvertNotes" class="submit-btn" value="@ResourceUI.Save"></div>
+        </div>
+
+    </div>
+
+    <input type="hidden" id="CommissionConvertNo" name="CommissionConvertNo" />
+    <input type="hidden" id="CommissionConvertYes" name="CommissionConvertYes" />
+
+    <input type="hidden" id="project_Id" value="@Model.ProjectId" name="project_Id" />
+    <input type="hidden" id="quote_Id" value="@Model.QuoteId" name="quote_Id" />
+
+</div>
+
+<script>
+
+    $('a#confirm_modal_commission_convert_Yes').click(function (e) {
+        //e.preventDefault();
+
+        $('#CommissionConvertYes').val(true);
+        $('#CommissionConvertNo').val(false);
+
+        var model = {
+            projectId: $('#project_Id').val(),
+            quoteId: $('#quote_Id').val(),
+            notes: $('#commissionConvertReason').val(),
+            commissionConvertYes: $('#CommissionConvertYes').val(),
+            commissionConvertNo: $('#CommissionConvertNo').val()
+        };
+
+        console.log(model);
+
+        $.ajax({
+            url: '/ProjectDashboard/UpdateQuoteNotesForCommission',
+            type: 'POST',
+            data: model,
+            success: function (data) {
+
+                location.href = "/ProjectDashboard/QuoteItems/" + $('#project_Id').val() + "/" + $('#quote_Id').val();
+            },
+            error: function () {
+                alert("errors happened when try to updated Quote Notes.Please contact administrator for more details.");
+            }
+        });
+
+        return false;
+    });
+
+    $('a#confirm_modal_commission_convert_No').click(function (e) {
+        //e.preventDefault();
+        $('#IsCommission').val(false);
+        $('#commissionReasons').css('display', 'block');
+        $('#CommissionConvertNo').val(true);
+        $('#CommissionConvertYes').val(false);
+        
+        return false;
+    });
+
+    $('#commissionConvertReason').on('keyup', function (e) {
+        if (!$(this).val().length)
+        {
+            $('#btnSaveCommissionConvertNotes').attr('disabled', 'disabled');
+        }
+        else
+        {
+            $('#btnSaveCommissionConvertNotes').removeAttr('disabled');
+        }
+    });
+
+    if($('#commissionConvertReason').val().length == 0)
+    {
+        $('#btnSaveCommissionConvertNotes').attr('disabled', 'disabled');
+    }
+
+    $('#btnSaveCommissionConvertNotes').on('click', function () {
+       
+        $('#CommissionConvertNo').val(true);
+        $('#CommissionConvertYes').val(false);
+
+        var model = {
+            projectId: $('#project_Id').val(),
+            quoteId: $('#quote_Id').val(),
+            notes: $('#commissionConvertReason').val(),
+            commissionConvertYes: $('#CommissionConvertYes').val(),
+            commissionConvertNo: $('#CommissionConvertNo').val()
+        };
+
+        console.log(model);
+
+        $.ajax({
+            url: '/ProjectDashboard/UpdateQuoteNotesForCommission',
+            type: 'POST',
+            data: model,
+            success: function (data) {
+                location.href = "/ProjectDashboard/QuoteItems/" + $('#project_Id').val() + "/" + $('#quote_Id').val();
+            },
+            error: function () {
+                alert("errors happened when try to updated Quote Notes.Please contact administrator for more details.");
+            }
+        });
+
+        return false;
+    });
+
+</script>

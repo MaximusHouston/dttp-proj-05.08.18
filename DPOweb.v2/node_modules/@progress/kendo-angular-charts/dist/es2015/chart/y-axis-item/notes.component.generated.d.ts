@@ -1,0 +1,18 @@
+import { drawing } from '@progress/kendo-drawing';
+import { ConfigurationService } from '../../common/configuration.service';
+import { SettingsComponent } from '../../common/settings.component';
+import { AxisNoteVisualArgs, NoteLine, NotePosition } from '../../common/property-types';
+import { YAxisNotesIcon, YAxisNotesLabel, YAxisNotes } from '../../common/property-types';
+/**
+ * @hidden
+ */
+export declare abstract class YAxisNotesComponentGenerated extends SettingsComponent implements YAxisNotes {
+    configurationService: ConfigurationService;
+    data: any[];
+    line: NoteLine;
+    position: NotePosition;
+    visual: (e: AxisNoteVisualArgs) => drawing.Element;
+    icon: YAxisNotesIcon;
+    label: YAxisNotesLabel;
+    constructor(configurationService: ConfigurationService);
+}

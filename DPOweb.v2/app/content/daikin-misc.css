@@ -1,0 +1,233 @@
+﻿
+
+
+h1 {
+    color: #00A1E4;
+}
+
+.as-lnk {
+    color: #00A1E4;
+}
+
+
+label.required::after {
+    content: "*";
+    color:red;
+}
+
+.tabs-header {
+    color:#2fa4e7;
+}
+nav a.tabs-header:visited, nav a.tabs-header:link {
+    color:#2fa4e7;
+}
+
+.grey-text {
+    color: #656565;
+}
+
+.grey-text-italic {
+    font-size: smaller;
+    font-style: italic;
+    color: grey;
+}
+
+.lightblue-background {
+    background-color:#F4FCFE;
+}
+
+.blue-background {
+    background-color:#DFF6FE;
+}
+
+
+.container-fluid.dk-blue-background {
+    background-color:#BDEBFF;
+}
+
+.commission-form-left-section {
+    /*background-color:#F4FCFE;*/
+    padding:10px;
+    margin:auto;
+}
+.commission-form-right-section {
+    background-color:#DFF6FE;
+    padding:10px;
+}
+
+#calculateCommissionPopup hr {
+    margin: 0px;
+    border-top: 1px solid #A6D7EF;
+    /*margin-right: -15px;
+    margin-left: -15px;*/
+}
+
+a.btn-primary.btn:visited, a.btn-primary.btn:link {
+    color: #fff;
+}
+
+a.btn-default:link {
+    color: #333;
+}
+
+.row-nomargin {
+    margin: 0px;
+}
+
+/*fix jquery kendo grid*/
+/*#projectsGridContainer .k-grid td {
+    padding-right: 0px;
+}*/
+
+/*table-like-list*/
+.dk-list-grey .dk-list-header {
+    background-color: #616771;
+    color: #fff;
+    padding: 10px;
+}
+
+.dk-list-grey .dk-list-row {
+    height: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #a6d7ef;
+}
+
+.list-header-blue {
+    background-color: #337ab7;
+    color: #fff;
+    padding: 10px;
+}
+
+.list-header-grey {
+    background-color: #616771;
+    color: #fff;
+    padding: 10px;
+}
+
+.border-bottom-row {
+    border-bottom: 1px solid #a6d7ef;
+}
+
+.row-halfpage {
+    width: 49%;
+    float: left;
+}
+
+.product-link {
+    color: #337ab7;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.productQtyContainer {
+    background-color: #DEF4FF;
+    width: 150px;
+    margin: auto;
+}
+
+.accessory-list-row .productQtyContainer {
+    background-color: #DEF4FF;
+    width: 130px;
+    margin: auto;
+}
+
+/****SignUp form****/
+
+
+#signup-form {
+    background-color: #BDEBFF;
+}
+
+    #signup-form .main-content {
+        background-color: #FFFFFF;
+    }
+
+@media (min-width: 1200px) {
+    #signup-form .main-content {
+        width: 1100px;
+        margin: auto;
+    }
+}
+
+
+#signup-form .section.form {
+    background-color: #F4FCFE;
+    margin: 20px;
+}
+
+@media (max-width: 576px) {
+    #signup-form .section.form {
+        margin: 0px;
+    }
+}
+
+
+#signup-form .section.form h4 {
+    padding-left: 10px;
+}
+
+
+#signup-form .form-group p {
+    font-weight: bold;
+    margin: 0 0 5px;
+}
+
+#signup-form .section.action {
+    background-color: #DEF5FF;
+    margin: 18px;
+}
+
+@media (max-width: 576px) {
+    #signup-form .section.action {
+        margin: 0px;
+    }
+}
+
+.main-form {
+    margin:20px;
+    background-color:#fff;
+    padding:30px;
+}
+
+.form-group.required .control-label:after, .form-group.required p:after, .control-label.required::after {
+    content: "*";
+    color: red;
+}
+
+@media (max-width: 576px) {
+    .searchBtn {
+        width: 155px;
+    }
+}
+
+/*Quote*/
+@media (min-width: 1200px) {
+    .quote-details .quote-details-info {
+        padding-left:150px; 
+        padding-right:150px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .quote-details .quote-details-info .row{
+        padding-top:5px; 
+        padding-bottom:5px;
+    }
+}
+
+/******************/
+
+#passwordStrengthBkg {
+    width: 100%;
+    background-color: #ddd;
+    margin: 5px;
+    border-radius: 3px;
+}
+
+#passwordStrengthBar {
+    width: 0%;
+    height: 5px;
+    background-color: #ddd;
+    border-radius: 3px;
+}

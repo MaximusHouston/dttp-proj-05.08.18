@@ -1,0 +1,40 @@
+﻿@model WidgetContainerModel
+@using DPO.Web.Controllers
+<div class="settings">
+    <label for="tileType">Select a tile type</label>
+    <select id="tileType" style="width: 100%;">
+        @foreach (var item in Model.AvailableWidgetTypes)
+        {
+            if (item.TemplateId != "EmptyWidgetTemplate")
+            {
+                if (item.TemplateId == Model.Widget.TemplateId)
+                {
+                    <option value="@item.TemplateId" selected disabled>@item.Title</option>
+                }
+                else
+                {
+                    <option value="@item.TemplateId">@item.Title</option>
+                }
+            }
+        }
+    </select>
+    @if (Model.Widget.AdditionalSettings != null)
+    {
+        foreach (var settingKey in Model.Widget.AdditionalSettings.Keys)
+        {
+            var setting = Model.Widget.AdditionalSettings[settingKey];
+            
+            <label for="@setting.SettingName">@setting.SettingLabel</label>
+        
+            <select style="width: 100%" id="@setting.SettingName">
+                @foreach (var option in setting.Options)
+                {
+                    <option value="@option.Key" @(option.Key == setting.SelectedOption ? "selected" : "")>@option.Value</option>
+                }
+            </select>
+        
+            @Html.HiddenFor(m => m.Widget.AdditionalSettings[settingKey].SelectedOption)
+        }
+    }
+    <button type="button" class="submit-btn remove-btn" style="font-size: 0.9em;">Remove this tile</button>
+</div>

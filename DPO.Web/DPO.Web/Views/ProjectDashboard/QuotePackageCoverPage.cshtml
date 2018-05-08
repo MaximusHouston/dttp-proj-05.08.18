@@ -1,0 +1,169 @@
+﻿@using System.IO.Compression 
+@model QuotePackageModel
+
+@{
+    ViewBag.Title = ResourceUI.QuotePackage;
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+    
+    Layout = null;
+    @Styles.Render("~/Content/css/pdf-base");
+}
+
+<div class="pdf">
+
+    <div class="header-print">
+        <img src="~/Images/daikin-logo-print.png" />
+        @if (user.BusinessLogoUrl != null)
+        {
+            <img src="@(user.BusinessLogoUrl)" class="push-right" style="max-height: 50px;" />
+        }
+        <h2 class="single-line"><strong>Package Cover Sheet</strong></h2>
+        <p>Created @DateTime.Now</p>
+    </div>
+
+    <h4 class="pad-top" style="font-size: 1.6em;">@ResourceUI.ProjectDetails</h4>
+    <div class="row">
+        <div class="r-col1 hide-print">&nbsp;</div>
+        <div class="r-col4 details-list">
+            <ul>
+                <li>
+                    <p class="detail-name"><strong>@ResourceUI.ProjectName:</strong></p>
+                    <p style="word-wrap: break-word;">@Model.Quote.Project.Name</p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>@ResourceUI.ProjectID:</strong></p>
+                    <p>@Model.Quote.Project.ProjectId</p>
+                </li>
+            </ul>
+        </div>
+        <div class="r-col1 hide-print">&nbsp;</div>
+        <div class="r-col4 details-list">
+            <ul>
+                <li>
+                    <p class="detail-name"><strong>Submitted By:</strong></p>
+                    <p style="word-wrap: break-word;">@Model.Quote.Project.SellerName</p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>Project Owner:</strong></p>
+                    <p style="word-wrap: break-word;">@Model.Quote.Project.OwnerName</p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>Submitted To:</strong></p>
+                    <p style="word-wrap: break-word;">@Model.Quote.Project.EngineerName</p>
+                </li>
+            </ul>
+        </div>
+        <div class="r-col2 hide-print">&nbsp;</div>
+        <div class="row-end">&nbsp;</div>
+    </div>
+    <br class="clearfix" />
+    <br />
+    <h4 class="pad-top" style="font-size: 1.6em;">@ResourceUI.QuoteDetails</h4>
+    <div class="row">
+        <div class="r-col1 hide-print">&nbsp;</div>
+        <div class="r-col4 details-list">
+            <ul>
+                <li>
+                    <p class="detail-name"><strong>@ResourceUI.QuoteName:</strong></p>
+                    <p>@Model.Quote.Title</p>
+                </li>
+                <li>
+                    <p class="detail-name"><strong>@ResourceUI.Revision:</strong></p>
+                    <p>@Model.Quote.Revision</p>
+                </li>
+                <li>
+                    <p class="detail-name full" style="display: block;"><strong>@ResourceUI.QuoteDescription:</strong></p>
+                    <p class="full">
+                        @Model.Quote.Description
+                    </p>
+                </li>
+            </ul>
+        </div>
+        <div class="r-col1 hide-print">&nbsp;</div>
+        <div class="r-col4 details-list">
+            <ul>
+                <li>
+                    <p class="detail-name full" style="display: block;"><strong>Quote Notes:</strong></p>
+                    <p class="full">
+                        @Model.Quote.Notes
+                    </p>
+                </li>
+            </ul>
+        </div>
+        <div class="r-col2 hide-print">&nbsp;</div>
+        <div class="row-end">&nbsp;</div>
+    </div>
+    <br class="clearfix" />
+    <br />
+    @if (Model.SelectedDocuments.Count > 0)
+    {
+        <h4 class="pad-top" style="font-size: 1.6em;">Product Files included in this package</h4>
+        <table style="font-size: 12px;">
+            <thead>
+                <tr>
+                    <th>Reference</th>
+                    <th>Submittal<br />Sheets</th>
+                    <th>Installation<br />Manual</th>
+                    <th>Operation<br />Manual</th>
+                    <th>Guide<br />Specs</th>
+                    <th>Product<br />Brochure</th>
+                    <th>Revit<br />Drawing</th>
+                    <th>CAD<br />Drawing</th>
+                    <th>Product<br />Flyer</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+        List<int> validValues = new List<int>{
+                    (int)DocumentTypeEnum.SubmittalData,
+                    (int)DocumentTypeEnum.InstallationManual,
+                    (int)DocumentTypeEnum.OperationManual,
+                    (int)DocumentTypeEnum.WrittenGuideSpec,
+                    (int)DocumentTypeEnum.ProductBrochure,
+                    (int)DocumentTypeEnum.RevitDrawing,
+                    (int)DocumentTypeEnum.CADDrawing,
+                    (int)DocumentTypeEnum.ProductFlyer
+                };
+                }
+                @foreach (var doc in Model.SelectedDocuments)
+                {
+                    <tr>
+                        <td style="word-wrap: break-word;">@doc.ProductNumber</td>
+                        @for (var i = 0; i < validValues.Count; i++)
+                        {
+                            <td>
+                                @if (doc.Items.IndexOf(validValues[i]) > -1)
+                                {
+                                    <img src="~/Images/tick-icon-15x15.png" />
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    
+    @if (Model.AttachedFiles.Count > 0)
+    {
+        <br />
+        <h4 class="pad-top" style="font-size: 1.6em;">Other uploaded files in this package</h4>
+        <table style="font-size: 12px;">
+            <thead>
+                <tr>
+                    <th>File Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(var i = 0; i < Model.AttachedFiles.Count; i++)
+                {
+                    <tr>
+                        <td>@Model.AttachedFiles[i].FileName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    
+</div>
+

@@ -1,0 +1,162 @@
+﻿@model QuoteItemsModel
+@{
+    ViewBag.Title = ResourceUI.QuoteDetails;
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/numericstepperhelpers", "~/bundles/scripts/importitemsmodal", "~/bundles/scripts/confirmmodal")
+}
+<div ng-controller="quoteCommissionRequestsController">
+<div id="import_items_modal_container">
+    @Html.Partial("ImportItemsModal", Model)
+</div>
+@Html.Partial("ConfirmModal")
+@Html.Partial("DARAddressValidationModal")
+@Html.Partial("QuoteConfirmExportTypeModal")
+@Html.Partial("_ProjectTabsPartial")
+<ul class="breadcrumbs">
+    <li><a href="/v2/#/projects">@ResourceUI.Projects</a></li>
+    <li><a href="@Url.Action("Project", new { ProjectId = Model.ProjectId })">@Model.ProjectName</a></li>
+    <li>@Model.Title</li>
+</ul>
+@using (Html.BeginForm("QuoteCommissionRequests", "Projectdashboard", FormMethod.Get, new { id = "QuoteCommissionRequests" }))
+{
+    // Key post data
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.SortColumn)
+    @Html.HiddenFor(m => m.IsDesc)
+    @Html.HiddenFor(m => m.Page)
+
+    @Html.HiddenFor(m => m.ProjectId)
+    @Html.HiddenFor(m => m.QuoteId)
+    @Html.HiddenFor(m => m.CommissionRequestId)
+    
+    @Html.PageMessages()
+
+    <div class="section t-flush">
+        <div class="item-strap">
+            <div class="itemname full">
+                <h1>@Model.Title</h1>
+            </div>
+            @Html.Partial("QuoteButtonBar")
+        </div>
+    </div>
+
+    <ul class="sub-tab-bar">
+        <li>
+            @Html.ActionLink(ResourceUI.Overview, "Quote", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })
+        </li>
+        <li>
+            @Html.ActionLink(ResourceUI.Products, "QuoteItems", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })
+        </li>
+
+        @if (user.ShowPrices)
+        {
+            if (user.HasAccess(SystemAccessEnum.RequestDiscounts) || user.HasAccess(SystemAccessEnum.ViewDiscountRequest))
+            {
+                if (Model.HasDAR)
+                {
+                <li>
+                    @Html.ActionLink(ResourceUI.RequestedDiscounts, "QuoteDiscountRequests", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })
+                </li>
+                }
+            }
+            
+            if (user.HasAccess(SystemAccessEnum.RequestCommission) || user.HasAccess(SystemAccessEnum.ViewRequestedCommission))
+            {
+                if(Model.HasCOM)
+                { 
+                  <li class="active-tab">
+                    @Html.ActionLink(ResourceUI.RequestedCommission, "QuoteCommissionRequests", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })
+                  </li>
+                }
+            }
+
+            if (user.HasAccess(SystemAccessEnum.ViewOrder) || user.HasAccess(SystemAccessEnum.SubmitOrder))
+            {
+                <li id="quoteCOM_order_tab" style="visibility:hidden;">
+                    @Html.ActionLink(ResourceUI.Order, "OrderInQuote", new { DiscountRequestId = Model.DiscountRequestId, ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })
+                </li>
+            }
+        }
+    </ul>
+
+    @Html.Partial("ActiveQuoteInfoBar", Model)
+
+    <div class="section">
+        <div class="row sub-heading">
+            <h4>@ResourceUI.RequestedCommission for this quote</h4>
+            <div class="row-end">&nbsp;</div>
+        </div>
+        <div class="tbl-opts">
+            @Html.Partial("_TableDisplayOptionsPartial")
+            @Html.Partial("_SearchBarPartial")
+        </div>
+        <div class=" tbl-holder scroll-x">
+            <table class="tbl" id="QuoteDiscountRequests_table">
+                <thead>
+                    <tr>
+                    @*<th class="selections">
+                            <input type="checkbox" />
+                        </th>*@
+                    <th class="actions"></th>
+                    <th id="discountrequestid">Reference</th>
+                    <th id="requestedon" aria-sort="none">@ResourceUI.RequestDate</th>
+                    <th id="requeststatus" aria-sort="none">@ResourceUI.RequestStatus</th>
+                    </tr>
+                </thead>
+                    <tbody>
+                    @foreach (var item in Model.CommissionRequests)
+                    {
+                        var rowstyle = "";
+
+                        if (item.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Rejected) { rowstyle = "lost-row"; }
+                        if (item.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Approved) { rowstyle = "won-row"; }
+                        if (item.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Deleted) { rowstyle = " disabled-row"; }
+                        //if (item.IsTransferred) { rowstyle = "transfered-row"; }
+                        
+                            if (item.CommissionRequestStatusTypeId != (byte)CommissionRequestStatusTypeEnum.NewRecord)
+                        { 
+                          <tr class="@rowstyle">
+                             <td class="actions">
+                                <div>
+                                    <ul>
+                                        <li>
+                                            @Html.ActionLink("View", "CommissionRequest", new { commissionRequestId = item.CommissionRequestId })
+                                        </li>
+                                    </ul>
+                                </div>
+                             </td>
+                             <td>
+                                @Html.ActionLink(item.CommissionRequestId.ToString(), "CommissionRequest", new { CommissionRequestId = item.CommissionRequestId })
+                             </td>
+                             <td>@Html.DisplayFor(modelItem => item.RequestedOn)</td>
+                             <td>@Html.DisplayFor(modelItem => item.CommissionRequestStatusTypeDescription)</td>
+                          </tr>
+                        }
+                    }
+                    </tbody>
+            </table>
+        </div>
+                    <div class="pager">@Html.Pager(Model)</div>
+    </div>
+
+}
+</div>
+<script>
+    function QuoteCommissionRequestsViewModel() {
+        var self = this;
+        self.projectId = @Html.Raw(Json.Encode(Model.ProjectIdStr));
+        self.projectIdStr =  @Html.Raw(Json.Encode(Model.ProjectIdStr));
+        self.quoteId = @Html.Raw(Json.Encode(Model.QuoteIdStr));
+        self.quoteIdStr = @Html.Raw(Json.Encode(Model.QuoteIdStr));
+    }
+
+    $(function () {
+        tablehelper.setColumnIds('QuoteDiscountRequests_table');
+    });
+</script>
+

@@ -1,0 +1,25 @@
+﻿@model ProductModel
+@{
+    var specs = Model.Specifications;
+}
+
+
+    <tr>
+        <td>
+            InERP
+        </td>
+        <td>@specs.GetString("InERP")</td>
+        @*<td>
+            Product Class Name
+        </td>
+        <td>@specs.GetString("ProductClassName")</td>*@
+    </tr>
+    @*<tr>
+        <td>
+            Short Name
+        </td>
+        <td>@specs.GetString("ShortName")</td>
+        <td></td>
+        <td></td>
+    </tr>*@
+   

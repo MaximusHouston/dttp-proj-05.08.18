@@ -1,0 +1,13 @@
+﻿<div ng-controller="orderExportExcelController">
+    <p>Please select an export type:</p>
+    <div style="margin-top:15px; margin-bottom:15px;">
+        <select kendo-drop-down-list="ExportExcelTypeDll" style="width: 70%;">
+            <option>Orders</option>
+            <option>Orders with products</option>
+        </select>
+    </div>
+    <div>
+        <button type="button" ng-click="export()">Export</button>
+    </div>
+    
+</div>

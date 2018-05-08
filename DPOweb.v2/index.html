@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <base href="/v2/" />
+    <title>Daikin City</title>
+    <!--Clear browser cache-->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Polyfill(s) for older browsers -->
+    <script src="node_modules/core-js/client/shim.min.js"></script>
+    <script src="node_modules/zone.js/dist/zone.js"></script>
+    <script src="node_modules/reflect-metadata/Reflect.js"></script>
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+
+    <!-- Required for routing -->
+    <!--<script src="node_modules/angular2/bundles/router.dev.js"></script>-->
+
+    <script src="systemjs.config.js"></script>
+
+    <!--Kendo-jQuery styling-->
+    <!--<link rel="stylesheet" href="/v2/app/content/kendo/kendo.common.min.css" />
+    <link rel="stylesheet" href="/v2/app/content/kendo/kendo.default.min.css" />
+    <link rel="stylesheet" href="/v2/app/content/kendo/kendo.default.mobile.min.css" />-->
+    <!--<link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />-->
+    <!--Kendo-angular2 styling-->
+
+    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!--<link rel="stylesheet" href="/v2/app/content/kendo/all.css" />-->
+
+    <!--<link rel="stylesheet" href="/v2/app/content/kendo/all-custom.css" />-->
+
+    <!--<link rel="stylesheet" href="/v2/app/content/kendo/all-kendo-bootstrap-custom.css" />-->
+
+    <link rel="stylesheet" href="/v2/app/content/kendo/all-kendo-default-custom.css" />
+
+    <!--Kendo Custom Theme-->
+    <!--<link rel="stylesheet" href="/v2/app/content/kendo.bootstrap.custom.css" />-->
+    
+
+    <link rel="stylesheet" href="/v2/app/content/toastr.min.css" />
+    <link rel="stylesheet" href="/v2/app/content/equal-height-columns.css" />
+    <link rel="stylesheet" href="/v2/app/content/adminstyles-v2.css" />
+    <link rel="stylesheet" href="/v2/app/content/daikin-dpoweb-custom.css" />
+    <link rel="stylesheet" href="/v2/app/content/daikin-misc.css" />
+
+    <link rel="stylesheet" href="/v2/app/content/home.css" />
+    <link rel="stylesheet" href="/v2/app/content/systemConfigTool.css" />
+    <link rel="stylesheet" href="/v2/app/content/productlist.css" />
+    <link rel="stylesheet" href="/v2/app/content/productfamilylist.css" />
+    <link rel="stylesheet" href="/v2/app/content/table-smc.css" />
+    <link rel="stylesheet" href="/v2/app/content/kendo-custom.css" />
+
+    <script src="/v2/app/script/kendo/jquery.min.js"></script>
+    <script src="/v2/app/script/bootbox.js"></script>
+    <script src="/v2/app/script/toastr.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/v2/app/script/kendo/angular.min.js"></script>
+    <script src="/v2/app/script/kendo/kendo.all.min.js"></script>
+
+
+
+    <script>
+        
+        ////function generateBuildNumber() { // generate build number by date
+        ////    var today = new Date();
+        ////    var buildNumber = today.toISOString().substring(0, 10).replace(/-/g, '');  
+        ////    return buildNumber;
+        ////}
+
+        //var buildNumber = 07132017;
+        
+        //systemLocate = System.locate;
+        //System.locate = function (load) {
+        //    return Promise.resolve(systemLocate.call(this, load)).then(function (address) {
+        //        return address + '?build=' + buildNumber;
+        //    });
+        //}
+
+        System.import('app').catch(function (err) { console.error(err); });
+    </script>
+</head>
+
+<body>
+    <my-app>
+        <span id="loadingV2-icon" class="k-icon k-i-loading">
+        </span>
+        <div id="loadingMessage" class="text-center">
+            <div>Loading ... Please Wait</div>
+            <!--<div>Please wait.</div>-->
+            <!--<div>Remeber to get up and strech once in a while.</div>-->
+        </div>
+    </my-app>
+</body>
+</html>

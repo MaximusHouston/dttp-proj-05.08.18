@@ -1,0 +1,417 @@
+﻿@model ProjectsModel
+
+@{
+    ViewBag.Title = ResourceUI.Projects;
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles", "~/Content/themes/base/css")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/confirmmodal", "~/bundles/jqueryui")
+}
+
+@if (user.GroupId == null || user.GroupId == 0)
+{
+    <h1>You have not been assigned to a user group</h1>
+
+    <div class="section">
+        <div class="row">
+            <div class="col11">
+                <p>Access to Projects will be enabled once you are assigned a group. Please contact your business super user or Daikin Representative for assistance.</p>
+            </div>
+            <div class="row-end">&nbsp;</div>
+        </div>
+    </div>
+}
+else
+{
+    @Html.Partial("ConfirmModal")
+    @Html.Partial("_ProjectTabsPartial")
+
+    using (Html.BeginForm("Projects", "Projectdashboard", FormMethod.Post, new { id = "ProjectsForm" }))
+    {
+        <div class="section b-flush t-flush">
+            <div class="item-strap btm-bdr">
+                <div class="itemname">
+                    <h1>@ResourceUI.Projects</h1>
+                </div>
+                <div class="btn-bar">
+                    @if (user.HasAccess(SystemAccessEnum.EditProject))
+                    {
+                        <a href="@Url.Action("ProjectEdit", "Projectdashboard")" class="submit-btn h-slim">
+                            <img src="~/Images/new-project-icon.png" />
+                            @ResourceUI.ProjectNew
+                        </a>
+
+                        if (Model.ModelMode == DPO.Common.Models.Project.ModelModeEnum.Edit)
+                        {
+                            <button type="submit" class="submit-btn h-slim" id="save_projects">
+                                @ResourceUI.ProjectsSave
+                            </button>
+                            @*<a href="@Url.Action("Projects", "ProjectDashboard")" class="btn h-slim" name="btnStopEditing" id="btnStopEditing" data-form-method="post">
+                                      @ResourceUI.StopEditing
+                                </a>*@
+
+                            <button type="submit" class="btn h-slim" id="btnStopEditing" name="btnStopEditing">
+                                @ResourceUI.StopEditing
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="submit-btn h-slim" id="edit_projects">
+                                <img src="~/Images/context-btn-edit-icon.png" />
+                                @ResourceUI.EditAllProjects
+                            </button>
+                        }
+                    }
+                    <button class="btn h-slim" id="projects_export_type_modal_trigger">
+                        <img src="/Images/package-quote-icon.png">
+                        Export Projects
+                    </button>
+
+                    @if (user.HasAccess(SystemAccessEnum.EditProject))
+                    {
+                        @*<a href="#" data-confirm="ProjectsDelete" data-sc-ajaxpost="@Url.Action("UpdateProjectsDeleteItem")" class="submit-btn h-slim" id="btnProjectsDelete">
+                               <img src="~/images/context-btn-delete-icon.png" />
+                               @ResourceUI.ProjectsDelete
+                            </a>*@
+                        @*<a href="#" class="submit-btn h-slim" id="btnProjectsDelete" style="display:none;">
+                             <img src="~/images/context-btn-delete-icon.png" />
+                             @ResourceUI.ProjectsDelete
+                            </a>*@
+                        <button type="submit" class="submit-btn h-slim" id="btnProjectsDelete" style="display:none;">
+                            @ResourceUI.ProjectsDelete
+                        </button>
+
+                    }
+                </div>
+            </div>
+        </div>
+
+        @Html.HiddenFor(m => m.ModelMode)
+        @Html.HiddenFor(m => m.SortColumn)
+        @Html.HiddenFor(m => m.IsDesc)
+        @Html.HiddenFor(m => m.Page)
+
+        @Html.AntiForgeryToken()
+
+        @Html.PageMessages(true)
+
+
+
+        @* Project export type modal *@
+        <div class="modal confirm" id="projects_export_type_modal" style="display:none;">
+            <div style="top: 10%;">
+                <img src="~/Images/modal-close-btn.png" class="close-btn" />
+                <h1>Projects Export</h1>
+                <p>Please select a project export type:</p>
+                @Html.DropDownListFor(m => m.ProjectExportType, Model.ProjectExportTypes, null, null, new { style = "width: 400px;" })
+                <br />
+                <br />
+                <a href="#" class="submit-btn">Export</a>
+            </div>
+        </div>
+
+
+        if (Model.DeleteProjects != null && Model.DeleteProjects.Count > 0)
+        {
+            @Html.Partial("ConfirmModalProjectsDelete", Model)
+        }
+
+        <div class="section">
+
+            <div class="tbl-opts">
+                @Html.Partial("_TableDisplayOptionsPartial")
+                <div class="tbl-filters">
+                    <button type="button" class="display-btn" id="advanced-filter-toggle">
+                        Filters
+                        <img src="/Images/btn-dropdown-arrow-down-icon.png">
+                    </button>
+                </div>
+                @Html.Partial("_SearchBarPartial")
+
+                <div class="clearfix">&nbsp;</div>
+                <ul class="tbl-selects" style="display:none;">
+                    <li>
+                        <label>@ResourceUI.User</label>
+                        @Html.DropDownSearchFilterFor(m => m.UserId, Model.UsersInGroup, new { @style = "width:200px;" })
+                    </li>
+                    <li>
+                        <label>
+                            @ResourceUI.BusinessName
+                        </label>
+
+                        @Html.DropDownSearchFilterFor(m => m.BusinessId, Model.BusinessesInGroup, new { @style = "width:200px;" })
+                    </li>
+                    <li>
+                        <label>
+                            @ResourceUI.ProjectStatus
+                        </label>
+                        @Html.DropDownSearchFilterFor(m => m.ProjectStatusTypeId, Model.ProjectStatusTypes, new { @style = "width:120px;" })
+                    </li>
+                    <li>
+                        <label>
+                            @ResourceUI.ProjectOpenStatus
+                        </label>
+                        @Html.DropDownSearchFilterFor(m => m.ProjectOpenStatusTypeId, Model.ProjectOpenStatusTypes, new { @style = "width:120px;" })
+                    </li>
+                    @if (user.HasAccess(SystemAccessEnum.ViewPipelineData)
+                        || user.HasAccess(SystemAccessEnum.EditPipelineData))
+                    {
+                        <li>
+                            <label>
+                                @ResourceUI.ProjectLeadStatus
+                            </label>
+                            @if (Model.ProjectLeadStatusTypes != null)
+                            {
+                                @Html.DropDownSearchFilterProjectLeadTypesFor(m => m.ProjectLeadStatusTypeId, Model.ProjectLeadStatusTypes, new { @style = "width:120px;" })
+                            }
+                        </li>
+                    }
+                    <li>
+                        @if ((user.HasAccess(SystemAccessEnum.RequestDiscounts) ||
+                            user.HasAccess(SystemAccessEnum.ViewDiscountRequest) ||
+                            user.HasAccess(SystemAccessEnum.ApproveDiscounts)
+                          ) &&
+                          (user.HasAccess(SystemAccessEnum.RequestCommission) ||
+                            user.HasAccess(SystemAccessEnum.ViewRequestedCommission) ||
+                            user.HasAccess(SystemAccessEnum.ApprovedRequestCommission)
+                          )
+                        )
+                        {
+                            <label style="display:inline;">
+                                @ResourceUI.ProjectPricingTypes
+                            </label>
+
+                            @*@Html.DropDownSearchFilterProjectDarComTypesFor(m => m.ProjectDarComStatusTypeId, Model.ProjectDarComTypes,  new { @styele = "width:120px;" })*@
+
+
+                            @Html.EnumDropDownListFor(m => m.ProjectDarComStatusTypeId, "Show All", new { @style = "width:120px;display:inline;" })
+                        }
+                        else
+                        {
+                            <label style="display:none;">
+                                @ResourceUI.ProjectPricingTypes
+                            </label>
+
+                            @Html.EnumDropDownListFor(m => m.ProjectDarComStatusTypeId, "Show All", new { @style = "width:120px;display:none;" })
+                        }
+                    </li>
+
+                    <li>
+                        @Html.LabelFor(m => m.DateTypeId, @ResourceUI.DateType)
+                        @Html.DropDownSearchFilterFor(m => m.DateTypeId, Model.ProjectDateTypes, new { @style = "width:190px;" }, "")
+                        @Html.LabelFor(m => m.ProjectStartDate, @ResourceUI.StartDate)
+                        @Html.EditorFor(m => m.ProjectStartDate)
+                        @Html.LabelFor(m => m.ProjectStartEnd, @ResourceUI.EndDate)
+                        @Html.EditorFor(m => m.ProjectStartEnd)
+                    </li>
+                    <li style="margin-left: 10px;">
+                        @Html.CheckBoxFor(m => m.OnlyAlertedProjects)
+                        @Html.LabelFor(m => m.OnlyAlertedProjects, ResourceUI.ShowOnlyAlertedProjects)
+                        @if (user.HasAccess(SystemAccessEnum.UndeleteProject))
+                        {
+                            @Html.CheckBoxFor(m => m.ShowDeletedProjects)
+                            @Html.LabelFor(m => m.ShowDeletedProjects, ResourceUI.ShowDeletedProjects)
+                        }
+                    </li>
+
+                    <li style="margin-left: 10px;">
+                        <button type="button" class="context-btn">Reset Filters</button>
+                        <input type="submit" class="submit context-btn" style="margin-left: 5px;" value="Set Filters" id="btnSetFilters" />
+                    </li>
+                </ul>
+
+            </div>
+
+            @if (Model.ModelMode == DPO.Common.Models.Project.ModelModeEnum.Edit
+                && user.HasAccess(SystemAccessEnum.EditProject))
+            {
+                @Html.Partial("ProjectPartials/ProjectsEdit", Model);
+            }
+            else
+            {
+                @Html.Partial("ProjectPartials/ProjectsView", Model);
+            }
+        </div>
+
+    }
+
+    using (Html.BeginForm("ProjectTransfer", "Projectdashboard", FormMethod.Post, new { id = "ProjectTransfer" }))
+    {
+        @Html.Hidden("ProjectId")
+        @Html.AntiForgeryToken()
+        @Html.Partial("ConfirmModalEmail", "") //confirmtransfer_modal
+    }
+
+
+
+    <script>
+        $(function () {
+
+            if (localStorage["ActiveTab"] != null) {
+                localStorage["ActiveTab"] = null;
+            }
+
+            $('#save_projects').on('click', function () {
+                $('#@Html.IdFor(m => m.ModelMode)').val('@DPO.Common.Models.Project.ModelModeEnum.Save')
+
+            });
+
+            $('#edit_projects').on('click', function () {
+                $('#@Html.IdFor(m => m.ModelMode)').val('@DPO.Common.Models.Project.ModelModeEnum.Edit')
+            });
+
+            //show filters if user hasn't visited this page before / left them open last time
+            if (Modernizr.localstorage) {
+                var shouldShowFilters = window.localStorage.getItem('dpo_#projects_filter_visible');
+
+                if (shouldShowFilters === null || shouldShowFilters === 'true') {
+                    $('.tbl-selects').show();
+                }
+            }
+
+            $('#btnStopEditing').on('click', function () {
+                $('#@Html.IdFor( m => m.ModelMode)').val('@DPO.Common.Models.Project.ModelModeEnum.View')
+            });
+
+            if ($('#btnStopEditing').text() == "") {
+
+                $('#btnProjectsDelete').hide();
+            }
+            else {
+                $('#btnProjectsDelete').show();
+            }
+
+            //delay project deletion until after confirmation
+            $('[data-confirm="deleteProject"]').on('click', function () {
+                confirmModal.showConfirmMsg('@ResourceUI.ProjectDelete', '@ResourceUI.ProjectDeleteConfirm', PostAfterConfirm(this, '#ProjectsForm', ['sc-projectid']));
+            });
+
+            $('.tbl-selects button').on('click', function (e) {
+                location.replace("@Url.Action("Projects","ProjectDashboard")");
+            });
+
+            @*$(".tbl-selects input[type='datetime']").datepicker({
+                                showOn: "button",
+                                buttonImage: "/Images/datepicker.png",
+                                buttonImageOnly: true,
+                                dateFormat: "@ResourceUI.DateFormat"
+                            });*@
+
+            function toggleFilters() {
+                var filtersAreShowing = $('.tbl-selects').is(':visible').toString();
+                var imgSrc = "/Images/btn-dropdown-arrow-" + ((filtersAreShowing === 'true') ? 'up-icon.png' : 'down-icon.png');
+                $('#advanced-filter-toggle img').attr('src', imgSrc);
+
+                if (Modernizr.localstorage) {
+                    window.localStorage.setItem('dpo_#projects_filter_visible', filtersAreShowing);
+                }
+            }
+
+            $('#advanced-filter-toggle').on('click', function () {
+                $('.tbl-selects').slideToggle('fast', toggleFilters);
+            })
+
+            $('[data-confirm="transferProject"]').on('click', function () {
+                $("#confirmtransfer_modal .input-validation-error").html("");
+                $('#ProjectTransfer #ProjectId').val($(this).attr("data-sc-projectid"))
+                confirmModal.showConfirmMsgForElement('confirmtransfer_modal', '@ResourceUI.ProjectTransfer', '@ResourceUI.ProjectTransferConfirm', TransferProjectEmailVerfication);
+            });
+
+            //show different kinds of projects export
+            $('#projects_export_type_modal_trigger').on('click', function (e) {
+                e.preventDefault();
+                $('#projects_export_type_modal').fadeIn(200);
+            });
+            $('#projects_export_type_modal').on('click', 'a', submitProjectsFormForExport);
+
+            @*$('[data-confirm="ProjectsDelete"]').on('click', function (e) {
+                                //confirmModal.showConfirmMsg('@ResourceUI.ProjectsDelete', '@ResourceUI.ProjectsDeleteConfirm', PostAfterConfirm(this, '#ProjectsForm'));
+                                e.preventDefault();
+                                $('#projects_delete_modal').fadeIn(200);
+                            });*@
+
+            $('#btnProjectsDelete').on('click', function (e) {
+
+                e.preventDefault();
+                var projectsURL = '@Url.Action("Projects","Projectdashboard")';
+                var projectsDeleteURL = '@Url.Action("UpdateProjectsDeleteItem", "ProjectDashboard")';
+
+                var $projectsForm = $('#ProjectsForm');
+
+                if (!$projectsForm.length) return;
+
+                var selectedProjects = $projectsForm.find('input.project-delete[type=checkbox]:checked');
+
+                if (selectedProjects.length == 0) {
+                    alert("No projects selected to delete.")
+                    return false;
+                }
+
+                $projectsForm.attr('action', projectsDeleteURL);
+                $projectsForm.submit();
+                $projectsForm.attr('action', projectsURL);
+            });
+
+            //$('#projects_delete_modal').on('click', submitProjectsForDelete);
+        });
+
+
+        function submitProjectsFormForExport(e) {
+            e.preventDefault();
+
+            var projectsURL = '@Url.Action("Projects","Projectdashboard")';
+            var projectExportURL = '@Url.Action("ProjectExport","ProjectDashboard")';
+
+            var $projectsForm = $('#ProjectsForm');
+
+            if (!$projectsForm.length) return;
+
+            $projectsForm.attr('action', projectExportURL);
+
+            $projectsForm.submit();
+
+            $projectsForm.attr('action', projectsURL);
+
+            $('#projects_export_type_modal').fadeOut(200);
+        }
+
+        function TransferProjectEmailVerfication() {
+            $.post('@Url.Action("ProjectTransferVerfiyEmail", "ProjectDashboard")', $("#ProjectTransfer").serialize(), TransferProjectEmailVerifyResult);
+            return false;
+        }
+        function TransferProjectEmailVerifyResult(data) {
+            if (data != "OK") {
+                $("#confirmtransfer_modal .input-validation-error").html(data);
+            } else {
+                $("#ProjectTransfer").attr("action", '@Url.Action("ProjectTransfer")');
+                $("#ProjectTransfer").submit();
+            }
+        }
+
+
+        $(document).ready(function () {
+            @if ((user.HasAccess(SystemAccessEnum.ViewRequestedCommission) ||
+                           user.HasAccess(SystemAccessEnum.ApprovedRequestCommission) ||
+                           user.HasAccess(SystemAccessEnum.ViewRequestedCommission)
+                         )
+                         &&
+                         (
+                           !user.HasAccess(SystemAccessEnum.ViewDiscountRequest) ||
+                           !user.HasAccess(SystemAccessEnum.RequestDiscounts) ||
+                           !user.HasAccess(SystemAccessEnum.ApproveDiscounts)
+                         )
+                       )
+             {
+                       // $('#ProjectDarComStatusTypeId').
+
+             }
+        });
+
+    </script>
+}
+

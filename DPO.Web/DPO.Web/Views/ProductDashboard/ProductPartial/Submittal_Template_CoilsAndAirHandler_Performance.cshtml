@@ -1,0 +1,40 @@
+﻿
+@model ProductModel
+@{
+    var specs = Model.Specifications;
+}
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Product Model No.</span>
+    <span class="pull-right">@Model.ProductNumber</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Product Model Name:</span>
+    <span class="pull-right">@Model.Name</span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Type: </span>
+    <span class="pull-right">@specs.GetString("ProductClassPIM")</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Cooling Capacity (Nominal) (Btu/hr):</span>
+    <span class="pull-right">@specs.GetDecimal("CoolingCapacityNominal", "N0")</span>
+</div>
+
+
+
+@if (specs.GetString("ProductClassPIM") == "Air Handler")
+{
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        <span class="pull-left">Blower Motor Rating (HP):</span>
+        <span class="pull-right">@specs.GetString("BlowerMotorHorsePower")</span>
+    </div>
+    <div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+        <span class="pull-left"></span>
+        <span class="pull-right"></span>
+    </div>
+}
+
+
+

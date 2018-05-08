@@ -1,0 +1,92 @@
+﻿body{
+    min-width: 500px  !important;
+}
+#content{
+    background-color: #BDEBFF !important;
+}
+#po-bg{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom:0;
+}
+
+.backgroundsize #po-bg{
+    background-image: url(/Images/project-office-bg.png);
+    background-size:cover;
+}
+
+#po-login{
+   max-width: 700px;
+   margin: 0 auto;
+   margin-top: 14em;
+   background-color: #fff;
+   height: 310px;
+}
+
+#po-existing, #po-new{
+    float:left;
+    height: 100%;
+}
+
+#po-existing{
+    width: 60%;
+}
+
+#po-existing h1{
+    padding-bottom: 10px;
+}
+
+#po-existing .input-validation-error{
+    margin-bottom:5px;
+}
+
+#po-existing input[type="text"],
+#po-existing input[type="password"]{
+    width: 340px;
+}
+
+#po-existing input, #po-existing label{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#po-existing a{
+    display:inline-block;
+    padding-left: 0px;
+    padding-top: 10px;
+}
+
+#po-new{
+    background-color: #EDF9FF; padding-top: 56px; padding-left: 27px;
+    padding-right: 27px;
+    width: 40%;
+}
+
+#po-new .call{
+    font-size: 1.4em; color:#00A1E3;
+}
+
+#po-new a{
+    width: 100%;
+    text-align: center;
+}
+
+input[type="submit"]{
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+}
+
+@media all and (max-width: 710px)
+{
+    #po-existing, #po-new {
+        float:none;
+        width: 100%;
+    }
+
+    #po-login{
+        margin-top: 8em;
+        width: 420px;
+    }
+}

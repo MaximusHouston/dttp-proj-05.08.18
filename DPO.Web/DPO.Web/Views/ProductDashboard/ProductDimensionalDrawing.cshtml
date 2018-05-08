@@ -1,0 +1,42 @@
+﻿@model ProductModel
+@{
+    var idPdf = (bool)ViewData["PdfMode"];             
+}
+<div class="pad-top dd-wrapper">
+        @if (ViewBag.UnitTypeLabel != null)
+        {
+           <h4>Dimensional Drawing - @ViewBag.UnitTypeLabel </h4>
+        }
+        else
+        {
+            <h4>Dimensional Drawing</h4>
+        }
+     
+    @if (idPdf)
+    {
+        if (Model.DimensionalDrawing.AbsoultePath != null)
+        {
+             <img class="product-dimensional-drawing" 
+             src="@Model.DimensionalDrawing.AbsoultePath"/>
+        }
+        else
+        {
+            <img class="product-dimensional-drawing"
+                 onerror="this.onerror = null; this.src = '/Images/NoImage.png'" />
+        }
+    }
+    else
+    {
+        if (Model.DimensionalDrawing.URL != null)
+        {
+            <img class="product-dimensional-drawing"
+                 src="@Model.DimensionalDrawing.URL" />
+        }
+        else
+        {
+            <img class="product-dimensional-drawing"
+                 onerror="this.onerror = null; this.src = '/Images/NoImage.png'" />
+        }
+    }
+
+</div>

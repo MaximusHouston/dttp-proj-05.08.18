@@ -1,0 +1,32 @@
+﻿<div id="userBasketInnerDiv" *ngIf="userBasket">
+    
+    <div *ngIf="!basketQuoteId || basketQuoteId == 0">
+        You are currently browsing products, <a href="/v2/#/projects">choose a quote within a project</a> to begin adding products.
+    </div>
+    <div *ngIf="basketQuoteId > 0" class="row" >
+        <div class="row" style="margin-bottom:5px;">
+            
+            <!--<div class="col-lg-6 col-md-6"><img src="/Images/quote-icon.png" style="top:2.75em; padding-right:10px;" /><a href="/Projectdashboard/QuoteItems?QuoteId={{userBasket.quoteId}}&ProjectId={{userBasket.projectId}}">{{userBasket.description}}</a></div>
+            <div class="col-lg-6 col-md-6">
+                <a class="btn btn-primary pull-right" href="/Projectdashboard/QuoteItems?QuoteId={{userBasket.quoteId}}&ProjectId={{userBasket.projectId}}">BACK TO QUOTE</a>
+            </div>-->
+
+            <div class="col-lg-6 col-md-6"><img src="/Images/quote-icon.png" style="top:2.75em; padding-right:10px;" /><a href="/v2/#/quoteItems/{{userBasket.quoteId}}/existingRecord">{{userBasket.description}}</a></div>
+            <div class="col-lg-6 col-md-6">
+                <a class="btn btn-primary pull-right" href="/v2/#/quoteItems/{{userBasket.quoteId}}/existingRecord">BACK TO QUOTE</a>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6" id="quoteItemCount">{{userBasket.quoteItemCount}} items in active quote</div>
+            <!--<div *ngIf="productFamilyId" id="addProductsToQuoteDiv" class="col-lg-6 col-md-6 ">
+                <a id="addProductsToQuoteBtn" class="btn btn-primary pull-right" >ADD PRODUCTS TO QUOTE</a>
+            </div>-->
+            <div [hidden]="productData == null" class="col-lg-6 col-md-6 ">
+                <a id="addProductsToQuoteBtn" class="btn btn-primary pull-right">ADD PRODUCTS TO QUOTE</a>
+            </div>
+        </div>
+        
+    </div>
+    
+</div>

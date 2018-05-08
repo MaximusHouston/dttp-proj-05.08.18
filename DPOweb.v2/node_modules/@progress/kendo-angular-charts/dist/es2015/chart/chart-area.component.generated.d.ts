@@ -1,0 +1,17 @@
+import { ConfigurationService } from '../common/configuration.service';
+import { SettingsComponent } from '../common/settings.component';
+import { Border, Margin } from '../common/property-types';
+import { ChartArea } from '../common/property-types';
+/**
+ * @hidden
+ */
+export declare abstract class ChartAreaComponentGenerated extends SettingsComponent implements ChartArea {
+    configurationService: ConfigurationService;
+    background: string;
+    border: Border;
+    height: number;
+    margin: Margin | number;
+    opacity: number;
+    width: number;
+    constructor(configurationService: ConfigurationService);
+}

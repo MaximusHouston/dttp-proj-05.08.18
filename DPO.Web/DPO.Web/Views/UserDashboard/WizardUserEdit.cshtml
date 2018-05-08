@@ -1,0 +1,363 @@
+﻿@using MvcCheckBoxList.Model;
+
+@model DPO.Common.UserModel
+
+@{
+
+    var showBusinessDetails = Model.Business != null
+                && !Model.Business.Enabled
+                && Model.Business.AccountId == null;
+
+    var startView = showBusinessDetails ? "businessDetails" : "personalDetails";
+}
+
+@Html.Partial("ConfirmModal")
+
+
+@Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles", "~/Content/css/usergroups")
+@using (Html.BeginForm("WizardSaveUserEdit", null, FormMethod.Post, new { @id = "WizardUserEditForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Concurrency()
+    @Html.HiddenFor(m => m.UserId)
+    @Html.HiddenFor(m => m.Approved)
+    @Html.HiddenFor(m => m.Enabled)
+    @Html.HiddenFor(m => m.Address.AddressId)
+    @Html.HiddenFor(m => m.Contact.ContactId)
+    @Html.PageMessages()
+    @Html.HiddenFor(m => m.UserTypeId)
+    @Html.HiddenFor(m => m.Business.BusinessId)
+    @Html.HiddenFor(m => m.Business.Enabled)
+
+    <ul class="sub-tab-bar">
+        @if (showBusinessDetails)
+        {
+            <li data-view="businessDetails" class="active-tab">
+                <span>@ResourceUI.BusinessDetails</span>
+            </li>
+        }
+        <li data-view="personalDetails" @(showBusinessDetails ? "" : "class=active-tab")>
+            <span>@((Model.UserId != Model.CurrentUser.UserId) ? ResourceUI.UserDetails : ResourceUI.YourDetails)</span>
+        </li>
+
+        <li data-view="userAccess">
+            <span>@((Model.UserId != Model.CurrentUser.UserId) ? ResourceUI.UserAccess : ResourceUI.YourAccessLevels)</span>
+        </li>
+        <li data-view="userPermissions">
+            <span>@((Model.UserId != Model.CurrentUser.UserId) ? ResourceUI.UserPermissions : ResourceUI.YourPermissions)</span>
+        </li>
+        <li data-view="userGroups">
+            <span>@ResourceUI.UserGroups</span>
+        </li>
+    </ul>
+
+    <div id="tabContainer" style="height: 355px; overflow-x: hidden; overflow-y: scroll">
+        @if (showBusinessDetails)
+        {
+            <div id="businessDetails" class="sub-tab-view">
+                <div class="section form">
+                    <p class="mandatory" style="top: 0; right: 20px;">@ResourceUI.FieldsMarkedWithAStar <span>*</span> @ResourceUI.AreMandatory</p>
+                    <div class="row">
+                        <div class="r-col1">&nbsp;</div>
+                        <div class="r-col4 details-list">
+                            <h5>@ResourceUI.BusinessDetails</h5>
+                            @* Business Enabled/Disabled*@
+                            @Html.Label("Enabled")
+                            <a href="#" id="btnBusinessEnable">
+                                <img src="/Images/switch-@(Model.Business.Enabled ? "on" : "off").png" />
+                            </a>
+                            @Html.LabelFor(m => m.Business.BusinessName, "Business Name", new { @class = "required" })
+                            @Html.TextBoxFor(m => m.Business.BusinessName, new { @class = "full" })
+                            @Html.KeyMessages(m => m.Business.BusinessName)
+                            @*Business Type*@
+                            @if (Model.CurrentUser.UserTypeId >= UserTypeEnum.DaikinEmployee)
+                            {
+                                @Html.LabelFor(m => m.Business.BusinessTypeId, ResourceUI.BusinessType)
+                                @Html.DropDownBusinessTypeListFor(m => m.Business.BusinessTypeId, Model.Business.BusinessTypes)
+                                @Html.KeyMessages(m => m.Business.BusinessTypeId)
+                            }
+                            @if (Model.Business.BusinessId != null)
+                            {
+                                @Html.LabelFor(m => m.Business.AccountId, @ResourceUI.AccountID)
+                                @Html.TextBoxFor(m => m.Business.AccountId, new { @class = "threequarters" })
+                                @Html.KeyMessages(m => m.Business.AccountId)
+                            }
+                            @if (Model.Business.BusinessId != null && Model.UserTypeId >= UserTypeEnum.DaikinEmployee)
+                            {
+                                @Html.LabelFor(m => m.ShowPricing, "Show Prices")
+                                @Html.CheckBoxFor(m => m.ShowPricing)
+                                @Html.KeyMessages(m => m.ShowPricing)
+                            }
+
+                        </div>
+                        <div class="r-col1">&nbsp;</div>
+                        <div class="r-col4">
+                            <h5>&nbsp;</h5>
+                            @*Email*@
+                            @Html.LabelFor(m => m.Business.Address.CountryCode, ResourceUI.Country)
+                            @Html.DropDownCountryListFor(m => m.Business.Address.CountryCode, m => m.Business.Address.StateId, Model.Business.Address.Countries)
+                            @Html.KeyMessages(m => m.Business.Address.CountryCode)
+                            @*Address line 1*@
+                            @Html.LabelFor(m => m.Business.Address.AddressLine1, ResourceUI.AddressLine1)
+                            @Html.TextBoxFor(m => m.Business.Address.AddressLine1, new { @class = "full" })
+                            @Html.KeyMessages(m => m.Business.Address.AddressLine1)
+                            @*Address line 2*@
+                            @Html.LabelFor(m => m.Business.Address.AddressLine2, ResourceUI.AddressLine2)
+                            @Html.TextBoxFor(m => m.Business.Address.AddressLine2, new { @class = "full" })
+                            @Html.KeyMessages(m => m.Business.Address.AddressLine2)
+                            @*City*@
+                            @Html.LabelFor(m => m.Business.Address.Location, ResourceUI.Location)
+                            @Html.TextBoxFor(m => m.Business.Address.Location, new { @class = "full" })
+                            @Html.KeyMessages(m => m.Business.Address.Location)
+                            @*State*@
+                            @Html.LabelFor(m => m.Business.Address.StateId, ResourceUI.State)
+                            @Html.DropDownRegionListFor(m => m.Business.Address.StateId, Model.Business.Address.States)
+                            @Html.KeyMessages(m => m.Business.Address.StateId)
+                            @*Zip Code*@
+                            @Html.LabelFor(m => m.Business.Address.PostalCode, ResourceUI.ZipCode)
+                            @Html.TextBoxFor(m => m.Business.Address.PostalCode, new { @class = "half upcase" })
+                            @Html.KeyMessages(m => m.Business.Address.PostalCode)
+                            @*Office phone number*@
+                            @Html.LabelFor(m => m.Business.Contact.OfficeNumber, ResourceUI.OfficePhoneNumber)
+                            @Html.TextBoxFor(m => m.Business.Contact.OfficeNumber, new { @class = "half" })
+                            @Html.KeyMessages(m => m.Business.Contact.OfficeNumber)
+                            @*Web address*@
+                            @Html.LabelFor(m => m.Business.Contact.WebAddress, ResourceUI.WebAddress)
+                            @Html.TextBoxFor(m => m.Business.Contact.WebAddress, new { @class = "full", autocomplete = "off" })
+                            @Html.KeyMessages(m => m.Business.Contact.WebAddress)
+                        </div>
+                        <div class="r-col2">&nbsp;</div>
+                        <div class="row-end">&nbsp;</div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div id="personalDetails" class="sub-tab-view">
+            @Html.Partial("_UserPersonalDetailsPartial", Model)
+            <br />
+            @Html.Partial("_UserBusinessDetailsPartial", Model)
+        </div>
+
+
+        @Html.Partial("UserPermissions", Model)
+
+        <div id="userGroups" class="sub-tab-view">
+            <table class="tbl groupslist" id="MoveGroupList">
+                <tbody>
+                    @foreach (var group in Model.Groups.UserGroups)
+                    {
+                        <tr data-groupid="@group.GroupId" data-groupname="@group.GroupName" data-grouplevel="@group.Level" data-childcount="@group.ChildCountDeep" class="">
+
+                            <td class="radiocell">
+                                @Html.RadioButtonFor(m => m.GroupId, group.GroupId)
+                            </td>
+                            <td>
+                                <button class="collapseGroupLink@((group.ChildCountDeep > 0) ? " haschildren" : "")" onclick="return false" style="margin-left:@(group.Level * 10)px;">&nbsp;</button>
+                                <a class="grouplink">@group.GroupName</a>
+                                (@group.MemberCount)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section action c-align">
+
+        <button type="button" class="btn" id="btnWizardClose">@ResourceUI.Cancel</button>
+
+        @*       <a href="#" sc-ajaxpost="@Url.Action()" class="submit-btn" id="btnNext">@ResourceUI.SaveChanges</a>*@
+        <a href="#" class="submit-btn" id="btnWizardMove">@ResourceUI.Next</a>
+
+        @Html.Partial("_LastEditedPartial")
+
+    </div>
+}
+<script src="~/Scripts/jquery.pwstrength.min.js"></script>
+@Scripts.Render("~/bundles/scripts/usergroups", "~/bundles/scripts/confirmmodal")
+<script>
+    var userGroupsPageHandler;
+    var btn = $('#btnBusinessEnable');
+    btn.data({ enabled: @(Model.Business.Enabled ? "false" : "true") });
+    var token = $('[name=__RequestVerificationToken]').val();
+
+    function setBusinessEnableButton(enable) {
+        var imgSrc = '/Images/switch-';
+
+        imgSrc += enable ? "on.png" : "off.png";
+
+        btn.find('img').prop("src", imgSrc);
+    }
+
+    btn.click(function (event) {
+        var enable = btn.data();
+
+        if (enable != null)
+        {
+            enable = enable.enabled;
+        }
+
+        setBusinessState(enable);
+        btn.data({ enabled: !enable});
+    });
+
+    function setBusinessState(enable) {
+        var actionName = enable ? "BusinessEnable" : "BusinessDisable";
+        var req = { __RequestVerificationToken: token, BusinessId: '@Model.Business.BusinessId' };
+        $.ajax({
+            url: '/Userdashboard/' + actionName,
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json; charset=UTF-8',
+            success: function (data) {
+                setEnableButtonImage(enable);
+                $('#(@Html.IdFor(m => m.Business.Enabled)').val(enable);
+                $('#btnWizardClose').focus();
+            },
+            error: function (res) {
+                if (res.status == 200) {
+                    debugger;
+                    setBusinessEnableButton(enable);
+                    $('#@Html.IdFor(m => m.Business.Enabled)').val(enable);
+                    $('#btnWizardClose').focus();
+                    return;
+                }
+
+                alert(res.statusText + ' ' + res.responseText);
+            },
+            data: JSON.stringify(req)
+        });
+    }
+
+
+    $(function () {
+        var form = $('#WizardUserEditForm');
+        var subTabs = form.find('.sub-tab-bar li');
+        var subViews = form.find('.sub-tab-view');
+        var btnWizMove = form.find('#btnWizardMove');
+        var btnGroup = form.find('#btnGroup');
+
+        var curView = '@startView';
+        var lastView = 'userGroups';
+
+        btnGroup.click(function (event) {
+            event.preventDefault();
+            if ($(this).hasClass("collapse")) {
+                $(this).removeClass("collapse");
+            } else {
+                $(this).addClass("collapse");
+            }
+
+            return false;
+        });
+
+        btnWizMove.click(function (event) {
+            if (event != null) {
+                event.preventDefault();
+            }
+
+            var found = false;
+            var prevView = curView;
+
+            subTabs.each(function (index, element) {
+                var dataView = getDataView(element);
+                if (found) {
+                    curView = dataView;
+                    changeSubTab(dataView, element)
+                    return false;
+                }
+
+                if (dataView == curView) {
+                    found = true;
+                }
+            });
+
+            // Submit if last tab
+            if (prevView == lastView) {
+                form.submit();
+            }
+
+            return false;
+        });
+
+        subViews.hide();
+
+        form.find('#' + curView).show();
+
+        function getDataView(element) {
+            return $(element).attr('data-view');
+        }
+
+        function changeSubTab(viewToShow, tab) {
+            subViews.hide();
+            subTabs.removeClass('active-tab');
+
+            form.find('#' + viewToShow).show();
+
+            if (viewToShow == lastView) {
+                btnWizMove.text("@ResourceUI.SaveChanges");
+            } else {
+                btnWizMove.text("@ResourceUI.Next");
+            }
+
+            curView = viewToShow;
+
+            $(tab).addClass('active-tab');
+        }
+
+        subTabs.click(function () {
+            changeSubTab(getDataView($(this)), $(this));
+        });
+
+        var companyAddressFields = form.find('#businessAddressHolder');
+
+        function toggleCompanyAddressFields() {
+            if ($(this).is(':checked')) {
+                companyAddressFields.find('input,select').attr('disabled', true);
+                companyAddressFields.find('label').addClass('disabled');
+            }
+            else {
+                companyAddressFields.find('input,select').removeAttr('disabled');
+                companyAddressFields.find('label').removeClass('disabled');
+            }
+        }
+
+        toggleCompanyAddressFields.apply(form.find('#UseBusinessAddress')[0]);
+        form.find('#UseBusinessAddress').on('change', toggleCompanyAddressFields);
+
+        //if ($('#Password').length) $('#Password').pwstrength();
+
+        var config = {
+            mainPageRoute: '@Url.Action("UserGroups","UserDashboard")',
+            usersRoute: '@Url.Action("UserGroupsUsers","UserDashboard")',
+            groupsRoute: '@Url.Action("UserGroupsList","UserDashboard")',
+            moveUsersRoute: '@Url.Action("UserGroupsUsersMove","UserDashboard")',
+            createGroupRoute: '@Url.Action("UserGroupsGroupCreate","UserDashboard")',
+            deleteGroupRoute: '@Url.Action("UserGroupsGroupDelete","UserDashboard")',
+            editGroupRoute: '@Url.Action("UserGroupsGroupRename", "UserDashboard")',
+            moveGroupRoute: '@Url.Action("UserGroupsGroupMove","UserDashBoard")',
+            toggleGroupAdminRoute: '@Url.Action("UserGroupsUserMakeOwner", "UserDashBoard")',
+
+            deletegrouptext: {
+                title: '@ResourceUI.UserGroupDelete',
+                msg: '@ResourceUI.UserGroupDeleteConfirm'
+            }
+        };
+
+        userGroupsPageHandler = new UserGroupsPageHandler(config);
+
+        //checkBoxHelper.createListsOfCheckboxes();//.enableSelectAllOnCheckboxLists();
+        //delay user disable until after confirmation
+        $('[data-confirm="DisableUser"]').on('click', function () {
+            confirmModal.showConfirmMsg('@ResourceUI.UserDisable', '@ResourceUI.UserDisableConfirm', PostAfterConfirm(this, '#BusinessEditForm'));
+        });
+
+        //delay user disable until after confirmation
+        $('[data-confirm="EnableUser"]').on('click', function () {
+            confirmModal.showConfirmMsg('@ResourceUI.UserEnable', '@ResourceUI.UserEnableConfirm', PostAfterConfirm(this, '#BusinessEditForm'));
+        });
+
+    });
+
+</script>

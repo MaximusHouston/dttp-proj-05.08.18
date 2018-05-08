@@ -1,0 +1,47 @@
+﻿#login-bg {
+    background-image: url(/Images/project-office-bg.png);
+    background-size: cover;
+    height: 92%;
+}
+
+#hidden-div {
+    height: 100px;
+}
+
+
+#login-form {
+    max-width: 450px;
+    /*margin: 0 auto;*/
+}
+
+/*#signIn {
+    height: 320px;
+    padding: 20px;
+}*/
+
+/*#signUp {
+    background-color: #edf9ff;
+    height: 320px;
+    
+}*/
+
+
+/*@media all and (max-width: 710px) {
+    #signIn, #signUp {
+        float: none;
+        width: 100%;
+    }
+
+    #login-form {
+        width: 100%;
+    }
+}*/
+
+@media (min-width: 1200px) {
+}
+
+@media (max-width: 576px) {
+    .container-fluid {
+        width: auto;
+    }
+}

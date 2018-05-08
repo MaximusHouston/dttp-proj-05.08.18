@@ -1,0 +1,26 @@
+﻿<div>
+    <div class="modal-header">
+        Please update the estimated delivery date
+    </div>
+    <div class="modal-body">
+        <p class="input-group">
+            <label class ="control-label">Bid:</label>
+            <span>{{ vm.project.bidDate | date: vm.format : 0 }}</span>
+        </p>
+        <p class="input-group">
+            <label class="control-label">Est. Close:</label>
+            <span>{{ vm.project.estimatedClose | date: vm.format : 0 }}</span>
+        </p>
+        <p class="input-group">
+            <label class="control-label">Est. Delivery:</label>
+            <input type="text" class="input-small" uib-datepicker-popup="{{vm.format}}" ng-model="vm.project.estimatedDelivery" is-open="vm.status.opened"
+                   datepicker-options="vm.dateOptions" date-disabled="vm.disabled(date, mode)" ng-required="true"
+                   close-text="Close" custom-class="vm.getDayClass(date, mode)" datepicker-template-url="/app/views/_shared/datepicker.html"
+                   datepicker-local />
+            <button type="button" class="btn btn-default" ng-click="vm.open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" ng-click="vm.saveEstimatedDeliveryDate()">Save</button>
+    </div>
+</div>

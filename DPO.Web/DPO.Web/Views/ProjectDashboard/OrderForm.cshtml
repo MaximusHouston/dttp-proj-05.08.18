@@ -1,0 +1,348 @@
+﻿@model DPO.Model.Light.OrderViewModelLight
+
+@{
+    ViewBag.Title = "Order Form";
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+    var writeToFile = false;
+
+}
+
+@section Page_Styles
+{
+   
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles",
+        "~/Content/css/bootstrap")
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/confirmmodal",
+        "~/bundles/scripts/numericstepperhelpers")
+
+    @Scripts.Render("~/bundles/scripts/projectdashboard/discountrequest")
+
+    <script>
+        var DATE_FORMAT = "@ResourceUI.DateFormat";
+
+    </script>
+}
+
+
+@{
+    var viewOnly = false;
+
+    if (Model.OrderId != 0)
+    {
+        viewOnly = true;
+    }
+    else
+    {
+        viewOnly = false;
+    }
+
+}
+
+@Html.Partial("ConfirmModal")
+@Html.Partial("_ProjectTabsPartial")
+
+@if (viewOnly == true)
+{
+    @Html.Partial("OrderConfirmExportModal")
+}
+
+@if (Model.DiscountRequestId != null)
+{
+    writeToFile = true;
+    @Html.Hidden("WriteToFile", true)
+    @Html.Partial("DARConfirmExportTypeModal")
+}
+
+    <div class="btn-bar">
+        <a href="/ProjectDashboard/OrderFAQ" id="orderFAQ" class="btn btn-default pull-right" target="_blank" style="margin-left:10px;">FAQ</a>
+        @if (viewOnly == true)
+        {
+            <a href="#" id="order_request_print_modal_trigger" class="btn btn-default btn-sm pull-right" target="_blank">Print Order</a>
+        }
+    </div>
+
+    <ul class="breadcrumbs">
+        <li><a href="/v2/#/projects">@ResourceUI.Projects</a></li>
+        @*<li><a href="@Url.Action("Project", new { ProjectId = Model.ProjectId })">@Model.ProjectName</a></li>*@
+        <li><a href="/v2/#/project/@Model.ProjectId">@Model.ProjectName</a></li>
+        @*<li><a href="@Url.Action("Quote", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })">@Model.QuoteTitle</a></li>*@
+        <li><a href="/v2/#/quote/@Model.QuoteId/existingRecord">@Model.QuoteTitle</a></li>
+        <li>@ResourceUI.Order</li>
+    </ul>
+
+    <h3 style="padding-left:30px; padding-bottom:0px; font-weight: bold;">@ResourceUI.OrderForm</h3>
+
+    @Html.Hidden("user", user)
+    @Html.HiddenFor(m => m.QuoteId)
+    @Html.HiddenFor(m => m.DiscountRequestId)
+
+    <form id="order-form" name="orderForm" ng-controller="orderFormController">
+
+        <div class="section form">
+            <page-message ng-if="HasPageMessage"></page-message>
+            @****************Project Detail*********************@
+
+            <fieldset>
+                <legend>@ResourceUI.ProjectDetails</legend>
+                <project-details></project-details>
+            </fieldset>
+            <div style="clear: both; height: 20px;"></div>
+
+            @****************Project Location*******************@
+
+            <fieldset>
+                <legend>@ResourceUI.ProjectLocation</legend>
+                <project-location></project-location>
+            </fieldset>
+            <div style="clear: both; height: 20px;"></div>
+
+            @****************Dealer/ Contractor*******************@
+
+            <fieldset>
+                <legend>@ResourceUI.Customer</legend>
+                <dealercontractor-info></dealercontractor-info>
+            </fieldset>
+
+            <div style="clear: both; height: 20px;"></div>
+
+
+            @****************Seller*******************@
+
+            <fieldset>
+                <legend>@ResourceUI.Seller</legend>
+                <seller-info></seller-info>
+            </fieldset>
+
+            <div style="clear: both; height: 20px;"></div>
+
+            @****************Order Details*******************@
+
+            <fieldset>
+                <p class="mandatory" style="top: 0; right: 20px;">@ResourceUI.FieldsMarkedWithAStar <span>*</span> @ResourceUI.AreMandatory</p>
+                <legend>@ResourceUI.OrderDetails</legend>
+                <order-details></order-details>
+            </fieldset>
+
+        </div>
+        <div style="clear: both; height: 20px;"></div>
+
+        <div class="section form">
+            <header>
+                <h4>@ResourceUI.ProductsInOrder</h4>
+            </header>
+            <div kendo-grid k-options="productGridOptions" id="productsInQuoteGrid">
+            </div>
+        </div>
+
+        <div class="section action c-align">
+            @if (Model.OrderId == null || Model.OrderId == 0)
+            {
+                @*<a href="#" class="btn btn-default" onclick="window.location = document.referrer">@ResourceUI.Cancel</a>*@
+                <a href="/v2/#/quote/@Model.QuoteId/existingRecord" class="btn btn-default">@ResourceUI.Cancel</a>
+                <button href="#" class="btn btn-primary submit_order_btn" type="submit" ng-click="SubmitOrder()">@ResourceUI.Submit</button>
+                @*<a href="/api/Order/GetPOAttachment/@Model.QuoteId" class="btn btn-default">FTP PO</a>*@
+            }
+            else
+            {
+                @*<a ng-show="OrderVM.orderIdStr" href="@Url.Action("Quote", new { ProjectId = Model.ProjectId, QuoteId = Model.QuoteId })" class="btn btn-default" onclick="window.location = document.referrer">@ResourceUI.BackToQuote</a>*@
+                @*<a ng-show="OrderVM.orderIdStr" href="/v2/#/quote/@Model.QuoteId/existingRecord" class="btn btn-default" onclick="window.location = document.referrer">@ResourceUI.BackToQuote</a>*@
+                <a ng-show="OrderVM.orderIdStr" href="/v2/#/quote/@Model.QuoteId/existingRecord" class="btn btn-default">@ResourceUI.BackToQuote</a>
+            }
+
+        </div>
+
+    </form>
+
+    <style>
+        /******* Old Styling ***********
+        legend {
+            font-size: 160%;
+            color: #00a1e4;
+            font-family: sans-serif;
+            margin-left: 2%;
+        }
+
+        fieldset {
+            margin-left: 5%;
+            margin-right: 5%;
+            background-color:white;
+        }
+
+        *****************************/
+
+        /*Kendo validation*/
+
+
+        .confirm {
+            padding-top: 1em;
+        }
+
+        .valid {
+            color: green;
+        }
+
+        .invalid {
+            color: red;
+        }
+
+
+
+        span.k-widget.k-tooltip-validation {
+            display: inline-block;
+            width: 160px;
+            text-align: left;
+            border: 0;
+            padding: 0;
+            margin: 0;
+            background: none;
+            box-shadow: none;
+            color: red;
+        }
+
+        .k-tooltip-validation .k-warning {
+            display: none;
+        }
+
+        .requiredField {
+            margin-right: 5px;
+        }
+        /*end of Kendo validation*/
+
+        /*Kendo Upload*/
+        /*button.k-upload-selected {
+            visibility: hidden;
+            height: 0px;
+            margin: 0px;
+            padding: 0px;
+            line-height: 0px;
+        }*/
+
+        /*Kendo Date Picker*/
+        /*.k-datepicker .k-invalid-msg {
+            margin-left: 30px !important;
+
+        }*/
+
+
+        /*This is for loading icon*/
+        #order-form {
+            position: relative;
+        }
+
+
+
+        #order-release-date_validationMessage {
+            white-space: nowrap;
+        }
+
+        /*bootbox confirm dialog*/
+        /******* Old Styling ***********
+        button.bootbox-close-button {
+            float: right;
+            border-style: none;
+            opacity: 0.2;
+            background-color: transparent;
+            font-size:18px;
+        }
+
+        .modal-body {
+            padding-bottom:15px;
+        }
+
+        .modal-footer {
+            text-align:right;
+        }
+        .modal-footer .btn{
+            margin-left:5px;
+        }
+        ***********************************/
+
+        /*bootstrap*/
+        .modal-dialog {
+            background-color: transparent !important;
+        }
+
+        legend, h1, h2, h3, h4 {
+            color: #00a1e3;
+        }
+
+        img {
+            vertical-align: auto;
+        }
+    </style>
+
+    <script type="text/javascript">
+
+        function OrderViewModel() {
+            var self = this;
+            self.orderId = @Html.Raw(Json.Encode(Model.OrderIdStr));
+            self.orderIdStr = @Html.Raw(Json.Encode(Model.OrderIdStr));
+            self.orderStatusTypeId = @Html.Raw(Json.Encode(Model.OrderStatusTypeId));
+
+            self.projectId = @Html.Raw(Json.Encode(Model.ProjectIdStr));
+            self.projectIdStr =  @Html.Raw(Json.Encode(Model.ProjectIdStr));
+
+            self.quoteId = @Html.Raw(Json.Encode(Model.QuoteIdStr));
+            self.quoteIdStr = @Html.Raw(Json.Encode(Model.QuoteIdStr));
+
+            self.projectName = @Html.Raw(Json.Encode(Model.ProjectName));
+            self.quoteTitle =  @Html.Raw(Json.Encode(Model.QuoteTitle));
+            self.businessId = @Html.Raw(Json.Encode(Model.BusinessIdStr));
+            self.shipToAddressId = @Html.Raw(Json.Encode(Model.ShipToAddressIdStr));
+            self.shipToName = @Html.Raw(Json.Encode(Model.ShipToName));
+            self.pricingTypeId = @Model.PricingTypeId,
+            self.totalNetPrice = @Html.Raw(Json.Encode(Model.TotalNetPrice));
+            self.totalDiscountPercent = @Html.Raw(Json.Encode(Model.TotalDiscountPercent));
+            self.comments = @Html.Raw(Json.Encode(Model.Comments));
+
+            self.estimatedDeliveryDate = @Html.Raw(Json.Encode(Model.EstimatedDeliveryDate.ToString("MM/dd/yyyy")));
+            self.estimatedReleaseDate = @Html.Raw(Json.Encode(Model.EstimatedReleaseDate.Value.ToString("MM/dd/yyyy")));
+            self.orderReleaseDate = @Html.Raw(Json.Encode(Model.OrderReleaseDate.ToString("MM/dd/yyyy")));
+
+            self.submitDate = @Html.Raw(Json.Encode(Model.SubmitDate.ToString("MM/dd/yyyy")));
+
+            self.deliveryAppointmentRequired = @Html.Raw(Json.Encode(@Model.DeliveryAppointmentRequired));
+            self.deliveryContactName = @Html.Raw(Json.Encode(Model.DeliveryContactName));
+            self.deliveryContactPhone = @Html.Raw(Json.Encode(Model.DeliveryContactPhone));
+
+            self.submittedByUserId = @Html.Raw(Json.Encode(Model.SubmittedByUserIdStr));
+            self.submittedByUserIdStr =  @Html.Raw(Json.Encode(Model.SubmittedByUserIdStr));
+            self.submittedByUserName = @Html.Raw(Json.Encode(Model.SubmittedByUserName));
+
+            self.createdByUserId = @Html.Raw(Json.Encode(Model.CreatedByUserIdStr));
+            self.updatedByUserId =  @Html.Raw(Json.Encode(Model.UpdatedByUserIdStr));
+
+            self.poNumber = @Html.Raw(Json.Encode(Model.PONumber));
+            self.poAttachment = @Html.Raw(Json.Encode(Model.POAttachment));
+            self.poAttachmentFileName = @Html.Raw(Json.Encode(Model.POAttachmentFileName));
+            self.erpAccountId = @Html.Raw(Json.Encode(Model.ERPAccountId));
+        }
+
+        $(document).ready(function() {
+            kendo.ui.progress($("#order-form"), true);
+
+            //$("#PO-Attachment-upload").kendoUpload({
+            //    async: {
+            //        saveUrl: "http://my-app.localhost/save",
+            //        removeUrl: "http://my-app.localhost/remove",
+            //        autoUpload: false,
+            //        allowmultiple: true,
+            //        batch: true
+            //    }
+            //});
+
+        });
+
+        $(window).load(function() {
+            kendo.ui.progress($("#order-form"), false);
+        });
+
+        $('.btn btn-primary submit_order_btn').click(function(){
+            $('#discount_request_print_modal_trigger')[0].click();
+        });
+
+    </script>

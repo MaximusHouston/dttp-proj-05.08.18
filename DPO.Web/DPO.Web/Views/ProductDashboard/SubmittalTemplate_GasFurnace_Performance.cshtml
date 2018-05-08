@@ -1,0 +1,59 @@
+﻿@model ProductModel
+@{
+    var specs = Model.Specifications;
+}
+
+<tr>
+    <td>Product Model No.</td>
+    <td>@Model.ProductNumber</td>
+
+    <td>Product Model Name:</td>
+    <td>@Model.Name</td>
+</tr>
+
+<tr>
+    <td>AFUE % Rating:</td>
+    <td>@specs.GetDecimal("AFUE", "N0")%</td>
+
+    <td>Rated Heating Capacity (Btu/hr):</td>
+    <td>@specs.GetDecimal("HeatingCapacityRated", "N0")</td>
+</tr>
+
+
+<tr>
+    <td>Temperature Rise Range (&deg;F)(Low/High):</td>
+    <td>@specs.GetDecimal("TemperatureRiseRangeLow", "N0") / @specs.GetDecimal("TemperatureRiseRangeHigh", "N0")</td>
+
+    <td>Furnace Input Capacity (Btu/hr):</td>
+    <td>@specs.GetDecimal("HighFireInputCapacity", "N0")</td>
+</tr>
+
+<tr>
+    <td>Rated External Static Pressure - inWG:</td>
+    <td>@specs.GetString("ExternalStaticPressureRated")</td>
+
+    <td>Furnace Output Capacity (Btu/hr):</td>
+    <td>@specs.GetDecimal("HighFireOutputCapacity", "N0")</td>
+</tr>
+
+<tr>
+    <td>Blower Speed (RPM):</td>
+    <td>@specs.GetDecimal("BlowerMotorRPM", "N0")</td>
+
+    <td>Blower Motor Rating (HP):</td>
+    <td>@specs.GetString("BlowerMotorHorsePower")</td>
+</tr>
+
+<tr>
+    <td>Blower Input Power (kW):</td>
+    <td>@specs.GetDecimal("BlowerInputPower", "N2")</td>
+
+    <td>Blower Available AC Tonnage (L/H):</td>
+    <td>@specs.GetDecimal("BlowerAvailableACTonnageLow", "N2") / @specs.GetDecimal("BlowerAvailableACTonnageHigh", "N2")</td>
+</tr>
+
+
+
+
+
+

@@ -1,0 +1,81 @@
+DEBUG 2018-05-08 14:38:21,339 4678366ms bmittalPackageServices tQuoteQuotePackage - Total files return from  QuotePackageDirectory (included lock files): 0
+DEBUG 2018-05-08 14:38:21,416 4678443ms bmittalPackageServices tQuoteQuotePackage - Total files return from  QuotePackageDirectory : 0
+DEBUG 2018-05-08 14:38:21,424 4678451ms bmittalPackageServices tQuoteQuotePackage - Total QuotePackageAttachmentfiles have added to QuoteItemsModel: 0
+INFO  2018-05-08 14:38:21,433 4678460ms bmittalPackageServices tQuoteQuotePackage - GetQuoteQuotePackage finished
+INFO  2018-05-08 14:38:21,623 4678650ms bmittalPackageServices QuoteItemListModel - Enter GetQuoteItemListModel
+DEBUG 2018-05-08 14:38:21,632 4678659ms bmittalPackageServices QuoteItemListModel - CurrentFilter:  IsDesc: False QuoteId: 724134023730921472 QuoteItemId:  Totals: False PreviousFilter:  
+INFO  2018-05-08 14:38:21,858 4678885ms bmittalPackageServices QuoteItemListModel - GetQuoteItemListModel finished.
+DEBUG 2018-05-08 14:38:21,873 4678900ms bmittalPackageServices tQuoteQuotePackage - Total QuoteItemListModel return from search: 3
+DEBUG 2018-05-08 14:38:21,881 4678908ms bmittalPackageServices tQuoteQuotePackage - Total Products return from search: 3
+DEBUG 2018-05-08 14:38:21,934 4678961ms bmittalPackageServices tQuoteQuotePackage - QuotePackageDirectory return: C:\dttp-Projects\Sprint11\Daikin Project Office\DPO.Web\DPO.Web\..\DaikinDocuments\\CustomerDataFiles\QuotePackage\724134023730921472\
+DEBUG 2018-05-08 14:38:21,942 4678969ms bmittalPackageServices tQuoteQuotePackage - Total files return from  QuotePackageDirectory (included lock files): 0
+DEBUG 2018-05-08 14:38:21,952 4678979ms bmittalPackageServices tQuoteQuotePackage - Total files return from  QuotePackageDirectory : 0
+DEBUG 2018-05-08 14:38:22,029 4679056ms bmittalPackageServices tQuoteQuotePackage - Total QuotePackageAttachmentfiles have added to QuoteItemsModel: 0
+INFO  2018-05-08 14:38:22,040 4679067ms bmittalPackageServices tQuoteQuotePackage - GetQuoteQuotePackage finished
+INFO  2018-05-08 14:38:23,790 4680817ms QuoteServices          GetQuoteModel      - enter GetQuoteModel
+DEBUG 2018-05-08 14:38:23,808 4680835ms QuoteServices          GetQuoteModel      - QuoteId has value: True
+INFO  2018-05-08 14:38:25,484 4682511ms QuoteServices          GetQuoteModel      - enter GetQuoteModel
+DEBUG 2018-05-08 14:38:25,496 4682523ms QuoteServices          GetQuoteModel      - QuoteId has value: True
+INFO  2018-05-08 14:38:26,319 4683346ms QuoteServices          FinaliseModel      - Enter finaliseModel for DPO.Common.QuoteModel
+INFO  2018-05-08 14:38:26,355 4683382ms QuoteServices          FinaliseModel      - FinaliseModel finished
+INFO  2018-05-08 14:38:26,364 4683391ms QuoteServices          GetQuoteModel      - GetQuoteModel() finished.
+INFO  2018-05-08 14:38:26,900 4683927ms QuoteServices          FinaliseModel      - Enter finaliseModel for DPO.Common.QuoteModel
+INFO  2018-05-08 14:38:26,912 4683939ms QuoteServices          FinaliseModel      - FinaliseModel finished
+INFO  2018-05-08 14:38:26,922 4683949ms QuoteServices          GetQuoteModel      - GetQuoteModel() finished.
+INFO  2018-05-08 14:57:51,221 5848248ms QuoteServices          GetQuoteModel      - enter GetQuoteModel
+DEBUG 2018-05-08 14:57:51,237 5848264ms QuoteServices          GetQuoteModel      - QuoteId has value: True
+INFO  2018-05-08 14:57:52,436 5849463ms QuoteServices          FinaliseModel      - Enter finaliseModel for DPO.Common.QuoteModel
+INFO  2018-05-08 14:57:52,498 5849525ms QuoteServices          FinaliseModel      - FinaliseModel finished
+INFO  2018-05-08 14:57:52,521 5849548ms QuoteServices          GetQuoteModel      - GetQuoteModel() finished.
+INFO  2018-05-08 14:57:52,778 5849805ms bmittalPackageServices tQuoteQuotePackage - Enter GetQuoteQuotePackge for DPO.Common.SubmittalRequestModel
+DEBUG 2018-05-08 14:57:52,786 5849813ms bmittalPackageServices tQuoteQuotePackage - PageSize: -1
+DEBUG 2018-05-08 14:57:52,817 5849844ms bmittalPackageServices tQuoteQuotePackage - Searching Filter: 
+DEBUG 2018-05-08 14:57:52,859 5849886ms bmittalPackageServices tQuoteQuotePackage - Start retrieve QuoteItemsModel for QuoteId: 724134023730921472
+INFO  2018-05-08 14:57:53,124 5850151ms bmittalPackageServices QuoteItemListModel - Enter GetQuoteItemListModel
+DEBUG 2018-05-08 14:57:53,149 5850176ms bmittalPackageServices QuoteItemListModel - CurrentFilter:  IsDesc: False QuoteId: 724134023730921472 QuoteItemId:  Totals: False PreviousFilter:  
+INFO  2018-05-08 14:57:53,424 5850451ms bmittalPackageServices QuoteItemListModel - GetQuoteItemListModel finished.
+DEBUG 2018-05-08 14:57:53,450 5850477ms bmittalPackageServices tQuoteQuotePackage - Total QuoteItemListModel return from search: 3
+DEBUG 2018-05-08 14:57:53,466 5850493ms bmittalPackageServices tQuoteQuotePackage - Total Products return from search: 3
+DEBUG 2018-05-08 14:57:53,509 5850536ms bmittalPackageServices tQuoteQuotePackage - QuotePackageDirectory return: C:\dttp-Projects\Sprint11\Daikin Project Office\DPO.Web\DPO.Web\..\DaikinDocuments\\CustomerDataFiles\QuotePackage\724134023730921472\
+DEBUG 2018-05-08 14:57:53,518 5850545ms bmittalPackageServices tQuoteQuotePackage - Total files return from  QuotePackageDirectory (included lock files): 0
+DEBUG 2018-05-08 14:57:53,527 5850554ms bmittalPackageServices tQuoteQuotePackage - Total files return from  QuotePackageDirectory : 0
+DEBUG 2018-05-08 14:57:53,536 5850563ms bmittalPackageServices tQuoteQuotePackage - Total QuotePackageAttachmentfiles have added to QuoteItemsModel: 0
+INFO  2018-05-08 14:57:53,545 5850572ms bmittalPackageServices tQuoteQuotePackage - GetQuoteQuotePackage finished
+INFO  2018-05-08 15:06:21,511 6358538ms bmittalPackageServices tQuoteQuotePackage - Enter GetQuoteQuotePackge for DPO.Common.SubmittalRequestModel
+DEBUG 2018-05-08 15:06:21,521 6358548ms bmittalPackageServices tQuoteQuotePackage - PageSize: -1
+DEBUG 2018-05-08 15:06:21,529 6358556ms bmittalPackageServices tQuoteQuotePackage - Searching Filter: 
+DEBUG 2018-05-08 15:06:21,540 6358567ms bmittalPackageServices tQuoteQuotePackage - Start retrieve QuoteItemsModel for QuoteId: 724134023730921472
+INFO  2018-05-08 15:06:21,811 6358838ms bmittalPackageServices QuoteItemListModel - Enter GetQuoteItemListModel
+DEBUG 2018-05-08 15:06:21,820 6358847ms bmittalPackageServices QuoteItemListModel - CurrentFilter:  IsDesc: False QuoteId: 724134023730921472 QuoteItemId:  Totals: False PreviousFilter:  
+INFO  2018-05-08 15:06:24,488 6361515ms bmittalPackageServices QuoteItemListModel - GetQuoteItemListModel finished.
+DEBUG 2018-05-08 15:06:24,500 6361527ms bmittalPackageServices tQuoteQuotePackage - Total QuoteItemListModel return from search: 3
+INFO  2018-05-08 15:06:24,488 6361515ms bmittalPackageServices tQuoteQuotePackage - Enter GetQuoteQuotePackge for DPO.Common.SubmittalRequestModel
+DEBUG 2018-05-08 15:06:24,510 6361537ms bmittalPackageServices tQuoteQuotePackage - Total Products return from search: 3
+DEBUG 2018-05-08 15:06:24,520 6361547ms bmittalPackageServices tQuoteQuotePackage - PageSize: -1
+DEBUG 2018-05-08 15:06:24,539 6361566ms bmittalPackageServices tQuoteQuotePackage - Searching Filter: 
+DEBUG 2018-05-08 15:06:24,550 6361577ms bmittalPackageServices tQuoteQuotePackage - Start retrieve QuoteItemsModel for QuoteId: 724134023730921472
+DEBUG 2018-05-08 15:06:24,560 6361587ms bmittalPackageServices tQuoteQuotePackage - QuotePackageDirectory return: C:\dttp-Projects\Sprint11\Daikin Project Office\DPO.Web\DPO.Web\..\DaikinDocuments\\CustomerDataFiles\QuotePackage\724134023730921472\
+DEBUG 2018-05-08 15:06:24,570 6361597ms bmittalPackageServices tQuoteQuotePackage - Total files return from  QuotePackageDirectory (included lock files): 0
+DEBUG 2018-05-08 15:06:24,578 6361605ms bmittalPackageServices tQuoteQuotePackage - Total files return from  QuotePackageDirectory : 0
+DEBUG 2018-05-08 15:06:24,587 6361614ms bmittalPackageServices tQuoteQuotePackage - Total QuotePackageAttachmentfiles have added to QuoteItemsModel: 0
+INFO  2018-05-08 15:06:24,596 6361623ms bmittalPackageServices tQuoteQuotePackage - GetQuoteQuotePackage finished
+INFO  2018-05-08 15:06:24,922 6361949ms bmittalPackageServices QuoteItemListModel - Enter GetQuoteItemListModel
+DEBUG 2018-05-08 15:06:24,939 6361966ms bmittalPackageServices QuoteItemListModel - CurrentFilter:  IsDesc: False QuoteId: 724134023730921472 QuoteItemId:  Totals: False PreviousFilter:  
+INFO  2018-05-08 15:06:25,249 6362276ms bmittalPackageServices QuoteItemListModel - GetQuoteItemListModel finished.
+DEBUG 2018-05-08 15:06:25,259 6362286ms bmittalPackageServices tQuoteQuotePackage - Total QuoteItemListModel return from search: 3
+DEBUG 2018-05-08 15:06:25,267 6362294ms bmittalPackageServices tQuoteQuotePackage - Total Products return from search: 3
+DEBUG 2018-05-08 15:06:25,308 6362335ms bmittalPackageServices tQuoteQuotePackage - QuotePackageDirectory return: C:\dttp-Projects\Sprint11\Daikin Project Office\DPO.Web\DPO.Web\..\DaikinDocuments\\CustomerDataFiles\QuotePackage\724134023730921472\
+DEBUG 2018-05-08 15:06:25,317 6362344ms bmittalPackageServices tQuoteQuotePackage - Total files return from  QuotePackageDirectory (included lock files): 0
+DEBUG 2018-05-08 15:06:25,326 6362353ms bmittalPackageServices tQuoteQuotePackage - Total files return from  QuotePackageDirectory : 0
+DEBUG 2018-05-08 15:06:25,334 6362361ms bmittalPackageServices tQuoteQuotePackage - Total QuotePackageAttachmentfiles have added to QuoteItemsModel: 0
+INFO  2018-05-08 15:06:25,343 6362370ms bmittalPackageServices tQuoteQuotePackage - GetQuoteQuotePackage finished
+INFO  2018-05-08 15:06:27,736 6364763ms QuoteServices          GetQuoteModel      - enter GetQuoteModel
+DEBUG 2018-05-08 15:06:27,754 6364781ms QuoteServices          GetQuoteModel      - QuoteId has value: True
+INFO  2018-05-08 15:06:30,949 6367976ms QuoteServices          GetQuoteModel      - enter GetQuoteModel
+DEBUG 2018-05-08 15:06:30,965 6367992ms QuoteServices          GetQuoteModel      - QuoteId has value: True
+INFO  2018-05-08 15:06:31,727 6368754ms QuoteServices          FinaliseModel      - Enter finaliseModel for DPO.Common.QuoteModel
+INFO  2018-05-08 15:06:31,763 6368790ms QuoteServices          FinaliseModel      - FinaliseModel finished
+INFO  2018-05-08 15:06:31,772 6368799ms QuoteServices          GetQuoteModel      - GetQuoteModel() finished.
+INFO  2018-05-08 15:06:32,261 6369288ms QuoteServices          FinaliseModel      - Enter finaliseModel for DPO.Common.QuoteModel
+INFO  2018-05-08 15:06:32,273 6369300ms QuoteServices          FinaliseModel      - FinaliseModel finished
+INFO  2018-05-08 15:06:32,282 6369309ms QuoteServices          GetQuoteModel      - GetQuoteModel() finished.

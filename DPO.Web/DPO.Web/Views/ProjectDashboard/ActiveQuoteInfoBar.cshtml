@@ -1,0 +1,119 @@
+﻿@model IActiveQuoteInfoBarModel
+@{
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+    var quote = Model.ActiveQuoteSummary;
+}
+@using System.Web.Configuration
+           
+<div class="section b-flush">
+    <div class="row sub-heading">
+        <h4>@((Model.Active) ? ResourceUI.QuoteActive : "Quote Summary")</h4>
+        <div class="pull-right">
+            @if (user.HasAccess(SystemAccessEnum.EditProject)
+                && Model.Deleted == false
+                && Model.IsTransferred == false
+                && !Model.HasDAR
+                && Model.ProjectStatusTypeId != (byte)ProjectStatusTypeEnum.Inactive
+                && Model.ProjectStatusTypeId != (byte)ProjectStatusTypeEnum.ClosedWon
+                && Model.ActiveQuoteSummary.OrderStatusTypeId != (byte)OrderStatusTypeEnum.AwaitingCSR
+                && Model.ActiveQuoteSummary.OrderStatusTypeId != (byte)OrderStatusTypeEnum.Submitted)
+            {
+                <a href="@Url.Action("QuoteEdit", "Projectdashboard", new { projectId = Model.ProjectId })" class="context-btn submit">
+                    <img src="~/Images/new-project-icon.png" />
+                    @if (Model.ActiveQuoteSummary == null || Model.ActiveQuoteSummary.QuoteId == 0)
+                    {
+                        @ResourceUI.QuoteAddNew
+                    }
+                    else
+                    {
+                        @ResourceUI.CreateRevision
+                    }
+                </a>
+            }
+        </div>
+        <div class="row-end">&nbsp;</div>
+    </div>
+    <div class="active-quote-bar">
+        <div class="pull-left">
+            <img src="~/Images/quote-icon.png" style="top:2.75em;" />
+            @if (quote == null || quote.QuoteId == 0)
+            {
+                <a href="#" style="color: #000; text-decoration: none;">@ResourceUI.QuoteNoActive</a>
+            }
+            else
+            {
+                @*<a href="@Url.Action("Quote", "Projectdashboard", new { projectid = Model.ProjectId, quoteId = quote.QuoteId })">@quote.Title</a>*@
+                <a href="/v2/#/quote/@quote.QuoteId/existingRecord">@quote.Title</a>
+            }
+        </div>
+        <div class="pull-right">
+            @if (quote != null && quote.Revision != null && quote.QuoteId != 0)
+            {
+                <table>
+                    <tr>                   
+                        @if (quote.Alert)
+                        {
+                            if(user.ShowPrices)
+                            { 
+                              <td style="background-image: url(/Images/alert-icon.png); background-repeat: no-repeat; padding-left: 48px; background-position: 5px -10px;" class="as-lnk">
+                                 Pricing has changed
+                              </td>
+                           }
+                        }
+                        <td>@ResourceUI.Revision</td>
+                        <td>@ResourceUI.Date</td>
+                        @if (user.ShowPrices)
+                        { 
+                         
+                            if (Model.ActiveQuoteSummary.IsCommission || Model.IsCommission)
+                            {
+                                <td>@ResourceUI.TotalList</td>
+                                <td>Total Net</td>
+                                <td>@ResourceUI.CommissionAmount</td>
+                                <td>@ResourceUI.NetMaterialValue</td>
+                            }
+                            else
+                            {
+                            <td>@ResourceUI.NetPrice</td>
+                            <td>@ResourceUI.ListPrice</td>
+                            <td>@ResourceUI.TotalPrice</td>
+                        }
+                        }
+                    </tr>
+                    <tr>
+                            @if (quote.Alert)
+                            {
+                                if(user.ShowPrices)
+                                { 
+                                   <td class="c-align">
+                                     <a class="context-btn h-slim" style="margin: 0; width: 100%;" href="#" sc-ajaxpost="@Url.Action("QuoteRecalculate", "Projectdashboard", new { ProjectId = quote.ProjectId, QuoteId = quote.QuoteId })">Recalculate</a>
+                                  </td>
+                                }
+                            }
+                    
+                        <td>@Html.DisplayFor(m => quote.Revision)</td>
+                        <td>@Html.DisplayFor(m => quote.Timestamp)</td>
+                        @if (user.ShowPrices)
+                        {
+                           
+                            if (Model.ActiveQuoteSummary.IsCommission)
+                            {
+                                <td>@Html.DisplayFor(m => quote.TotalList)</td>
+                                <td>@Html.DisplayFor(m => quote.TotalNetCommission)</td>
+                                <td>@Html.DisplayFor(m => quote.CommissionAmount)</td>
+                                <td>@Html.DisplayFor(m => quote.NetMultiplierValue)</td>
+                            }
+                            else
+                        {
+                            <td>@Html.DisplayFor(m => quote.TotalNet)</td>
+                            <td>@Html.DisplayFor(m => quote.TotalList)</td>
+                            <td><strong>@Html.DisplayFor(m => quote.TotalSell)</strong></td>
+                        }
+                        }
+                    </tr>
+
+                </table>
+            }
+        </div>
+    </div>
+</div>

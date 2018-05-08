@@ -1,0 +1,53 @@
+﻿@model DPO.Common.SendEmailApprovalModel
+@using System.Text
+
+@{
+    var wording = (Model.Approved) ? "has been approved by " + Model.ModifierName : "has not been approved";
+
+    DateTime projectDate = (DateTime)Model.ProjectDate;
+    DateTime now = DateTime.Now;
+    projectDate = projectDate.Add(new TimeSpan(now.Hour, now.Minute, now.Second));
+
+    string projectId = Model.ProjectId.ToString();
+    
+    if (!Model.RenderTextVersion)
+    {
+        projectId = Html.ActionLink(Model.ProjectId.ToString(), "Project", "ProjectDashboard", 
+                Request.Url.Scheme, Request.Url.Host, String.Empty, new { ProjectId = Model.ProjectId }, null).ToHtmlString();
+    }
+    
+    string emailMessage = string.Format(
+@"
+    Discount request for Project '{0}' and quote '{1}' submitted by {2} of {3} {4}.
+    Project Date: {5}<br />
+    Discount Requested: {6}%<br />
+    Approved Discount: {7}%<br />
+    Approved Discount Price: {8}<br />
+    Reason given : {9}<br />
+    Project Reference : {10}",
+        Model.ProjectName, Model.QuoteTitle, Model.ProjectOwnerName,
+        Model.BusinessName, wording, projectDate, Math.Round(Model.RequestedDiscount, 3),
+        String.Format("{0:#,0.00}", Model.ApprovedDiscount),
+        Model.TotalNet.HasValue ? Model.TotalNet.Value.ToString("C") : "$0.00",
+        string.IsNullOrEmpty(Model.Reason) ? "None given" : Model.Reason,
+        projectId);
+}
+
+@if (Model.RenderTextVersion)
+{
+    Layout = null;
+    
+    @emailMessage.Replace("<br />", String.Empty)
+ }
+else
+{
+    Layout = "~/Views/Shared/EmailTemplate.cshtml";
+
+    <table>
+        <tr>
+            <td style="padding-left: 28px; padding-top: 20px; font-family: Helvetica, Arial, sans-serif; ">
+                @Html.Raw(emailMessage)
+            </td>
+        </tr>
+    </table>
+}

@@ -1,0 +1,108 @@
+﻿<div id="projectLocationDiv" class="row">
+
+    <div class="r-col1 hide-print">&nbsp;</div>
+    <div class="r-col4 details-list">
+        <ul>
+            <li>
+                <p class="detail-name">Business Name:</p>
+                <p ng-show="projectVM.shipToName" id="order-shipToName">{{projectVM.shipToName}}</p>
+                <p ng-show="!projectVM.shipToName" style="word-wrap: break-word; color:lightgray; font-style:italic;">(please fill in Business Name)</p>
+                <validation-message ng-if="submitAttempted" key="projectVM.shipToName"></validation-message>
+                <!--@if (Model.Project.ShipToName == null)
+                 {
+                 <p style="word-wrap: break-word; color:lightgray; font-style:italic;">(please fill in Business Name)</p>
+                 }
+                 else
+                 {
+                 <p style="word-wrap: break-word;">@Model.Project.ShipToName</p>
+                 }-->
+
+            </li>
+            <li>
+                <p class="detail-name">Country:</p>
+                <p ng-show="projectVM.shipToAddress.countryCode">{{projectVM.shipToAddress.countryCode}}</p>
+                <p ng-show="!projectVM.shipToAddress.countryCode" style="word-wrap: break-word; color:lightgray; font-style:italic;">(please fill in Country Code)</p>
+                <validation-message ng-if="submitAttempted" key="projectVM.shipToAddress.countryCode"></validation-message>
+                <!--@if (Model.Project.ShipToAddress.CountryCode == null)
+                 {
+                 <p style="word-wrap: break-word; color:lightgray; font-style:italic;">(please fill in Country Code)</p>
+                 }
+                 else
+                 {
+                 <p>@Model.Project.ShipToAddress.CountryCode</p>
+                 }-->
+
+            </li>
+            <li>
+                <p class="detail-name">AddressLine 1:</p>
+                <p ng-show="projectVM.shipToAddress.addressLine1">{{projectVM.shipToAddress.addressLine1}}</p>
+               
+                <p ng-show="!projectVM.shipToAddress.addressLine1" style="word-wrap: break-word; color:lightgray; font-style:italic;">(please fill in Address Line 1)</p>
+                <validation-message ng-if="submitAttempted" key="projectVM.shipToAddress.addressLine1"></validation-message>
+
+            </li>
+            <li>
+                <p class="detail-name">AddressLine2:</p>
+                <p>{{projectVM.shipToAddress.addressLine2}}</p>
+            </li>
+        </ul>
+
+    </div>
+
+
+    <div class="r-col1 hide-print">&nbsp;</div>
+    <div class="r-col4 details-list">
+        <ul>
+            <li>
+                <p class="detail-name">Location: </p>
+                <p ng-show="projectVM.shipToAddress.location">{{projectVM.shipToAddress.location}}</p>
+                <p ng-show="!projectVM.shipToAddress.location" style="word-wrap: break-word; color:lightgray; font-style:italic;">(please fill in Project Location)</p>
+                <validation-message ng-if="submitAttempted" key="projectVM.shipToAddress.location"></validation-message>
+            </li>
+            <li>
+                <p class="detail-name">State:</p>
+                <!--@{
+                 var shipToAddressState = Model.Project.ShipToAddress.States.Items
+                 .Where(s => s.Value == Model.Project.ShipToAddress.StateId.ToString())
+                 .Select(s => s.Text).FirstOrDefault();
+                 }-->
+                <!--<enum ng-show="projectVM.shipToAddress.stateId" ng-if="locationVMLoaded" url="/api/Common/GetStates" keyid="{{projectVM.shipToAddress.stateId}}"></enum>-->
+                <enum ng-show="projectVM.shipToAddress.stateId" ng-if="projectVMLoaded" url="/api/Common/GetStates" keyid="{{projectVM.shipToAddress.stateId}}"></enum>
+                <p ng-show="!projectVM.shipToAddress.stateId" style="word-wrap: break-word; color:lightgray; font-style:italic;">(please fill in State)</p>
+                <validation-message ng-if="submitAttempted" key="projectVM.shipToAddress.stateId"></validation-message>
+
+            </li>
+            <li>
+                <p class="detail-name">Zip Code:</p>
+                <p ng-show="projectVM.shipToAddress.postalCode">{{projectVM.shipToAddress.postalCode}}</p>
+                <p ng-show="!projectVM.shipToAddress.postalCode" style="word-wrap: break-word; color:lightgray; font-style:italic;">(please fill in Zip Code)</p>
+                <validation-message ng-if="submitAttempted" key="projectVM.shipToAddress.postalCode"></validation-message>
+
+            </li>
+            <li>
+                <p class="detail-name">Square Footage: </p>
+                <p>{{projectVM.squareFootage}}</p>
+                <!--<input id="projSquareFootage" kendo-numeric-text-box min="0" step="1" style="width: 30%;" k-ng-model="locationVM.squareFootage" />-->
+            </li>
+            <li>
+                <p class="detail-name">Number Of Floors: </p>
+                <p>{{projectVM.numberOfFloors}}</p>
+                <!--<input id="projNumberOfFloors" kendo-numeric-text-box min="0" step="1" style="width: 30%;" k-ng-model="vm.numberOfFloors" />-->
+            </li>
+        </ul>
+    </div>
+
+    <div class="r-col1 hide-print">&nbsp;</div>
+    <div class="r-col1 details-list">
+        <a ng-show="OrderVM.orderIdStr==0" href="#" id="btn_Edit_ProjectLocation" ng-click="ProjectLocationEdit()">Edit</a>
+    </div>
+
+    <div kendo-window="ProjectLocationEditWindow" k-title="'Project Location'"
+         k-width="1200" k-modal="true" k-visible="false"
+         k-content="{ url: '/ProjectDashboard/ProjectEditLocation?projectId={{OrderVM.projectIdStr}}' }"
+         k-on-close="closeWindow()">
+    </div>
+
+    <div class="row-end">&nbsp;</div>
+
+</div>

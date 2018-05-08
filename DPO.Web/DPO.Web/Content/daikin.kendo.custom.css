@@ -1,0 +1,77 @@
+﻿.k-grid th.k-header,
+.k-grid-header 
+{
+    /*background-color:#007FCC;*/
+
+    background-image: -webkit-linear-gradient(#5397cf, #428bca 60%, #007FCC);
+    background-image: -o-linear-gradient(#5397cf, #428bca 60%, #007FCC);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#5397cf), color-stop(60%, #428bca), to(#007FCC));
+    background-image: linear-gradient(#5397cf, #428bca 60%, #007FCC);
+    background-repeat: no-repeat;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5397cf', endColorstr='#ff007fcc', GradientType=0);
+    -webkit-filter: none;
+    filter: none;
+    border-bottom: 1px solid #007FCC;
+
+    color:white;
+    font-family:"museo-sans", sans-serif;
+    font-size:16px;
+    /*font-weight:bold;*/
+}
+
+/*kendo grid header*/
+div.k-grid-header a:link, th a:visited, th a:active, th a:hover {
+            color: #333;
+            font-weight: normal;
+            text-decoration: none;
+            padding: 0;
+}
+
+.k-grid-header .k-header>.k-link {
+    color:white;
+}
+
+.k-header.k-menu.k-menu-vertical
+{
+    font-size:small;
+}
+
+
+/*table body text*/
+.k-grid table tbody tr {
+   font-size:14px; 
+}
+
+.k-grid table thead tr {
+   height: 40px;
+}
+
+.k-grid table thead tr th{
+  vertical-align:middle !important;
+}
+
+.table-print{
+    width: 500px;
+    border:solid 1px;
+}
+
+.table-print thead
+{
+    background-color:#007FCC;
+    color:white;
+    font-family:"museo-sans", sans-serif;
+    font-size:13px;
+    font-weight:bold;
+}
+
+
+.k-loading-image
+{
+    /*background-image: url('/Images/loading.gif');*/
+    background-image: url('http://kendo.cdn.telerik.com/2016.2.714/styles/Bootstrap/loading-image.gif');
+}
+
+/*Login partial Icons*/
+/*#header a span {
+   position:static;
+}*/

@@ -1,0 +1,932 @@
+﻿@model DPO.Web.Areas.Apps.Models.TradeShowVM
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<style type="text/css">
+    #body {
+        background-color: white;
+        padding-top: 20px;
+        font-family: "museo-sans", sans-serif;
+    }
+
+    #lblAttPhone {
+        padding-top: 2px;
+        padding-bottom: 11px;
+    }
+
+    #lblRequesterPhone {
+        padding-top: 2px;
+        padding-bottom: 8px;
+    }
+
+    .FormRequired:after {
+        content: "*";
+        font-weight: bold;
+        color: red;
+        margin-left: 5px;
+    }
+
+    #TradeShowHeading {
+        background-color: #00A1E4;
+        padding: 20px 10px 10px 10px;
+    }
+
+        #TradeShowHeading h2, #TradeShowHeading p {
+            color: white;
+        }
+
+    #TradeShowForm legend {
+        font-size: 18px;
+        color: #00A1E4;
+        font-weight: bold;
+    }
+
+    #boothComponent {
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-bottom: 20px;
+        width: 100%;
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
+        -webkit-column-width: 400px;
+        -moz-column-width: 400px;
+        column-width: 400px;
+    }
+
+    #boothComponent_left {
+        padding-left: 20px;
+        float: left;
+    }
+
+    #boothComponent_right {
+        float: left;
+        text-align: justify;
+        padding-top: 150px;
+    }
+
+
+    .ItemRadio {
+        float: left;
+        display: inline-block;
+    }
+
+    /*Start the style for Popup */
+
+    #divLargerImage {
+        display: none;
+        width: 700px;
+        height: 1500px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 99;
+        padding-bottom: 1500px;
+        opacity: 10;
+        margin-top: 100px;
+        margin-left: 300px;
+        margin-right: 200px;
+    }
+
+    #divOverlay {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #ccc;
+        opacity: 0.5;
+        width: 100%;
+        height: 5000px;
+        z-index: 98;
+        background-color: gray;
+    }
+
+    #btnSubmit {
+        margin: 10px 10px 10px 10px;
+    }
+
+    #footer {
+        background-color: #00A1E4;
+        padding: 10px 10px 10px 10px;
+        height: 130px;
+    }
+
+    #footerParagraph {
+        margin-left: 10px;
+        color: white;
+    }
+
+        #footerParagraph a {
+            color: white;
+        }
+
+    /*end popup style*/
+</style>
+
+<div id="TradeShowHeading">
+    <h2>Trade Show Sharing Program</h2>
+    <p>
+        We are pleased to offer you an easy means for obtaining Daikin booth components for your upcoming trade show or event.
+        The items you can order in this web form are lent to you for the duration of one event, and items are reserved on a first come, first served bases.
+    </p>
+    <p>
+        Do not complete this form if you prefer to purchase booth components and/or add your company's logo. Please go to the purchasing program here:
+        <a target="_blank" href="http://digitalblueprintsolutions.businesscatalyst.com/Stock-vehicle-graphics/daikin-banners-tradeshow" style="color:white;">
+            Purchasing Program
+        </a>
+    </p>
+</div>
+
+<div id="body">
+
+    @using (Html.BeginForm("Create", "SharingProgram", FormMethod.Post, new { id = "TradeShowForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>Requester</legend>
+            <table>
+                <tr>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Requester.FirstName, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Requester.FirstName)
+                            @Html.ValidationMessageFor(model => model.Requester.FirstName)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Requester.LastName, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Requester.LastName)
+                            @Html.ValidationMessageFor(model => model.Requester.LastName)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Requester.Company, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Requester.Company)
+                            @Html.ValidationMessageFor(model => model.Requester.Company)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Requester.Title, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Requester.Title)
+                            @Html.ValidationMessageFor(model => model.Requester.Title)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Requester.Email, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Requester.Email)
+                            @Html.ValidationMessageFor(model => model.Requester.Email)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-label" id="lblRequesterPhone">
+                            @Html.LabelFor(model => model.Requester.ContactNumber, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field" id="txtPhone">
+                            @*@Html.EditorFor(model => model.Requester.ContactNumber, new {style = "width:500px;"})*@
+                            @Html.TextBoxFor(model => model.Requester.ContactNumber, new { style = "width:280px; margin-top:-2px;" })
+                            @Html.ValidationMessageFor(model => model.Requester.ContactNumber)
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+        <br />
+        <br />
+        <fieldset>
+            <legend>Event Information</legend>
+            <table>
+                <tr>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Event.EventName, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Event.EventName)
+                            @Html.ValidationMessageFor(model => model.Event.EventName)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Event.StartDate, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @*<input type="text" id="EventDatePicker" class="EventDatePicker" />*@
+                            @Html.TextBoxFor(model => model.Event.StartDate, new { @class = "EventDatePicker", @id = "txtStartDate" })
+                            @Html.ValidationMessageFor(model => model.Event.StartDate)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Event.EndDate, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @*<input type="text" id="EventEndDate" class="EventDatePicker" />*@
+                            @Html.TextBoxFor(model => model.Event.EndDate, new { @class = "EventDatePicker", @id = "txtEndDate" })
+                            @Html.ValidationMessageFor(model => model.Event.EndDate)
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Event.SetupDate, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @*<input type="text" id="EventSetupDate" class="EventDatePicker" />*@
+                            @Html.TextBoxFor(model => model.Event.SetupDate, new { @class = "EventDatePicker", @id = "txtSetupDate" })
+                            @Html.ValidationMessageFor(model => model.Event.SetupDate)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Event.BoothSize, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Event.BoothSize)
+                            @Html.ValidationMessageFor(model => model.Event.BoothSize)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Event.Location, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Event.Location)
+                            @Html.ValidationMessageFor(model => model.Event.Location)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Event.Address, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Event.Address)
+                            @Html.ValidationMessageFor(model => model.Event.Address)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Event.City, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Event.City)
+                            @Html.ValidationMessageFor(model => model.Event.City)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Event.State, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @Html.ValidationMessageFor(model => model.Event.State)
+                            @Html.DropDownListFor(model => model.Event.State, new List<SelectListItem>
+            {
+              new SelectListItem { Text = "Select State/Province", Value="Select"},
+              new SelectListItem { Text = "Alabama", Value = "AL"},
+              new SelectListItem { Text = "Alaska", Value = "AK" },
+              new SelectListItem { Text = "Arizona", Value = "AZ" },
+              new SelectListItem { Text = "Arkansas", Value = "AR" },
+              new SelectListItem { Text = "California", Value = "CA" },
+              new SelectListItem { Text = "Colorado", Value = "CO" },
+              new SelectListItem { Text = "Connecticut", Value = "CT"},
+              new SelectListItem { Text = "Delaware", Value = "DE" },
+              new SelectListItem { Text = "District of Columnbia", Value = "DC"},
+              new SelectListItem { Text = "Florida", Value = "FL" },
+              new SelectListItem { Text = "Georgia", Value = "GA" },
+              new SelectListItem { Text = "Hawaii", Value = "HI" },
+              new SelectListItem { Text = "Idaho", Value = "ID"},
+              new SelectListItem { Text = "Illinois", Value = "IL"},
+              new SelectListItem { Text = "Indiana", Value = "IN"},
+              new SelectListItem { Text = "Iowa", Value = "IA"},
+              new SelectListItem { Text = "Kansas", Value = "KS"},
+              new SelectListItem { Text = "Kentucky", Value = "KY"},
+              new SelectListItem { Text = "Louisiana", Value = "LA"},
+              new SelectListItem { Text = "Maine", Value = "ME"},
+              new SelectListItem { Text = "Maryland", Value="MD"},
+              new SelectListItem { Text = "Massachuset", Value = "MA"},
+              new SelectListItem { Text = "Michigan", Value = "MI"},
+              new SelectListItem { Text = "Minnesota", Value = "MN"},
+              new SelectListItem { Text = "Mississippi", Value = "MS"},
+              new SelectListItem { Text = "Missouri", Value = "MO" },
+              new SelectListItem { Text = "Montana", Value = "MT" },
+              new SelectListItem { Text = "Nebraska", Value = "NE" },
+              new SelectListItem { Text = "Nevada", Value = "NV" },
+              new SelectListItem { Text = "New Hampshire", Value = "NH" },
+              new SelectListItem { Text = "New Jersey", Value = "NJ"},
+              new SelectListItem { Text = "New Mexico", Value = "NM" },
+              new SelectListItem { Text = "New York", Value = "NY"},
+              new SelectListItem { Text = "North Carolina", Value = "NC" },
+              new SelectListItem { Text = "North Dakota", Value = "ND" },
+              new SelectListItem { Text = "Ohio", Value = "OH" },
+              new SelectListItem { Text = "Oklahoma", Value = "OK"},
+              new SelectListItem { Text = "Oregon", Value = "OR"},
+              new SelectListItem { Text = "Pennsylvania", Value = "PA"},
+              new SelectListItem { Text = "Rhode Island", Value = "RI"},
+              new SelectListItem { Text = "South Carolina", Value = "SC"},
+              new SelectListItem { Text = "South Dakota", Value = "SD"},
+              new SelectListItem { Text = "Tennessee", Value = "TN"},
+              new SelectListItem { Text = "Texas", Value = "TX"},
+              new SelectListItem { Text = "Utah", Value="UT"},
+              new SelectListItem { Text = "Vermont", Value = "VT"},
+              new SelectListItem { Text = "Virginia", Value = "VA"},
+              new SelectListItem { Text = "Washington", Value = "WA"},
+              new SelectListItem { Text = "West Virginia", Value = "WV" },
+              new SelectListItem { Text = "Wisconsin", Value = "WI" },
+              new SelectListItem { Text = "Wyoming", Value = "WY"},
+              new SelectListItem { Text = "Ontario", Value = "Ontario"},
+              new SelectListItem { Text = "Quebec", Value = "Quebec"},
+              new SelectListItem { Text = "British Columbia", Value = "British Columbia"},
+              new SelectListItem { Text = "Alberta", Value = "Alberta"},
+              new SelectListItem { Text = "Manitoba", Value = "Manitoba"},
+              new SelectListItem { Text = "Saskatchewan", Value = "Saskatchewan"},
+              new SelectListItem { Text = "Nova Scotia" , Value = "Nova Scotia"},
+              new SelectListItem { Text = "New Brunswick", Value = "New Brunswick"},
+              new SelectListItem { Text = "Newfoundland and Labrador", Value = "Newfoundland and Labrador"},
+              new SelectListItem { Text = "Prince Edward Island", Value = "Price Edward Island"},
+              new SelectListItem { Text = "Northwest Territories", Value = "Northwest Territories"},
+              new SelectListItem { Text = "Yukon", Value = "Yukon"},
+              new SelectListItem { Text = "Nunavut", Value = "Nunavut" }
+            })
+
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Event.ZipCode, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Event.ZipCode)
+                            @Html.ValidationMessageFor(model => model.Event.ZipCode)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Event.Attendee, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Event.Attendee)
+                            @Html.ValidationMessageFor(model => model.Event.Attendee)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-label" id="lblAttPhone">
+                            @Html.LabelFor(model => model.Event.AttendeePhone, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @*@Html.EditorFor(model => model.Event.AttendeePhone)*@
+                            @Html.TextBoxFor(model => model.Event.AttendeePhone, new { style = "width:280px; margin-top:-5px;" })
+                            @Html.ValidationMessageFor(model => model.Event.AttendeePhone)
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+        </fieldset>
+
+        <br />
+        <br />
+
+        <fieldset>
+            <legend>Ship To Location</legend>
+            <table>
+                <tr>
+                    <td>
+                        <label style="margin-left:25px;">Same as Event Address</label>
+                        <input type="checkbox" id="chkSameShippingAddress" name="IsSameShippingAddress" value="true" style="float:left;margin-top:-17px;" />
+                        <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Shipping.Company, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Shipping.Company, new { @class = "Shipping" })
+                            @Html.ValidationMessageFor(model => model.Shipping.Company)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Shipping.ContactName, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Shipping.ContactName, new { @class = "Shipping" })
+                            @Html.ValidationMessageFor(model => model.Shipping.ContactName)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Shipping.Address, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Shipping.Address, new { @class = "Shipping" })
+                            @Html.ValidationMessageFor(model => model.Shipping.Address)
+                            @Html.HiddenFor(model => model.Shipping.Address)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Shipping.City, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Shipping.City, new { @class = "Shipping" })
+                            @Html.ValidationMessageFor(model => model.Shipping.City)
+                            @Html.HiddenFor(model => model.Shipping.City)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Shipping.State, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @Html.ValidationMessageFor(model => model.Shipping.State)
+                            @Html.DropDownListFor(model => model.Shipping.State, new List<SelectListItem>
+            {
+              new SelectListItem { Text = "Select State/Province", Value ="Select"},
+              new SelectListItem { Text = "Alabama", Value = "AL"},
+              new SelectListItem { Text = "Alaska", Value = "AK" },
+              new SelectListItem { Text = "Arizona", Value = "AZ" },
+              new SelectListItem { Text = "Arkansas", Value = "AR" },
+              new SelectListItem { Text = "California", Value = "CA" },
+              new SelectListItem { Text = "Colorado", Value = "CO" },
+              new SelectListItem { Text = "Connecticut", Value = "CT"},
+              new SelectListItem { Text = "Delaware", Value = "DE" },
+              new SelectListItem { Text = "District of Columnbia", Value = "DC"},
+              new SelectListItem { Text = "Florida", Value = "FL" },
+              new SelectListItem { Text = "Georgia", Value = "GA" },
+              new SelectListItem { Text = "Hawaii", Value = "HI" },
+              new SelectListItem { Text = "Idaho", Value = "ID"},
+              new SelectListItem { Text = "Illinois", Value = "IL"},
+              new SelectListItem { Text = "Indiana", Value = "IN"},
+              new SelectListItem { Text = "Iowa", Value = "IA"},
+              new SelectListItem { Text = "Kansas", Value = "KS"},
+              new SelectListItem { Text = "Kentucky", Value = "KY"},
+              new SelectListItem { Text = "Louisiana", Value = "LA"},
+              new SelectListItem { Text = "Maine", Value = "ME"},
+              new SelectListItem { Text = "Maryland", Value="MD"},
+              new SelectListItem { Text = "Massachuset", Value = "MA"},
+              new SelectListItem { Text = "Michigan", Value = "MI"},
+              new SelectListItem { Text = "Minnesota", Value = "MN"},
+              new SelectListItem { Text = "Mississippi", Value = "MS"},
+              new SelectListItem { Text = "Missouri", Value = "MO" },
+              new SelectListItem { Text = "Montana", Value = "MT" },
+              new SelectListItem { Text = "Nebraska", Value = "NE" },
+              new SelectListItem { Text = "Nevada", Value = "NV" },
+              new SelectListItem { Text = "New Hampshire", Value = "NH" },
+              new SelectListItem { Text = "New Jersey", Value = "NJ"},
+              new SelectListItem { Text = "New Mexico", Value = "NM" },
+              new SelectListItem { Text = "New York", Value = "NY"},
+              new SelectListItem { Text = "North Carolina", Value = "NC" },
+              new SelectListItem { Text = "North Dakota", Value = "ND" },
+              new SelectListItem { Text = "Ohio", Value = "OH" },
+              new SelectListItem { Text = "Oklahoma", Value = "OK"},
+              new SelectListItem { Text = "Oregon", Value = "OR"},
+              new SelectListItem { Text = "Pennsylvania", Value = "PA"},
+              new SelectListItem { Text = "Rhode Island", Value = "RI"},
+              new SelectListItem { Text = "South Carolina", Value = "SC"},
+              new SelectListItem { Text = "South Dakota", Value = "SD"},
+              new SelectListItem { Text = "Tennessee", Value = "TN"},
+              new SelectListItem { Text = "Texas", Value = "TX"},
+              new SelectListItem { Text = "Utah", Value="UT"},
+              new SelectListItem { Text = "Vermont", Value = "VT"},
+              new SelectListItem { Text = "Virginia", Value = "VA"},
+              new SelectListItem { Text = "Washington", Value = "WA"},
+              new SelectListItem { Text = "West Virginia", Value = "WV" },
+              new SelectListItem { Text = "Wisconsin", Value = "WI" },
+              new SelectListItem { Text = "Wyoming", Value = "WY"},
+              new SelectListItem { Text = "Ontario", Value = "Ontario"},
+              new SelectListItem { Text = "Quebec", Value = "Quebec"},
+              new SelectListItem { Text = "British Columbia", Value = "British Columbia"},
+              new SelectListItem { Text = "Alberta", Value = "Alberta"},
+              new SelectListItem { Text = "Manitoba", Value = "Manitoba"},
+              new SelectListItem { Text = "Saskatchewan", Value = "Saskatchewan"},
+              new SelectListItem { Text = "Nova Scotia" , Value = "Nova Scotia"},
+              new SelectListItem { Text = "New Brunswick", Value = "New Brunswick"},
+              new SelectListItem { Text = "Newfoundland and Labrador", Value = "Newfoundland and Labrador"},
+              new SelectListItem { Text = "Prince Edward Island", Value = "Price Edward Island"},
+              new SelectListItem { Text = "Northwest Territories", Value = "Northwest Territories"},
+              new SelectListItem { Text = "Yukon", Value = "Yukon"},
+              new SelectListItem { Text = "Nunavut", Value = "Nunavut" }
+            }, new { @class = "Shipping" })
+                            @Html.HiddenFor(model => model.Shipping.State)
+
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Shipping.Zip, new { @class = "FormRequired" })
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Shipping.Zip, new { @class = "Shipping" })
+                            @Html.ValidationMessageFor(model => model.Shipping.Zip)
+                            @Html.HiddenFor(model => model.Shipping.Zip)
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+        <br />
+        <br />
+
+        <div>
+            <div style="padding-left:20px;">
+                <h4>Booth components</h4>
+            </div>
+            <div id="boothComponent">
+                <div id="boothComponent_left">
+                    <img src="~/Areas/TradeShow/Images/DaikinDisplay.jpg" width="500" height="368" alt="" />
+                </div>
+
+                <div id="boothComponent_right">
+                    <ul style="font-size:larger;">
+                        <li> •	The items below are to be used for a trade show or a company function; it is recommended that you select one 8’ booth and two pull-up banners.</li>
+                        <li> •	Please select the graphics that best fit your demographic of customers attending the event. </li>
+                        <li> •	You are responsible for the set up and breakdown of the booth.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="clear:left; padding-top:20px; padding-left:20px;">
+                <h4>8ft Booth</h4>
+                <p>Select one:</p>
+            </div>
+
+
+            <fieldset>
+                @for (int i = 0; i < 7; i++)
+                {
+                    <div style="display:block;float:left; margin-right:50px;" class="sub1">
+
+                        @Html.RadioButtonFor(model => model.SelectedRentingItems, Model.RentingItems[i].ID)
+                        @Html.Label(Model.RentingItems[i].Name, new { style = "float:left;margin-top:2px;" })
+                        <br />
+                        @{
+
+                            var base64 = Convert.ToBase64String(Model.RentingItems[i].Image);
+                            var imageData = string.Format("data:image/jpg;base64,{0}", base64);
+                        }
+
+                        <a href="#"><img src="@imageData" width="300" height="202" style="margin-left:5px; margin-right:5px;border:1px solid;" /></a>
+                    </div>
+                            }
+
+
+                <div style="clear:left; padding-top:20px;">
+                    <h4>Pull-Up Banners</h4>
+                    <p>
+                        Select up to 2 Daikin VRV product pull-up banners. In the event you have more space available.
+                        (i.e.an open house or customer event)
+                        Please contact Kristin Hatteberg with your request for additional banners.
+                    </p>
+                </div>
+
+                @for (int i = 7; i < 28; i++)
+                {
+                    var rentingItem = Model.RentingItems[i];
+                    if (rentingItem.ID != 23 && rentingItem.ID != 24 && rentingItem.ID != 25)
+                    {
+                        <div style="display:block;float:left; margin-right:20px;" class="sub2">
+
+                            @*Hacking for RentingItems that has ID = 21, the Name not display correctly on the View*@
+
+                            @if (Model.RentingItems[i].ID == 21)
+                        {
+                                <p style="margin-top:-1px; margin-bottom:-3px;">DCG 7.5-12.5 Tons</p>
+                            }
+                            else
+                            {
+                                @Html.Label(rentingItem.Name)
+                            }
+
+
+                            <input type="checkbox" class="chkRentingItems"
+                                   name="SelectedRentingItems"
+                                   value="@rentingItem.ID" id="@rentingItem.ID"
+                                   @{  if (Model.SelectedRentingItems != null && Model.SelectedRentingItems.Contains(rentingItem.ID)) { <text> checked='checked' </text>          }  } />
+
+                            <br /> @*do not remove this <br /> or it will broke the layout*@
+
+                            @{
+
+                                var base64 = Convert.ToBase64String(Model.RentingItems[i].Image);
+                                var imageData = string.Format("data:image/jpg;base64,{0}", base64);
+                            }
+
+                            <a href="#"><img src="@imageData" width="200" height="467" style="margin-left:5px; margin-right:5px; border:1px solid;" /></a>
+                        </div>
+                                    }
+
+                                }
+
+                <div style="clear:left; padding-top:20px;padding-bottom:20px;"></div>
+
+                <table cellspacing="20px">
+                    <tr>
+                        @for (int i = 21; i < 24; i++)
+                        {
+                            var rentingItem = Model.RentingItems[i];
+
+                            <td>
+
+                                @Html.Label(Model.RentingItems[i].Name)
+
+                                <input type="checkbox"
+                                       name="SelectedRentingItems"
+                                       value="@rentingItem.ID"
+                                       id="@rentingItem.ID"
+                                       @{  if (Model.SelectedRentingItems != null && Model.SelectedRentingItems.Contains(rentingItem.ID)) { <text> checked='checked' </text>          }   } />
+
+                                <br />
+                            </td>
+    }
+                    </tr>
+                    <tr>
+                        @for (int i = 21; i < 24; i++)
+                        {
+                            if (Model.RentingItems[i].ID != 27 && Model.RentingItems[i].ID != 28)
+                            {
+                                var base64 = Convert.ToBase64String(Model.RentingItems[i].Image);
+                                var imageData = string.Format("data:image/jpg;base64,{0}", base64);
+
+                                <td style="height:300px; width:200px;">
+                                    @if (i == 21)
+                                    {
+                                        <img src="@imageData" width="300" style="margin-left:5px; margin-right:5px;" />
+                                    }
+                                    @if (i == 22)
+                                    {
+                                        <img src="@imageData" width="300" style="margin-left:5px; margin-right:5px;" />
+                                    }
+                                    @if (i == 23)
+                                    {
+                                        <img src="@imageData" width="100" style="margin-left:5px; margin-right:5px;" />
+                                    }
+                                </td>
+                            }
+                        }
+                    </tr>
+                    <tr>
+
+                        @for (int i = 21; i < 24; i++)
+                        {
+                            <td width="500px">
+                                @if (i == 21)
+                                {
+
+                                    @Html.Label("Quantity")
+                                    @Html.DropDownListFor(model => model.Quantity1, new List<SelectListItem> {
+                                                  new SelectListItem { Text = "1", Value = "1"}, new SelectListItem { Text = "2", Value = "2"}
+                                                 }, new { style = "width:100px;" })
+                                }
+
+                                @if (i == 22)
+                                {
+
+                                    @Html.Label("Quantity")
+                                    @Html.DropDownListFor(model => model.Quantity2, new List<SelectListItem>{
+                                                 new SelectListItem { Text = "1", Value = "1"}, new SelectListItem { Text = "2", Value = "2"}
+                                            }, new { style = "width:100px;" })
+                                }
+
+                                @if (i == 23)
+                                {
+                                    <div style="margin-top: -42px;">
+                                        <div style="margin-top:40px;">
+                                            @Html.Label("Quantity")
+                                        </div>
+                                        <div>
+                                            @Html.DropDownListFor(model => model.Quantity3, new List<SelectListItem>{
+                                                  new SelectListItem { Text = "1", Value = "1"}, new SelectListItem { Text = "2", Value = "2"},
+                                                 new SelectListItem { Text = "3", Value = "3"}, new SelectListItem { Text = "4", Value = "4"}
+                                            }, new { style = "width:100px;" })
+                                        </div>
+
+                                        <div style="float:left;margin-left:120px; margin-top:-62px;margin-bottom: 5px;">
+                                            @Html.Label("Size")
+                                        </div>
+                                        <div style="float:left;margin-left:120px;margin-top:-47px;">
+                                            @Html.DropDownListFor(model => model.Size, new List<SelectListItem> {
+                                                  new SelectListItem { Text = "7 Foot", Value = "7"}, new SelectListItem { Text = "9 Foot", Value = "9"},
+                                                  new SelectListItem { Text = "12 Foot", Value = "12"}
+                                            }, new { style = "width:100px;" })
+                                        </div>
+                                    </div>
+
+                                }
+
+                            </td>
+
+                        }
+
+                    </tr>
+                    <tr>
+                        <td><br /></td>
+                    </tr>
+                    <tr>
+                        <td>
+
+                            <label>Comments/Special Requests:</label>
+                            @Html.TextAreaFor(m => m.Event.Comments, 10, 10, new { @id = "Comments" })
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </div>
+
+        <div id="footer">
+            <p id="footerParagraph">
+
+                After you hit the SUBMIT button below, you will receive a confirmation email that includes a summary of your booth components,
+                instructions for next steps, and links to order literature and promotional items. If you do not receive an email within an hour,
+                please contact Kristin Hatteberg at
+                <a target="_blank" href="mailto:Kristin.hatteberg@daikincomfort.com">
+                    Kristin.hatteberg@daikincomfort.com
+                </a>
+                or <a target="_blank" href="mailto:Tiffany.Carpenter@daikincomfort.com">
+                       Tiffany.Carpenter@daikincomfort.com
+                </a>
+            </p>
+            <div id="btnSubmit">
+                <input type="submit" value="Submit" />
+            </div>
+        </div>
+
+    //the Divs to hold the popup images and the overlay gray background
+    <div id="divLargerImage"></div>
+    <div id="divOverlay"> </div>
+        //end
+
+
+    }
+
+</div>
+
+<div style="position: absolute; background-color: #00A1E4; height: 10px; width: 100%">
+</div>
+
+<script type="text/javascript">
+
+    $('.EventDatePicker').each(function () {
+        $(this).datepicker();
+    })
+
+    $('#Event_AttendeePhone').blur(function () {
+
+        var AttendeeNumber = $(this);
+        FormatPhoneNumber(AttendeeNumber);
+    })
+
+    $('#Requester_ContactNumber').blur(function () {
+        var RequesterNumber = $(this);
+        FormatPhoneNumber(RequesterNumber);
+    })
+
+    function FormatPhoneNumber(phoneNumberInput) {
+        var phoneNumber = phoneNumberInput.val();
+
+        phoneNumber = phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+
+        phoneNumberInput.val(phoneNumber);
+    }
+
+    $('#chkSameShippingAddress').change(function () {
+
+        if ($(this).is(":checked")) {
+
+            $('#Shipping_Address').prop("disabled", true);
+            $('#Shipping_City').prop("disabled", true);
+            $('#Shipping_State').prop("disabled", true);
+            $('#Shipping_Zip').prop("disabled", true);
+
+            $('#Shipping_Address').val($('#Event_Address').val());
+            $('#Shipping_City').val($('#Event_City').val());
+            $('#Shipping_State').val($('#Event_State').val());
+            $('#Shipping_Zip').val($('#Event_ZipCode').val());
+
+        }
+        else {
+
+            $('#Shipping_Address').prop("disabled", false);
+            $('#Shipping_City').prop("disabled", false);
+            $('#Shipping_State').prop("disabled", false);
+            $('#Shipping_Zip').prop("disabled", false);
+
+            $('#Shipping_Address').val("");
+            $('#Shipping_City').val("");
+            $('#Shipping_State').val("");
+            $('#Shipping_Zip').val("");
+        }
+    })
+
+    //limit the checkbox to two select
+    var checked = 0;
+    $('.chkRentingItems').change(function () {
+        var items = ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '27', '28', '29', '30'];
+
+        var eventChk = $(event.target);
+        var selID = eventChk.val();
+
+
+        if (items.indexOf(selID) <= -1) {
+            return;
+        }
+
+        if (eventChk.prop("checked")) {
+            checked++;
+        } else {
+            checked--;
+        }
+
+        var chkBoxes = $('.chkRentingItems');
+
+        if (checked == 2) {
+            for (var a = 0; a < chkBoxes.length; a++) {
+                var checkItem = $(chkBoxes[a]);
+                var id = checkItem.val();
+
+                if (items.indexOf(id) > -1) {
+                    if (!$(checkItem).prop("checked")) {
+                        $(checkItem).prop("disabled", true);
+                    }
+                }
+            }
+        }
+        else {
+            for (var a = 0; a < chkBoxes.length; a++) {
+                var checkItem = $(chkBoxes[a]);
+                var id = checkItem.val();
+
+                if (items.indexOf(id) > -1) {
+                    if (!$(checkItem).prop("checked")) {
+                        $(checkItem).prop("disabled", false);
+                    }
+                }
+            }
+        }
+    });
+    //end limit the checkbox
+
+    //start the popup for image click
+    $('.sub2 a img').click(function () {
+
+        var $img = $(this);
+
+        $('#divLargerImage').html($img.clone().height(1400).width(600)).add($('#divOverlay')).fadeIn();
+
+    });
+
+    $('#divLargerImage').add($('#divOverlay'))
+        .click(function () {
+            $('#divLargerImage').add($('#divOverlay'))
+                               .fadeOut(function () {
+                                   $('#divLargerImage').empty();
+                               });
+        });
+
+    $('.sub1 a img').click(function () {
+
+        var $img = $(this);
+
+        $('#divLargerImage').css("margin-left", "10px");
+
+        $('#divLargerImage').html($img.clone().height(1000).width(1240)).add($('#divOverlay')).fadeIn();
+
+    });
+
+    $('#divLargerImage').add($('#divOverlay'))
+        .click(function () {
+            $('#divLargerImage').add($('#divOverlay'))
+                               .fadeOut(function () {
+                                   $('#divLargerImage').empty();
+                               });
+        });
+
+</script>

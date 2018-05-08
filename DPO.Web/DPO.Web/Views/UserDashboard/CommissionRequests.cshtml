@@ -1,0 +1,135 @@
+﻿@model CommissionRequestListModel
+@{
+    ViewBag.Title = ResourceUI.CommissionRequested;
+}
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers")
+}
+@Html.Partial("_UserdashboardTabsPartial")
+<div class="section b-flush">
+    <div class="admin-strap">
+        <div class="username">
+            <h1>@Model.CurrentUser.DisplayName</h1>
+            <h6>@Model.CurrentUser.BusinessName</h6>
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm("CommissionRequests", "Userdashboard", FormMethod.Get, new { @id = "CommissionRequestsListForm" }))
+{
+    @Html.PageMessages()
+
+    <div class="section">
+        @Html.HiddenFor(m => m.SortColumn)
+        @Html.HiddenFor(m => m.IsDesc)
+        @Html.HiddenFor(m => m.Page)
+
+        <div class="tbl-opts">
+            @Html.Partial("_TableDisplayOptionsPartial")
+            <div class="pull-left">
+                @Html.Partial("_SearchBarPartial")
+            </div>
+            <div class="pull-left" style="margin-top: 1em; margin-left: 1em;">
+                @Html.RadioButtonFor(m => m.PendingRequests, "false")<label>All Requests</label>
+                @Html.RadioButtonFor(m => m.PendingRequests, "true")<label>Pending Requests</label>
+            </div>
+        </div>
+        <div class="tbl-holder scroll-x">
+            <table class="tbl" id="discount_requests_table">
+                <thead>
+                    <tr>
+                        <th class="actions"></th>
+                        <th id="discountrequestid">Reference</th>
+                        <th id="businessname">@ResourceUI.BusinessName</th>
+                        <th id="projectname">@ResourceUI.ProjectName</th>
+                        <th id="quotetitle">@ResourceUI.QuoteName</th>
+                        <th id="user">@ResourceUI.User</th>
+                        <th id="requestedon" aria-sort="none">@ResourceUI.RequestDate</th>
+                        <th id="requesttype" aria-sort="none">@ResourceUI.RequestType</th>
+                        <th id="requeststatus" aria-sort="none">@ResourceUI.RequestStatus</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @{
+    var NumbersOfNewRecord = 0;
+                    }
+
+                    @foreach (var item in Model.Items)
+                    {
+                        var rowstyle = "";
+
+                        if (item.CommissionRequestStatusTypeId == Convert.ToInt32(CommissionRequestStatusTypeEnum.NewRecord))
+                        {
+                            NumbersOfNewRecord += 1;
+                        }
+
+                        if (item.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Rejected) { rowstyle = "lost-row"; }
+                        if (item.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Approved) { rowstyle = "won-row"; }
+                        if (item.CommissionRequestStatusTypeId == (byte)CommissionRequestStatusTypeEnum.Deleted) { rowstyle = " disabled-row"; }
+                        //if (item.IsTransferred) { rowstyle = "transfered-row"; }
+
+                        if (item.CommissionRequestStatusTypeId != Convert.ToInt32(CommissionRequestStatusTypeEnum.NewRecord))
+                        {
+                            
+                            <tr class="@rowstyle">
+                                <td class="actions">
+                                    <div>
+                                        <ul>
+                                            <li>
+                                                @Html.ActionLink("View", "CommissionRequest", "ProjectDashboard", new { CommissionRequestId = item.CommissionRequestId }, null)
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td>
+                                    @Html.ActionLink(item.CommissionRequestId.ToString(), "CommissionRequest", "ProjectDashboard", new { CommissionRequestId = item.CommissionRequestId }, null)
+                                </td>
+                                <td>
+                                    @Html.ActionLink(item.BusinessName, "BusinessEdit", new { BusinessId = item.BusinessId })
+                                </td>
+                                <td>
+                                    @Html.ActionLink(item.Project.Name, "Project", "ProjectDashboard", new { ProjectId = item.ProjectId }, null)
+                                </td>
+                                <td>
+                                    @Html.ActionLink(item.Quote.Title, "Quote", "ProjectDashboard", new { ProjectId = item.ProjectId, quoteId = item.QuoteId }, null)
+                                </td>
+                                <td>
+                                    @Html.ActionLink(item.ProjectOwner, "UserEdit", new { UserId = item.ProjectOwnerId })
+                                </td>
+                                <td>@Html.DisplayFor(modelItem => item.RequestedOn)</td>
+
+                                <td>Commission</td>
+
+                                <td>@Html.DisplayFor(modelItem => item.CommissionRequestStatusTypeDescription)</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+
+
+
+            </table>
+        </div>
+
+        <div class="pager">
+
+            @{
+                //Model.TotalRecords = Model.TotalRecords - NumbersOfNewRecord;    
+            }
+
+            @Html.Pager(Model)
+        </div>
+    </div>
+}
+<script>
+    $(function () {
+        tablehelper.setColumnIds('discount_requests_table');
+
+        $('input[name="PendingRequests"]').on('change', function () {
+            $('#CommissionRequestsListForm').submit();
+        });
+    });
+</script>

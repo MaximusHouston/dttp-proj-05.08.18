@@ -1,0 +1,197 @@
+﻿@model ProjectsModel
+
+
+<p><h2>Testing</h2></p>
+
+@{
+    bool isInProjects = ViewBag.Title != ResourceUI.ProjectOverview && ViewBag.Title != @ResourceUI.Tools;
+
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+
+}
+
+<div class=" tbl-holder scroll-x">
+    <table class="tbl" id="projects_table">
+        <thead>
+            <tr>
+                <th class="actions"></th>
+                <th class="alerts c-align"></th>
+                <th id="projectname" aria-sort="none">@ResourceUI.ProjectName</th>
+                <th id="activequotelink" aria-sort="none" data-hidecol="true">@ResourceUI.QuoteActive</th>
+                <th id="businessname" aria-sort="none" data-hidecol="true">@ResourceUI.BusinessName</th>
+                <th id="projectowner" aria-sort="none" data-hidecol="true">@ResourceUI.ProjectOwner</th>
+                <th id="customername" aria-sort="none" data-hidecol="true">@ResourceUI.CustomerName</th>
+                <th id="projectid" aria-sort="none" data-hidecol="true">@ResourceUI.ProjectID</th>
+                <th id="projectopenstatus" aria-sort="none" data-hidecol="true">@ResourceUI.ProjectOpenStatus</th>
+
+                <th id="projectdate" aria-sort="none" data-hidecol="true">@ResourceUI.ProjectDate</th>
+                <th id="biddate" aria-sort="none" data-hidecol="true">@ResourceUI.BidDate</th>
+                <th id="estimatedclose" aria-sort="none" data-hidecol="true">@ResourceUI.EstimatedClose</th>
+                <th id="estdeliverydate" aria-sort="none" data-hidecol="true">@ResourceUI.EstimatedDelivery</th>
+
+                @if (user.ShowPrices)
+                {
+                    <th id="totallist" aria-sort="none" data-hidecol="true">@ResourceUI.TotalList</th>
+                    <th id="totalnet" aria-sort="none" data-hidecol="true">@ResourceUI.TotalNet</th>
+                    <th id="totalsell" aria-sort="none" data-hidecol="true">@ResourceUI.TotalSell</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.Items.Count; i++)
+            {
+                var item = Model.Items[i];
+                var rowstyle = "";
+
+                if (item.ProjectStatusId == ProjectStatusTypeEnum.ClosedLost) { rowstyle = "lost-row"; }
+                if (item.ProjectStatusId == ProjectStatusTypeEnum.ClosedWon) { rowstyle = "won-row"; }
+                if (item.IsTransferred) { rowstyle = "transfered-row"; }
+                if (item.Deleted == true) { rowstyle = " disabled-row"; }
+
+                bool IsReadOnly = true;
+
+                if (IsReadOnly == true)
+                {
+                    <tr class="@rowstyle">
+
+                        <td class="actions">
+                            <div>
+                                @if (user.HasAccess(SystemAccessEnum.UndeleteProject) && item.Deleted)
+                                {
+                                    <ul>
+                                        <li>
+                                            <a href="#" sc-projectid="@item.ProjectId" sc-ajaxpost="@Url.Action("ProjectUndelete")">@ResourceUI.ProjectUndelete</a>
+                                        </li>
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <ul>
+                                        <li>
+                                            <a href="@Url.Action("ProjectPipelineExportDetailed", new { projectId = item.ProjectId })">@ResourceUI.ProjectExport</a>
+                                        </li>
+                                        @if (user.HasAccess(SystemAccessEnum.EditProject))
+                                        {
+                                            if (!item.IsTransferred)
+                                            {
+                                                <li>
+                                                    <a href="@Url.Action("ProjectEdit", new { projectId = item.ProjectId })">@ResourceUI.ProjectEdit</a>
+                                                </li>
+                                                if (user.HasAccess(SystemAccessEnum.TransferProject))
+                                                {
+                                                    <li>
+                                                        <a href="#" data-confirm="transferProject" data-sc-ajaxpost="@Url.Action("ProjectTransfer")" data-sc-projectid="@item.ProjectId">@ResourceUI.ProjectTransfer</a>
+
+                                                    </li>
+                                                }
+                                                <li>
+                                                    <a href="#" data-confirm="deleteProject" data-sc-ajaxpost="@Url.Action("Projectdelete")" data-sc-projectid="@item.ProjectId">@ResourceUI.ProjectDelete</a>
+                                                </li>
+                                            }
+
+                                            @*
+                                                    Commented out to hide the Project Duplicate link. This can be reactivated or reuse where appropriate.<li>
+                                                    <a href="@Url.Action("ProjectDuplicate", new { projectId = item.ProjectId })">@ResourceUI.ProjectDuplicate</a>
+                                                </li>*@
+                                        }
+                                    </ul>
+                                }
+                            </div>
+                        </td>
+                        <td class="alerts">
+                            @if (item.Alert && !item.IsTransferred)
+                            {
+                                <div>
+                                    <img src="~/Images/alert-icon.png">
+                                    <div class="tooltip">
+                                        Pricing update, recalculation required.
+                                        <img src="~/Images/tooltip-tail.png" />
+                                    </div>
+                                </div>
+                            }
+                            @if (item.IsTransferred)
+                            {
+                                <div>
+                                    <img src="~/Images/icon_lock.png">
+                                    <div class="tooltip">
+                                        Project has been transferred.
+                                        <img src="~/Images/tooltip-tail.png" />
+                                    </div>
+                                </div>
+                            }
+                        </td>
+                        <td style="white-space: normal">
+                            @Html.ActionLink(item.Name, "Project", new { ProjectId = item.ProjectId })
+                        </td>
+                        <td style="white-space: normal">
+                            @if (item.ActiveQuoteSummary == null)
+                            {
+                                @Html.Display("No Active Quote");
+                            }
+                            else
+                            {
+                                @Html.ActionLink(item.ActiveQuoteSummary.Title, "QuoteItems", new
+                                   {
+                                       QuoteId = item.ActiveQuoteSummary.QuoteId
+                                   });
+                            }
+                        </td>
+                        <td style="white-space: normal">
+                            @item.BusinessName
+                        </td>
+                        <td style="white-space: normal">
+                            @item.ProjectOwner
+                        </td>
+                        <td style="white-space: normal">
+                            @item.CustomerName
+                        </td>
+                        <td>
+                            @item.ProjectId
+                        </td>
+                        <td>
+                            @item.ProjectOpenStatus
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(q => q.Items[i].ProjectDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(q => q.Items[i].BidDate)
+                        </td>
+                        <td>
+                            <span class="@((item.EstimatedClose < DateTime.Now) ? "invalid" : "")">
+                                @Html.DisplayFor(m => @m.Items[i].EstimatedClose)
+                            </span>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(q => q.Items[i].EstimatedDelivery)
+                        </td>
+
+                        @if (user.ShowPrices)
+                        {
+                            <td>
+                                @Html.DisplayFor(q => q.Items[i].ActiveQuoteSummary.TotalList)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(q => q.Items[i].ActiveQuoteSummary.TotalNet)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(q => q.Items[i].ActiveQuoteSummary.TotalSell)
+                            </td>
+
+                        }
+
+                    </tr>
+                }
+                else
+                {
+
+                }
+            }
+        </tbody>
+
+    </table>
+</div>
+
+
+<div class="pager">@Html.Pager(Model)</div>

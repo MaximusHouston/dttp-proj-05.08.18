@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="0ba78769-0429-4266-81fe-a4b019c45604" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://warranty.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="DataQualityService5.wsdl" MetadataType="Wsdl" ID="3f30b3de-0e4e-4808-ba87-df47ee9d4ebb" SourceId="1" SourceUrl="https://warranty.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?wsdl=wsdl2" />
+    <MetadataFile FileName="DataQualityService1.disco" MetadataType="Disco" ID="cf063c2d-07a6-47ec-8e42-90f30b7629a7" SourceId="1" SourceUrl="https://warranty.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?disco" />
+    <MetadataFile FileName="DataQualityService51.wsdl" MetadataType="Wsdl" ID="aa4b3c34-b6ef-480d-bfef-0c1e31d9da34" SourceId="1" SourceUrl="https://warranty.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?wsdl" />
+    <MetadataFile FileName="DataQualityService6.xsd" MetadataType="Schema" ID="b86980c2-a38d-498d-add4-7d9f1c182417" SourceId="1" SourceUrl="https://warranty.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?xsd=xsd3" />
+    <MetadataFile FileName="DataQualityService61.xsd" MetadataType="Schema" ID="443c1371-33f4-4276-83cf-a5dc342de1a3" SourceId="1" SourceUrl="https://warranty.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?xsd=xsd1" />
+    <MetadataFile FileName="DataQualityService52.wsdl" MetadataType="Wsdl" ID="8e378723-19ad-42d5-ab5e-c4dcb0b2a82c" SourceId="1" SourceUrl="https://warranty.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?wsdl=wsdl3" />
+    <MetadataFile FileName="DataQualityService62.xsd" MetadataType="Schema" ID="54680f76-abe9-47e9-a558-1f747764b4b5" SourceId="1" SourceUrl="https://warranty.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?xsd=xsd4" />
+    <MetadataFile FileName="DataQualityService63.xsd" MetadataType="Schema" ID="e21c55a5-59e4-4a94-b062-3edf1796bb12" SourceId="1" SourceUrl="https://warranty.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?xsd=xsd2" />
+    <MetadataFile FileName="DataQualityService64.xsd" MetadataType="Schema" ID="e599dca8-cd62-40a2-8f97-3b0823004846" SourceId="1" SourceUrl="https://warranty.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?xsd=xsd5" />
+    <MetadataFile FileName="DataQualityService53.wsdl" MetadataType="Wsdl" ID="4a8f0bf2-17b7-421c-926e-20eceb6fe239" SourceId="1" SourceUrl="https://warranty.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="DataQualityService65.xsd" MetadataType="Schema" ID="0f6ef542-ffe0-4fcf-bc45-d6a18b401aa2" SourceId="1" SourceUrl="https://warranty.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?xsd=xsd0" />
+    <MetadataFile FileName="DataQualityService54.wsdl" MetadataType="Wsdl" ID="5ce626c1-a1ca-454e-af74-717f24fafed0" SourceId="1" SourceUrl="https://warranty.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?wsdl=wsdl1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

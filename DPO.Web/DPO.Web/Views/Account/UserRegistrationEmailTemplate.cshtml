@@ -1,0 +1,30 @@
+﻿@model DPO.Common.SendEmailViewModel
+@{
+    var model = Model as SendEmailViewModel;
+}
+@if (Model.RenderTextVersion)
+{
+    Layout = null;
+    <text>A new user has been registered. Link here @Url.Action("ApprovalRequests", "UserDashboard", null, Request.Url.Scheme)</text>
+}
+else
+{
+    Layout = "~/Views/Shared/_LayoutEmailTemplate.cshtml";
+
+    <table>
+        <tr>
+            <td style="padding-left: 28px; padding-top: 20px; font-family: Helvetica, Arial, sans-serif; ">A new user has been registered.</td>
+        </tr>
+        <tr>
+            <td style="padding-left: 28px; padding-top: 20px; font-family: Helvetica, Arial, sans-serif; ">
+                <table>
+                    <tr>
+                        <td style="padding: 10px 20px 10px 20px; background-color: #21aee9; border: 1px solid #007FCC; font-weight: bold; line-height: 150%; ">
+                            <a href="@Url.Action("ApprovalRequests","UserDashboard", null, Request.Url.Scheme)" target="_blank" style="color: #fff; text-decoration:none;">Click here to view approval requests</a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+}

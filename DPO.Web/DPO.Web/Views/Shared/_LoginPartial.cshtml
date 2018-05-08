@@ -1,0 +1,186 @@
+﻿<div id="header">
+    @{
+        var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+    }
+    <a href="@Url.Action("Index", "Home")" id="home_btn"><img src="~/Images/daikin-logo.png" height="55" alt="www.daikin.co.uk" /></a>
+    <div id="headerBtns">
+
+        @*<a href="@Url.Action("Index", "Home")">
+                <img src="~/Images/city-icon.png" alt="@ResourceUI.DaikinCity" id="" />
+
+                <span>@ResourceUI.DaikinCity</span>
+            </a>*@
+
+        @* Temporary use during SiteFinity release *@
+        @{
+            var useSiteFinity = Utilities.Config("dpo.sys.library.usesitefinity");
+
+        }
+
+        @if (!String.IsNullOrWhiteSpace(useSiteFinity) && useSiteFinity.ToLower() == "true")
+        {
+            @:<a href="/Library" id="library-btn">
+        }
+        else
+        {
+            @:<a href="/#library" id="library-btn" onclick="GoToLibrary()">
+        }
+
+@*<img src="~/Images/city-icon.png" alt="@ResourceUI.DaikinCity" id="" />*@
+<img src="~/Images/library-icon.png" alt="@ResourceUI.DocumentsLibrary" id="" />
+<span>@ResourceUI.DocumentsLibrary</span>
+</a>
+
+        @if (Request.IsAuthenticated)
+            {
+
+            <a href="@user.DefaultPageUrl">
+                <img src="~/Images/project-office-icon.png" alt="@ResourceUI.ProjectOffice" />
+                @*<img src="~/Images/glyphicons/glyphicons-21-home.png" alt="@ResourceUI.ProjectOffice" />*@
+                @*<span class="glyphicon glyphicon-home"></span>*@
+                <span>@ResourceUI.ProjectOffice</span>
+            </a>
+                <div class="useropts" id="user_account_options">
+                    @*<span class="glyphicon glyphicon-user"></span>*@
+                    <span class="loggedinuser">
+                        @ResourceUI.SignedInAs
+                        <br />
+                        <span class="loggedinusername">
+                            @user.DisplayName
+                        </span>
+                    </span>
+                    <img src="~/Images/dropdown-arrow-icon.png" alt="" />
+                    <ul>
+                        <li>
+                            <a href="~/Content/pdf/DaikinCityUserGuide.pdf" target="_blank">
+                                <span>User Guide</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("AccountDetailsEdit", "Account")">
+                                <span>@ResourceUI.EditYourAccountDetails</span>
+                            </a>
+                        </li>
+
+                        @if (user.HasAccess(SystemAccessEnum.ViewBusiness) || user.HasAccess(SystemAccessEnum.ViewUsers) || user.HasAccess(SystemAccessEnum.ManageGroups))
+                        {
+                            <li>
+                                @{
+
+                                    var action = "";
+
+                                    action = (user.HasAccess(SystemAccessEnum.ManageGroups)) ? "groups" : action;
+
+                                    action = (user.HasAccess(SystemAccessEnum.ViewBusiness)) ? "businesses" : action;
+
+                                    action = (user.HasAccess(SystemAccessEnum.ViewUsers)) ? "users" : action;
+
+                                }
+                                <a href="@Url.Action(action, "Userdashboard")">
+                                    <span>@ResourceUI.Management</span>
+                                </a>
+                            </li>
+                                    }
+
+                        @if (user.HasAccessToCMS)
+                        {
+
+                            string action = "";
+
+                            action = (user.HasAccess(SystemAccessEnum.ContentManagementTools)) ? "tools" : action;
+                            action = (user.HasAccess(SystemAccessEnum.ContentManagementProductFamilies)) ? "productfamilies" : action;
+                            action = (user.HasAccess(SystemAccessEnum.ContentManagementCommsCenter)) ? "communicationscenter" : action;
+                            action = (user.HasAccess(SystemAccessEnum.ContentManagementLibrary)) ? "library" : action;
+                            action = (user.HasAccess(SystemAccessEnum.ContentManagementApplicationProducts)) ? "applicationproducts" : action;
+                            action = (user.HasAccess(SystemAccessEnum.ContentManagementApplicationBuildings)) ? "applicationbuildings" : action;
+                            action = (user.HasAccess(SystemAccessEnum.ContentManagementFunctionalBuildings)) ? "functionalbuildings" : action;
+                            action = (user.HasAccess(SystemAccessEnum.ContentManagementHomeScreen)) ? "homescreen" : action;
+
+                        <li>
+                            <a href="@Url.Action(action,"CityCMS")"><span>Content Management</span></a>
+                        </li>
+                    }
+                    <li>
+                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <a href="javascript:document.getElementById('logoutForm').submit()">
+                                <span>@ResourceUI.SignOut</span>
+                            </a>
+                        }
+                    </li>
+                    @if (user.UserTypeId == UserTypeEnum.Systems)
+                    {
+                        <li>
+                            <a href="/errors">
+                                <span>System Error Log</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+                                }
+                                else
+                                {
+                                    @*<a id="loginLink" href="@Url.Action("Login", "Account")">
+                                        <img src="~/Images/user-icon.png" alt="Sign In" />
+                                        <span>@ResourceUI.SignIn</span>
+                                    </a>*@
+                                    <a id="loginLink" href="/v2/#/account/login">
+                                        <img src="~/Images/user-icon.png" alt="Sign In" />
+                                        <span>@ResourceUI.SignIn</span>
+                                    </a>
+                                }
+        <div id="city_locations_list">
+            <img src="~/Images/thin-sep.png" alt="Menu" />
+            <span>@ResourceUI.Menu</span>
+            <ul>
+                @{
+                    List<int> idsToShow;
+
+                    if (user.UserId == default(long))
+                    {
+                        idsToShow = (new UserServices().GetCityAreasForNonLoggedOnUsers().Model as List<int>);
+                    }
+                    else
+                    {
+                        idsToShow = user.CityAccesses;
+                    }
+
+                    List<dynamic> Locations = new List<dynamic>
+                    {
+                        new{ id = 2, title = "Convenience Store", link = "conveniencestore" },
+                        new{ id = 6, title = "Bank", link = "bank"},
+                        new{ id = 1, title = "Hotel", link = "hotel"},
+                        new{ id = 8, title = "Office", link = "office"},
+                        new{ id = 5, title = "Restaurant", link = "restaurant"},
+                        new{ id = 4, title = "Retail Store", link = "retailstore"},
+                        new{ id = 7, title = "School", link = "school"},
+                        new{ id = 9, title = "Comms Center", link = "commscenter"},
+                        new{ id = 10, title = "Project Office", link = "projectoffice"},
+                        new{ id = 11, title = "Training Center", link = "trainingcenter"}
+                    };
+
+                    if (idsToShow.IndexOf(1) > -1)
+                    {
+                        Locations.Add(new { id = 3, title = "Library", link = "library" });
+                    }
+
+                    if (idsToShow.IndexOf(2) > -1)
+                    {
+                        Locations.Add(new { id = 12, title = "Logistics Center", link = "logisticscenter" });
+                    }
+
+                    for (int i = 0; i < Locations.Count; i++)
+                    {
+                        <li>
+                            <a href="@Url.Action("Index","Home")#@Locations[i].link" id="building_@Locations[i].id">
+                                <span>@Locations[i].title</span>
+                            </a>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</div>

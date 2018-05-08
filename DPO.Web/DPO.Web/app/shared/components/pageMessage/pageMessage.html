@@ -1,0 +1,4 @@
+﻿<div ng-class="{'pagemessage-error': PageMessages[0].type == 10, 'pagemessage-success': PageMessages[0].type == 40 }" ng-repeat="item in PageMessages">
+    <p ng-if="item.type == 10" style='color: red'>{{item.message}}</p>
+    <p ng-if="item.type == 40" style='color: green'>{{item.message}}</p>
+</div>

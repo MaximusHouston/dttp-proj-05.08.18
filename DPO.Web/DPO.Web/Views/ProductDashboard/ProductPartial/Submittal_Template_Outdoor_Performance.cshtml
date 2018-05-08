@@ -1,0 +1,131 @@
+﻿
+@model ProductModel
+@{
+    var specs = Model.Specifications;
+}
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Outdoor Unit Model No.</span>
+    <span class="pull-right">@Model.ProductNumber</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Outdoor Unit Name:</span>
+    <span class="pull-right">@Model.Name</span>
+</div>
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Type: </span>
+    <span class="pull-right">@specs.GetString("FunctionCategory")</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left"></span>
+    <span class="pull-right"></span>
+</div>
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Rated Cooling Conditions:</span>
+    <span class="pull-right">
+        Indoor (&deg;F DB/DB): @specs.GetDecimal("RatedCoolingConditionRoomDB", "N0") / @specs.GetDecimal("RatedCoolingConditionRoomWB", "N0")
+        <br />
+        Ambient (&deg;F DB/WB): @specs.GetDecimal("RatedCoolingConditionAmbientDB", "N0") / @specs.GetDecimal("RatedCoolingConditionAmbientWB", "N0")
+    </span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Rated Heating Conditions:</span>
+    <span class="pull-right">
+        Indoor (&deg;F DB/WB): @specs.GetDecimal("RatedHeatingConditionRoomDB", "N0") / @specs.GetDecimal("RatedHeatingConditionRoomWB", "N0")
+        <br />
+        Ambient (&deg;F DB/WB): @specs.GetDecimal("RatedHeatingConditionAmbientDB", "N0") / @specs.GetDecimal("RatedHeatingConditionAmbientWB", "N0")
+    </span>
+</div>
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Rated Piping Length(ft):</span>
+    <span class="pull-right">@specs.GetDecimal("RatedPipingLength", "N0")</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left"></span>
+    <span class="pull-right"></span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Rated Height Difference (ft):</span>
+    <span class="pull-right">@specs.GetDecimal("RatedHeightDifference", "N2")</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left"></span>
+    <span class="pull-right"></span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Rated Cooling Capacity (Btu/hr):</span>
+    <span class="pull-right">@specs.GetDecimal("CoolingCapacityRated", "N0")</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Rated Heating Capacity (Btu/hr):</span>
+    <span class="pull-right">@specs.GetDecimal("HeatingCapacityRated", "N0")</span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Cooling Input Power (kW):</span>
+    <span class="pull-right">@specs.GetDecimal("CoolingInputPower", "N2")</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Heating Input Power (kW):</span>
+    <span class="pull-right">@specs.GetDecimal("HeatingInputPower", "N2")</span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    @if (specs.GetDecimal("EERNonDucted", "N2") != null || specs.GetDecimal("EERDucted", "N2") != null)
+    {
+        <span class="pull-left">EER (Non-Ducted/Ducted):</span>
+        <span class="pull-right">@specs.GetDecimal("EERNonDucted", "N2") / @specs.GetDecimal("EERDucted", "N2")</span>
+    }
+    else
+    {
+        <span class="pull-left"></span>
+        <span class="pull-right"></span>
+    }
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Heating COP (Non-Ducted/Ducted):</span>
+    <span class="pull-right">@specs.GetDecimal("COP47NonDucted", "N1") / @specs.GetDecimal("COP47Ducted", "N1")</span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    @if (specs.GetDecimal("SEERNonDucted", "N2") != null || specs.GetDecimal("SEERDucted", "N2") != null)
+    {
+        <span class="pull-left">SEER (Non-Ducted/Ducted):</span>
+        <span class="pull-right">@specs.GetDecimal("SEERNonDucted", "N2") / @specs.GetDecimal("SEERDucted", "N2")</span>
+    }
+    else
+    {
+        <span class="pull-left"></span>
+        <span class="pull-right"></span>
+    }
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">HSPF (Non-Ducted/Ducted):</span>
+    <span class="pull-right">@specs.GetDecimal("HSPFNonDucted", "N1") / @specs.GetDecimal("HSPFDucted", "N1")</span>
+</div>
+
+
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Max/Min Cooling Capacity (Btu/hr):</span>
+    <span class="pull-right">@specs.GetDecimal("CoolingCapacityMax", "N0") / @specs.GetDecimal("CoolingCapacityMin", "N0")</span>
+</div>
+<div class="col col-md-6 col-xs-12 row row-nomargin dk-list-row">
+    <span class="pull-left">Max/Min Heating Capacity (Btu/hr):</span>
+    @if (specs.GetDecimal("HeatingCapacityMax", "N0") != null || specs.GetDecimal("HeatingCapacityMin", "N0") != null)
+    {
+        <span class="pull-right">@specs.GetDecimal("HeatingCapacityMax", "N0") / @specs.GetDecimal("HeatingCapacityMin", "N0")</span>
+    }
+    else
+    {
+        <span class="pull-right"></span>
+    }
+</div>

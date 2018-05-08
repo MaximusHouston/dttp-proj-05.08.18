@@ -1,0 +1,156 @@
+﻿@model DPO.Common.UserModel
+
+@{
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+}
+
+<style type="text/css">
+    #hint {
+        cursor: pointer;
+    }
+
+    .tooltip {
+        margin: 8px;
+        padding: 8px;
+        border: 1px solid blue;
+        background-color: black;
+        position: absolute;
+        z-index: 2;
+        color: white;
+    }
+</style>
+
+<div class="section form">
+    <p class="mandatory" style="top: 0; right: 20px;">@ResourceUI.FieldsMarkedWithAStar <span>*</span> @ResourceUI.AreMandatory</p>
+    <div class="row">
+        <div class="r-col1">&nbsp;</div>
+        <div class="r-col4 details-list">
+            @if (Model.UserId == Model.CurrentUser.UserId)
+            {
+                <h5>@ResourceUI.YourPersonalDetails</h5>
+            }
+            else
+            {
+                <h5>@ResourceUI.PersonalDetails</h5>
+            }
+
+            @*First name*@
+            @Html.LabelFor(m => m.FirstName, ResourceUI.FirstName, new { @class = "required" })
+            @Html.TextBoxFor(m => m.FirstName, new { @class = "full" })
+            @Html.KeyMessages(m => m.FirstName)
+            @*Middle name*@
+            @Html.LabelFor(m => m.MiddleName, ResourceUI.MiddleName)
+            @Html.TextBoxFor(m => m.MiddleName, new { @class = "full" })
+            @Html.KeyMessages(m => m.MiddleName)
+            @*Last name*@
+            @Html.LabelFor(m => m.LastName, ResourceUI.LastName, new { @class = "required" })
+            @Html.TextBoxFor(m => m.LastName, new { @class = "full" })
+            @Html.KeyMessages(m => m.LastName)
+        </div>
+        <div class="r-col1">&nbsp;</div>
+        <div class="r-col4 details-list">
+            <h5>&nbsp;</h5>
+            @*Email*@
+            @if (user != null && user.HasAccess(SystemAccessEnum.EditUser) && user.UserId != Model.UserId)
+            {
+                @Html.LabelFor(m => m.Email, ResourceUI.EmailAddress, new { @class = "required" })
+                @Html.TextBoxFor(m => m.Email, new { @class = "full", autocomplete = "off" })
+                @Html.KeyMessages(m => m.Email)
+            }
+            else
+            {
+                @Html.LabelFor(m => m.Email, ResourceUI.EmailAddress, new { @class = "required" })
+                @Html.TextBoxFor(m => m.Email, new { @class = "full", autocomplete = "off", placeholder = "Enter your business Email Account" })
+                @Html.KeyMessages(m => m.Email)
+            }
+
+            @*Mobile phone number*@
+            @Html.LabelFor(m => m.Contact.MobileNumber, ResourceUI.MobilePhoneNumber)
+            @Html.TextBoxFor(m => m.Contact.MobileNumber, new { @class = "full", autocomplete = "off" })
+            @Html.KeyMessages(m => m.Contact.MobileNumber)
+
+            @if (Model.IsRegistering)
+            {
+                @* bug fix for chrome auto-filling password fields *@
+                <input type="text" name="prevent_autofill" id="prevent_autofill" value="" style="display:none;" />
+                <input type="password" name="password_fake" id="password_fake" value="" style="display:none;" />
+
+                @Html.LabelFor(m => m.Password, ResourceUI.Password, new { @class = "required" })
+                @Html.PasswordFor(m => m.Password, new { data_indicator = "pwindicator", @class = "full", autocorrect = "off", autocapitalize = "off", autocomplete = "off" })
+                @Html.KeyMessages(m => m.Password)
+                <div id="pwindicator">
+                    <div class="bar">
+                        <div class="very-weak">&nbsp;</div>
+                        <div class="weak">&nbsp;</div>
+                        <div class="mediocre">&nbsp;</div>
+                        <div class="strong">&nbsp;</div>
+                        <div class="very-strong">&nbsp;</div>
+                    </div>
+                    <div class="label"></div>
+                </div>
+                @*Confirm password*@
+                @Html.LabelFor(m => m.ConfirmPassword, ResourceUI.PasswordConfirm, new { @class = "required" })
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "full", autocomplete = "off", autocorrect = "off", autocapitalize = "off" })
+                @Html.KeyMessages(m => m.ConfirmPassword)
+            }
+            else
+            {
+                if (Model.CurrentUser.HasAccess(SystemAccessEnum.EditUser) && Model.CurrentUser.UserId != Model.UserId)
+                {
+                    @Html.LabelFor(m => m.UserTypeId, ResourceUI.UserType, new { @class = "required" })
+                    @Html.DropDownUserTypeListFor(m => m.UserTypeId, Model.UserTypes)
+                    @Html.KeyMessages(m => m.UserTypeId)
+                }
+            }
+
+            <div>
+                <input type="button" id="btnNewBusiness" value="New Business" onclick="ClearForm()" style="display:none" />
+            </div>
+
+        </div>
+        <div class="r-col2">&nbsp;</div>
+        <div class="row-end">&nbsp;</div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var changeTooltipPosition = function (event) {
+            var tooltipX = event.pageX - 8;
+            var tooltipY = event.pageY + 8;
+            $('div.tooltip').css({ top: tooltipY, left: tooltipX });
+        };
+
+        var showTooltip = function (event) {
+            $('div.tooltip').remove();
+            $('<div class="tooltip">Users registering without business email (Gmail, hotmail, etc.) will not be approved or may take additional time to verify and approve access to Daikin City</div>')
+                .appendTo('body');
+            changeTooltipPosition(event);
+        };
+
+        var hideTooltip = function () {
+            $('div.tooltip').remove();
+        };
+
+        $("#Email").bind({
+            mousemove: changeTooltipPosition,
+            mouseenter: showTooltip,
+            mouseleave: hideTooltip
+        });
+
+        $("#Email").click(function () {
+            $(this).val('');
+        })
+
+        $('#btnNewBusiness').click(function () {
+            $('#divBusinessDetail').toggle();
+            $('#divNewBusiness').show();
+        });
+
+    });
+
+    function ClearForm() {
+        $('btnClearForm').click();
+    }
+</script>

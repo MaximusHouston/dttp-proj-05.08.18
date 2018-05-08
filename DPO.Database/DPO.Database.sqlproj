@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>DPO.Database</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{434b7096-db96-4dd5-908e-9ef42c9b5d5c}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql110DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>DPO.Database</RootNamespace>
+    <AssemblyName>DPO.Database</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>Latin1_General_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- VS10 without SP1 will not have VisualStudioVersion set, so do that here -->
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <!-- Default to the v10.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Functions\" />
+    <Folder Include="dbo\Views" />
+    <Folder Include="dbo\StoreProcedures" />
+    <Folder Include="dbo\ReleaseScripts" />
+    <Folder Include="dbo\SupportQueries" />
+    <Folder Include="Metadata\" />
+    <Folder Include="Metadata\Tables\" />
+    <Folder Include="Security\" />
+    <Folder Include="dbo\Stored Procedures\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Functions\FnGetPermissionsUnderPermissionId.sql" />
+    <Build Include="dbo\Functions\FnGetGroupsBelowGroupId.sql" />
+    <Build Include="dbo\Tables\AccountMultipliers.sql" />
+    <Build Include="dbo\Tables\Addresses.sql" />
+    <Build Include="dbo\Tables\ProjectStatusTypes.sql" />
+    <Build Include="dbo\Tables\Brands.sql" />
+    <Build Include="dbo\Tables\Businesses.sql" />
+    <Build Include="dbo\Tables\BusinessTypes.sql" />
+    <Build Include="dbo\Tables\CityAreas.sql" />
+    <Build Include="dbo\Tables\Contacts.sql" />
+    <Build Include="dbo\Tables\Countries.sql" />
+    <Build Include="dbo\Tables\Groups.sql" />
+    <Build Include="dbo\Tables\Permissions.sql" />
+    <Build Include="dbo\Tables\ProductFamilies.sql" />
+    <Build Include="dbo\Tables\Products.sql" />
+    <Build Include="dbo\Tables\Projects.sql" />
+    <Build Include="dbo\Tables\ProjectOpenStatusTypes.sql" />
+    <Build Include="dbo\Tables\ProjectTypes.sql" />
+    <Build Include="dbo\Tables\QuoteItems.sql" />
+    <Build Include="dbo\Tables\Quotes.sql" />
+    <Build Include="dbo\Tables\States.sql" />
+    <Build Include="dbo\Tables\SystemAccess.sql" />
+    <Build Include="dbo\Tables\Tools.sql" />
+    <Build Include="dbo\Tables\Users.sql" />
+    <Build Include="dbo\Tables\UserTypes.sql" />
+    <Build Include="dbo\Tables\VerticalMarketTypes.sql" />
+    <Build Include="dbo\Tables\ProductCategories.sql" />
+    <Build Include="dbo\Tables\ProductSpecificationLabels.sql" />
+    <Build Include="dbo\Tables\ProductSpecifications.sql" />
+    <Build Include="dbo\Tables\UserBasketItems.sql" />
+    <Build Include="dbo\Functions\FnGetGroupsAboveGroupId.sql" />
+    <Build Include="dbo\Tables\CommissionMultipliers.sql" />
+    <Build Include="dbo\Tables\ProductModelTypes.sql" />
+    <Build Include="dbo\Tables\ProductMarketTypes.sql" />
+    <Build Include="dbo\Tables\DocumentTypes.sql" />
+    <Build Include="dbo\Tables\Documents.sql" />
+    <Build Include="dbo\Tables\DocumentProductLinks.sql" />
+    <Build Include="dbo\Tables\ProductAccessories.sql" />
+    <Build Include="dbo\Tables\RequirementTypes.sql" />
+    <Build Include="dbo\Tables\SubmittalSheetTypes.sql" />
+    <Build Include="dbo\Tables\ProductSpecificationKeyLookups.sql" />
+    <Build Include="dbo\Views\VwProductDocuments.sql" />
+    <Build Include="dbo\Views\VwProductSpecifications.sql" />
+    <Build Include="dbo\StoreProcedures\spUpdateMembersCountForGroups.sql" />
+    <Build Include="dbo\Tables\ProductNotes.sql" />
+    <Build Include="dbo\Tables\ProductNoteTypes.sql" />
+    <Build Include="dbo\Views\VwProductNotes.sql" />
+    <Build Include="dbo\SupportQueries\PermissionsForAUser.sql" />
+    <Build Include="dbo\SupportQueries\ProductSystemsSearch.sql" />
+    <Build Include="dbo\StoreProcedures\spUpdateProductListPriceForSystems.sql" />
+    <Build Include="dbo\Functions\FnProductDocuments.sql" />
+    <Build Include="dbo\Functions\FnProductNotes.sql" />
+    <Build Include="dbo\Functions\FnProductSpecifications.sql" />
+    <Build Include="dbo\Views\VwProductSystemComponents.sql" />
+    <Build Include="dbo\Tables\ConstructionTypes.sql" />
+    <Build Include="dbo\Tables\ProjectTransfers.sql" />
+    <Build Include="dbo\Tables\DiscountRequests.sql" />
+    <Build Include="dbo\Tables\SystemBasisDesignTypes.sql" />
+    <Build Include="dbo\Tables\ZoneStrategyTypes.sql" />
+    <Build Include="dbo\Tables\BrandCompetitorTypes.sql" />
+    <Build Include="dbo\Tables\DiscountRequestStatusTypes.sql" />
+    <Build Include="dbo\SupportQueries\ProductDocumentSearch.sql" />
+    <Build Include="dbo\SupportQueries\ProductSpecSearch.sql" />
+    <Build Include="dbo\ReleaseScripts\2014-6-16_2_Updates.sql" />
+    <Build Include="dbo\StoreProcedures\spUpdateProductClassCodeForSystems.sql" />
+    <Build Include="dbo\StoreProcedures\spUpdateRecalculationRequiredForQuotes.sql" />
+    <Build Include="dbo\Tables\DaikinEquipmentAtAdvantageTypes.sql" />
+    <Build Include="dbo\Tables\ProbablilityOfCloseTypes.sql" />
+    <Build Include="dbo\Tables\RequirementLevels.sql" />
+    <Build Include="dbo\Tables\ProjectExportTypes.sql" />
+    <Build Include="dbo\Tables\ProbablilityOfCloseTypes_1.sql" />
+    <Build Include="dbo\Tables\PermissionTypes.sql" />
+    <Build Include="dbo\Tables\Links.sql" />
+    <Build Include="dbo\Tables\LibraryDocuments.sql" />
+    <Build Include="dbo\Tables\LibraryDocumentRelationships.sql" />
+    <Build Include="dbo\Tables\LibraryDirectories.sql" />
+    <Build Include="dbo\Tables\JobRuns.sql" />
+    <Build Include="dbo\Tables\HomeScreen.sql" />
+    <Build Include="dbo\Tables\DecisionTreeSystems.sql" />
+    <Build Include="dbo\Tables\DecisionTreeNodes.sql" />
+    <Build Include="dbo\Tables\DecisionTreeDependancies.sql" />
+    <Build Include="dbo\Tables\DaikinEquipmentAtAdvantageTypes_1.sql" />
+    <Build Include="dbo\Tables\ContactUsFormSubjects.sql" />
+    <Build Include="dbo\Tables\ContactUsFormOptions.sql" />
+    <Build Include="dbo\Tables\CommsCenterVideos.sql" />
+    <Build Include="dbo\Tables\CitySystems.sql" />
+    <Build Include="dbo\Tables\Buildings.sql" />
+    <Build Include="dbo\Tables\BuildingFloors.sql" />
+    <Build Include="dbo\Tables\BuildingFloorLinks.sql" />
+    <Build Include="dbo\Tables\BuildingFloorConfigurationsIndoorUnits.sql" />
+    <Build Include="dbo\Tables\BuildingFloorConfigurations.sql" />
+    <Build Include="dbo\Tables\BillboardPosters.sql" />
+    <Build Include="Metadata\Tables\Entity.sql" />
+    <Build Include="Security\SASReader.sql" />
+    <Build Include="Security\GMCSQL12_Daikin City Readers.sql" />
+    <Build Include="Security\GMC_TOMAKJS.sql" />
+    <Build Include="Security\GMC_DaikinCityDBReaders.sql" />
+    <Build Include="Security\RoleMemberships.sql" />
+    <Build Include="dbo\Functions\TimeToTicks.sql" />
+    <Build Include="dbo\Functions\MonthToDays366.sql" />
+    <Build Include="dbo\Functions\MonthToDays365.sql" />
+    <Build Include="dbo\Functions\MonthToDays.sql" />
+    <Build Include="dbo\Functions\DateToTicks.sql" />
+    <Build Include="dbo\Functions\DateTimeToTicks.sql" />
+    <Build Include="dbo\Stored Procedures\spDocumentLibraryLoadLatestDocuments.sql" />
+    <Build Include="dbo\Stored Procedures\spDocumentLibraryIdentifyLatestFolders.sql" />
+    <Build Include="dbo\Stored Procedures\spDocumentLibraryClearOldDocuments.sql" />
+    <Build Include="Security\Metadata.sql" />
+    <Build Include="Security\SASReader_1.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="publish_Dev.xml" />
+    <None Include="publish_Dev_Test.xml" />
+    <None Include="publish_Local.xml" />
+    <None Include="publish_Local_Test.xml" />
+    <None Include="DPO.Database.publish.xml" />
+    <None Include="DPO_1.Database.publish.xml" />
+    <None Include="DPO_2.Database.publish.xml" />
+    <None Include="Daikin_Staging.Publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="DPO.Database.refactorlog" />
+  </ItemGroup>
+</Project>

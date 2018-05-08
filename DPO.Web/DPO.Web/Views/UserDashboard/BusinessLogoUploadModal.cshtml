@@ -1,0 +1,43 @@
+﻿@model BusinessModel
+@{
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+}
+<div class="modal" id="business_logo_upload_modal" style="display: none;">
+    <div>
+        <img src="~/Images/modal-close-btn.png" class="close-btn" />
+        <h1>Upload Business Logo</h1>
+        <br/>
+        @Html.PageMessages()
+
+        @if (user.BusinessLogoUrl != null)
+        {
+            <label>Current Logo:</label>
+            <br/>
+            <img src="@user.BusinessLogoUrl" style="max-height: 50px;"/>
+            <br/>
+            <br/>
+        }
+        
+        @using (Html.BeginForm("BusinessLogoUpload", "userdashboard", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.BusinessId)
+        
+            <label><i>Suggested maximum dimensions are 250px wide x 50px tall</i></label>
+            <label><i>Maximum file size 75kb</i></label>
+            <br/>
+            <label for="importFile">Please select an image:</label>
+            <br/>
+            <input id="importfile" type="file" name="importfile">
+            <br />
+            <br />
+            <br/>
+
+            <button type="button" class="btn cancel-btn">@ResourceUI.Cancel</button>
+            <button type="submit" class="submit-btn">@ResourceUI.Import</button>
+        }
+    </div>
+</div>
+
+
+

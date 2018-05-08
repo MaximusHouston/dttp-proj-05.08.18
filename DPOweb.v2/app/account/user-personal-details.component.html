@@ -1,0 +1,78 @@
+﻿<!--not being used because signUpForm valiation does not work-->
+<div class="section form">
+
+    <fieldset id="personal-details">
+
+        <h4>Personal Details</h4>
+        <div class="col col-md-6 col-sm-12">
+            <div class="col col-md-12 col-sm-12 form-group required">
+                <label class="control-label">First Name</label>
+                <input type="text" class="form-control input-sm" #firstName="ngModel" required name="firstName" [(ngModel)]="user.firstName">
+                <div *ngIf="firstName.invalid && firstName.touched" class="alert alert-danger">
+                    First Name is required.
+                </div>
+
+            </div>
+            <div class="col col-md-12 col-sm-12 form-group">
+                <label class="control-label">Middle Name</label>
+                <input type="text" class="form-control input-sm" #middleName name="middleName" [(ngModel)]="user.middleName">
+            </div>
+            <div class="col col-md-12 col-sm-12 form-group required">
+                <label class="control-label">Last Name</label>
+                <input type="text" class="form-control input-sm" #lastName="ngModel" required name="lastName" [(ngModel)]="user.lastName">
+                <div *ngIf="lastName.invalid && lastName.touched" class="alert alert-danger">
+                    Last Name is required.
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-6 col-sm-12">
+            <div class="col col-md-12 col-sm-12 form-group required" [class.has-error]="email.invalid && email.touched">
+                <label class="control-label">Email</label>
+                <input type="text" class="form-control input-sm" #email="ngModel" required name="email" [(ngModel)]="user.email" placeholder="Enter your business email account"
+                       title="Users registering without business email (Gmail, hotmail, ect.) will not be approved or may take additional time to verify and approve access to Daikin City.">
+                <div *ngIf="email.invalid && email.touched" class="alert alert-danger">
+                    Email is required.
+                </div>
+            </div>
+            <div class="col col-md-12 col-sm-12 form-group">
+                <label class="control-label">Mobile Phone Number</label>
+                <input type="text" class="form-control" #mobileNumber name="mobileNumber" [(ngModel)]="user.contact.mobileNumber">
+                <!--Canada number?-->
+                <!--<kendo-maskedtextbox [mask]="phoneNumberMask" name="mobileNumber" [(ngModel)]="user.contact.mobileNumber"></kendo-maskedtextbox>-->
+            </div>
+            <div class="col col-md-12 col-sm-12 form-group required">
+                <label class="control-label">Password</label>
+                <input type="password" id="userPassword" class="form-control input-sm" #password="ngModel" required name="password" [(ngModel)]="user.password">
+
+                <div style="width:70%">
+                    <div id="passwordStrengthBkg">
+                        <div id="passwordStrengthBar"></div>
+                    </div>
+                </div>
+
+                <div *ngIf="password.invalid && password.touched" class="alert alert-danger">
+                    Password is required.
+                </div>
+
+            </div>
+            <div class="col col-md-12 col-sm-12 form-group required">
+                <label class="control-label">Confirm Password</label>
+                <input type="password" class="form-control input-sm" #confirmPassword="ngModel" required name="confirmPassword" [(ngModel)]="user.confirmPassword">
+                <div *ngIf="confirmPassword.invalid && confirmPassword.touched" class="alert alert-danger">
+                    Confirm Password is required.
+                </div>
+            </div>
+        </div>
+
+
+
+        <!--if (Model.CurrentUser.HasAccess(SystemAccessEnum.EditUser) && Model.CurrentUser.UserId != Model.UserId)
+        {
+            @Html.LabelFor(m => m.UserTypeId, ResourceUI.UserType, new { @class = "required" })
+            @Html.DropDownUserTypeListFor(m => m.UserTypeId, Model.UserTypes)
+            @Html.KeyMessages(m => m.UserTypeId)
+        }-->
+    </fieldset>
+</div>
+
+

@@ -1,0 +1,65 @@
+﻿/*.sidebar {
+     background-color: #ffffff;
+}*/
+
+.sidebar ul li a {
+    color: #ffffff;
+}
+
+.topnavbar .navbar-brand {
+    color: #ffffff;
+}
+
+.topnavbar .navbar-header > a {
+    -webkit-transition: all .5s linear;
+    -moz-transition: all .5s linear;
+    -o-transition: all .5s linear;
+    transition: all .5s linear;
+}
+
+    .topnavbar .navbar-header > a:hover {
+        color: blue;
+        letter-spacing: .045em;
+        -webkit-transition: all .5s linear;
+        -moz-transition: all .5s linear;
+        -o-transition: all .5s linear;
+        transition: all .5s linear;
+    }
+
+.topnavbar .nav-wrapper ul li a {
+    -webkit-transition: all .5s linear;
+    -moz-transition: all .5s linear;
+    -o-transition: all .5s linear;
+    transition: all .5s linear;
+}
+
+    .topnavbar .nav-wrapper ul li a:hover {
+        color: blue;
+        -webkit-transform: scale(1.3);
+        -moz-transform: scale(1.3);
+        -o-transform: scale(1.3);
+        -ms-transform: scale(1.3);
+        transform: scale(1.3);
+        -webkit-transition: all .5s linear;
+        -moz-transition: all .5s linear;
+        -o-transition: all .5s linear;
+        transition: all .5s linear;
+    }
+
+
+@media only screen and (min-width: 768px) {
+    .topnavbar {
+        border: 0;
+        background-color: #EB1C24;
+    }
+}
+
+
+.topnavbar .navbar-nav > li > a {
+    color: #ffffff;
+}
+
+.sidebar {
+    background-color: #337AB7;
+}
+

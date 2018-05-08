@@ -1,0 +1,60 @@
+﻿@model DPO.Common.Models.User.UserVM
+
+@using(Html.BeginForm("MoveUserToGroup", "UserDashboard", FormMethod.Post))
+{
+ 
+    @Html.HiddenFor(m => m.UserId)
+    @Html.HiddenFor(m => m.BusinessId)
+    @Html.HiddenFor(m => m.UserModel.Business.AccountId)
+    @Html.HiddenFor(m => m.UserGroupsModel.UserGroupId)
+    
+    <div class="modal" id="move_members_modal">
+    <div style="width: 66%; height: 590px; margin-top: 50px;">
+        <div style="padding-bottom: 10px">
+            <img src="~/Images/modal-close-btn.png" class="close-btn" />
+            <h1>Move to a group</h1>
+          
+        </div>
+        <div id="MoveMembersToGroupList" style="overflow: auto; height: 400px;">
+
+            @{
+                bool ShowRadioButton = Model.ShowGroup;  
+            }
+
+            @Html.Partial("MyUserGroupList", Model.UserGroupsModel)
+        </div>
+        <div class="section action c-align">
+            <button type="button" class="btn cancel-btn" formaction='@Url.Action("Users")'>Cancel</button>
+            <button type="submit" class="submit-btn" id="moveUsersSubmitBtn" formaction='@Url.Action("MoveUserToGroup")'>Move</button>
+            @*<button type="submit" class="submit-btn" id="moveUsersSubmitBtn">Move</button>*@
+        </div>
+    </div>
+</div>
+ }
+          
+<script>
+    @*var userGroupsPageHandler;
+    $(function ()
+    {
+        var config = {
+            mainPageRoute: '@Url.Action("UserGroups","UserDashboard")',
+            usersRoute: '@Url.Action("UserGroupsUsers","UserDashboard")',
+            groupsRoute: '@Url.Action("UserGroupsList","UserDashboard")',
+            moveUsersRoute: '@Url.Action("UserGroupsUsersMove","UserDashboard")',
+            createGroupRoute: '@Url.Action("UserGroupsGroupCreate","UserDashboard")',
+            deleteGroupRoute: '@Url.Action("UserGroupsGroupDelete","UserDashboard")',
+            editGroupRoute: '@Url.Action("UserGroupsGroupRename", "UserDashboard")',
+            moveGroupRoute: '@Url.Action("UserGroupsGroupMove","UserDashBoard")',
+            toggleGroupAdminRoute : '@Url.Action("UserGroupsUserMakeOwner", "UserDashBoard")',
+
+                deletegrouptext: {
+                    title: '@ResourceUI.UserGroupDelete',
+                    msg : '@ResourceUI.UserGroupDeleteConfirm'
+                }
+        };
+
+        userGroupsPageHandler = new UserGroupsPageHandler(config);
+    });*@
+
+   
+</script>

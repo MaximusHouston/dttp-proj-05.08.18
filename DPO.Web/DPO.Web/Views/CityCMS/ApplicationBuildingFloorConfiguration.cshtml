@@ -1,0 +1,77 @@
+﻿@model FloorConfigurationModel
+@{
+    ViewBag.Title = "Daikin City Content Management";
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/confirmmodal")
+}
+
+@Html.Partial("_CityCMSTabsPartial")
+
+<ul class="breadcrumbs">
+    <li><a href="@Url.Action("ApplicationBuildings", "CityCMS")">Application Buildings</a></li>
+    <li><a href="@Url.Action("ApplicationBuildings", "CityCMS")#@Model.buildingName">@Model.buildingName</a></li>
+    <li><a href="@Url.Action("ApplicationBuildingFloor", "CityCMS", new { floorid = Model.floorId, buildingid = Model.buildingId })">@Model.floorName</a></li>
+    <li>Add New Configuration</li>
+</ul>
+
+<div class="section t-flush b-flush">
+    <div class="item-strap">
+        <div class="itemname">
+            <h1>Add New Configuration</h1>
+        </div>
+        <div class="btn-bar">
+            <a style="visibility:hidden;" href="#" class="submit-btn">&nbsp;</a>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+    <div class="section form">
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(m => m.buildingName)
+        @Html.HiddenFor(m => m.id)
+        @Html.HiddenFor(m => m.floorId)
+        @Html.HiddenFor(m => m.isAlternate)
+
+        <div class="float-left details-list" style="width: 45%; margin-right: 40px;">
+            <label>Configuration Title</label>
+            @Html.TextBoxFor(m => m.name, new { @class = "full" })
+            <br />
+            <label>System Name</label>
+            @Html.TextBoxFor(m => m.systemName, new { @class = "full" })
+            <br />
+            <label>System Type</label>
+            @Html.TextBoxFor(m => m.systemType, new { @class = "full" })
+            <br />
+        </div>
+        <div class="float-left details-list" style="width: 45%;">
+            @if (Model.isAlternate == false)
+            {
+                <label>System Size</label>
+                @Html.TextBoxFor(m => m.systemSize, new { @class = "full" })
+                <br />
+            }
+            else
+            {
+                @Html.HiddenFor(m => m.systemSize)
+            }
+            <label>System Energy Rating</label>
+            @Html.TextBoxFor(m => m.energy, new { @class = "full" })
+        </div>
+        <br class="clearfix" />
+    </div>
+    <div class="section action c-align">
+          <button type="button" class="btn" onclick="location.replace('@Url.Action("ApplicationBuildingFloor", "CityCMS", new { floorid = Model.floorId, buildingid = Model.buildingId })')">Cancel</button>
+          <button type="submit" class="submit-btn">Save</button>
+    </div>
+}
+

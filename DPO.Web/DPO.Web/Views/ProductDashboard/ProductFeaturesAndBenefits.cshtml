@@ -1,0 +1,61 @@
+﻿@model ProductModel
+@if (Model.StandardFeatures.Count > 0 || Model.Benefits.Count > 0)
+{
+    if (Model.IsSystem)
+    {
+        <div class="col-half-right-gutter pad-top pad-btm">
+            @if (Model.StandardFeatures.Count > 0)
+            {
+                <h4>Features</h4>
+                <ul>
+                    @foreach (var item in Model.StandardFeatures)
+                    {
+                        <li>@item.Description</li>
+                    }
+                </ul>
+                <br />
+            }
+        </div>
+
+        <div class="col-half-right-gutter pad-top pad-btm">
+            @if (Model.Benefits.Count > 0)
+            {
+                <h4>Benefits</h4>
+                <ul>
+                    @foreach (var item in Model.Benefits)
+                    {
+                        <li>@item.Description</li>
+                    }
+                </ul>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="col-half-right-gutter pad-top pad-btm">
+            @if (Model.StandardFeatures.Count > 0)
+            {
+                <h4>Features</h4>
+                <ul>
+                    @foreach (var item in Model.StandardFeatures)
+                    {
+                        <li>@item.Description</li>
+                    }
+                </ul>
+                <br />
+            }
+            @if (Model.Benefits.Count > 0)
+            {
+                <h4>Benefits</h4>
+                <ul>
+                    @foreach (var item in Model.Benefits)
+                    {
+                        <li>@item.Description</li>
+                    }
+                </ul>
+            }
+        </div>
+    }
+
+}
+

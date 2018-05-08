@@ -1,0 +1,108 @@
+﻿@model ProductModel
+@{
+    var specs = Model.Specifications;
+}
+    <tr>
+        <td>Product Model No.</td>
+        <td>@Model.ProductNumber</td>
+        <td>Product Model Name:</td>
+        <td>@Model.Name</td>
+    </tr>
+    <tr>
+        <td>Type: </td>
+        <td>@specs.GetString("ProductClassPIM")</td>
+
+        <td>Motor Type:</td>
+        <td>@specs.GetString("MotorSpeedType")</td>
+    </tr>
+    <tr>
+        <td>Rated Cooling Conditions:</td>
+        <td>
+            Indoor (&deg;F DB/WB): @specs.GetDecimal("RatedCoolingConditionRoomDB", "N0") / @specs.GetDecimal("RatedCoolingConditionRoomWB", "N0")
+            <br />
+            Ambient (&deg;F DB/WB): @specs.GetDecimal("RatedCoolingConditionAmbientDB", "N0") / @specs.GetDecimal("RatedCoolingConditionAmbientWB", "N0")
+        </td>
+        <td>Rated Heating Conditions:</td>
+        <td>
+            Indoor (&deg;F DB/WB): @specs.GetDecimal("RatedHeatingConditionRoomDB", "N0") / @specs.GetDecimal("RatedHeatingConditionRoomWB", "N0")
+            <br />
+            Ambient (&deg;F DB/WB): @specs.GetDecimal("RatedHeatingConditionAmbientDB", "N0") / @specs.GetDecimal("RatedHeatingConditionAmbientWB", "N0")
+        </td>
+    </tr>
+
+    <tr>
+        <td>Rated Cooling Capacity (Btu/hr):</td>
+        <td>@specs.GetDecimal("CoolingCapacityRated", "N0")</td>
+        <td>Rated Heating Capacity (Btu/hr):</td>
+        <td>@specs.GetDecimal("HeatingCapacityRated", "N0")</td>
+    </tr>
+
+    <tr>
+        <td>Cooling Capacity (Sensible) (Btu/hr):</td>
+        <td>@specs.GetDecimal("CoolingCapacitySensible", "N0")</td>
+
+        <td>Temperature Rise Range (&deg;F)(Low/High):</td>
+        <td>@specs.GetDecimal("TemperatureRiseRangeLow", "N0") / @specs.GetDecimal("TemperatureRiseRangeHigh", "N0")</td>
+    </tr>
+    <tr>
+        <td>Cooling Capacity (Nominal) (Btu/hr):</td>
+        <td>@specs.GetDecimal("CoolingCapacityNominal", "N0")</td>
+
+        <td>AFUE % Rating:</td>
+        <td>@specs.GetDecimal("AFUE", "N0")</td>
+    </tr>
+
+     <tr>
+        @if (specs.GetDecimal("EERDucted", "N2") != null)
+        {
+            <td>EER:</td>
+            <td>@specs.GetDecimal("EERDucted", "N2")</td>
+        }
+        else
+        {
+            <td>EER:</td>
+            <td></td>
+        }
+        <td>Heating COP:</td>
+        <td>@specs.GetDecimal("COP47Ducted", "N1")</td>
+    </tr>
+    <tr>
+        @if (specs.GetDecimal("SEERDucted", "N2") != null)
+        {
+            <td>SEER:</td>
+            <td>@specs.GetDecimal("SEERDucted", "N2")</td>
+        }
+        else
+        {
+            <td>SEER:</td>
+            <td></td>
+        }
+        <td>HSPF:</td>
+        <td>@specs.GetDecimal("HSPFDucted", "N1")</td>
+    </tr>
+ 
+    <tr>
+        <td>Blower Motor Rating (HP):</td>
+        <td>@specs.GetString("BlowerMotorHorsePower")</td>
+
+        <td>Furnace Input Capacity (Btu/hr):</td>
+        <td>@specs.GetDecimal("HighFireInputCapacity", "N0")</td>
+   </tr>
+
+    <tr>
+        <td>Blower Speed (RPM):</td>
+        <td>@specs.GetDecimal("BlowerMotorRPM", "N0")</td>
+
+        <td>Furnace Output Capacity (Btu/hr):</td>
+        <td>@specs.GetDecimal("HighFireOutputCapacity", "N0")</td>
+    </tr>
+
+    <tr>
+        <td>Blower Input Power (kW):</td>
+        <td>@specs.GetDecimal("BlowerInputPower", "N2")</td>
+
+        <td></td>
+        <td></td>
+    </tr>
+
+ 

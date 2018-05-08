@@ -1,0 +1,186 @@
+﻿#GroupsListCol, #groupslist-bg{
+    -webkit-transition: .25s width ease;
+    -moz-transition: .25s width ease;
+    -o-transition: .25s width ease;
+    transition: .25s width ease;
+    background-color: #007fcc;
+    bottom: 0;
+    left: 30px;
+    top: 131px;
+    width: 40%;
+    min-width: 405px;
+}
+
+.library #GroupsListCol, .library #groupslist-bg{
+     top: 126px;
+}
+#GroupsListCol{
+    z-index: 4;
+    position: absolute; 
+}
+
+#GroupsListCol.following{
+    position: fixed;
+    top: 0;
+}
+
+#GroupsListCol.following #GroupsList{
+    margin-bottom: 132px;
+}
+
+#GroupsListCol.fullwidth, #groupslist-bg.fullwidth{
+    width: 75%;
+    -webkit-transition: .25s width ease;
+    -moz-transition: .25s width ease;
+    -o-transition: .25s width ease;
+    transition: .25s width ease;
+}
+
+#groupslist-bg, #userlist-bg{
+    position: fixed;
+}
+
+#UserListCol{
+    background-color: #fff;
+    padding-left: 40%;
+    margin-left: 50px;
+    padding-right: 20px;
+    z-index: 1;
+}
+
+#userlist-bg{
+    background-color: #fff;
+    left: 40%;
+    right: 30px;
+    bottom: 0;
+    top: 131px;
+    z-index: -1;
+    min-width: 580px;
+}
+
+#GroupsListCol h1{color: #fff; margin-left: 20px;}
+
+.actions{width: 43px;}
+.radiocell{width: 20px; padding-left: 5px; padding-right: 0px !important;}
+
+#GroupsList{
+    overflow: auto;
+    position:absolute;
+    top: 66px;
+    left: 20px;
+    right: 20px;
+    bottom: 39px;
+
+    width: auto;
+    max-width:none;
+    padding-top: 0;
+    background-color: #fff;
+}
+
+#UserListCol h1{
+    margin-left: 0;
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-bottom: 10px;
+}
+
+#UserListCol h4{padding-bottom: 0;}
+
+.arrow-right {
+	width: 0; 
+	height: 0; 
+	border-top: 16px solid transparent;
+	border-bottom: 16px solid transparent;
+	border-left: 16px solid #007fcc;
+    position: absolute;
+    right: -16px;
+    top: 20px;
+}
+
+#widthToggleBtn{
+    outline: 0;
+    border: 0;
+    width: 22px;
+    height: 20px;
+    background:url(/Images/full-width-toggle-buttons.png) -21px 0px no-repeat;
+    cursor:pointer;
+
+    position: absolute;
+    right: 2px;
+    top: 26px;
+}
+
+#widthToggleBtn.fullwidth{
+    background:url(/Images/full-width-toggle-buttons.png) 0px 0px no-repeat;
+}
+
+.userimg, .movedocimg{
+    margin-right: 10px;
+    margin-top: 5px;
+    cursor: move;
+}
+
+.section.action{
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.grouplink{
+    cursor:pointer;
+}
+
+.collapseGroupLink:focus{
+    outline: 0;
+}
+
+.collapseGroupLink{
+    display:inline-block;
+    height: 16px;
+    width: 18px;
+    border: 0;
+    background:url(/Images/group-chevron-right.png) 5px 4px no-repeat;
+    cursor: pointer;
+}
+.collapseGroupLink.haschildren{
+    background:url(/Images/group-chevron-right.png) 2px 3px no-repeat;
+}
+
+.tbl.groupslist tr{
+    -webkit-user-select: none;
+    -ms-touch-action: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    cursor: pointer;
+}
+
+.tbl.groupslist tr td{
+     background-color: #EAF7FD;
+}
+
+.tbl.groupslist tr[data-childcount="0"] td{
+    background-color: #fff;
+}
+
+.tbl.groupslist tr[data-childcount="0"] td .collapseGroupLink {
+    background: #fff;
+}
+
+/*.tbl.groupslist tr.open td {
+     background-color: #DEF5FF;
+}*/
+
+.tbl.groupslist tr.open td.actions.open, .tbl.groupslist tr[data-childcount="0"] td.actions.open{
+    background-color: #1D9FD9;
+}
+
+.tbl.groupslist tr.open .collapseGroupLink.haschildren{
+    background:url(/Images/group-chevron-down.png) 0px 7px no-repeat;
+}
+
+.modal h1{
+    overflow:hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

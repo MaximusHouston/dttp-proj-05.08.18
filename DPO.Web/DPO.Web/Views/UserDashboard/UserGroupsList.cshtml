@@ -1,0 +1,80 @@
+﻿@model UserGroupsModel
+@{
+    var user = (ViewData["CurrentUser"] as UserSessionModel) ?? new UserSessionModel();
+}
+
+@section Page_Styles {
+    @Styles.Render("~/Content/css/978", "~/Content/css/tablestyles", "~/Content/css/tabbars", "~/Content/css/adminstyles", "~/Content/css/usergroups")
+}
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/tablehelpers", "~/bundles/scripts/usergroups", "~/bundles/scripts/confirmmodal")
+}
+
+<table class="tbl groupslist">
+    <tbody>
+        <tr data-groupid="0" data-groupname="@Model.UnAllocatedGroup.GroupName" data-childcount="0" style="border-top: none;">
+            <td class="radiocell" style="display:none;">
+                <input type="radio" name="MoveSelectedUserRadioButtons" value="0" />
+            </td>
+            @if (user.IsGroupOwner)
+            {
+                <td class="actions" style="visibility: hidden;"></td>
+            }
+
+            <td>
+                <a class="grouplink haschildren" href="#">@Model.UnAllocatedGroup.GroupName</a>
+                (@Model.UnAllocatedGroup.MemberCount)
+            </td>
+        </tr>
+
+        @foreach (var group in Model.UserGroups)
+        {
+            <tr data-groupid="@group.GroupId" data-groupname="@group.GroupName" data-grouplevel="@group.Level" data-childcount="@group.ChildCountDeep" class="@((group.ChildCountDeep > 0) ? "open" : "")">
+           
+                <td class="radiocell" style="display:none;">
+                    <input type="radio" name="MoveSelectedUserRadioButtons" value="@group.GroupId" />
+                </td>
+
+                @if (user.IsGroupOwner)
+                {
+                    <td class="actions">
+                        <div>
+                            <ul>
+                                <li class="second-col">
+                                    <a href="#" class="editlink">Edit Group</a>
+                                </li>
+                                @if (group.ChildCountDeep == 0 && group.MemberCount == 0)
+                                {
+                                    <li>
+                                        <a href="#" class="deletelink">Delete Group</a>
+                                    </li>
+                                }
+                                <li>
+                                    <a href="#" class="movelink">Move Group</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="createlink">Add Sub Group</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                }
+                <td>
+                    <button class="collapseGroupLink@((group.ChildCountDeep > 0) ? " haschildren" : "")" style="margin-left:@(group.Level * 10)px;">&nbsp;</button>
+                   
+                    <a class="grouplink">@group.GroupName</a>
+                    (@group.MemberCount)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@*<script>
+    $(document).ready(function () {
+        //Collapse all groups when page is loaded
+        var allGroups = $("#GroupsList").find("[data-grouplevel]");
+        allGroups.removeClass("open");
+        var childrenGroups = $("#GroupsList").find("tr[data-grouplevel!=0]").hide();
+    });
+
+</script>*@

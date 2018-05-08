@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="3bd12328-485f-49af-9486-672ad5a6adef" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://wartest.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="DataQualityService.wsdl" MetadataType="Wsdl" ID="9914824b-da7d-4fc6-913f-c747e4e5398d" SourceId="1" SourceUrl="http://wartest.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?wsdl=wsdl3" />
+    <MetadataFile FileName="DataQualityService.xsd" MetadataType="Schema" ID="e6e94e7b-a9e8-4cf3-903a-89ef65bdd443" SourceId="1" SourceUrl="http://wartest.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?xsd=xsd1" />
+    <MetadataFile FileName="DataQualityService1.wsdl" MetadataType="Wsdl" ID="ed0fef04-400e-4b5c-a99e-f8ce87934b7c" SourceId="1" SourceUrl="http://wartest.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?wsdl" />
+    <MetadataFile FileName="DataQualityService2.wsdl" MetadataType="Wsdl" ID="ab45b04c-7338-47d9-adbd-cd960ed4eb83" SourceId="1" SourceUrl="http://wartest.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="DataQualityService1.xsd" MetadataType="Schema" ID="23d4c588-dff7-496a-ac05-f93634ee3284" SourceId="1" SourceUrl="http://wartest.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?xsd=xsd4" />
+    <MetadataFile FileName="DataQualityService2.xsd" MetadataType="Schema" ID="2fcbfc33-bbca-4ccc-ab3d-50a0fbbdb106" SourceId="1" SourceUrl="http://wartest.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?xsd=xsd5" />
+    <MetadataFile FileName="DataQualityService3.xsd" MetadataType="Schema" ID="3db0f7f1-ddb7-4df0-af59-7dc2598cc118" SourceId="1" SourceUrl="http://wartest.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?xsd=xsd2" />
+    <MetadataFile FileName="DataQualityService4.xsd" MetadataType="Schema" ID="ffa5af44-5c07-49c5-9fb3-7d4249161c78" SourceId="1" SourceUrl="http://wartest.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?xsd=xsd3" />
+    <MetadataFile FileName="DataQualityService5.xsd" MetadataType="Schema" ID="0318b829-5b3b-4fc0-86ab-80414edd2e36" SourceId="1" SourceUrl="http://wartest.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?xsd=xsd0" />
+    <MetadataFile FileName="DataQualityService.disco" MetadataType="Disco" ID="101be21d-3603-4dd0-a4cf-369db44b4add" SourceId="1" SourceUrl="http://wartest.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?disco" />
+    <MetadataFile FileName="DataQualityService3.wsdl" MetadataType="Wsdl" ID="43f78536-75ea-49a4-ab9c-6577263874e4" SourceId="1" SourceUrl="http://wartest.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?wsdl=wsdl2" />
+    <MetadataFile FileName="DataQualityService4.wsdl" MetadataType="Wsdl" ID="f2f13f3c-f67c-4ce0-a259-7045d47193dc" SourceId="1" SourceUrl="http://wartest.goodmanmfg.com/Services/DataQualityServices/DataQualityService.svc?wsdl=wsdl1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

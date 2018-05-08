@@ -1,0 +1,33 @@
+﻿@model ProductListModel
+@{
+    var product = Model.Product;
+    var user = ViewData["CurrentUser"] as UserSessionModel;
+    var activeQuote = ViewData["ActiveQuoteId"] as long?;
+}
+
+@Html.HiddenFor( m => m.ProductId)
+@Html.HiddenFor(m => m.ProductNumber)
+
+<div class="row">
+    @Html.Partial("ItemQuantityBox", new QuoteItemModel { ProductId = product.ProductId, QuoteId = activeQuote })
+    <div class="product-details">
+        <div class="product-image pull-left">
+            @Html.Partial("ProductImages", product)
+        </div>
+        <div class="product-model-info">
+            <p style=""><a style="padding:0;" 
+                           href="@Url.Action("Product", new { ProductId = product.ProductId })"><strong>@product.Name</strong></a></p>
+            <p class="as-lnk">Model No.:</p>
+            <p>@product.ProductNumber</p>
+            @if(user.ShowPrices)
+            {
+                <p class="as-lnk">Price:</p>
+                <p>@Html.DisplayFor(p => product.Price)</p>
+            }
+        </div>
+    </div>
+    <div class="product-ratings">
+        @Html.Partial("ProductSpecificationBars", product)
+    </div>
+    <div class="row-end">&nbsp;</div>
+</div>

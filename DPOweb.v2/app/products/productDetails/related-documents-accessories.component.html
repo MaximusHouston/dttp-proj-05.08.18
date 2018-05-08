@@ -1,0 +1,108 @@
+﻿
+<div class="row dk-list-grey">
+
+    <div class="col col-md-6">
+        <div class="dk-list-header">RELATED DOCUMENTS</div>
+        <div style="overflow-y: auto; max-height: 500px;">
+            <div class="row row-nomargin dk-list-row" *ngFor="let item of product.documents ; let idx = index">
+                <span class="col col-md-12">
+                    <img src="/Images/related-document-icon.png" />
+
+                    <a href="{{item.url}}" target="_blank"> {{item.description}} </a>
+
+                    <a href="{{item.url}}" target="_blank" class="pull-right">{{item.name}}</a>
+
+                </span>
+                <!--<span class="col col-md-6">
+                    <a href="{{item.url}}" target="_blank" class="pull-right"> View Document </a>
+                </span>-->
+            </div>
+        </div>
+
+    </div>
+
+    <!--General Product-->
+    <div *ngIf="!product.isSystem && !(product.productModelTypeId == enums.ProductTypeEnum.System) && !(product.productModelTypeId == enums.ProductTypeEnum.Accessory)" class="col col-md-6">
+        <div class="dk-list-header">RELATED ACCESSORIES</div>
+        <div *ngIf="product.accessories.length == 0">
+            No Related Accessories
+        </div>
+
+        <div *ngIf="product.accessories.length > 0">
+            <div style="overflow-y: auto; max-height: 500px;">
+                <div class="row row-nomargin dk-list-row" *ngFor="let item of product.accessories ; let idx = index">
+                    <div class="col col-md-6">
+                        <a (click)="productDetails($event, item.accessory)" class="pull-left"> {{item.accessory.name}} </a>
+                    </div>
+                    <div class="col col-md-6">
+                        <a (click)="productDetails($event, item.accessory)" class="pull-right"> {{item.accessory.productNumber}} </a>
+                    </div>
+                </div>
+
+                
+                
+            </div>
+
+            <div class="row row-nomargin" style="padding-top:10px;">
+                <button class="btn btn-default" id="viewAllAccessoriesBtn">View all accessories</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!--System Product-->
+    <div *ngIf="product.isSystem || product.productModelTypeId == enums.ProductTypeEnum.System" class="col col-md-6">
+        <div class="dk-list-header">INDOOR UNIT RELATED ACCESSORIES</div>
+        <div style="overflow-y: auto; max-height: 240px;">
+
+            <div class="row row-nomargin dk-list-row" *ngFor="let item of relatedIndoorUnit.accessories ; let idx = index">
+                <div class="col col-md-6">
+                    <a (click)="productDetails($event, item.accessory)" class="pull-left"> {{item.accessory.name}} </a>
+                </div>
+                <div class="col col-md-6">
+                    <a (click)="productDetails($event, item.accessory)" class="pull-right"> {{item.accessory.productNumber}} </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="dk-list-header">OUTDOOR UNIT RELATED ACCESSORIES</div>
+        <div style="overflow-y: auto; max-height: 240px;">
+
+            <div class="row row-nomargin dk-list-row" *ngFor="let item of relatedOutdoorUnit.accessories ; let idx = index">
+                <div class="col col-md-6">
+                    <a (click)="productDetails($event, item.accessory)" class="pull-left"> {{item.accessory.name}} </a>
+                </div>
+                <div class="col col-md-6">
+                    <a (click)="productDetails($event, item.accessory)" class="pull-right"> {{item.accessory.productNumber}} </a>
+                </div>
+            </div>
+        </div>
+        <div class="row row-nomargin" style="padding-top:10px;">
+            <button class="btn btn-default" id="viewAllAccessoriesBtn">View all accessories</button>
+        </div>
+    </div>
+
+
+
+    <!--Accessory-->
+    <div *ngIf="product.productModelTypeId == enums.ProductTypeEnum.Accessory" class="col col-md-6">
+        <div class="dk-list-header">PARENT PRODUCTS</div>
+        <div style="overflow-y: auto; max-height: 500px;">
+            <div class="row row-nomargin dk-list-row" *ngFor="let item of product.parentProducts ; let idx = index">
+                <div class="col col-md-6">
+                    <a (click)="productDetails($event, item)" class="pull-left"> {{item.name}} </a>
+                </div>
+                <div class="col col-md-6">
+                    <a (click)="productDetails($event, item)" class="pull-right"> {{item.productNumber}} </a>
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="row row-nomargin" style="padding-top:10px;">
+            <button class="btn btn-default" id="viewAllAccessoriesBtn">View parent products</button>
+        </div>-->
+    </div>
+
+</div>
+
+
